@@ -1,0 +1,2 @@
+g++ main.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h -o run
+./run
