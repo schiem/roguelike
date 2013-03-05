@@ -5,7 +5,7 @@
  * POST: Will populate the :char dungeon[][]: array with dummy
  * values.
  */
-DungeonBuilder::DungeonBuilder(int _width, int _height)
+DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 {
 	width = _width;
 	height = _height;
@@ -28,12 +28,14 @@ DungeonBuilder::DungeonBuilder(int _width, int _height)
 			dungeon[i][j] = '.';
 		}
 	}
+    srand(seed);
+    cout<<seed;
 }
 
 /*
  * POST: Will print the dungeon floor to stdout.
  */
-void DungeonBuilder::print()
+void DungeonBuilder::print() const
 {
 	for(int i = 0; i < height; i++)
 	{
@@ -43,6 +45,12 @@ void DungeonBuilder::print()
 		}
 		cout<<endl;
 	}
+}
+
+ostream& operator<<(ostream &out, const DungeonBuilder &D)
+{
+    D.print();
+    return out;
 }
 
 /* PRE: Will be given :int given:, a number under 100.
@@ -81,46 +89,26 @@ bool DungeonBuilder::is_empty_space(IntPoint point)
 	}
 }
 
-/* PRE: Will be given :int squareness:, a number from 0 to 100,
- * which determines how square the room is, and 
- * :IntPoint starting_point:, which specifies the top left 
- * corner of the zone of generation.
- *
- * POST: Will build a single opening, starting at the top left 
- * corner. With maximum "squareness", the opening will be
- * completely square.
- */
-bool DungeonBuilder::generate_opening(int squareness, IntPoint starting_point)
+IntPoint DungeonBuilder::find_viable_starting_point()
 {
-	return true;
+    int good_row = rand() % (int)(height/2) + (int)(height/4);
+    int good_col = rand() % (int)(width/2) + (int)(width/4);
+    dungeon[good_row][good_col] = '@';
 }
+
 /* PRE: Will be given :int target: to specify a general target
  * number of openings in the dungeon floor, :int deviation: to
  * specify the maximum desired deviation from this target, and
  * :int squareness:, a number from 0 to 100, which determines 
  * how square the rooms are.
  *
- * POST: Will build openings in the dungeon floor and return
- * the number of openings that were built.
+ * POST: Will build a procedurally-blind dungeon in the dungeon
+ * floor (in which a room is built near the center, and rooms and
+ * hallways crawl off of that room.
  */
-int DungeonBuilder::build_openings(int target, int deviation, int squareness)
+int DungeonBuilder::build_pblind_dungeon(int target_openings, 
+                                         int deviation, int squareness)
 {
 	int openings = 0;
-	IntPoint starting_point;
-	starting_point.x = rand() % (width - 5);
-	starting_point.y = rand() % (height - 5);
-	generate_opening(squareness, starting_point);
 	return openings;
-}
-
-/* PRE: Will be given :int squareness: to specify how square
- * the built hallways will be.
- *
- * POST: Will link openings in the dungeon floor together with
- * "hallways" or passages.
- */
-int DungeonBuilder::build_hallways(int squareness)
-{
-	int links = 0;
-	return links;
 }

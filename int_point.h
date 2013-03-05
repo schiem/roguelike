@@ -1,8 +1,14 @@
+#ifndef INT_POINT_H
+#define INT_POINT_H
+
 using namespace std;
 
-struct IntPoint
+class IntPoint
 {
 	public:
+        IntPoint(int, int);
 		int x;
 		int y;
 };
+
+#endif
