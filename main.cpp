@@ -3,7 +3,6 @@
 int main()
 {
 	DungeonBuilder dungeon(50, 40);
-    dungeon.find_viable_starting_point();
-    cout<<dungeon;
+    dungeon.build_pblind_dungeon(1, 1, 1);
 	return 0;
 }

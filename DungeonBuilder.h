@@ -11,19 +11,23 @@ using namespace std;
 
 class DungeonBuilder
 {
-    friend ostream& operator<<(ostream &out, const DungeonBuilder &D);
+    friend ostream& operator<<(ostream&, const DungeonBuilder&);
 	private:
+        //variables
 		int width;
 		int height;
 		char dungeon[MAX_WIDTH][MAX_HEIGHT];
-		bool is_empty_space(IntPoint point);
-		bool rolled_over(int given);
-		int build_pblind_dungeon(int target, int deviation, int squareness);
+
+        //methods
+		bool rolled_over(int) const;
+		bool is_empty_space(IntPoint) const;
 		void print() const;
+        void build_room(IntPoint, IntPoint, int);
+        IntPoint find_viable_starting_point(int, int) const;
 
 	public:
-        IntPoint find_viable_starting_point();
-		DungeonBuilder(int width, int height, int seed=time(NULL));
+		int build_pblind_dungeon(int, int, int);
+		DungeonBuilder(int, int, int seed=time(NULL));
 };
 
 #endif

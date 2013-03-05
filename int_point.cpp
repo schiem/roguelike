@@ -1,7 +1,7 @@
 #include "int_point.h"
 
-IntPoint::IntPoint(int _x, int _y)
+IntPoint::IntPoint(int _row, int _col)
 {
-    x = _x;
-    y = _y;
+    row = _row;
+    col = _col;
 }

@@ -6,9 +6,9 @@ using namespace std;
 class IntPoint
 {
 	public:
-        IntPoint(int, int);
-		int x;
-		int y;
+        IntPoint(int _row, int _col);
+		int row;
+		int col;
 };
 
 #endif

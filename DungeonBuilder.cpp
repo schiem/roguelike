@@ -29,7 +29,6 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 		}
 	}
     srand(seed);
-    cout<<seed;
 }
 
 /*
@@ -59,7 +58,7 @@ ostream& operator<<(ostream &out, const DungeonBuilder &D)
  * Will return true if result <= given; will return false if 
  * result > given.
  */
-bool DungeonBuilder::rolled_over(int given)
+bool DungeonBuilder::rolled_over(int given) const
 {
 	int generated = rand() % 100;
 	if(generated <= given)
@@ -77,9 +76,9 @@ bool DungeonBuilder::rolled_over(int given)
  * POST: Will determine whether or not the point is an empty
  * space.
  */
-bool DungeonBuilder::is_empty_space(IntPoint point)
+bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-	if(dungeon[point.x][point.y] == '.')
+	if(dungeon[point.row][point.col] == '.')
 	{
 		return true;
 	}
@@ -89,11 +88,41 @@ bool DungeonBuilder::is_empty_space(IntPoint point)
 	}
 }
 
-IntPoint DungeonBuilder::find_viable_starting_point()
+/* PRE:
+ * POST: Will find a good starting point for a procedurally-blind dungeon
+ */
+IntPoint DungeonBuilder::find_viable_starting_point(int std_width, int std_height) const
 {
-    int good_row = rand() % (int)(height/2) + (int)(height/4);
-    int good_col = rand() % (int)(width/2) + (int)(width/4);
-    dungeon[good_row][good_col] = '@';
+    int good_row = rand() % (int)(height/2) + (int)(height/4) - (int)(std_height / 2);
+    int good_col = rand() % (int)(width/2) + (int)(width/4) - (int)(std_width / 2);
+    return IntPoint(good_row, good_col);
+}
+
+/* PRE: Will be given :IntPoint tl:, which represents the top-left corner,
+ * :IntPoint br:, which represents the bottom-right corner, and
+ * :int squareness:, which denotes how square the rooms will be.
+ * 
+ * POST: Will draw a room on the dungeon array with the given parameters.
+ */
+void DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
+{
+    //draw four corners
+    dungeon[tl.row][tl.col] = '+';
+    dungeon[tl.row][br.col] = '+';
+    dungeon[br.row][tl.col] = '+';
+    dungeon[br.row][br.col] = '+';
+    //draw top and bottom rows
+    for(int i = tl.col + 1; i <= br.col - 1; i++)
+    {
+        dungeon[tl.row][i] = '=';
+        dungeon[br.row][i] = '=';
+    }
+    //draw left and right walls
+    for(int i = tl.row + 1; i <= br.row - 1; i++)
+    {
+        dungeon[i][tl.col] = '|';
+        dungeon[i][br.col] = '|';
+    }
 }
 
 /* PRE: Will be given :int target: to specify a general target
@@ -106,9 +135,30 @@ IntPoint DungeonBuilder::find_viable_starting_point()
  * floor (in which a room is built near the center, and rooms and
  * hallways crawl off of that room.
  */
-int DungeonBuilder::build_pblind_dungeon(int target_openings, 
+int DungeonBuilder::build_pblind_dungeon(int _target, 
                                          int deviation, int squareness)
 {
+    int std_room_width = 10;
+    int std_room_height = 10;
+    int room_width_deviation = 12;
+    int room_height_deviation = 8;
 	int openings = 0;
+    //Set the target number of openings to 
+    int target_openings = rand() % deviation + 
+                             (_target - (int)(deviation / 2));
+    IntPoint starting_point = find_viable_starting_point(std_room_width, 
+                                                        std_room_height);
+
+    int room_width = rand() % room_width_deviation + 
+                             (std_room_width - (int)(room_width_deviation/2));
+    int room_height = rand() % room_height_deviation +
+                             (std_room_height - (int)(room_height_deviation/2));
+
+    IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
+                           starting_point.col + (room_width + 1));
+    build_room(starting_point, br, 2);
+    cout<<*this<<endl<<"Room width: "<<room_width<<endl<<"Room height: "
+        <<room_height<<endl;
+    
 	return openings;
 }
