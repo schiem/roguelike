@@ -78,14 +78,27 @@ bool DungeonBuilder::rolled_over(int given) const
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-	if(dungeon[point.row][point.col] == '.')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    return (dungeon[point.row][point.col] == '.');
+}
+
+/* PRE: Will be given :IntPoint point:
+ *
+ * POST: Will determine whether or not the given point is beyond the 
+ * bounds of the dungeon.
+ */
+bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const
+{
+    if((point.row < 0) or (point.row >= height))
+    {
+        return true;
+    }
+
+    else if((point.col < 0) or (point.col >= width))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 /* PRE:
@@ -148,17 +161,14 @@ int DungeonBuilder::build_pblind_dungeon(int _target,
                              (_target - (int)(deviation / 2));
     IntPoint starting_point = find_viable_starting_point(std_room_width, 
                                                         std_room_height);
-
     int room_width = rand() % room_width_deviation + 
                              (std_room_width - (int)(room_width_deviation/2));
     int room_height = rand() % room_height_deviation +
                              (std_room_height - (int)(room_height_deviation/2));
-
     IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
                            starting_point.col + (room_width + 1));
     build_room(starting_point, br, 2);
-    cout<<*this<<endl<<"Room width: "<<room_width<<endl<<"Room height: "
-        <<room_height<<endl;
+    cout<<*this;
     
 	return openings;
 }
