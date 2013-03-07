@@ -1,6 +1,6 @@
 #ifndef ROOM_H
 #define ROOM_H
-#include "int_point.h"
+#include <int_point.h>
 
 using namespace std;
 

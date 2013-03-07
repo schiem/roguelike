@@ -7,8 +7,8 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "int_point.h"
-#include "Room.h"
+#include <int_point.h>
+#include <Room.h>
 using namespace std;
 
 class DungeonBuilder
