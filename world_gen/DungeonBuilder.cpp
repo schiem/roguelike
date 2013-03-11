@@ -117,7 +117,7 @@ IntPoint DungeonBuilder::find_viable_starting_point(int std_width, int std_heigh
  * 
  * POST: Will draw a room on the dungeon array with the given parameters.
  */
-void DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
+Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
     //draw four corners
     dungeon[tl.row][tl.col] = '+';
@@ -136,6 +136,35 @@ void DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
         dungeon[i][tl.col] = '|';
         dungeon[i][br.col] = '|';
     }
+
+    return Room(tl, br);
+}
+
+/* PRE:
+ * POST: Will build a good starting room in the dungeon space
+ */
+void DungeonBuilder::build_start_room(int std_room_width, int std_room_height,
+                                int room_width_deviation, int room_height_deviation)
+{
+    int room_width = rand() % room_width_deviation + 
+                             (std_room_width - (int)(room_width_deviation/2));
+    int room_height = rand() % room_height_deviation +
+                             (std_room_height - (int)(room_height_deviation/2));
+    IntPoint starting_point = find_viable_starting_point(std_room_width, 
+                                                        std_room_height);
+    IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
+                           starting_point.col + (room_width + 1));
+    rooms[num_rooms] = build_room(starting_point, br, 2);
+    num_rooms += 1;
+}
+
+/* PRE: Will be given a Room object.
+ * POST: Will return the original number of wall spaces in the room 
+ * (corners are not included).
+ */
+int DungeonBuilder::get_wall_count(const Room &R) const
+{
+    return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
 
 /* PRE: Will be given :int target: to specify a general target
@@ -150,25 +179,28 @@ void DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
  */
 int DungeonBuilder::build_pblind_dungeon(int _target, 
                                          int deviation, int squareness)
-{
+{   
     int std_room_width = 10;
     int std_room_height = 10;
     int room_width_deviation = 12;
     int room_height_deviation = 8;
 	int openings = 0;
-    //Set the target number of openings to 
-    int target_openings = rand() % deviation + 
-                             (_target - (int)(deviation / 2));
-    IntPoint starting_point = find_viable_starting_point(std_room_width, 
-                                                        std_room_height);
-    int room_width = rand() % room_width_deviation + 
-                             (std_room_width - (int)(room_width_deviation/2));
-    int room_height = rand() % room_height_deviation +
-                             (std_room_height - (int)(room_height_deviation/2));
-    IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
-                           starting_point.col + (room_width + 1));
-    build_room(starting_point, br, 2);
-    cout<<*this;
+    build_start_room(std_room_width, std_room_height, room_width_deviation, room_height_deviation);    
+    //int target_rooms = rand() % deviation + 
+    //                        (_target - (int)(deviation / 2));
+    bool finished = false;
+    int current_room_num= 0;
+
+    //Do the actual dungeon crawling. COMPLETELY UNIFINISHED
+    while(!finished)
+    {
+        //declaring Room as pointer to point to different array indices.
+        Room * current_room;
+        current_room = &rooms[current_room_num]; 
+        cout<<get_wall_count(*current_room)<<endl;
+        cout<<*this<<endl;
+        finished = true;
+    }
     
 	return openings;
 }

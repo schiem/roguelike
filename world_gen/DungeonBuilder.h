@@ -18,15 +18,18 @@ class DungeonBuilder
         //variables
 		int width;
 		int height;
+        int num_rooms;
 		char dungeon[MAX_WIDTH][MAX_HEIGHT];
-        //#Room rooms[MAX_ROOMS];
+        Room rooms[MAX_ROOMS];
 
         //methods
+        int get_wall_count(const Room&) const;
+        void build_start_room(int, int, int, int);
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
 		void print() const;
-        void build_room(IntPoint, IntPoint, int);
+        Room build_room(IntPoint, IntPoint, int);
         IntPoint find_viable_starting_point(int, int) const;
 
 	public:
