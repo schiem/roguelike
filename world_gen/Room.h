@@ -11,6 +11,7 @@ class Room
         IntPoint br;
 
     public:
+        Room();
         Room(IntPoint, IntPoint);
 };
 
