@@ -8,7 +8,7 @@ CFLAGS = -Wall $(IFLAGS) -c
 LFLAGS = -Wall $(IFLAGS)
 
 all : roguelike
-	cd 
+	./roguelike
 
 roguelike : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o roguelike

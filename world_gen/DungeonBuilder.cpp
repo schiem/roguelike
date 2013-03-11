@@ -158,6 +158,15 @@ void DungeonBuilder::build_start_room(int std_room_width, int std_room_height,
     num_rooms += 1;
 }
 
+/* PRE: Will be given a Room object.
+ * POST: Will return the original number of wall spaces in the room 
+ * (corners are not included).
+ */
+int DungeonBuilder::get_wall_count(const Room &R) const
+{
+    return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
+}
+
 /* PRE: Will be given :int target: to specify a general target
  * number of openings in the dungeon floor, :int deviation: to
  * specify the maximum desired deviation from this target, and
@@ -177,10 +186,21 @@ int DungeonBuilder::build_pblind_dungeon(int _target,
     int room_height_deviation = 8;
 	int openings = 0;
     build_start_room(std_room_width, std_room_height, room_width_deviation, room_height_deviation);    
+    //int target_rooms = rand() % deviation + 
+    //                        (_target - (int)(deviation / 2));
+    bool finished = false;
+    int current_room_num= 0;
 
-    int target_rooms = rand() % deviation + 
-                             (_target - (int)(deviation / 2));
-    cout<<*this;
+    //Do the actual dungeon crawling. COMPLETELY UNIFINISHED
+    while(!finished)
+    {
+        //declaring Room as pointer to point to different array indices.
+        Room * current_room;
+        current_room = &rooms[current_room_num]; 
+        cout<<get_wall_count(*current_room)<<endl;
+        cout<<*this<<endl;
+        finished = true;
+    }
     
 	return openings;
 }

@@ -23,6 +23,7 @@ class DungeonBuilder
         Room rooms[MAX_ROOMS];
 
         //methods
+        int get_wall_count(const Room&) const;
         void build_start_room(int, int, int, int);
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
