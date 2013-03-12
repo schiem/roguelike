@@ -167,6 +167,19 @@ int DungeonBuilder::get_wall_count(const Room &R) const
     return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
 
+/* PRE: Will be given :int block_num:, which refers to a wall block in the room.
+ * BLocks are counted from (but not including) the top left corner, and moving clockwise,
+ * ignoring corner blocks.
+ *
+ * POST: Will attempt to build a path from the given Room and block. If this succeds,
+ * will return the IntPoint of the end of the path. If it fails, it will return an 
+ * IntPoint with row=-1 and col=-1.
+ */
+IntPoint DungeonBuilder::build_path(int block_num, const Room &R)
+{
+    return IntPoint(-1, -1);
+}
+
 /* PRE: Will be given :int target: to specify a general target
  * number of openings in the dungeon floor, :int deviation: to
  * specify the maximum desired deviation from this target, and
@@ -177,30 +190,55 @@ int DungeonBuilder::get_wall_count(const Room &R) const
  * floor (in which a room is built near the center, and rooms and
  * hallways crawl off of that room.
  */
-int DungeonBuilder::build_pblind_dungeon(int _target, 
+int DungeonBuilder::build_pblind_dungeon(int target, 
                                          int deviation, int squareness)
 {   
     int std_room_width = 10;
     int std_room_height = 10;
     int room_width_deviation = 12;
     int room_height_deviation = 8;
-	int openings = 0;
-    build_start_room(std_room_width, std_room_height, room_width_deviation, room_height_deviation);    
+    build_start_room(std_room_width, std_room_height, room_width_deviation, 
+                     room_height_deviation);    
     //int target_rooms = rand() % deviation + 
     //                        (_target - (int)(deviation / 2));
-    bool finished = false;
     int current_room_num= 0;
+    recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
+                             room_width_deviation, room_height_deviation,
+                             current_room_num);
 
-    //Do the actual dungeon crawling. COMPLETELY UNIFINISHED
-    while(!finished)
+	return 0;
+}
+
+/* PRE: Will be given :int target:, :int deviation:, :int squareness:,
+ * :int std_room_width:, :int room_width_deviation:, 
+ * :int room_height_deviation: from the parent function :int build_pblind_dungeon():,
+ * and :int current_room_num:, which is an index of the "rooms" array.
+ *
+ * POST: Will build the dungeon by finding 0 to 2 viable wall blocks in the given
+ * room, building paths outward from those wall blocks, and (often) building rooms
+ * at the end of those paths. Every time a new room is built, the function is called
+ * again with that room's index passed as :int current_room_num:. 
+ *
+ */
+void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
+                                             int squareness,int std_room_width,
+                                             int room_width_deviation,
+                                             int room_height_deviation,
+                                             int current_room_num)
+{
+    //declaring Room as pointer to point to different array indices.
+    Room * current_room = &rooms[current_room_num];
+    int wall_blocks = get_wall_count(*current_room);
+    int num_paths = rand() % 3;
+
+    for(int i = 0; i < num_paths; i++)
     {
-        //declaring Room as pointer to point to different array indices.
-        Room * current_room;
-        current_room = &rooms[current_room_num]; 
-        cout<<get_wall_count(*current_room)<<endl;
-        cout<<*this<<endl;
-        finished = true;
+        build_path(rand() % wall_blocks, *current_room);
     }
-    
-	return openings;
+
+    /*
+    recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
+                             room_width_deviation, room_height_deviation,
+                             current_room_num);
+     */
 }

@@ -31,6 +31,8 @@ class DungeonBuilder
 		void print() const;
         Room build_room(IntPoint, IntPoint, int);
         IntPoint find_viable_starting_point(int, int) const;
+        void recursive_pblind_dungeon(int, int, int, int, int, int, int);
+        IntPoint build_path(int, const Room&);
 
 	public:
 		int build_pblind_dungeon(int, int, int);
