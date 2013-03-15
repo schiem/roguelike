@@ -34,6 +34,12 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 /*
  * POST: Will print the dungeon floor to stdout.
  */
+ostream& operator<<(ostream &out, const DungeonBuilder &D)
+{
+    D.print();
+    return out;
+}
+
 void DungeonBuilder::print() const
 {
 	for(int i = 0; i < height; i++)
@@ -44,12 +50,6 @@ void DungeonBuilder::print() const
 		}
 		cout<<endl;
 	}
-}
-
-ostream& operator<<(ostream &out, const DungeonBuilder &D)
-{
-    D.print();
-    return out;
 }
 
 /* PRE: Will be given :int given:, a number under 100.
@@ -167,6 +167,16 @@ int DungeonBuilder::get_wall_count(const Room &R) const
     return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
 
+IntPoint DungeonBuilder::point_from_block_num(int block_num, const Room &R)
+{
+    IntPoint start_point = IntPoint(R.tl.row, R.tl.col + 1);
+    int room_width = (R.br.col - R.tl.col);
+    int room_height = (R.br.row - R.tl.row);
+
+    
+    return IntPoint(-1, -1);
+}
+
 /* PRE: Will be given :int block_num:, which refers to a wall block in the room.
  * BLocks are counted from (but not including) the top left corner, and moving clockwise,
  * ignoring corner blocks.
@@ -177,6 +187,9 @@ int DungeonBuilder::get_wall_count(const Room &R) const
  */
 IntPoint DungeonBuilder::build_path(int block_num, const Room &R)
 {
+    //In reality, this is the room's width minus 1... But I'm doing this to make things
+    //easier.
+
     return IntPoint(-1, -1);
 }
 

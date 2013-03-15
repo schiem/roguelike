@@ -23,20 +23,21 @@ class DungeonBuilder
         Room rooms[MAX_ROOMS];
 
         //methods
-        int get_wall_count(const Room&) const;
-        void build_start_room(int, int, int, int);
+		void print() const;
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
-		void print() const;
-        Room build_room(IntPoint, IntPoint, int);
         IntPoint find_viable_starting_point(int, int) const;
-        void recursive_pblind_dungeon(int, int, int, int, int, int, int);
+        Room build_room(IntPoint, IntPoint, int);
+        void build_start_room(int, int, int, int);
+        int get_wall_count(const Room&) const;
+        IntPoint point_from_block_num(int, const Room&);
         IntPoint build_path(int, const Room&);
+        void recursive_pblind_dungeon(int, int, int, int, int, int, int);
 
 	public:
-		int build_pblind_dungeon(int, int, int);
 		DungeonBuilder(int, int, int seed=time(NULL));
+		int build_pblind_dungeon(int, int, int);
 };
 
 #endif

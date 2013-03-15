@@ -25,7 +25,7 @@ int main()
 	while (running == true){
 		//everything takes action
 
-		printw("Everything acts\n");
+		printw("Things\n");
 		
 		int c = getch();
 		

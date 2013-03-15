@@ -6,13 +6,14 @@ OBJS = DungeonBuilder.o Room.o int_point.o Character.o main.o
 CC = g++
 IFLAGS = -I. -I$(WGEN) -I$(MISC) -I$(CHAR)
 CFLAGS = -Wall $(IFLAGS) -c 
-LFLAGS = -Wall -lncurses $(IFLAGS)
+LDFLAGS = -Wall $(IFLAGS)
+LIBS = -lncurses
 
 all : roguelike
 	./roguelike
 
 roguelike : $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o roguelike 
+	$(CC) $(LDFLAGS) $(OBJS) -o roguelike $(LIBS)
 
 main.o : main.cpp
 	$(CC) $(CFLAGS) main.cpp
