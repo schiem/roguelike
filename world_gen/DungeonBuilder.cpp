@@ -173,6 +173,8 @@ IntPoint DungeonBuilder::point_from_block_num(int block_num, const Room &R)
     int room_width = (R.br.col - R.tl.col);
     int room_height = (R.br.row - R.tl.row);
 
+    get_wall_count(R);
+
     
     return IntPoint(-1, -1);
 }
@@ -218,7 +220,7 @@ int DungeonBuilder::build_pblind_dungeon(int target,
     recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
                              room_width_deviation, room_height_deviation,
                              current_room_num);
-
+    cout<<*this;
 	return 0;
 }
 
@@ -241,14 +243,23 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
 {
     //declaring Room as pointer to point to different array indices.
     Room * current_room = &rooms[current_room_num];
-    int wall_blocks = get_wall_count(*current_room);
-    int num_paths = rand() % 3;
-
-    for(int i = 0; i < num_paths; i++)
+    int height = (current_room->br.row - current_room->tl.row) - 1;
+    int width = (current_room->br.col - current_room->tl.col) - 1;
+    int path_from_side = rand() % (height + width) + 1;
+    IntPoint point;
+    if (path_from_side < width)
     {
-        build_path(rand() % wall_blocks, *current_room);
+        point.row = current_room->tl.row;
+        point.col = rand() % width + current_room->tl.col + 1;
     }
-
+    else
+    {
+        point.row = rand() % height + current_room->tl.row + 1;
+        point.col = current_room->tl.col;
+    }
+    
+    dungeon[point.row][point.col] = 'X';
+    int num_paths = rand() % 3;
     /*
     recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
                              room_width_deviation, room_height_deviation,
