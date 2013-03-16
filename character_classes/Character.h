@@ -1,11 +1,9 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-using namespace std;
-
 class Character
 {
-	private:
+	protected:
 	//variables
 	int current_health;
 	int max_health;
@@ -18,13 +16,29 @@ class Character
     //methods
 
 	public:
-		bool is_alive() const;
+		Character(int, int, int, char);
+        bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
-		Character(int, int, int);
         void attack(int x_direction, int y_direction);
-        int get_locaction();
+        int get_x_loc();
+        int get_y_loc();
+        char get_char();
         //terrain get_surroundings
 
 };
+
+class Main_Character : public Character{
+    protected:
+        char name[];
+        //inventory
+        //equipment
+        //dungeon
+   public:
+        Main_Character(int, int, int, char);
+        void perform_action(char);
+};
+
 #endif
+            
+

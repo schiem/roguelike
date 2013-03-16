@@ -1,8 +1,8 @@
-WGEN = world_gen
+WGEN = World/dungeon_gen
 MISC = misc_classes
 CHAR = character_classes
 VPATH= $(WGEN):$(MISC):$(CHAR)
-OBJS = DungeonBuilder.o Room.o int_point.o Character.o main.o
+OBJS = DungeonBuilder.o Room.o int_point.o Character.o Main_Character.o main.o
 CC = g++
 IFLAGS = -I. -I$(WGEN) -I$(MISC) -I$(CHAR)
 CFLAGS = -Wall $(IFLAGS) -c 
@@ -29,6 +29,9 @@ Room.o : Room.h Room.cpp int_point.h
 
 Character.o : Character.h Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Character.cpp
+
+Main_Character.o : Character.h Main_Character.cpp
+	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp
 
 clean :
 	\rm *.o roguelike

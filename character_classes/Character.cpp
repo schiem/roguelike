@@ -4,12 +4,13 @@
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y)
+Character::Character(int _max_health, int _x, int _y, char _sprite)
 {
 	current_health = _max_health;
 	max_health = _max_health;
 	x = _x;
 	y = _y;
+    sprite = _sprite;
 }
 
 /* PRE: None
@@ -43,5 +44,15 @@ void Character::take_damage(int damage){
 		}
 }
 
+int Character::get_x_loc(){
+    return x;
+}
 
+int Character::get_y_loc(){
+    return y;
+}
+
+char Character::get_char(){
+    return sprite;
+}
 
