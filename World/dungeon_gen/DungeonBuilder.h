@@ -31,8 +31,8 @@ class DungeonBuilder
         Room build_room(IntPoint, IntPoint, int);
         void build_start_room(int, int, int, int);
         int get_wall_count(const Room&) const;
-        IntPoint find_path_start(const Room&);
-        IntPoint build_path(int, const Room&);
+        IntPoint rand_wall_block(const Room&);
+        IntPoint build_path(IntPoint);
         void recursive_pblind_dungeon(int, int, int, int, int, int, int);
 
 	public:

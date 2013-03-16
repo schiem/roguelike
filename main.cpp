@@ -12,7 +12,7 @@ int main()
 	keypad(stdscr, TRUE);
 	raw();
 	halfdelay(5);
-    
+    curs_set(0); 
     /*	
 	DungeonBuilder dungeon(50, 40);
     dungeon.build_pblind_dungeon(1, 1, 1);
@@ -26,7 +26,6 @@ int main()
 	//the main loop of the program
 	while (running == true){
 		//everything takes action
-
 		int c = getch();
 		
 		if (c == 'e'){

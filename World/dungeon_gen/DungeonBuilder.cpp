@@ -166,8 +166,11 @@ int DungeonBuilder::get_wall_count(const Room &R) const
 {
     return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
-
-IntPoint DungeonBuilder::find_path_start(const Room &current_room)
+/*
+ * PRE: Will be given a Room object.
+ * POST: Will return a random wall block that lies on the circumference of the given room.
+ */
+IntPoint DungeonBuilder::rand_wall_block(const Room &current_room)
 { 
     int height = (current_room.br.row - current_room.tl.row) - 1;
     int width = (current_room.br.col - current_room.tl.col) - 1;
@@ -187,7 +190,7 @@ IntPoint DungeonBuilder::find_path_start(const Room &current_room)
             cout<<"1\n";
             point.row = current_room.br.row;
         }
-        point.col = rand() % width + current_room.tl.col; 
+        point.col = rand() % width + current_room.tl.col + 1; 
     }
     else
     {
@@ -203,10 +206,10 @@ IntPoint DungeonBuilder::find_path_start(const Room &current_room)
             cout<<"3\n";
             point.col = current_room.br.col;
         }
-        point.row = rand() % height + current_room.tl.row;
+        point.row = rand() % height + current_room.tl.row + 1;
     }
 
-    return IntPoint(point.row, point.col);
+    return point;
 }
 
 /* PRE: Will be given :int block_num:, which refers to a wall block in the room.
@@ -217,10 +220,8 @@ IntPoint DungeonBuilder::find_path_start(const Room &current_room)
  * will return the IntPoint of the end of the path. If it fails, it will return an 
  * IntPoint with row=-1 and col=-1.
  */
-IntPoint DungeonBuilder::build_path(int block_num, const Room &R)
+IntPoint DungeonBuilder::build_path(IntPoint start)
 {
-    //In reality, this is the room's width minus 1... But I'm doing this to make things
-    //easier.
 
     return IntPoint(-1, -1);
 }
@@ -273,35 +274,11 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
 {
     //declaring Room as pointer to point to different array indices.
     Room * current_room = &rooms[current_room_num];
-    IntPoint point = find_path_start(*current_room);
-    int height = (current_room->br.row - current_room->tl.row) - 1;
-    int width = (current_room->br.col - current_room->tl.col) - 1;
-    int path_from_side = rand() % (height + width) + 1;
-    if (path_from_side < width)
-    {
-        int a = rand() % 2;
-        if ( a == 0)
-        {
-            point.row = current_room->tl.row;
-        }
-        else
-        {
-            point.row = current_room->br.row;
-        }
-        point.col = rand() % width + current_room->tl.col + 1;
-    }
-    else
-    {
-        int a = rand() % 2;
-        if (a == 0)
-        {
-            point.col = current_room->tl.col;
-        }
-        point.row = rand() % height + current_room->tl.row + 1;
-    }
-    
+    IntPoint point = rand_wall_block(*current_room);
+
     dungeon[current_room->tl.row][current_room->tl.col] = 'X';
     dungeon[current_room->br.row][current_room->br.col] = 'Y';
+    dungeon[point.row][point.col] = '@';
     int num_paths = rand() % 3;
     /*
     recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
