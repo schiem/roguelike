@@ -4,6 +4,8 @@
 #define MAX_WIDTH 500 
 #define MAX_HEIGHT 500
 #define MAX_ROOMS 15
+#define MAX_PATH_LENGTH 100
+#define MIN_PATH_LENGTH 5
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -32,7 +34,7 @@ class DungeonBuilder
         void build_start_room(int, int, int, int);
         int get_wall_count(const Room&) const;
         IntPoint rand_wall_block(const Room&);
-        IntPoint build_path(IntPoint);
+        IntPoint build_path(IntPoint, int);
         void recursive_pblind_dungeon(int, int, int, int, int, int, int);
 
 	public:

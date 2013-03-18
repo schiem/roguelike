@@ -178,32 +178,26 @@ IntPoint DungeonBuilder::rand_wall_block(const Room &current_room)
     IntPoint point;
     if (path_from_side < height)
     {
-        cout<<"Top/Bottom\n";
         int a = rand() % 2;
         if (a == 0)
         {
-            cout<<"0\n";
             point.row = current_room.tl.row;
         }
         else
         {
-            cout<<"1\n";
             point.row = current_room.br.row;
         }
         point.col = rand() % width + current_room.tl.col + 1; 
     }
     else
     {
-        cout<<"Side\n";
         int a = rand() % 2;
         if (a == 0)
         {
-            cout<<"2\n";
             point.col = current_room.tl.col;
         }
         else
         {
-            cout<<"3\n";
             point.col = current_room.br.col;
         }
         point.row = rand() % height + current_room.tl.row + 1;
@@ -212,17 +206,70 @@ IntPoint DungeonBuilder::rand_wall_block(const Room &current_room)
     return point;
 }
 
-/* PRE: Will be given :int block_num:, which refers to a wall block in the room.
- * BLocks are counted from (but not including) the top left corner, and moving clockwise,
- * ignoring corner blocks.
+/* PRE: Will be given :IntPoint start:, which refers to the wall block of the room at
+ * which the path starts, and :int direction:, which refers to the starting direction
+ * of the path according to this scheme:
+ * 0 = up
+ * 1 = right
+ * 2 = down
+ * 3 = left
  *
  * POST: Will attempt to build a path from the given Room and block. If this succeds,
  * will return the IntPoint of the end of the path. If it fails, it will return an 
  * IntPoint with row=-1 and col=-1.
  */
-IntPoint DungeonBuilder::build_path(IntPoint start)
+IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
 {
+    int path_length = rand() % (MAX_PATH_LENGTH - MIN_PATH_LENGTH) + MIN_PATH_LENGTH;
+    IntPoint current_point = start;
+    int current_direction = direction;
+    for(int i = 0; i < path_length; i++)
+    {
+        dungeon[current_point.row][current_point.col] = 'X';
+        //For at least 2 or 3 blocks, just go straight. otherwise,
+        //we may change direction.
+        if (i > 3)
+        {
+            //Do we change direction?
+            int dirchange = rand() % 100;
+            if (dirchange < 30)
+            {
+                //Which direction do we change to?
+                switch (dirchange % 2)
+                {
+                    case 0:
+                        current_direction -= 1;
+                        current_direction = (current_direction % 4);
+                        break;
+                    case 1:
+                        current_direction += 1;
+                        current_direction = (current_direction % 4);
+                        break;
+                }
+            }
+        }
 
+        switch (current_direction)
+        {
+            case 0:
+                current_point.row -= 1;
+                break;
+            case 1:
+                current_point.col += 1;
+                break;
+            case 2:
+                current_point.row += 1;
+                break;
+            case 3:
+                current_point.col -= 1;
+                break;
+        }
+
+        if (point_is_beyond_bounds(current_point))
+        {
+            break;
+        }
+    }
     return IntPoint(-1, -1);
 }
 
@@ -276,8 +323,7 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     Room * current_room = &rooms[current_room_num];
     IntPoint point = rand_wall_block(*current_room);
 
-    dungeon[current_room->tl.row][current_room->tl.col] = 'X';
-    dungeon[current_room->br.row][current_room->br.col] = 'Y';
+    build_path(point, 0);
     dungeon[point.row][point.col] = '@';
     int num_paths = rand() % 3;
     /*
