@@ -29,9 +29,10 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-	x += x_change;
+	mvdelch(y, x);
+    x += x_change;
 	y += y_change;
-	//update the screen?
+    mvaddch(y, x, sprite);
 }
 
 /* PRE: Takes damage to reduce a character's health by
