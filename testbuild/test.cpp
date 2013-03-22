@@ -1,4 +1,3 @@
-
 #include <DungeonBuilder.h>
 #include <Character.h>
 #include <ncurses.h>

@@ -1,16 +1,16 @@
 CC = g++
-IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR)
+IFLAGS = -I. -I../ -I$(DGEN) -I$(MISC) -I$(CHAR)
 CFLAGS = -Wall $(IFLAGS) -c 
 LDFLAGS = -Wall $(IFLAGS)
 
-DGEN = src/World/dungeon_gen
-MISC = src/misc_classes
-CHAR = src/character_classes
+DGEN = ../src/World/dungeon_gen
+MISC = ../src/misc_classes
+CHAR = ../src/character_classes
 PATHS = $(DGEN) $(MISC) $(CHAR)
 VPATH= $(DGEN):$(MISC):$(CHAR)
 LIBS = -lncurses
 
-SRC = $(foreach path,$(PATHS),$(wildcard $(path)/*.cpp)) src/main.cpp
+SRC = $(foreach path,$(PATHS),$(wildcard $(path)/*.cpp)) test.cpp
 HEADERS = $(foreach path,$(PATHS),$(wildcard $(path)/*.h))
 OBJS = $(patsubst %.cpp,build/%.o,$(notdir $(SRC)))
 
@@ -26,8 +26,8 @@ build :
 roguelike : $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 
-build/main.o : src/main.cpp
-	$(CC) $(CFLAGS) src/main.cpp -o $@
+build/test.o : test.cpp
+	$(CC) $(CFLAGS) test.cpp -o $@
 
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@

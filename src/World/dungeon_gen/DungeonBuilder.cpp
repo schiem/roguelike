@@ -25,7 +25,7 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			dungeon[i][j] = '.';
+			dungeon[i][j] = ' ';
 		}
 	}
     srand(seed);
@@ -101,6 +101,47 @@ bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const
     return false;
 }
 
+/* PRE: Will be given :IntPoint point: that lies on the wall of a room.
+ * POST: Will determine which wall of the room the point lies on based
+ *       on the surrounding tiles.
+ */
+int DungeonBuilder::determine_which_wall(IntPoint point) const
+{
+    int direction;
+
+    if((dungeon[point.row][point.col - 1] == '=') or 
+       (dungeon[point.row][point.col + 1] == '='))
+    {
+        if (dungeon[point.row - 1][point.col] == '.')
+        {
+            direction = 2;
+        }
+        
+        else if (dungeon[point.row + 1][point.col] == '.')
+        {
+            direction = 0;
+        }
+    }
+
+    else if ((dungeon[point.row - 1][point.col] == '|') or
+        (dungeon[point.row + 1][point.col] == '|'))
+    {
+        if (dungeon[point.row][point.col - 1] == '.')
+        {
+            direction = 1;
+        }
+        
+        else if (dungeon[point.row][point.col + 1] == '.')
+        {
+            direction = 3;
+        }
+    }
+    
+    cout<<direction<<endl;
+    return direction;
+}
+
+
 /* PRE:
  * POST: Will find a good starting point for a procedurally-blind dungeon
  */
@@ -136,6 +177,14 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
         dungeon[i][tl.col] = '|';
         dungeon[i][br.col] = '|';
     }
+    
+    for(int i = tl.row + 1; i <= br.row - 1; i++)
+    {
+        for(int j = tl.col + 1; j <= br.col - 1; j++)
+        {
+            dungeon[i][j] = '.';
+        }
+    }
 
     return Room(tl, br);
 }
@@ -166,6 +215,7 @@ int DungeonBuilder::get_wall_count(const Room &R) const
 {
     return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
+
 /*
  * PRE: Will be given a Room object.
  * POST: Will return a random wall block that lies on the circumference of the given room.
@@ -223,6 +273,7 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
     int path_length = rand() % (MAX_PATH_LENGTH - MIN_PATH_LENGTH) + MIN_PATH_LENGTH;
     IntPoint current_point = start;
     int current_direction = direction;
+    cout<<current_direction<<endl;
     for(int i = 0; i < path_length; i++)
     {
         dungeon[current_point.row][current_point.col] = 'X';
@@ -323,12 +374,8 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     Room * current_room = &rooms[current_room_num];
     IntPoint point = rand_wall_block(*current_room);
 
-    build_path(point, 0);
-    dungeon[point.row][point.col] = '@';
+    build_path(point, determine_which_wall(point));
+    dungeon[point.row][point.col] = 'X';
     int num_paths = rand() % 3;
-    /*
-    recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
-                             room_width_deviation, room_height_deviation,
-                             current_room_num);
-     */
+
 }

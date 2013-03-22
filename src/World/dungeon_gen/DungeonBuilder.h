@@ -29,6 +29,7 @@ class DungeonBuilder
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
+        int determine_which_wall(IntPoint) const;
         IntPoint find_viable_starting_point(int, int) const;
         Room build_room(IntPoint, IntPoint, int);
         void build_start_room(int, int, int, int);
