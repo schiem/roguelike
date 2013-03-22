@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class World
-{
-    private:
+struct Terrain{
+	char sprite;
+	bool can_walk_on;
 
