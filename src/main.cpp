@@ -1,5 +1,5 @@
 #include <DungeonBuilder.h>
-#include <World.h>
+#include <terrain_defs.h>
 #include <Character.h>
 #include <ncurses.h>
 #include <stdio.h>

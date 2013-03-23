@@ -1,14 +1,14 @@
 CC = g++
-IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR)
+IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR) -I$(WORL)
 CFLAGS = -Wall $(IFLAGS) -c 
 LDFLAGS = -Wall $(IFLAGS)
 
-WORL = src/World/
+WORL = src/World
 DGEN = src/World/dungeon_gen
 MISC = src/misc_classes
 CHAR = src/character_classes
-PATHS = $(DGEN) $(MISC) $(CHAR)
-VPATH= $(DGEN):$(MISC):$(CHAR)
+PATHS = $(DGEN) $(MISC) $(CHAR) $(WORL)
+VPATH= $(DGEN):$(MISC):$(CHAR):$(WORL)
 LIBS = -lncurses
 
 SRC = $(foreach path,$(PATHS),$(wildcard $(path)/*.cpp)) src/main.cpp
@@ -43,8 +43,9 @@ build/Character.o : Character.h Character.cpp
 
 build/Main_Character.o : Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
-build/World.o : World.h World.cpp
-	$(CC) $(CFLAGS) $(WORL)/World.cpp -o $@
+
+build/terrain_defs.o : terrain_defs.h terrain_defs.cpp
+	$(CC) $(CFLAGS) $(WORL)/terrain_defs.cpp -o $@
 
 clean :
 	rm -r build roguelike
