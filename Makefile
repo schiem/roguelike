@@ -3,6 +3,7 @@ IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR)
 CFLAGS = -Wall $(IFLAGS) -c 
 LDFLAGS = -Wall $(IFLAGS)
 
+WORL = src/World/
 DGEN = src/World/dungeon_gen
 MISC = src/misc_classes
 CHAR = src/character_classes
@@ -16,7 +17,6 @@ OBJS = $(patsubst %.cpp,build/%.o,$(notdir $(SRC)))
 
 
 all : roguelike
-	ls --color=always
 
 $(OBJS): | build
 
@@ -43,10 +43,11 @@ build/Character.o : Character.h Character.cpp
 
 build/Main_Character.o : Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
+build/World.o : World.h World.cpp
+	$(CC) $(CFLAGS) $(WORL)/World.cpp -o $@
 
 clean :
 	rm -r build roguelike
-	ls --color=always
 
 what :
 	echo $(OBJS)

@@ -1,7 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
-
-using namespace std;
+#include <ncurses.h>
 
 struct Terrain{
 	char sprite;
