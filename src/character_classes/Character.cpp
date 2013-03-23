@@ -13,6 +13,11 @@ Character::Character(int _max_health, int _x, int _y, char _sprite)
     sprite = _sprite;
 }
 
+void Character::display_character(){
+	mvaddch(y, x, sprite);
+}
+
+
 /* PRE: None
  * POST: Returns true if the character is still alive (health is > max_health)
 */

@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <int_point.h>
 #include <Room.h>
+#include <terrain_defs.h>
+#include <ncurses.h>
 using namespace std;
 
 class DungeonBuilder
@@ -25,11 +27,10 @@ class DungeonBuilder
 		int width;
 		int height;
         int num_rooms;
-		char dungeon[MAX_WIDTH][MAX_HEIGHT];
+		Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
         Room rooms[MAX_ROOMS];
 
         //methods
-		void print() const;
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
@@ -47,6 +48,7 @@ class DungeonBuilder
 	public:
 		DungeonBuilder(int, int, int seed=time(NULL));
 		int build_pblind_dungeon(int, int, int);
+		void print() const;
 };
 
 #endif

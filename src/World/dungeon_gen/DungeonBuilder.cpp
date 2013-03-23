@@ -25,7 +25,7 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			dungeon[i][j] = ' ';
+			dungeon[i][j] = dirt;
 		}
 	}
     srand(seed);
@@ -40,15 +40,16 @@ ostream& operator<<(ostream &out, const DungeonBuilder &D)
     return out;
 }
 
+
+
 void DungeonBuilder::print() const
 {
 	for(int i = 0; i < height; i++)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			cout<<dungeon[i][j]<<" ";
+			mvaddch(j, i, dungeon[i][j].sprite);
 		}
-		cout<<endl;
 	}
 }
 
@@ -78,7 +79,7 @@ bool DungeonBuilder::rolled_over(int given) const
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-    return ((dungeon[point.row][point.col] == ' ') or (dungeon[point.row][point.col] == 'X'));
+    return ((dungeon[point.row][point.col] == dirt) or (dungeon[point.row][point.col] == wall));
 }
 
 /* PRE: Will be given :IntPoint point:
@@ -109,29 +110,29 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const
 {
     int direction;
 
-    if((dungeon[point.row][point.col - 1] == '=') or 
-       (dungeon[point.row][point.col + 1] == '='))
+    if((dungeon[point.row][point.col - 1] == wall) or 
+       (dungeon[point.row][point.col + 1] == wall))
     {
-        if (dungeon[point.row - 1][point.col] == '.')
+        if (dungeon[point.row - 1][point.col] == dirt)
         {
             direction = 2;
         }
         
-        else if (dungeon[point.row + 1][point.col] == '.')
+        else if (dungeon[point.row + 1][point.col] == dirt)
         {
             direction = 0;
         }
     }
 
-    else if ((dungeon[point.row - 1][point.col] == '|') or
-        (dungeon[point.row + 1][point.col] == '|'))
+    else if ((dungeon[point.row - 1][point.col] == wall) or
+        (dungeon[point.row + 1][point.col] == wall))
     {
-        if (dungeon[point.row][point.col - 1] == '.')
+        if (dungeon[point.row][point.col - 1] == dirt)
         {
             direction = 1;
         }
         
-        else if (dungeon[point.row][point.col + 1] == '.')
+        else if (dungeon[point.row][point.col + 1] == dirt)
         {
             direction = 3;
         }
@@ -161,28 +162,28 @@ IntPoint DungeonBuilder::find_viable_starting_point(int std_width, int std_heigh
 Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
     //draw four corners
-    dungeon[tl.row][tl.col] = '+';
-    dungeon[tl.row][br.col] = '+';
-    dungeon[br.row][tl.col] = '+';
-    dungeon[br.row][br.col] = '+';
+    dungeon[tl.row][tl.col] = wall;
+    dungeon[tl.row][br.col] = wall;
+    dungeon[br.row][tl.col] = wall;
+    dungeon[br.row][br.col] = wall;
     //draw top and bottom rows
     for(int i = tl.col + 1; i <= br.col - 1; i++)
     {
-        dungeon[tl.row][i] = '=';
-        dungeon[br.row][i] = '=';
+        dungeon[tl.row][i] = wall;
+        dungeon[br.row][i] = wall;
     }
     //draw left and right walls
     for(int i = tl.row + 1; i <= br.row - 1; i++)
     {
-        dungeon[i][tl.col] = '|';
-        dungeon[i][br.col] = '|';
+        dungeon[i][tl.col] = wall;
+        dungeon[i][br.col] = wall;
     }
     
     for(int i = tl.row + 1; i <= br.row - 1; i++)
     {
         for(int j = tl.col + 1; j <= br.col - 1; j++)
         {
-            dungeon[i][j] = '.';
+            dungeon[i][j] = dirt;
         }
     }
 
@@ -312,7 +313,7 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
     IntPoint potential_point;
     for(int i = 0; i < path_length; i++)
     {
-        dungeon[current_point.row][current_point.col] = 'X';
+        dungeon[current_point.row][current_point.col] = wall;
         //For at least 2 or 3 blocks, just go straight. otherwise,
         //we may change direction.
         if (i > 3)
@@ -394,6 +395,6 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     IntPoint point = rand_wall_block(*current_room);
 
     build_path(point, determine_which_wall(point));
-    dungeon[point.row][point.col] = 'X';
+    dungeon[point.row][point.col] = wall;
     int num_paths = rand() % 3;
 }

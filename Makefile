@@ -44,8 +44,6 @@ build/Character.o : Character.h Character.cpp
 build/Main_Character.o : Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
 
-build/terrain_defs.o : terrain_defs.h terrain_defs.cpp
-	$(CC) $(CFLAGS) $(WORL)/terrain_defs.cpp -o $@
 
 clean :
 	rm -r build roguelike

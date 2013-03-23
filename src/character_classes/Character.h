@@ -18,7 +18,8 @@ class Character
 
 	public:
 		Character(int, int, int, char);
-        bool is_alive() const;
+        void display_character();
+		bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
         void attack(int x_direction, int y_direction);
