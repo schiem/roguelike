@@ -14,7 +14,7 @@ Character::Character(int _max_health, int _x, int _y, char _sprite)
 }
 
 void Character::display_character(){
-	mvaddch(y, x, sprite);
+	mvaddch(y, x * 2, sprite);
 }
 
 
@@ -34,10 +34,10 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-	mvdelch(y, x);
+	//mvdelch(y, x * 2);
     x += x_change;
 	y += y_change;
-    mvaddch(y, x, sprite);
+    display_character();
 }
 
 /* PRE: Takes damage to reduce a character's health by

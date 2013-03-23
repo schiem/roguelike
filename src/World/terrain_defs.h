@@ -9,9 +9,10 @@ struct Tile{
 		}
 	};
 
-static const Tile dirt = {' ', true};
-static const Tile wall = {'#', false};
-
+static const Tile DIRT = {'.', true};
+static const Tile WALL = {'#', false};
+static const Tile EMPTY = {' ', false};
+static const Tile PATH = {'X', true};
 
 #endif
 

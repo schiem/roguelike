@@ -1,3 +1,3 @@
-cd ../../../testbuild/
+cd ../../../
 make
 ./roguelike

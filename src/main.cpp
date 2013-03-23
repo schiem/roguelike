@@ -15,7 +15,7 @@ int main()
 	halfdelay(5);
     curs_set(0); 
 
-	DungeonBuilder dungeon(50, 40);
+	DungeonBuilder dungeon(70, 40);
     dungeon.build_pblind_dungeon(1, 1, 1);
    
     Main_Character myCharacter(100, 10, 10, 'c');
