@@ -32,6 +32,7 @@ class DungeonBuilder
         int determine_which_wall(IntPoint) const;
         IntPoint find_viable_starting_point(int, int) const;
         Room build_room(IntPoint, IntPoint, int);
+        Room find_viable_room_space(IntPoint) const;
         void build_start_room(int, int, int, int);
         int get_wall_count(const Room&) const;
         IntPoint rand_wall_block(const Room&);

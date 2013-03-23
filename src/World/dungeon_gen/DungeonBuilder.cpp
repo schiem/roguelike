@@ -189,6 +189,16 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
     return Room(tl, br);
 }
 
+/* PRE: Will be given :IntPoint the_point:
+ * POST: Will find and return a viable room space, or a room with 
+ *       tl.row, tl.col, br.row, br.col = '-1' if there is no viable space.
+ */
+Room DungeonBuilder::find_viable_room_space(IntPoint) const
+{
+
+    return Room(IntPoint(-1, -1), IntPoint(-1, -1));
+}
+
 /* PRE:
  * POST: Will build a good starting room in the dungeon space
  */
