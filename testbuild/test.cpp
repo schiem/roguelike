@@ -6,7 +6,7 @@
 
 int main()
 {
-	DungeonBuilder dungeon(50, 40);
+	DungeonBuilder dungeon(70, 50);
     dungeon.build_pblind_dungeon(1, 1, 1);
    
 	return 0;	

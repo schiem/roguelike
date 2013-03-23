@@ -1,5 +1,4 @@
 #include <Character.h>
-#include <ncurses.h>
 
 Main_Character::Main_Character(int _max_health, int _x, int _y, char _sprite) : Character(_max_health, _x, _y,  _sprite){
     max_health = _max_health;

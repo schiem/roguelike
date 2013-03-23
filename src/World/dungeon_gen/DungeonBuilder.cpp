@@ -78,7 +78,7 @@ bool DungeonBuilder::rolled_over(int given) const
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-    return (dungeon[point.row][point.col] == '.');
+    return ((dungeon[point.row][point.col] == ' ') or (dungeon[point.row][point.col] == 'X'));
 }
 
 /* PRE: Will be given :IntPoint point:
@@ -256,6 +256,32 @@ IntPoint DungeonBuilder::rand_wall_block(const Room &current_room)
     return point;
 }
 
+/* PRE: Will be given :IntPoint this_point:, which is the current point, and 
+ *      :int direction:, which refers to the proposed direction.
+ * POST: Will return the next point given the proposed direction.
+ */
+IntPoint DungeonBuilder::get_next_point(IntPoint this_point, int direction) const
+{
+    IntPoint next_point = this_point;
+    switch (direction)
+    {
+        case 0:
+            next_point.row -= 1;
+            break;
+        case 1:
+            next_point.col += 1;
+            break;
+        case 2:
+            next_point.row += 1;
+            break;
+        case 3:
+            next_point.col -= 1;
+            break;
+    }
+
+    return next_point;
+}   
+
 /* PRE: Will be given :IntPoint start:, which refers to the wall block of the room at
  * which the path starts, and :int direction:, which refers to the starting direction
  * of the path according to this scheme:
@@ -273,7 +299,9 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
     int path_length = rand() % (MAX_PATH_LENGTH - MIN_PATH_LENGTH) + MIN_PATH_LENGTH;
     IntPoint current_point = start;
     int current_direction = direction;
-    cout<<current_direction<<endl;
+    bool bad_direction;
+    int tries;
+    IntPoint potential_point;
     for(int i = 0; i < path_length; i++)
     {
         dungeon[current_point.row][current_point.col] = 'X';
@@ -283,7 +311,7 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
         {
             //Do we change direction?
             int dirchange = rand() % 100;
-            if (dirchange < 30)
+            if (dirchange < 15)
             {
                 //Which direction do we change to?
                 switch (dirchange % 2)
@@ -300,26 +328,19 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
             }
         }
 
-        switch (current_direction)
+        do
         {
-            case 0:
-                current_point.row -= 1;
-                break;
-            case 1:
-                current_point.col += 1;
-                break;
-            case 2:
-                current_point.row += 1;
-                break;
-            case 3:
-                current_point.col -= 1;
-                break;
-        }
-
-        if (point_is_beyond_bounds(current_point))
-        {
-            break;
-        }
+            bad_direction = false;
+            potential_point = get_next_point(current_point, current_direction);
+            if ((point_is_beyond_bounds(potential_point)) or (!is_empty_space(potential_point)))
+            {
+                bad_direction = true;
+                current_direction += 1;
+            }
+        } while(bad_direction);
+        
+        current_point = potential_point;
+        
     }
     return IntPoint(-1, -1);
 }

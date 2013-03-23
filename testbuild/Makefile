@@ -46,7 +46,6 @@ build/Main_Character.o : Character.h Main_Character.cpp
 
 clean :
 	rm -r build roguelike
-	ls --color=always
 
 what :
 	echo $(OBJS)
