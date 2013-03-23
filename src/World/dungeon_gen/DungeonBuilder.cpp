@@ -193,24 +193,22 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
  * POST: Will find and return a viable room space, or a room with 
  *       tl.row, tl.col, br.row, br.col = '-1' if there is no viable space.
  */
-Room DungeonBuilder::find_viable_room_space(IntPoint) const
+Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 {
-
     return Room(IntPoint(-1, -1), IntPoint(-1, -1));
 }
 
 /* PRE:
  * POST: Will build a good starting room in the dungeon space
  */
-void DungeonBuilder::build_start_room(int std_room_width, int std_room_height,
-                                int room_width_deviation, int room_height_deviation)
+void DungeonBuilder::build_start_room()
 {
-    int room_width = rand() % room_width_deviation + 
-                             (std_room_width - (int)(room_width_deviation/2));
-    int room_height = rand() % room_height_deviation +
-                             (std_room_height - (int)(room_height_deviation/2));
-    IntPoint starting_point = find_viable_starting_point(std_room_width, 
-                                                        std_room_height);
+    int room_width = rand() % ROOM_WIDTH_DEV + 
+                             (STD_ROOM_WIDTH - (int)(ROOM_WIDTH_DEV/2));
+    int room_height = rand() % ROOM_WIDTH_DEV +
+                             (STD_ROOM_HEIGHT - (int)(ROOM_HEIGHT_DEV/2));
+    IntPoint starting_point = find_viable_starting_point(STD_ROOM_WIDTH, 
+                                                        STD_ROOM_HEIGHT);
     IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
                            starting_point.col + (room_width + 1));
     rooms[num_rooms] = build_room(starting_point, br, 2);
@@ -368,18 +366,11 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
 int DungeonBuilder::build_pblind_dungeon(int target, 
                                          int deviation, int squareness)
 {   
-    int std_room_width = 10;
-    int std_room_height = 10;
-    int room_width_deviation = 12;
-    int room_height_deviation = 8;
-    build_start_room(std_room_width, std_room_height, room_width_deviation, 
-                     room_height_deviation);    
+    build_start_room();
     //int target_rooms = rand() % deviation + 
     //                        (_target - (int)(deviation / 2));
     int current_room_num= 0;
-    recursive_pblind_dungeon(target, deviation, squareness, std_room_width,
-                             room_width_deviation, room_height_deviation,
-                             current_room_num);
+    recursive_pblind_dungeon(target, deviation, squareness, current_room_num);
     cout<<*this;
 	return 0;
 }
@@ -396,10 +387,7 @@ int DungeonBuilder::build_pblind_dungeon(int target,
  *
  */
 void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
-                                             int squareness,int std_room_width,
-                                             int room_width_deviation,
-                                             int room_height_deviation,
-                                             int current_room_num)
+                                             int squareness, int current_room_num)
 {
     //declaring Room as pointer to point to different array indices.
     Room * current_room = &rooms[current_room_num];
@@ -408,5 +396,4 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     build_path(point, determine_which_wall(point));
     dungeon[point.row][point.col] = 'X';
     int num_paths = rand() % 3;
-
 }

@@ -6,6 +6,10 @@
 #define MAX_ROOMS 15
 #define MAX_PATH_LENGTH 100
 #define MIN_PATH_LENGTH 16 
+#define STD_ROOM_WIDTH 10
+#define STD_ROOM_HEIGHT 10
+#define ROOM_WIDTH_DEV 12
+#define ROOM_HEIGHT_DEV 8
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -33,12 +37,12 @@ class DungeonBuilder
         IntPoint find_viable_starting_point(int, int) const;
         Room build_room(IntPoint, IntPoint, int);
         Room find_viable_room_space(IntPoint) const;
-        void build_start_room(int, int, int, int);
+        void build_start_room();
         int get_wall_count(const Room&) const;
         IntPoint rand_wall_block(const Room&);
         IntPoint get_next_point(IntPoint, int) const;
         IntPoint build_path(IntPoint, int);
-        void recursive_pblind_dungeon(int, int, int, int, int, int, int);
+        void recursive_pblind_dungeon(int, int, int, int);
 
 	public:
 		DungeonBuilder(int, int, int seed=time(NULL));
