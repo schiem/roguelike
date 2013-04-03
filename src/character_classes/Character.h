@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include <ncurses.h>
+#include <terrain_defs.h>
 
 class Character
 {

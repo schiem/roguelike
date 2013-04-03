@@ -22,7 +22,6 @@ int main()
     
     //check to see if the program is running
 	bool running = true;
-    bool added = false;
 	//the main loop of the program
 	while (running == true){
 		//everything takes action

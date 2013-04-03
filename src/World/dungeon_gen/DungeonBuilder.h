@@ -1,9 +1,6 @@
 #ifndef DUNGEONBUILDER_H
 #define DUNGEONBUILDER_H
 
-#define MAX_WIDTH 500 
-#define MAX_HEIGHT 500
-#define MAX_ROOMS 15
 #define MAX_PATH_LENGTH 100
 #define MIN_PATH_LENGTH 16 
 #define STD_ROOM_WIDTH 10
@@ -17,6 +14,7 @@
 #include <Room.h>
 #include <terrain_defs.h>
 #include <ncurses.h>
+#include <Dungeon.h>
 using namespace std;
 
 class DungeonBuilder
@@ -27,8 +25,7 @@ class DungeonBuilder
 		int width;
 		int height;
         int num_rooms;
-		Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
-        Room rooms[MAX_ROOMS];
+        Dungeon main_dungeon;
 
         //methods
 		bool rolled_over(int) const;

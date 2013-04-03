@@ -32,7 +32,7 @@ build/main.o : src/main.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/DungeonBuilder.o : DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h
+build/DungeonBuilder.o : DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
 	$(CC) $(CFLAGS) $(DGEN)/DungeonBuilder.cpp -o $@
 
 build/Room.o : Room.h Room.cpp int_point.h
@@ -43,6 +43,10 @@ build/Character.o : Character.h Character.cpp
 
 build/Main_Character.o : Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
+
+build/Dungeon.o : Dungeon.h Dungeon.cpp int_point.h Room.h
+	$(CC) $(CFLAGS) $(DGEN)/Dungeon.cpp -o $@
+
 
 
 clean :
