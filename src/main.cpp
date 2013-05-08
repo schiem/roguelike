@@ -3,22 +3,27 @@
 #include <Character.h>
 #include <ncurses.h>
 #include <stdio.h>
+#include <iostream>
+using namespace std;
 
 
 int main()
 {
 	//initialize curses (see http://www.tldp.org/HOWTO/NCURSES-Programming-HOWTO/ for more)
+    /*
 	initscr();
 	noecho();
 	keypad(stdscr, TRUE);
 	raw();
 	halfdelay(5);
     curs_set(0); 
+    */
 
-	DungeonBuilder dungeon(70, 40);
+	DungeonBuilder dungeon(40, 40);
     dungeon.build_pblind_dungeon(1, 1, 1);
    
-    Main_Character myCharacter(100, 10, 10, 'c');
+    /*
+    //Main_Character myCharacter(100, 10, 10, 'c');
     
     //check to see if the program is running
 	bool running = true;
@@ -38,6 +43,8 @@ int main()
 	}
 	//clean up ncurses
 	endwin();
+    */
+    dungeon.print();
 
 	return 0;	
 }

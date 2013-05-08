@@ -11,7 +11,7 @@ struct Tile{
 
 static const Tile DIRT = {'.', true};
 static const Tile WALL = {'#', false};
-static const Tile EMPTY = {' ', false};
+static const Tile EMPTY = {' ', true};
 static const Tile PATH = {'X', true};
 
 #endif

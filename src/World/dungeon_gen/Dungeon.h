@@ -3,8 +3,8 @@
 #define MAX_WIDTH 500 
 #define MAX_HEIGHT 500
 #define MAX_ROOMS 15
-#include <Room.h>
 #include <terrain_defs.h>
+#include <Room.h>
 
 class Dungeon
 {

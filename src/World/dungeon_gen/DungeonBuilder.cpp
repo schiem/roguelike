@@ -39,8 +39,10 @@ void DungeonBuilder::print() const
 	{
 		for(int j = 0; j < width; j++)
 		{
-			mvaddch(i, j * 2, main_dungeon.get_tile(i, j).sprite);
+            //mvaddch(i, j * 2, main_dungeon.get_tile(i, j).sprite);
+            cout<<main_dungeon.get_tile(i, j).sprite<<" ";
 		}
+        cout<<endl;
 	}
 }
 
@@ -153,6 +155,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
     //draw four corners
     main_dungeon.set_tile(tl, WALL);
+    cout<<"ROOM LEFT CORNER: "<<main_dungeon.get_tile(main_dungeon.rooms[0].tl).sprite;
     main_dungeon.set_tile(tl.row, br.col, WALL);
     main_dungeon.set_tile(br.row, tl.col, WALL);
     main_dungeon.set_tile(br, WALL);
@@ -326,16 +329,19 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
             }
         }
 
+        int tries = 0;
         do
         {
             bad_direction = false;
             potential_point = get_next_point(current_point, current_direction);
             if ((point_is_beyond_bounds(potential_point)) or (!is_empty_space(potential_point)))
             {
+                //cout<<is_empty_space(potential_point)<<"..."<<main_dungeon.get_tile(potential_point).sprite<<endl;
                 bad_direction = true;
                 current_direction += 1;
             }
-        } while(bad_direction);
+            tries++;
+        } while((bad_direction) && tries < 4);
         
         current_point = potential_point;
         
@@ -361,7 +367,7 @@ int DungeonBuilder::build_pblind_dungeon(int target,
     //                        (_target - (int)(deviation / 2));
     int current_room_num= 0;
     recursive_pblind_dungeon(target, deviation, squareness, current_room_num);
-    cout<<*this;
+    //cout<<*this;
 	return 0;
 }
 
@@ -382,8 +388,7 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     //declaring Room as pointer to point to different array indices.
     Room current_room = main_dungeon.rooms[current_room_num];
     IntPoint point = rand_wall_block(current_room);
-
-    build_path(point, determine_which_wall(point));
-    main_dungeon.set_tile(point, PATH);
-    //int num_paths = rand() % 3;
+    //build_path(point, determine_which_wall(point));
+    build_path(point, 2);
+    //main_dungeon.set_tile(point, PATH);
 }

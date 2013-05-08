@@ -7,9 +7,11 @@ Dungeon::Dungeon()
 
 Dungeon::Dungeon(int _width, int _height)
 {
-    for(int i = 0; i < height; i++)
+    width = _width;
+    height = _height;
+    for(int i = 0; i < _height; i++)
     {
-        for(int j = 0; j < width; j++)
+        for(int j = 0; j < _width; j++)
         {
             dungeon[i][j] = EMPTY;
         }
