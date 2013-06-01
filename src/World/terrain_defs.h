@@ -2,6 +2,7 @@
 #define TERRAIN_DEFS_H
 
 struct Tile{
+	int char_count;
 	char sprite;
 	bool can_be_moved_through;
 	bool operator==(const Tile& rhs) const{
@@ -9,10 +10,10 @@ struct Tile{
 		}
 	};
 
-static const Tile DIRT = {'.', true};
-static const Tile WALL = {'#', false};
-static const Tile EMPTY = {' ', true};
-static const Tile PATH = {'X', true};
+static const Tile DIRT = {250, '.', true};
+static const Tile WALL = {35, '#', false};
+static const Tile EMPTY = {0, ' ', true};
+static const Tile PATH = {88, 'X', true};
 
 #endif
 

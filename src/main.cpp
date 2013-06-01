@@ -1,50 +1,95 @@
 #include <DungeonBuilder.h>
 #include <terrain_defs.h>
 #include <Character.h>
-#include <ncurses.h>
+#include <SDL/SDL.h>
+#include <def.h>
+#include <ASCII_Lib.h>
 #include <stdio.h>
 #include <iostream>
 using namespace std;
 
+SDL_Event event;
+SDL_Surface* screen = NULL;
+SDL_Surface* asciiBase = NULL;
+SDL_Surface* ascii = NULL;
+DungeonBuilder dungeon(40, 40);
 
-int main()
-{
-	//initialize curses (see http://www.tldp.org/HOWTO/NCURSES-Programming-HOWTO/ for more)
-    /*
-	initscr();
-	noecho();
-	keypad(stdscr, TRUE);
-	raw();
-	halfdelay(5);
-    curs_set(0); 
-    */
 
-	DungeonBuilder dungeon(40, 40);
-    dungeon.build_pblind_dungeon(1, 1, 1);
-   
-    /*
-    //Main_Character myCharacter(100, 10, 10, 'c');
+void initialize(){
+
+	//Start SDL
+    SDL_Init( SDL_INIT_EVERYTHING );
+
+    //Set up screen
+    screen = SDL_SetVideoMode( 800, 480, 32, SDL_SWSURFACE );
+	
+	//Load ascii characters
+    asciiBase = SDL_LoadBMP( "resources/ascii.bmp" );
     
-    //check to see if the program is running
-	bool running = true;
-	//the main loop of the program
-	while (running == true){
-		//everything takes action
-		int c = getch();
-		dungeon.print();		
-		myCharacter.display_character();
-		if (c == 'e'){
-			running = false;
-		}
-		else{
-            myCharacter.perform_action(c);
-		}
-		refresh();
-	}
-	//clean up ncurses
-	endwin();
-    */
-    dungeon.print();
+	//Create an optimized image
+    ascii = SDL_DisplayFormat( asciiBase );
 
+    //Free the old image
+    SDL_FreeSurface( asciiBase );
+    
+	//Map the color key
+    Uint32 colorkey = SDL_MapRGB( ascii->format, 0xFF, 0, 0xFF );
+
+    //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
+    SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
+
+}
+bool get_input(){
+
+	while (SDL_PollEvent( &event ) )
+		{
+			switch (event.type)
+			{
+				case SDL_QUIT:
+					return false;
+					break;
+				default:
+					break;
+			}
+		}
+	return true;
+}
+
+void act(){
+	if (!dungeon.is_initialized()){
+	dungeon.build_pblind_dungeon(1,1,1);
+	dungeon.initialize();
+	}
+
+}
+
+void display(){
+	if (dungeon.is_initialized()){
+		dungeon.print(ascii, screen, 16777215);
+	}
+	SDL_Flip (screen);
+	SDL_Delay(50);
+}
+
+void cleanup(){
+	SDL_FreeSurface (ascii);
+	SDL_Quit();
+
+}
+
+
+int main(int argc, char* args[] )
+{
+	initialize();
+	bool running = true;
+    /* Loop until an SDL_QUIT event is found */
+	while( running )
+    {
+		running = get_input();
+		act();
+		display();
+	}
+	cleanup();
 	return 0;	
 }
+

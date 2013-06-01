@@ -1,7 +1,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
-#include <ncurses.h>
+#include <SDL/SDL.h>
 #include <terrain_defs.h>
+#include <ASCII_Lib.h>
 
 class Character
 {
@@ -19,7 +20,7 @@ class Character
 
 	public:
 		Character(int, int, int, char);
-        void display_character();
+        void display_character(char character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
 		bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
