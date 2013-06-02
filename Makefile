@@ -3,7 +3,7 @@ IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR) -I$(WORL) -I$(ASCII)
 CFLAGS = -Wall $(IFLAGS) -c 
 LDFLAGS = -Wall $(IFLAGS)
 
-ASCII = src/SDL-ASCII-Template
+ASCII = lib/SDL-ASCII-Template
 WORL = src/World
 DGEN = src/World/dungeon_gen
 MISC = src/misc_classes

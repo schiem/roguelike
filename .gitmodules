@@ -1,0 +1,3 @@
+[submodule "lib/SDL-ASCII-Template"]
+	path = lib/SDL-ASCII-Template
+	url = git://github.com/hovvit/SDL-ASCII-Template

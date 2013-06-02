@@ -82,7 +82,8 @@ bool DungeonBuilder::rolled_over(int given) const
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-    return ((main_dungeon.get_tile(point) == DIRT) or (main_dungeon.get_tile(point) == EMPTY));
+    //return ((main_dungeon.get_tile(point) == DIRT) or (main_dungeon.get_tile(point) == EMPTY));
+    return main_dungeon.get_tile(point) == EMPTY;
 }
 
 /* PRE: Will be given :IntPoint point:
@@ -144,7 +145,6 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const
     return direction;
 }
 
-
 /* PRE:
  * POST: Will find a good starting point for a procedurally-blind dungeon
  */
@@ -165,7 +165,6 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
     //draw four corners
     main_dungeon.set_tile(tl, WALL);
-    cout<<"ROOM LEFT CORNER: "<<main_dungeon.get_tile(main_dungeon.rooms[0].tl).sprite;
     main_dungeon.set_tile(tl.row, br.col, WALL);
     main_dungeon.set_tile(br.row, tl.col, WALL);
     main_dungeon.set_tile(br, WALL);
@@ -199,6 +198,53 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
  */
 Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 {
+    /*
+     * Start with smallest possible room, "grow" outward?
+     *
+     *  Some pseudocode:
+     *
+     *  declare min room width and min room height;
+     *  declare and define test_room based on this width and height;
+     *  declare upper_bound, lower_bound, left_bound, right_bound = 1
+     *
+     *  if test_room collides with something solid:
+     *      return something nullish
+     *
+     *  while (room width < max) and (room height < max) and (upper_bound + lower_bound + left_bound + right_bound > 0):
+     *      move all of test_room's points out: (subroutine probably)
+     *          subtract upper_bound from row value of both upper points;
+     *          subtract left_bound from col value of both left side points;
+     *          add lower_bound to row value of both lower points;
+     *          add right_bound to col value of both right side points;
+     *
+     *      "scan" across those newly created edges;
+     *
+     *      if, during the scan, we ran into a solid block:
+     *          which side did it occur on?
+     *          Set the *_bound to 0 for that side;
+     *          move the points on that side one step toward the room center;
+     *
+     *  problems:
+     *      -shouldn't just use the largest room possible, that would be dumb. Instead, use that space
+     *          to create a random room. But how to ensure that the path intersects this room?
+     *
+     *      solution to that issue:
+     *
+     *          -start with a left column that is between the left rectangle wall and (the lesser value of:
+     *              (the right wall column - MIN_ROOM_WIDTH), the path column)
+     *
+     *          -get a right column somewhere between (the larger value of: (left room column + MIN_ROOM_WIDTH),
+     *              the path column) and the right wall
+     *            
+     *          -get a top row somewhere between the top wall and (the lesser value of:
+     *              (the bottom wall row - MIN_ROOM_HEIGHT),the path row)
+     *
+     *          -get a bottom row somewhere between (the larger value of: (top room row + MIN_ROOM_HEIGHT),
+     *              the path row) and the bottom wall 
+     * 
+     * //TODO write actual shit
+     *             
+     */
     return Room(IntPoint(-1, -1), IntPoint(-1, -1));
 }
 
@@ -346,7 +392,6 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
             potential_point = get_next_point(current_point, current_direction);
             if ((point_is_beyond_bounds(potential_point)) or (!is_empty_space(potential_point)))
             {
-                //cout<<is_empty_space(potential_point)<<"..."<<main_dungeon.get_tile(potential_point).sprite<<endl;
                 bad_direction = true;
                 current_direction += 1;
             }
