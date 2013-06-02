@@ -1,4 +1,4 @@
-#include <DungeonBuilder.h>
+#include "DungeonBuilder.h"
 
 /* PRE:  Will be given the desired width and height of the
  * dungeon floor.
@@ -210,7 +210,9 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
      *  if test_room collides with something solid:
      *      return something nullish
      *
-     *  while (room width < max) and (room height < max) and (upper_bound + lower_bound + left_bound + right_bound > 0):
+     *  while (room width < max) and (room height < max) AND
+     *      (upper_bound + lower_bound + left_bound + right_bound > 0):
+     *
      *      move all of test_room's points out: (subroutine probably)
      *          subtract upper_bound from row value of both upper points;
      *          subtract left_bound from col value of both left side points;
@@ -224,6 +226,19 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
      *          Set the *_bound to 0 for that side;
      *          move the points on that side one step toward the room center;
      *
+     */
+
+    int min_room_width = STD_ROOM_WIDTH - (ROOM_WIDTH_DEV / 2);
+    int min_room_height = STD_ROOM_HEIGHT - (ROOM_HEIGHT_DEV / 2);
+
+    //create a room centered around the end of the path. floor() and ceil() come from math.h.
+    Room r = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)), 
+                           (the_point.col - (int) ceil(min_room_width / 2.0))),
+                  IntPoint((the_point.row + (int) floor(min_room_height / 2.0)),
+                           (the_point.col + (int) floor(min_room_width / 2.0))));
+    
+
+    /*
      *  problems:
      *      -shouldn't just use the largest room possible, that would be dumb. Instead, use that space
      *          to create a random room. But how to ensure that the path intersects this room?

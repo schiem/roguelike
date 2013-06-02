@@ -5,17 +5,21 @@
 #define MIN_PATH_LENGTH 16 
 #define STD_ROOM_WIDTH 10
 #define STD_ROOM_HEIGHT 10
+//keep these two numbers even.
 #define ROOM_WIDTH_DEV 12
 #define ROOM_HEIGHT_DEV 8
+
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <int_point.h>
-#include <Room.h>
-#include <terrain_defs.h>
-#include <Dungeon.h>
-#include <ASCII_Lib.h>
 #include <SDL/SDL.h>
+#include <math.h> //floor, ceil
+
+#include "int_point.h"
+#include "Room.h"
+#include "terrain_defs.h"
+#include "Dungeon.h"
+#include "ASCII_Lib.h"
 
 using namespace std;
 
