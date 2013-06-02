@@ -52,7 +52,6 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
 		{
 			drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
 		}
-        cout<<endl;
 	}
 }
 

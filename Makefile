@@ -46,7 +46,7 @@ build/Room.o : Room.h Room.cpp int_point.h
 build/Character.o : Character.h Character.cpp 
 	$(CC) $(CFLAGS) $(CHAR)/Character.cpp -o $@
 
-build/Main_Character.o : Character.h Main_Character.cpp
+build/Main_Character.o : ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
 
 build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h

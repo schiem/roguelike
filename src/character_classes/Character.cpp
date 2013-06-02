@@ -4,7 +4,7 @@
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, char _sprite)
+Character::Character(int _max_health, int _x, int _y, int _sprite)
 {
 	current_health = _max_health;
 	max_health = _max_health;
@@ -13,8 +13,8 @@ Character::Character(int _max_health, int _x, int _y, char _sprite)
     sprite = _sprite;
 }
 
-void Character::display_character(char character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color){
-	//drawChr(x, y, character, ascii, screen, color); 
+void Character::display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color){
+	drawChr(x, y, character, ascii, screen, color); 
 }
 
 
@@ -56,7 +56,7 @@ int Character::get_y_loc(){
     return y;
 }
 
-char Character::get_char(){
+int Character::get_char(){
     return sprite;
 }
 
