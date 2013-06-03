@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <terrain_defs.h>
 #include <ASCII_Lib.h>
+#include <def.h>
 
 class Character
 {
@@ -40,7 +41,8 @@ class Main_Character : public Character{
         //dungeon
    public:
         Main_Character(int, int, int, int);
-        void perform_action(Uint8);
+        void perform_action_cont();
+		void perform_action_press(SDLKey);
 };
 
 #endif

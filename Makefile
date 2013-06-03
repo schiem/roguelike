@@ -37,16 +37,16 @@ build/ASCII_Lib.o : def.h ASCII_Lib.h ASCII_Lib.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/DungeonBuilder.o : ASCII_Lib.h ASCII_Lib.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
+build/DungeonBuilder.o : def.h ASCII_Lib.h ASCII_Lib.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
 	$(CC) $(CFLAGS) $(DGEN)/DungeonBuilder.cpp -o $@
 
 build/Room.o : Room.h Room.cpp int_point.h
 	$(CC) $(CFLAGS) $(DGEN)/Room.cpp -o $@
 
-build/Character.o : Character.h Character.cpp 
+build/Character.o : ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Character.cpp 
 	$(CC) $(CFLAGS) $(CHAR)/Character.cpp -o $@
 
-build/Main_Character.o : ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
+build/Main_Character.o : def.h ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
 
 build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h

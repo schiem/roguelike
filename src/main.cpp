@@ -14,8 +14,6 @@ SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
 DungeonBuilder dungeon(40, 40);
 Main_Character main_char(100, 1, 1, 3); 
-bool keysHeld[SDLK_LAST];
-
 void initialize(){
 
 	//Start SDL
@@ -51,10 +49,7 @@ bool get_input(){
 					return false;
 					break;
 				case SDL_KEYDOWN:
-					keysHeld[event.key.keysym.sym]=true;
-					break;
-				case SDL_KEYUP:
-					keysHeld[event.key.keysym.sym]=false;
+					main_char.perform_action_press(event.key.keysym.sym);
 					break;
 				default:
 					break;
@@ -68,15 +63,16 @@ void act(){
 	dungeon.build_pblind_dungeon(4,1,1);
 	dungeon.initialize();
 	}
-	keysHeld = main_char.perform_action(keysHeld);	
+	main_char.perform_action_cont();	
 }
 
 void display(){
 	if (dungeon.is_initialized()){
         //what the dick is that number?
-		dungeon.print(ascii, screen, 16777215);
+		//somehow, i don't know how, it is a representation for white.  I should really just import def.h and use that...
+		dungeon.print(ascii, screen, white);
 	}
-	main_char.display_character(main_char.get_char(), ascii, screen, 16777215);
+	main_char.display_character(main_char.get_char(), ascii, screen, white);
 	
 	SDL_Flip (screen);
 	SDL_Delay(50);

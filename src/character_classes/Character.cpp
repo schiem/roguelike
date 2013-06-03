@@ -34,7 +34,8 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-    x += x_change;
+    
+	x += x_change;
 	y += y_change;
 }
 
