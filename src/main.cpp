@@ -65,15 +65,15 @@ bool get_input(){
 
 void act(){
 	if (!dungeon.is_initialized()){
-	dungeon.build_pblind_dungeon(1,1,1);
+	dungeon.build_pblind_dungeon(4,1,1);
 	dungeon.initialize();
-	keysHeld = main_char.perform_action(keysHeld);	
 	}
-
+	keysHeld = main_char.perform_action(keysHeld);	
 }
 
 void display(){
 	if (dungeon.is_initialized()){
+        //what the dick is that number?
 		dungeon.print(ascii, screen, 16777215);
 	}
 	main_char.display_character(main_char.get_char(), ascii, screen, 16777215);
