@@ -37,6 +37,7 @@ class DungeonBuilder
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
+        string edges_collide_with_something(Room&) const;
         int determine_which_wall(IntPoint) const;
         IntPoint find_viable_starting_point(int, int) const;
         Room build_room(IntPoint, IntPoint, int);
@@ -46,7 +47,7 @@ class DungeonBuilder
         IntPoint rand_wall_block(const Room&);
         IntPoint get_next_point(IntPoint, int) const;
         IntPoint build_path(IntPoint, int);
-        void recursive_pblind_dungeon(int, int, int, int);
+        void recursive_pblind_dungeon(int, int, int);
 
 	public:
 		DungeonBuilder(int, int, int seed=time(NULL));

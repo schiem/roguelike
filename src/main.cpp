@@ -57,14 +57,15 @@ bool get_input(){
 
 void act(){
 	if (!dungeon.is_initialized()){
-	dungeon.build_pblind_dungeon(1,1,1);
-	dungeon.initialize();
+	dungeon.build_pblind_dungeon(4,1,1);
+    dungeon.initialize();
 	}
 
 }
 
 void display(){
 	if (dungeon.is_initialized()){
+        //what the dick is that number?
 		dungeon.print(ascii, screen, 16777215);
 	}
 	SDL_Flip (screen);

@@ -52,7 +52,6 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
 		{
 			drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
 		}
-        cout<<endl;
 	}
 }
 
@@ -83,7 +82,7 @@ bool DungeonBuilder::rolled_over(int given) const
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
     //return ((main_dungeon.get_tile(point) == DIRT) or (main_dungeon.get_tile(point) == EMPTY));
-    return main_dungeon.get_tile(point) == EMPTY;
+    return ((main_dungeon.get_tile(point) == EMPTY) || (main_dungeon.get_tile(point) == PATH));
 }
 
 /* PRE: Will be given :IntPoint point:
@@ -105,6 +104,41 @@ bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const
 
     return false;
 }
+
+/* PRE: Will be given :Room &r:
+ * POST: Returns a string of 4 1s or 0s:
+ *       Order: Top, right, bottom, left. A 1 means something collided,
+ *       and a 0 means nothing collided.
+ */
+string DungeonBuilder::edges_collide_with_something(Room& r) const
+{
+    string bin_string = "0000";
+    for(int row = r.tl.row; row <= r.br.row; row++)
+    {
+        if(main_dungeon.get_tile(row, r.tl.col).can_be_moved_through == false)
+        {
+            bin_string[3] = '1';
+        }
+        if(main_dungeon.get_tile(row, r.br.col).can_be_moved_through == false)
+        {
+            bin_string[1] = '1';
+        }
+    }
+
+    for(int col = r.tl.col; col <= r.br.col; col++)
+    {
+        if(main_dungeon.get_tile(r.tl.row, col).can_be_moved_through == false)
+        {
+            bin_string[0] = '1';
+        }
+        if (main_dungeon.get_tile(r.br.row, col).can_be_moved_through == false)
+        {
+            bin_string[2] = '1';
+        }
+    }
+    return bin_string;
+}
+
 
 /* PRE: Will be given :IntPoint point: that lies on the wall of a room.
  * POST: Will determine which wall of the room the point lies on based
@@ -171,14 +205,26 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
     //draw top and bottom rows
     for(int i = tl.col + 1; i <= br.col - 1; i++)
     {
-        main_dungeon.set_tile(tl.row, i, WALL);
-        main_dungeon.set_tile(br.row, i, WALL);
+        if(main_dungeon.get_tile(tl.row, i).sprite != 'X')
+        {
+            main_dungeon.set_tile(tl.row, i, WALL);
+        }
+        if(main_dungeon.get_tile(br.row, i).sprite != 'X')
+        {
+            main_dungeon.set_tile(br.row, i, WALL);
+        }
     }
     //draw left and right WALLs
     for(int i = tl.row + 1; i <= br.row - 1; i++)
     {
-        main_dungeon.set_tile(i, tl.col, WALL);
-        main_dungeon.set_tile(i, br.col, WALL);
+        if(main_dungeon.get_tile(i, tl.col).sprite != 'X')
+        {
+            main_dungeon.set_tile(i, tl.col, WALL);
+        }
+        if(main_dungeon.get_tile(i, br.col).sprite != 'X')
+        {
+            main_dungeon.set_tile(i, br.col, WALL);
+        }
     }
     
     for(int i = tl.row + 1; i <= br.row - 1; i++)
@@ -188,6 +234,8 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
             main_dungeon.set_tile(i, j, DIRT);
         }
     }
+    num_rooms++;
+    main_dungeon.rooms[num_rooms] = Room(tl, br);
 
     return Room(tl, br);
 }
@@ -199,9 +247,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 {
     /*
-     * Start with smallest possible room, "grow" outward?
-     *
-     *  Some pseudocode:
+     *  pseudocode for this method:
      *
      *  declare min room width and min room height;
      *  declare and define test_room based on this width and height;
@@ -231,12 +277,65 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
     int min_room_width = STD_ROOM_WIDTH - (ROOM_WIDTH_DEV / 2);
     int min_room_height = STD_ROOM_HEIGHT - (ROOM_HEIGHT_DEV / 2);
 
-    //create a room centered around the end of the path. floor() and ceil() come from math.h.
-    Room r = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)), 
+    //create a room centered around the end of the path. floor() and ceil() derived from math.h.
+    Room test_room = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)), 
                            (the_point.col - (int) ceil(min_room_width / 2.0))),
                   IntPoint((the_point.row + (int) floor(min_room_height / 2.0)),
                            (the_point.col + (int) floor(min_room_width / 2.0))));
+
+    //Check if the room is out-of-bounds; if so, return a null room
+    if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
+    {
+        return Room(IntPoint(-1, -1), IntPoint(-1, -1));
+    }
+
+    //Check the room's walls to see if they clip with anything else.
+    if (edges_collide_with_something(test_room) != "0000")
+    {
+        return Room(IntPoint(-1, -1), IntPoint(-1, -1));
+    }
+
+    int upper_bound = 1;
+    int lower_bound = 1;
+    int left_bound = 1;
+    int right_bound = 1;
     
+    //Here, we should have a test_room that doesn't collide with things.
+    int max_room_width = STD_ROOM_WIDTH + (ROOM_WIDTH_DEV / 2);
+    int max_room_height = STD_ROOM_HEIGHT + (ROOM_HEIGHT_DEV / 2);
+
+    //until each rectangle edge is unable to grow any more:
+    while ((test_room.br.col - test_room.tl.col < max_room_width) &&
+           (test_room.br.row - test_room.tl.row < max_room_height) &&
+           (upper_bound + lower_bound + left_bound + right_bound > 0))
+    { 
+        //move the edges out
+        test_room.tl.row -= upper_bound;
+        test_room.tl.col -= left_bound;
+        test_room.br.row += lower_bound;
+        test_room.br.col += right_bound;
+
+        //basically, if we ran into a solid block, set *_bound to 0 for that edge,
+        //then move that edge one step toward the room center...
+        string collision_bin_str = edges_collide_with_something(test_room);
+        if(collision_bin_str[0] == '1'){
+            upper_bound = 0;
+            test_room.tl.row += 1;
+        }
+        if(collision_bin_str[1] == '1'){
+            right_bound = 0;
+            test_room.br.col -= 1;
+        }
+        if(collision_bin_str[2] == '1'){
+            lower_bound = 0;
+            test_room.br.row -= 1;
+        }
+        if(collision_bin_str[3] == '1'){
+            left_bound = 0;
+            test_room.tl.col += 1;
+        }
+    }
+    //Here, test_room should be a viable area in which to stick a real room.
 
     /*
      *  problems:
@@ -257,10 +356,23 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
      *          -get a bottom row somewhere between (the larger value of: (top room row + MIN_ROOM_HEIGHT),
      *              the path row) and the bottom wall 
      * 
-     * //TODO write actual shit
-     *             
      */
-    return Room(IntPoint(-1, -1), IntPoint(-1, -1));
+    
+    //I am using the same variables, but for an entirely different purpose... don't get mad at me.
+    //Holy shit math/logic. I am going to screw something up.
+    int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
+    left_bound = rand() % (left_column_right_bound - test_room.tl.col) + test_room.tl.col;
+
+    int right_column_left_bound = max((test_room.tl.col + min_room_width), the_point.col);
+    right_bound = rand() % (test_room.br.col - right_column_left_bound) + test_room.br.col;
+
+    int top_row_lower_bound = min((test_room.br.row - min_room_height), the_point.row);
+    upper_bound = rand() % (top_row_lower_bound - test_room.tl.row) + test_room.tl.row;
+
+    int bottom_row_upper_bound = max((test_room.tl.col + min_room_height), the_point.row);
+    lower_bound = rand() % (test_room.br.row - bottom_row_upper_bound) + test_room.br.row;
+
+    return Room(IntPoint(upper_bound, left_bound), IntPoint(lower_bound, right_bound));
 }
 
 /* PRE:
@@ -276,8 +388,7 @@ void DungeonBuilder::build_start_room()
                                                         STD_ROOM_HEIGHT);
     IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
                            starting_point.col + (room_width + 1));
-    main_dungeon.rooms[num_rooms] = build_room(starting_point, br, 2);
-    num_rooms += 1;
+    build_room(starting_point, br, 2);
 }
 
 /* PRE: Will be given a Room object.
@@ -405,7 +516,7 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
         {
             bad_direction = false;
             potential_point = get_next_point(current_point, current_direction);
-            if ((point_is_beyond_bounds(potential_point)) or (!is_empty_space(potential_point)))
+            if ((point_is_beyond_bounds(potential_point)) || (!is_empty_space(potential_point)))
             {
                 bad_direction = true;
                 current_direction += 1;
@@ -414,9 +525,8 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
         } while((bad_direction) && tries < 4);
         
         current_point = potential_point;
-        
     }
-    return IntPoint(-1, -1);
+    return current_point;
 }
 
 /* PRE: Will be given :int target: to specify a general target
@@ -436,7 +546,7 @@ int DungeonBuilder::build_pblind_dungeon(int target,
     //int target_rooms = rand() % deviation + 
     //                        (_target - (int)(deviation / 2));
     int current_room_num= 0;
-    recursive_pblind_dungeon(target, deviation, squareness, current_room_num);
+    recursive_pblind_dungeon(target, deviation, squareness);
     //cout<<*this;
 	return 0;
 }
@@ -453,12 +563,28 @@ int DungeonBuilder::build_pblind_dungeon(int target,
  *
  */
 void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
-                                             int squareness, int current_room_num)
+                                             int squareness)
 {
-    //declaring Room as pointer to point to different array indices.
-    Room current_room = main_dungeon.rooms[current_room_num];
+    if (target == 0)
+    {
+        return;
+    }
+
+    Room current_room = main_dungeon.rooms[num_rooms];
+    cout<<"Room points:"<<endl;
+    cout<<current_room.tl;
+    cout<<current_room.br<<endl;
     IntPoint point = rand_wall_block(current_room);
-    //build_path(point, determine_which_wall(point));
-    build_path(point, 2);
+
+    IntPoint path_end = build_path(point, determine_which_wall(point));
+    Room new_room = find_viable_room_space(path_end);
+    if(new_room.tl.row == -1)
+    {
+        return;
+    }
+    build_room(new_room.tl, new_room.br, squareness);
+
+    recursive_pblind_dungeon(target - 1, deviation, squareness);
+    //build_path(point, 2);
     //main_dungeon.set_tile(point, PATH);
 }
