@@ -13,7 +13,7 @@ SDL_Surface* screen = NULL;
 SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
 DungeonBuilder dungeon(40, 40);
-Main_Character main_char(100, 1, 1, 3); 
+//Main_Character main_char(100, 1, 1, 3); TODO
 bool keysHeld[SDLK_LAST];
 
 void initialize(){
@@ -68,7 +68,7 @@ void act(){
 	dungeon.build_pblind_dungeon(4,1,1);
 	dungeon.initialize();
 	}
-	keysHeld = main_char.perform_action(keysHeld);	
+	//keysHeld = main_char.perform_action(keysHeld); TODO
 }
 
 void display(){
@@ -76,7 +76,7 @@ void display(){
         //what the dick is that number?
 		dungeon.print(ascii, screen, 16777215);
 	}
-	main_char.display_character(main_char.get_char(), ascii, screen, 16777215);
+	//main_char.display_character(main_char.get_char(), ascii, screen, 16777215); TODO
 	
 	SDL_Flip (screen);
 	SDL_Delay(50);

@@ -115,24 +115,30 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const
     string bin_string = "0000";
     for(int row = r.tl.row; row <= r.br.row; row++)
     {
-        if(main_dungeon.get_tile(row, r.tl.col).can_be_moved_through == false)
-        {
+        if (point_is_beyond_bounds(IntPoint(row, r.tl.col))) {
+            bin_string[3] = '1';
+        } else if (main_dungeon.get_tile(row, r.tl.col).can_be_moved_through == false) {
             bin_string[3] = '1';
         }
-        if(main_dungeon.get_tile(row, r.br.col).can_be_moved_through == false)
-        {
+
+        if (point_is_beyond_bounds(IntPoint(row, r.tl.col))) {
+            bin_string[1] = '1';
+        } else if (main_dungeon.get_tile(row, r.br.col).can_be_moved_through == false) {
             bin_string[1] = '1';
         }
     }
 
     for(int col = r.tl.col; col <= r.br.col; col++)
     {
-        if(main_dungeon.get_tile(r.tl.row, col).can_be_moved_through == false)
-        {
+        if (point_is_beyond_bounds(IntPoint(r.tl.row, col))) {
+            bin_string[0] = '1';
+        } else if (main_dungeon.get_tile(r.tl.row, col).can_be_moved_through == false) {
             bin_string[0] = '1';
         }
-        if (main_dungeon.get_tile(r.br.row, col).can_be_moved_through == false)
-        {
+
+        if (point_is_beyond_bounds(IntPoint(r.br.row, col))) {
+            bin_string[2] = '1';
+        } else if (main_dungeon.get_tile(r.br.row, col).can_be_moved_through == false) {
             bin_string[2] = '1';
         }
     }
@@ -284,6 +290,7 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
                            (the_point.col + (int) floor(min_room_width / 2.0))));
 
     //Check if the room is out-of-bounds; if so, return a null room
+    /*
     if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
@@ -294,6 +301,7 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
+    */
 
     int upper_bound = 1;
     int lower_bound = 1;
@@ -317,6 +325,7 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 
         //basically, if we ran into a solid block, set *_bound to 0 for that edge,
         //then move that edge one step toward the room center...
+        //TODO CHECK IF POINT IS BEYOND BOUNDS!!!
         string collision_bin_str = edges_collide_with_something(test_room);
         if(collision_bin_str[0] == '1'){
             upper_bound = 0;
@@ -361,16 +370,16 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
     //I am using the same variables, but for an entirely different purpose... don't get mad at me.
     //Holy shit math/logic. I am going to screw something up.
     int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
-    left_bound = rand() % (left_column_right_bound - test_room.tl.col) + test_room.tl.col;
+    left_bound = rand() % (abs(left_column_right_bound - test_room.tl.col) + 1) + test_room.tl.col;
 
     int right_column_left_bound = max((test_room.tl.col + min_room_width), the_point.col);
-    right_bound = rand() % (test_room.br.col - right_column_left_bound) + test_room.br.col;
+    right_bound = rand() % (abs(test_room.br.col - right_column_left_bound) + 1) + test_room.br.col;
 
     int top_row_lower_bound = min((test_room.br.row - min_room_height), the_point.row);
-    upper_bound = rand() % (top_row_lower_bound - test_room.tl.row) + test_room.tl.row;
+    upper_bound = rand() % (abs(top_row_lower_bound - test_room.tl.row) + 1) + test_room.tl.row;
 
-    int bottom_row_upper_bound = max((test_room.tl.col + min_room_height), the_point.row);
-    lower_bound = rand() % (test_room.br.row - bottom_row_upper_bound) + test_room.br.row;
+    int bottom_row_upper_bound = max((test_room.tl.row + min_room_height), the_point.row);
+    lower_bound = rand() % (abs(test_room.br.row - bottom_row_upper_bound) + 1) + test_room.br.row;
 
     return Room(IntPoint(upper_bound, left_bound), IntPoint(lower_bound, right_bound));
 }

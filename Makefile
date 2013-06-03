@@ -1,7 +1,7 @@
 CC = g++
 IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR) -I$(WORL) -I$(ASCII)
-CFLAGS = -Wall $(IFLAGS) -c 
-LDFLAGS = -Wall $(IFLAGS)
+CFLAGS = -Wall $(IFLAGS) -g -c 
+LDFLAGS = -Wall $(IFLAGS) -g
 
 ASCII = lib/SDL-ASCII-Template
 WORL = src/World
