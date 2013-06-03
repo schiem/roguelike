@@ -40,7 +40,7 @@ class Main_Character : public Character{
         //dungeon
    public:
         Main_Character(int, int, int, int);
-        void perform_action(SDLKey);
+        void perform_action(Uint8);
 };
 
 #endif

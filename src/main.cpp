@@ -14,7 +14,7 @@ SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
 DungeonBuilder dungeon(40, 40);
 Main_Character main_char(100, 1, 1, 3); 
-
+bool keysHeld[SDLK_LAST];
 
 void initialize(){
 
@@ -51,7 +51,10 @@ bool get_input(){
 					return false;
 					break;
 				case SDL_KEYDOWN:
-					main_char.perform_action(event.key.keysym.sym);
+					keysHeld[event.key.keysym.sym]=true;
+					break;
+				case SDL_KEYUP:
+					keysHeld[event.key.keysym.sym]=false;
 					break;
 				default:
 					break;
@@ -64,6 +67,7 @@ void act(){
 	if (!dungeon.is_initialized()){
 	dungeon.build_pblind_dungeon(1,1,1);
 	dungeon.initialize();
+	keysHeld = main_char.perform_action(keysHeld);	
 	}
 
 }
@@ -89,7 +93,7 @@ int main(int argc, char* args[] )
 {
 	initialize();
 	bool running = true;
-    /* Loop until an SDL_QUIT event is found */
+	/* Loop until an SDL_QUIT event is found */
 	while( running )
     {
 		running = get_input();
