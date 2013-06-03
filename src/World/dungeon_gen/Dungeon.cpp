@@ -14,6 +14,12 @@ Dungeon::Dungeon(int _width, int _height)
         for(int j = 0; j < _width; j++)
         {
             dungeon[i][j] = EMPTY;
+            if((j == 0) || (j == _width - 1)) {
+                dungeon[i][j] = DIRT;
+            }
+            if((i == 0) || (i == _height - 1)) {
+                dungeon[i][j] = DIRT;
+            }
         }
     }
 }

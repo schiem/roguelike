@@ -20,7 +20,7 @@ void initialize(){
     SDL_Init( SDL_INIT_EVERYTHING );
 
     //Set up screen
-    screen = SDL_SetVideoMode( 800, 480, 32, SDL_SWSURFACE );
+    screen = SDL_SetVideoMode( 800, 600, 32, SDL_SWSURFACE );
 	
 	//Load ascii characters
     asciiBase = SDL_LoadBMP( "resources/ascii.bmp" );

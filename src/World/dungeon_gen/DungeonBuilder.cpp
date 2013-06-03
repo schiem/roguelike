@@ -46,9 +46,9 @@ ostream& operator<<(ostream &out, const DungeonBuilder &D)
 
 void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const
 {
-	for(int i = 0; i < height; i++)
+	for(int i = 0; i < height + 200; i++)
 	{
-		for(int j = 0; j < width; j++)
+		for(int j = 0; j < width + 200; j++)
 		{
 			drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
 		}
@@ -285,12 +285,11 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 
     //create a room centered around the end of the path. floor() and ceil() derived from math.h.
     Room test_room = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)), 
-                           (the_point.col - (int) ceil(min_room_width / 2.0))),
-                  IntPoint((the_point.row + (int) floor(min_room_height / 2.0)),
+                           (the_point.col - (int) ceil(min_room_width / 2.0) + 1)),
+                  IntPoint((the_point.row + (int) floor(min_room_height / 2.0) + 1),
                            (the_point.col + (int) floor(min_room_width / 2.0))));
 
     //Check if the room is out-of-bounds; if so, return a null room
-    /*
     if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
@@ -301,7 +300,6 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
-    */
 
     int upper_bound = 1;
     int lower_bound = 1;
@@ -370,16 +368,16 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
     //I am using the same variables, but for an entirely different purpose... don't get mad at me.
     //Holy shit math/logic. I am going to screw something up.
     int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
-    left_bound = rand() % (abs(left_column_right_bound - test_room.tl.col) + 1) + test_room.tl.col;
+    left_bound = rand() % (abs(left_column_right_bound - test_room.tl.col)) + test_room.tl.col;
 
     int right_column_left_bound = max((test_room.tl.col + min_room_width), the_point.col);
-    right_bound = rand() % (abs(test_room.br.col - right_column_left_bound) + 1) + test_room.br.col;
+    right_bound = rand() % (abs(test_room.br.col - right_column_left_bound)) + test_room.br.col;
 
     int top_row_lower_bound = min((test_room.br.row - min_room_height), the_point.row);
-    upper_bound = rand() % (abs(top_row_lower_bound - test_room.tl.row) + 1) + test_room.tl.row;
+    upper_bound = rand() % (abs(top_row_lower_bound - test_room.tl.row)) + test_room.tl.row;
 
     int bottom_row_upper_bound = max((test_room.tl.row + min_room_height), the_point.row);
-    lower_bound = rand() % (abs(test_room.br.row - bottom_row_upper_bound) + 1) + test_room.br.row;
+    lower_bound = rand() % (abs(test_room.br.row - bottom_row_upper_bound)) + test_room.br.row;
 
     return Room(IntPoint(upper_bound, left_bound), IntPoint(lower_bound, right_bound));
 }

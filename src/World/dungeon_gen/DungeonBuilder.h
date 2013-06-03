@@ -3,11 +3,11 @@
 
 #define MAX_PATH_LENGTH 100
 #define MIN_PATH_LENGTH 16 
-#define STD_ROOM_WIDTH 10
-#define STD_ROOM_HEIGHT 10
+#define STD_ROOM_WIDTH 8
+#define STD_ROOM_HEIGHT 6
 //keep these two numbers even.
-#define ROOM_WIDTH_DEV 12
-#define ROOM_HEIGHT_DEV 8
+#define ROOM_WIDTH_DEV 2
+#define ROOM_HEIGHT_DEV 2
 
 #include <iostream>
 #include <string>
