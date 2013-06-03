@@ -13,6 +13,7 @@ SDL_Surface* screen = NULL;
 SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
 DungeonBuilder dungeon(40, 40);
+Main_Character main_char(100, 1, 1, 3); 
 
 
 void initialize(){
@@ -38,6 +39,7 @@ void initialize(){
     //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
 
+	
 }
 bool get_input(){
 
@@ -47,6 +49,9 @@ bool get_input(){
 			{
 				case SDL_QUIT:
 					return false;
+					break;
+				case SDL_KEYDOWN:
+					main_char.perform_action(event.key.keysym.sym);
 					break;
 				default:
 					break;
@@ -68,6 +73,8 @@ void display(){
         //what the dick is that number?
 		dungeon.print(ascii, screen, 16777215);
 	}
+	main_char.display_character(main_char.get_char(), ascii, screen, 16777215);
+	
 	SDL_Flip (screen);
 	SDL_Delay(50);
 }

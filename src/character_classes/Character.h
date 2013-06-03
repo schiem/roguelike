@@ -19,15 +19,15 @@ class Character
     //methods
 
 	public:
-		Character(int, int, int, char);
-        void display_character(char character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
+		Character(int, int, int, int);
+        void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
 		bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
         void attack(int x_direction, int y_direction);
         int get_x_loc();
         int get_y_loc();
-        char get_char();
+        int get_char();
         //terrain get_surroundings
 
 };
@@ -39,8 +39,8 @@ class Main_Character : public Character{
         //equipment
         //dungeon
    public:
-        Main_Character(int, int, int, char);
-        void perform_action(char);
+        Main_Character(int, int, int, int);
+        void perform_action(SDLKey);
 };
 
 #endif
