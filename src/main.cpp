@@ -13,9 +13,7 @@ SDL_Surface* screen = NULL;
 SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
 DungeonBuilder dungeon(40, 40);
-//Main_Character main_char(100, 1, 1, 3); TODO
-bool keysHeld[SDLK_LAST];
-
+Main_Character main_char(100, 1, 1, 3);
 void initialize(){
 
 	//Start SDL
@@ -38,9 +36,9 @@ void initialize(){
 
     //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
-
-	
+    SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
 }
+
 bool get_input(){
 
 	while (SDL_PollEvent( &event ) )
@@ -51,10 +49,7 @@ bool get_input(){
 					return false;
 					break;
 				case SDL_KEYDOWN:
-					keysHeld[event.key.keysym.sym]=true;
-					break;
-				case SDL_KEYUP:
-					keysHeld[event.key.keysym.sym]=false;
+					main_char.perform_action_press(event.key.keysym.sym);
 					break;
 				default:
 					break;
@@ -68,15 +63,16 @@ void act(){
 	dungeon.build_pblind_dungeon(4,1,1);
 	dungeon.initialize();
 	}
-	//keysHeld = main_char.perform_action(keysHeld); TODO
+	main_char.perform_action_cont();	
 }
 
 void display(){
 	if (dungeon.is_initialized()){
         //what the dick is that number?
-		dungeon.print(ascii, screen, 16777215);
+		//somehow, i don't know how, it is a representation for white.  I should really just import def.h and use that...
+		dungeon.print(ascii, screen, white);
 	}
-	//main_char.display_character(main_char.get_char(), ascii, screen, 16777215); TODO
+	main_char.display_character(main_char.get_char(), ascii, screen, white);
 	
 	SDL_Flip (screen);
 	SDL_Delay(50);
@@ -103,4 +99,3 @@ int main(int argc, char* args[] )
 	cleanup();
 	return 0;	
 }
-
