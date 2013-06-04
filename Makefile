@@ -1,7 +1,7 @@
 CC = g++
 IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR) -I$(WORL) -I$(ASCII)
-CFLAGS = -Wall $(IFLAGS) -g -c 
-LDFLAGS = -Wall $(IFLAGS) -g
+CFLAGS = -Wall -Wno-unused-variable -Wno-sign-compare $(IFLAGS) -g -c 
+LDFLAGS = -Wall -Wno-unused-variable -Wno-sign-compare $(IFLAGS) -g
 
 ASCII = lib/SDL-ASCII-Template
 WORL = src/World
@@ -17,14 +17,17 @@ HEADERS = $(foreach path,$(PATHS),$(wildcard $(path)/*.h))
 OBJS = $(patsubst %.cpp,build/%.o,$(notdir $(SRC)))
 
 
-all : roguelike
+all : gdbroguelike
+	touch roguelike; echo "#!/bin/bash" > roguelike;
+	echo "echo run | gdb gdbroguelike" >> roguelike; 
+	chmod +x roguelike
 
 $(OBJS): | build
 
 build :
 	mkdir build
 
-roguelike : $(OBJS)
+gdbroguelike : $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 
 build/main.o : src/main.cpp
@@ -37,7 +40,7 @@ build/ASCII_Lib.o : def.h ASCII_Lib.h ASCII_Lib.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/DungeonBuilder.o : def.h ASCII_Lib.h ASCII_Lib.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
+build/DungeonBuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
 	$(CC) $(CFLAGS) $(DGEN)/DungeonBuilder.cpp -o $@
 
 build/Room.o : Room.h Room.cpp int_point.h
@@ -49,11 +52,11 @@ build/Character.o : ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Character.cpp
 build/Main_Character.o : def.h ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
 
-build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h
+build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h terrain_defs.h
 	$(CC) $(CFLAGS) $(DGEN)/Dungeon.cpp -o $@
 
 clean :
-	rm -r build roguelike
+	rm -r build roguelike gdbroguelike
 
 what :
 	echo $(OBJS)

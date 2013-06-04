@@ -12,8 +12,9 @@ SDL_Event event;
 SDL_Surface* screen = NULL;
 SDL_Surface* asciiBase = NULL;
 SDL_Surface* ascii = NULL;
-DungeonBuilder dungeon(40, 40);
+DungeonBuilder dungeon(40, 80);
 Main_Character main_char(100, 1, 1, 3);
+
 void initialize(){
 
 	//Start SDL
@@ -39,6 +40,20 @@ void initialize(){
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
 }
 
+void catch_regen_dungeon(SDLKey key) {
+    //Mostly for debugging purposes, I want to regenerate the dungeon.
+    switch(key)
+    {
+        case SDLK_r:
+            dungeon = DungeonBuilder(40, 80, rand());
+            dungeon.build_pblind_dungeon(4,1,1);
+            dungeon.initialize();
+            break;
+        default:
+            break;
+    }
+}
+
 bool get_input(){
 
 	while (SDL_PollEvent( &event ) )
@@ -49,6 +64,7 @@ bool get_input(){
 					return false;
 					break;
 				case SDL_KEYDOWN:
+                    catch_regen_dungeon(event.key.keysym.sym);
 					main_char.perform_action_press(event.key.keysym.sym);
 					break;
 				default:
