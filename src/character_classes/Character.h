@@ -4,7 +4,7 @@
 #include <terrain_defs.h>
 #include <ASCII_Lib.h>
 #include <def.h>
-
+#include <Dungeon.h>
 class Character
 {
 	protected:
@@ -17,19 +17,20 @@ class Character
     //Skills skill[];
     char sprite;
 	int armor;
-    //methods
-
+	Dungeon current_dungeon;
+	//methods
 	public:
 		Character(int, int, int, int);
-        void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
+		void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
 		bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
         void attack(int x_direction, int y_direction);
-        int get_x_loc();
+		int get_x_loc();
         int get_y_loc();
         int get_char();
-        //terrain get_surroundings
+		//terrain get_surroundings
+
 
 };
 
@@ -38,11 +39,12 @@ class Main_Character : public Character{
         char name[];
         //inventory
         //equipment
-        //dungeon
+        Dungeon current_dungeon;
    public:
         Main_Character(int, int, int, int);
-        void perform_action_cont();
+		void perform_action_cont();
 		void perform_action_press(SDLKey);
+        void update_dungeon(Dungeon);
 };
 
 #endif

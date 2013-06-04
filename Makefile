@@ -46,7 +46,7 @@ build/DungeonBuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp DungeonB
 build/Room.o : Room.h Room.cpp int_point.h
 	$(CC) $(CFLAGS) $(DGEN)/Room.cpp -o $@
 
-build/Character.o : ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Character.cpp 
+build/Character.o : Dungeon.h ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Character.cpp 
 	$(CC) $(CFLAGS) $(CHAR)/Character.cpp -o $@
 
 build/Main_Character.o : def.h ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp

@@ -56,6 +56,7 @@ class DungeonBuilder
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
 		void initialize();
 		bool is_initialized();
+		Dungeon get_dungeon();
 };
 
 #endif

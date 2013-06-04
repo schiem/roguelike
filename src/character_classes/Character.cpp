@@ -1,5 +1,5 @@
 #include <Character.h>
-
+#include <iostream>
 /* PRE: Will be given a max health, a starting x and a starting y
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
@@ -11,8 +11,18 @@ Character::Character(int _max_health, int _x, int _y, int _sprite)
 	x = _x;
 	y = _y;
     sprite = _sprite;
+	current_dungeon;
 }
-
+/*
+Character::~Character(){
+	delete current_dungeon;
+}
+*/
+/*
+void Character::update_dungeon(Dungeon dungeon){
+	current_dungeon = dungeon;
+}
+*/
 void Character::display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color){
 	drawChr(x, y, character, ascii, screen, color); 
 }

@@ -601,3 +601,8 @@ void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
     //build_path(point, 2);
     //main_dungeon.set_tile(point, PATH);
 }
+
+
+Dungeon DungeonBuilder::get_dungeon(){
+	return main_dungeon;
+}

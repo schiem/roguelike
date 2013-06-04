@@ -48,7 +48,7 @@ void catch_regen_dungeon(SDLKey key) {
             dungeon = DungeonBuilder(40, 80, rand());
             dungeon.build_pblind_dungeon(4,1,1);
             dungeon.initialize();
-            break;
+			break;
         default:
             break;
     }
@@ -76,9 +76,10 @@ bool get_input(){
 
 void act(){
 	if (!dungeon.is_initialized()){
-	dungeon.build_pblind_dungeon(4,1,1);
-	dungeon.initialize();
+		dungeon.build_pblind_dungeon(4,1,1);
+		dungeon.initialize();
 	}
+	main_char.update_dungeon(dungeon.get_dungeon());
 	main_char.perform_action_cont();	
 }
 

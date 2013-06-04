@@ -1,38 +1,46 @@
 #include <Character.h>
 #include <iostream>
 
-Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite) : Character(_max_health, _x, _y,  _sprite){
+Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite ) : Character(_max_health, _x, _y,  _sprite){
     max_health = _max_health;
     x = _x;
     y = _y;
     sprite = _sprite;
+	current_dungeon;
 }
-
-
 /*
-bool Main_Character::isKeyPressed(Uint8 key, bool (*keysHeld)[323]){
-	std::cout<<(bool)keysHeld[key]<<","<<key<<","<<keysHeld[key]<<std::endl;
-	if ((bool)keysHeld[key]){
-		return true;
-	}
-	return false;
+Main_Character::~Main_Character(){
+	delete current_dungeon;
 }
 */
+void Main_Character::update_dungeon(Dungeon dungeon){
+	current_dungeon = dungeon;
+}
+
+
 void Main_Character::perform_action_cont(){
 	SDL_PumpEvents();
 	Uint8* keystate = SDL_GetKeyState(NULL);
 	
 	if(keystate[SDLK_LEFT]){
-		move(-1, 0);
+		if (current_dungeon.get_tile(x-1, y).can_be_moved_through){
+			move(-1, 0);
+		}
 	}
 	if(keystate[SDLK_RIGHT]){
-		move(1, 0);
+		if (current_dungeon.get_tile(x+1, y).can_be_moved_through){
+			move(1, 0);
+		}
 	}
 	if(keystate[SDLK_UP]){
-		move(0, -1);
+		if (current_dungeon.get_tile(x, y-1).can_be_moved_through){
+				move(0, -1);
+			}
 		}
 	if(keystate[SDLK_DOWN]){
-		move(0, 1);
+		if (current_dungeon.get_tile(x, y+1).can_be_moved_through){
+			move(0, 1);
+		}
 	}
 }
 
