@@ -1,7 +1,7 @@
 #ifndef DUNGEONBUILDER_H
 #define DUNGEONBUILDER_H
 
-#define MAX_PATH_LENGTH 100
+#define MAX_PATH_LENGTH 75
 #define MIN_PATH_LENGTH 16 
 #define STD_ROOM_WIDTH 8
 #define STD_ROOM_HEIGHT 6
@@ -40,6 +40,7 @@ class DungeonBuilder
         string edges_collide_with_something(Room&) const;
         int determine_which_wall(IntPoint) const;
         IntPoint find_viable_starting_point(int, int) const;
+        void set_wall_if_not_path(int, int);
         Room build_room(IntPoint, IntPoint, int);
         Room find_viable_room_space(IntPoint) const;
         void build_start_room();

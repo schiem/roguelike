@@ -81,7 +81,6 @@ bool DungeonBuilder::rolled_over(int given) const
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
-    //return ((main_dungeon.get_tile(point) == DIRT) or (main_dungeon.get_tile(point) == EMPTY));
     return ((main_dungeon.get_tile(point) == EMPTY) || (main_dungeon.get_tile(point) == PATH));
 }
 
@@ -145,7 +144,6 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const
     return bin_string;
 }
 
-
 /* PRE: Will be given :IntPoint point: that lies on the wall of a room.
  * POST: Will determine which wall of the room the point lies on based
  *       on the surrounding tiles.
@@ -154,30 +152,34 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const
 {
     int direction;
 
-    if((main_dungeon.get_tile(point.row, point.col - 1) == WALL) or 
-       (main_dungeon.get_tile(point.row, point.col + 1) == WALL))
-    {
-        if (main_dungeon.get_tile(point.row - 1, point.col) == DIRT)
-        {
+    if(point.col == 0) {
+        return 3;
+    } 
+
+    else if (point.row == 0) {
+        return 0;
+    } 
+
+    else if((main_dungeon.get_tile(point.row, point.col - 1) == WALL) or
+       (main_dungeon.get_tile(point.row, point.col + 1) == WALL)) {
+
+        if (main_dungeon.get_tile(point.row - 1, point.col) == DIRT) {
             direction = 2;
         }
         
-        else if (main_dungeon.get_tile(point.row + 1, point.col) == DIRT)
-        {
+        else if (main_dungeon.get_tile(point.row + 1, point.col) == DIRT) {
             direction = 0;
         }
     }
 
     else if ((main_dungeon.get_tile(point.row - 1, point.col) == WALL) or
-        (main_dungeon.get_tile(point.row + 1, point.col) == WALL))
-    {
-        if (main_dungeon.get_tile(point.row, point.col - 1) == DIRT)
-        {
+        (main_dungeon.get_tile(point.row + 1, point.col) == WALL)) {
+
+        if (main_dungeon.get_tile(point.row, point.col - 1) == DIRT) {
             direction = 1;
         }
         
-        else if (main_dungeon.get_tile(point.row, point.col + 1) == DIRT)
-        {
+        else if (main_dungeon.get_tile(point.row, point.col + 1) == DIRT) {
             direction = 3;
         }
     }
@@ -195,6 +197,17 @@ IntPoint DungeonBuilder::find_viable_starting_point(int std_width, int std_heigh
     return IntPoint(good_row, good_col);
 }
 
+/* PRE: Will be given :int a: and :int b:, representing a row and column.
+ * POST: If that row and column is not currently a PATH tile, set it to a 
+ *       WALL tile.
+ */
+void DungeonBuilder::set_wall_if_not_path(int a, int b) 
+{
+    if(main_dungeon.get_tile(a, b).tile_id != 4)
+    {
+        main_dungeon.set_tile(a, b, WALL);
+    }
+}
 /* PRE: Will be given :IntPoint tl:, which represents the top-left corner,
  * :IntPoint br:, which represents the bottom-right corner, and
  * :int squareness:, which denotes how square the rooms will be.
@@ -203,34 +216,22 @@ IntPoint DungeonBuilder::find_viable_starting_point(int std_width, int std_heigh
  */
 Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
-    //draw four corners
-    main_dungeon.set_tile(tl, WALL);
-    main_dungeon.set_tile(tl.row, br.col, WALL);
-    main_dungeon.set_tile(br.row, tl.col, WALL);
-    main_dungeon.set_tile(br, WALL);
+    set_wall_if_not_path(tl.row, tl.col);
+    set_wall_if_not_path(tl.row, br.col);
+    set_wall_if_not_path(br.row, tl.col);
+    set_wall_if_not_path(br.row, br.col);
+        
     //draw top and bottom rows
     for(int i = tl.col + 1; i <= br.col - 1; i++)
     {
-        if(main_dungeon.get_tile(tl.row, i).sprite != 'X')
-        {
-            main_dungeon.set_tile(tl.row, i, WALL);
-        }
-        if(main_dungeon.get_tile(br.row, i).sprite != 'X')
-        {
-            main_dungeon.set_tile(br.row, i, WALL);
-        }
+        set_wall_if_not_path(tl.row, i);
+        set_wall_if_not_path(br.row, i);
     }
     //draw left and right WALLs
     for(int i = tl.row + 1; i <= br.row - 1; i++)
     {
-        if(main_dungeon.get_tile(i, tl.col).sprite != 'X')
-        {
-            main_dungeon.set_tile(i, tl.col, WALL);
-        }
-        if(main_dungeon.get_tile(i, br.col).sprite != 'X')
-        {
-            main_dungeon.set_tile(i, br.col, WALL);
-        }
+        set_wall_if_not_path(i, tl.col);
+        set_wall_if_not_path(i, br.col);
     }
     
     for(int i = tl.row + 1; i <= br.row - 1; i++)
@@ -242,7 +243,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
     }
     num_rooms++;
     main_dungeon.rooms[num_rooms] = Room(tl, br);
-
+    
     return Room(tl, br);
 }
 
@@ -290,10 +291,12 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
                            (the_point.col + (int) floor(min_room_width / 2.0))));
 
     //Check if the room is out-of-bounds; if so, return a null room
+    /*
     if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
+    */
 
     //Check the room's walls to see if they clip with anything else.
     if (edges_collide_with_something(test_room) != "0000")
@@ -323,7 +326,6 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
 
         //basically, if we ran into a solid block, set *_bound to 0 for that edge,
         //then move that edge one step toward the room center...
-        //TODO CHECK IF POINT IS BEYOND BOUNDS!!!
         string collision_bin_str = edges_collide_with_something(test_room);
         if(collision_bin_str[0] == '1'){
             upper_bound = 0;
@@ -365,18 +367,22 @@ Room DungeonBuilder::find_viable_room_space(IntPoint the_point) const
      * 
      */
     
-    //I am using the same variables, but for an entirely different purpose... don't get mad at me.
+    //I am using the same variables, but for an entirely different purpose... call the cops.
     //Holy shit math/logic. I am going to screw something up.
     int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
+    left_column_right_bound = max(left_column_right_bound, test_room.tl.col + 1);
     left_bound = rand() % (abs(left_column_right_bound - test_room.tl.col)) + test_room.tl.col;
 
     int right_column_left_bound = max((test_room.tl.col + min_room_width), the_point.col);
+    right_column_left_bound = min(right_column_left_bound, test_room.br.col - 1);
     right_bound = rand() % (abs(test_room.br.col - right_column_left_bound)) + test_room.br.col;
 
     int top_row_lower_bound = min((test_room.br.row - min_room_height), the_point.row);
+    top_row_lower_bound = max(top_row_lower_bound, test_room.tl.row + 1);
     upper_bound = rand() % (abs(top_row_lower_bound - test_room.tl.row)) + test_room.tl.row;
 
     int bottom_row_upper_bound = max((test_room.tl.row + min_room_height), the_point.row);
+    bottom_row_upper_bound = min(bottom_row_upper_bound, test_room.br.row - 1);
     lower_bound = rand() % (abs(test_room.br.row - bottom_row_upper_bound)) + test_room.br.row;
 
     return Room(IntPoint(upper_bound, left_bound), IntPoint(lower_bound, right_bound));
