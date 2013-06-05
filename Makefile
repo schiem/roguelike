@@ -33,6 +33,9 @@ build/main.o : src/main.cpp
 	$(CC) $(CFLAGS) src/main.cpp -o $@
 
 
+build/terrain_defs.o : terrain_defs.cpp terrain_defs.h
+	$(CC) $(CFLAGS) $(WORL)/terrain_defs.cpp -o $@
+
 build/ASCII_Lib.o : def.h ASCII_Lib.h ASCII_Lib.cpp
 	$(CC) $(CFLAGS) $(ASCII)/ASCII_Lib.cpp -o $@
 

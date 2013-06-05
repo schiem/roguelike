@@ -7,7 +7,6 @@ using namespace std;
 int main(int argc, char* args[])
 {
     Display d;
-    /*
     d.refresh();
 	bool running = true;
 	while( running )
@@ -19,5 +18,4 @@ int main(int argc, char* args[])
 	}
 	d.cleanup();
 	return 0;	
-    */
 }

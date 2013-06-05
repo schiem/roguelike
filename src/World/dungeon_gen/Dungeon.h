@@ -5,18 +5,22 @@
 #define MAX_ROOMS 15
 #include <terrain_defs.h>
 #include "Room.h"
+#include <vector>
 
 class Dungeon
 {
+    typedef std::vector<std::vector<Tile> > TileMatrix;
+
     private:
         //TODO
-       Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
+       //Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
+       TileMatrix dungeon;
 
     public:
        int width;
        int height;
        int num_rooms;
-       //Room rooms[MAX_ROOMS];
+       Room rooms[MAX_ROOMS];
        Tile get_tile(int, int) const;
        Tile get_tile(IntPoint) const;
        void set_tile(int, int, Tile);

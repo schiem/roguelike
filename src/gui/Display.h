@@ -27,11 +27,9 @@ class Display
     public:
         Display();
         //TODO TODO TODO Don't have this here lololol
-        /*
         bool get_input();
         void refresh();
         void cleanup();
-        */
 };
 
 #endif

@@ -30,7 +30,6 @@ Display::Display()
     //canvas.refresh();
 }
 
-/*
 bool Display::get_input()
 {
 	while (SDL_PollEvent( &event ) )
@@ -71,4 +70,3 @@ void Display::cleanup()
 	SDL_FreeSurface (ascii);
 	SDL_Quit();
 }
-*/
