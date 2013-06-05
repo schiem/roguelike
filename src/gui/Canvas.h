@@ -16,19 +16,23 @@
 using namespace std;
 class Canvas 
 {
+    /*
     private:
         Dungeon dungeon;
         std::vector<std::vector<Tile> > canvas;
     
+    */
     public:
         Canvas();
         //TODO do something about these two. Events.cpp?
         DungeonBuilder db;
+        /*
         Main_Character main_char;
         void refresh();
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile> >& get_matrix();
         const Dungeon& get_dungeon();
+        */
 };
 
 #endif

@@ -5,15 +5,18 @@ typedef std::vector<std::vector<Tile> > TileMatrix;
 
 Canvas::Canvas()
 {
-    db = DungeonBuilder(80, 40);
+    db = DungeonBuilder(80, 40, 10);
+    /*
     db.build_pblind_dungeon(5, 1, 1);
     dungeon = db.get_dungeon();
 
     main_char = Main_Character(100, 1, 1, 3);
 
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
+    */
 }
 
+/*
 void Canvas::refresh()
 {
     for(int i = 0; i < dungeon.height; i++) {
@@ -35,3 +38,4 @@ const TileMatrix& Canvas::get_matrix()
 {
     return canvas;
 }
+*/

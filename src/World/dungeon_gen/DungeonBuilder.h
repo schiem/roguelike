@@ -32,6 +32,7 @@ class DungeonBuilder
         int num_rooms;
         Dungeon main_dungeon;
         //methods
+        /*
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
@@ -47,13 +48,16 @@ class DungeonBuilder
         IntPoint get_next_point(IntPoint, int) const;
         IntPoint build_path(IntPoint, int);
         void recursive_pblind_dungeon(int, int, int);
+        */
 
 	public:
         DungeonBuilder();
 		DungeonBuilder(int, int, int seed=time(NULL));
+        /*
 		int build_pblind_dungeon(int, int, int);
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
 		Dungeon get_dungeon();
+        */
 };
 
 #endif

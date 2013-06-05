@@ -9,13 +9,14 @@
 class Dungeon
 {
     private:
+        //TODO
        Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
 
     public:
        int width;
        int height;
        int num_rooms;
-       Room rooms[MAX_ROOMS];
+       //Room rooms[MAX_ROOMS];
        Tile get_tile(int, int) const;
        Tile get_tile(IntPoint) const;
        void set_tile(int, int, Tile);

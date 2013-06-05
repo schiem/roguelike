@@ -2,6 +2,7 @@
 
 Dungeon::Dungeon()
 {
+    /*
     width = 10;
     height= 10;
     for(int i = 0; i < height; i++)
@@ -11,11 +12,13 @@ Dungeon::Dungeon()
             dungeon[i][j] = DIRT;
         }
     }
+    */
 }
 
 
 Dungeon::Dungeon(int _width, int _height)
 {
+    /*
     width = _width;
     height = _height;
     for(int i = 0; i < _height; i++)
@@ -31,24 +34,30 @@ Dungeon::Dungeon(int _width, int _height)
             }
         }
     }
+    */
 }
 
 Tile Dungeon::get_tile(int row, int col) const
 {
-    return dungeon[row][col];
+    
+    //return dungeon[row][col];
+    Tile a = {1, 1, ' ', true};
+    return a;
 }
 
 Tile Dungeon::get_tile(IntPoint point) const
 {
-    return dungeon[point.row][point.col];
+    //return dungeon[point.row][point.col];
+    Tile a = {1, 1, ' ', true};
+    return a;
 }
 
 void Dungeon::set_tile(int row, int col, Tile theTile)
 {
-    dungeon[row][col] = theTile;
+    //dungeon[row][col] = theTile;
 }
 
 void Dungeon::set_tile(IntPoint point, Tile theTile)
 {
-    dungeon[point.row][point.col] = theTile;
+    //dungeon[point.row][point.col] = theTile;
 }
