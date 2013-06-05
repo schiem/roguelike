@@ -12,7 +12,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <SDL/SDL.h>
 #include <math.h> //floor, ceil
 
 #include "int_point.h"
@@ -32,7 +31,6 @@ class DungeonBuilder
 		int height;
         int num_rooms;
         Dungeon main_dungeon;
-		bool initialized;
         //methods
 		bool rolled_over(int) const;
 		bool is_empty_space(IntPoint) const;
@@ -51,11 +49,10 @@ class DungeonBuilder
         void recursive_pblind_dungeon(int, int, int);
 
 	public:
+        DungeonBuilder();
 		DungeonBuilder(int, int, int seed=time(NULL));
 		int build_pblind_dungeon(int, int, int);
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
-		void initialize();
-		bool is_initialized();
 		Dungeon get_dungeon();
 };
 

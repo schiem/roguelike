@@ -1,5 +1,15 @@
 #include "DungeonBuilder.h"
 
+using namespace tiledef;
+
+DungeonBuilder::DungeonBuilder()
+{
+    width = 80;
+    height = 40;
+    main_dungeon = Dungeon(width, height);
+    num_rooms = 0;
+}
+
 /* PRE:  Will be given the desired width and height of the
  * dungeon floor.
  * POST: Will populate the :char dungeon[][]: array with dummy
@@ -9,6 +19,7 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 {
 	width = _width;
 	height = _height;
+    num_rooms = 0;
 
 	if(width > MAX_WIDTH)
 	{
@@ -21,17 +32,7 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
 
     main_dungeon = Dungeon(width, height);
     srand(seed);
-	bool initialized=false;
 }
-
-void DungeonBuilder::initialize(){
-	initialized=true;
-}
-
-bool DungeonBuilder::is_initialized(){
-	return initialized;
-}
-
 
 /*
  * POST: Will print the dungeon floor to stdout.
@@ -46,9 +47,9 @@ ostream& operator<<(ostream &out, const DungeonBuilder &D)
 
 void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const
 {
-	for(int i = 0; i < height + 200; i++)
+	for(int i = 0; i < height; i++)
 	{
-		for(int j = 0; j < width + 200; j++)
+		for(int j = 0; j < width; j++)
 		{
 			drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
 		}

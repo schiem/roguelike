@@ -1,21 +1,26 @@
 #include "Dungeon.h"
+using namespace tiledef;
 
 Dungeon::Dungeon()
 {
-width = 10;
-height= 10;
-for(int i = 0; i < height; i++)
-{
-	for(int j = 0; j < width; j++)
-	{
-		dungeon[i][j] = DIRT;
-		}
-	}
+    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    num_rooms = 0;
+    width = 10;
+    height= 10;
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            dungeon[i][j] = DIRT;
+        }
+    }
 }
 
 
 Dungeon::Dungeon(int _width, int _height)
 {
+    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    num_rooms = 0;
     width = _width;
     height = _height;
     for(int i = 0; i < _height; i++)

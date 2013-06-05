@@ -11,12 +11,15 @@ struct Tile{
 		}
 	};
 
-static const Tile DIRT = {250, 1, '.', true};
-static const Tile WALL = {35, 2, '#', false};
-static const Tile EMPTY = {0, 3, ' ', true};
-//static const Tile PATH = {88, 'X', true};
-//static const Tile PATH = {111, 'o', true};
-static const Tile PATH = {240, 4, ' ', true};
+namespace tiledef {
+
+    extern Tile DIRT;
+    extern Tile WALL;
+    extern Tile EMPTY;
+    //static const Tile PATH = {88, 'X', true};
+    //static const Tile PATH = {111, 'o', true};
+    extern Tile PATH;
+    extern Tile MAIN_CHAR; 
+}
 
 #endif
-
