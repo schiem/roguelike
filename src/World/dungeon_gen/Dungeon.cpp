@@ -2,15 +2,15 @@
 
 Dungeon::Dungeon()
 {
-width = 10;
-height= 10;
-for(int i = 0; i < height; i++)
-{
-	for(int j = 0; j < width; j++)
-	{
-		dungeon[i][j] = DIRT;
-		}
-	}
+    width = 10;
+    height= 10;
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            dungeon[i][j] = DIRT;
+        }
+    }
 }
 
 

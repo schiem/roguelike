@@ -1,5 +1,11 @@
 #include <Character.h>
 #include <iostream>
+
+Character::Character()
+{
+
+}
+
 /* PRE: Will be given a max health, a starting x and a starting y
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
@@ -11,7 +17,7 @@ Character::Character(int _max_health, int _x, int _y, int _sprite)
 	x = _x;
 	y = _y;
     sprite = _sprite;
-	current_dungeon;
+	//current_dungeon;
 }
 /*
 Character::~Character(){

@@ -17,6 +17,7 @@ static const Tile EMPTY = {0, 3, ' ', true};
 //static const Tile PATH = {88, 'X', true};
 //static const Tile PATH = {111, 'o', true};
 static const Tile PATH = {240, 4, ' ', true};
+static const Tile MAIN_CHAR = {1, 5, ' ', true}; 
 
 #endif
 

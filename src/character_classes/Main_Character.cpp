@@ -1,12 +1,17 @@
 #include <Character.h>
 #include <iostream>
 
+Main_Character::Main_Character()
+{
+
+}
+
 Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite ) : Character(_max_health, _x, _y,  _sprite){
     max_health = _max_health;
     x = _x;
     y = _y;
     sprite = _sprite;
-	current_dungeon;
+	//current_dungeon;
 }
 /*
 Main_Character::~Main_Character(){
