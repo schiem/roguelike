@@ -9,7 +9,7 @@ Canvas::Canvas()
     db.build_pblind_dungeon(5, 5, 5);
     dungeon = db.get_dungeon();
 
-    main_char = Main_Character(100, 1, 1, 3);
+    main_char = Main_Character(100, 1, 1, 3, dungeon);
 
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
 }

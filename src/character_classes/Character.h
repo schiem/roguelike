@@ -17,21 +17,22 @@ class Character
         //Skills skill[];
         char sprite;
         int armor;
-        Dungeon current_dungeon;
+        Dungeon dungeon;
         //methods
 	public:
         Character();
-		Character(int, int, int, int);
+		Character(int, int, int, int, Dungeon);
 		void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
 		bool is_alive() const;
 		void move(int, int);
 		void take_damage(int);
         void attack(int x_direction, int y_direction);
+		void update_dungeon(Dungeon);
 		int get_x_loc();
         int get_y_loc();
         int get_char();
+		
 		//terrain get_surroundings
-
 
 };
 
@@ -40,13 +41,11 @@ class Main_Character : public Character{
         char name[];
         //inventory
         //equipment
-        Dungeon current_dungeon;
    public:
         Main_Character();
-        Main_Character(int, int, int, int);
+        Main_Character(int, int, int, int, Dungeon);
 		void perform_action_cont();
 		void perform_action_press(SDLKey);
-        void update_dungeon(Dungeon);
 };
 
 #endif
