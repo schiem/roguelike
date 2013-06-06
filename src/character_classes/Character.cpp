@@ -47,7 +47,7 @@ bool Character::is_alive() const{
 */
 void Character::move(int x_change, int y_change){
     
-	if (dungeon.get_tile(x+x_change, y+y_change).can_be_moved_through){
+	if (dungeon.get_tile(y+y_change, x+x_change).can_be_moved_through){
 		x += x_change;
 		y += y_change;
 }

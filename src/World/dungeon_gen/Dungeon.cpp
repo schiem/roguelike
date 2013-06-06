@@ -16,7 +16,6 @@ Dungeon::Dungeon()
     }
 }
 
-
 Dungeon::Dungeon(int _width, int _height)
 {
     dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));

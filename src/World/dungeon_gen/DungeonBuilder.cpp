@@ -34,17 +34,6 @@ DungeonBuilder::DungeonBuilder(int _width, int _height, int seed)
     srand(seed);
 }
 
-/*
- * POST: Will print the dungeon floor to stdout.
- */
-/*
-ostream& operator<<(ostream &out, const DungeonBuilder &D)
-{
-    D.print();
-    return out;
-}
-*/
-
 void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const
 {
 	for(int i = 0; i < height; i++)
