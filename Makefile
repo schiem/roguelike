@@ -54,8 +54,26 @@ build/Character.o : Dungeon.h ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Charac
 build/Main_Character.o : def.h ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
 
-build/Display.o : Display.h Display.cpp def.h ASCII_Lib.h ASCII_Lib.cpp Canvas.h Canvas.cpp terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/Display.cpp -o $@
+build/VirtualEvent.o : VirtualEvent.cpp VirtualEvent.h
+	$(CC) $(CFLAGS) $(GUI)/VirtualEvent.cpp -o $@
+
+build/GUI_Cleanup.o : GUI_Cleanup.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI_Cleanup.cpp -o $@
+
+build/GUI_Render.o : GUI_Render.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI_Render.cpp -o $@
+
+build/GUI_Loop.o : GUI_Loop.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI_Loop.cpp -o $@
+
+build/GUI_Init.o : GUI_Init.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI_Init.cpp -o $@
+
+build/GUI_Event.o : GUI_Event.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI_Event.cpp -o $@
+
+build/GUI.o : GUI.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/GUI.cpp -o $@
 
 build/Canvas.o : Canvas.h Canvas.cpp DungeonBuilder.h DungeonBuilder.cpp terrain_defs.h Dungeon.h Dungeon.cpp Character.h Main_Character.cpp
 	$(CC) $(CFLAGS) $(GUI)/Canvas.cpp -o $@
