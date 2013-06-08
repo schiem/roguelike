@@ -2,7 +2,7 @@
 
 void GUI::OnRender()
 {
-    canvas.main_char.update_dungeon(canvas.get_dungeon());
+    //canvas.main_char.update_dungeon(canvas.get_dungeon());
     canvas.main_char.perform_action_cont();
     canvas.refresh(); 
     TileMatrix tm = canvas.get_matrix();

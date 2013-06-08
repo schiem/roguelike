@@ -10,7 +10,7 @@ Character::Character()
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, int _sprite, Dungeon _dungeon)
+Character::Character(int _max_health, int _x, int _y, int _sprite, Dungeon *_dungeon)
 {
 	current_health = _max_health;
 	max_health = _max_health;
@@ -25,10 +25,11 @@ void Character::display_character(int character, SDL_Surface* ascii, SDL_Surface
 	drawChr(x, y, character, ascii, screen, color); 
 }
 
+/*
 void Character::update_dungeon(Dungeon _dungeon){
 	dungeon = _dungeon;
 }
-
+*/
 
 /* PRE: None
  * POST: Returns true if the character is still alive (health is > max_health)
@@ -47,7 +48,7 @@ bool Character::is_alive() const{
 */
 void Character::move(int x_change, int y_change){
     
-	if (dungeon.get_tile(y+y_change, x+x_change).can_be_moved_through){
+	if (dungeon->get_tile(y+y_change, x+x_change).can_be_moved_through){
 		x += x_change;
 		y += y_change;
 }
