@@ -10,7 +10,7 @@ Character::Character()
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, int _sprite, Dungeon *_dungeon)
+Character::Character(int _max_health, int _x, int _y, int _sprite, Dungeon const *_dungeon)
 {
 	current_health = _max_health;
 	max_health = _max_health;

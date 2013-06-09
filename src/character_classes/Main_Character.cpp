@@ -6,7 +6,7 @@ Main_Character::Main_Character()
 
 }
 
-Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite, Dungeon *_dungeon ) : Character(_max_health, _x, _y,  _sprite, _dungeon){
+Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite, const Dungeon *_dungeon ) : Character(_max_health, _x, _y,  _sprite, _dungeon){
 }
 void Main_Character::perform_action_cont(){
 	SDL_PumpEvents();

@@ -17,11 +17,11 @@ class Character
         //Skills skill[];
         char sprite;
         int armor;
-        Dungeon *dungeon;
+        const Dungeon *dungeon;
         //methods
 	public:
         Character();
-		Character(int, int, int, int, Dungeon*);
+		Character(int, int, int, int, const Dungeon*);
 		void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
 		bool is_alive() const;
 		void move(int, int);
@@ -42,7 +42,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, int, Dungeon*);
+        Main_Character(int, int, int, int, const Dungeon*);
 		void perform_action_cont();
 		void perform_action_press(SDLKey);
 };
