@@ -81,6 +81,12 @@ build/Canvas.o : Canvas.h Canvas.cpp DungeonBuilder.h DungeonBuilder.cpp terrain
 build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h terrain_defs.h
 	$(CC) $(CFLAGS) $(DGEN)/Dungeon.cpp -o $@
 
+build/Chunk.o : Chunk.h Chunk.cpp Dungeon.h DungeonBuilder.h Overworld.h terrain_defs.h
+	$(CC) $(CFLAGS) $(WORL)/Chunk.cpp -o $@
+
+build/Overworld.o : Overworld.h Overworld.cpp terrain_defs.h
+	$(CC) $(CFLAGS) $(WORL)/Overworld.cpp -o $@
+
 clean :
 	rm -r build roguelike
 

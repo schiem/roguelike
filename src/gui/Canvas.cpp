@@ -5,29 +5,27 @@ using namespace tiledef;
 
 Canvas::Canvas()
 {
-    db = DungeonBuilder(80, 40);
-    db.build_pblind_dungeon(5, 5, 5);
-    dungeon = db.get_dungeon();
-
-	Dungeon *d_temp = &dungeon;
-    main_char = Main_Character(100, 1, 1, 3, d_temp);
+	chunk = Chunk(0, 0, 40, 80);
+	Chunk *_chunk = &chunk;
+    main_char = Main_Character(100, 1, 1, 3, _chunk, 0);
 
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
 }
 
 void Canvas::refresh()
 {
-    for(int i = 0; i < dungeon.height; i++) {
-        for(int j = 0; j < dungeon.width; j++) {
-            canvas[i][j] = dungeon.get_tile(i, j);
+    
+	for(int i = 0; i < chunk.height; i++) {
+        for(int j = 0; j < chunk.width; j++) {
+            canvas[i][j] = chunk.get_tile(main_char.get_depth(),i, j);
         }
     }
     canvas[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
 }
 
-const Dungeon& Canvas::get_dungeon()
+const Chunk& Canvas::get_chunk()
 {
-    return dungeon;
+    return chunk;
 }
 
 //Since this is a const reference, will we have to call it

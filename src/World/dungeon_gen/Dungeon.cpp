@@ -56,3 +56,8 @@ void Dungeon::set_tile(IntPoint point, Tile theTile)
 {
     dungeon[point.row][point.col] = theTile;
 }
+
+const std::vector<std::vector<Tile> >&  Dungeon::get_dungeon(){
+	return dungeon;
+}
+

@@ -10,14 +10,15 @@ Character::Character()
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, int _sprite, Dungeon const *_dungeon)
+Character::Character(int _max_health, int _x, int _y, int _sprite, Chunk const *_chunk, int _depth)
 {
 	current_health = _max_health;
 	max_health = _max_health;
 	x = _x;
 	y = _y;
     sprite = _sprite;
-	dungeon = _dungeon;
+	chunk = _chunk;
+	depth = _depth;
 }
 
 
@@ -48,7 +49,7 @@ bool Character::is_alive() const{
 */
 void Character::move(int x_change, int y_change){
     
-	if (dungeon->get_tile(y+y_change, x+x_change).can_be_moved_through){
+	if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
 		x += x_change;
 		y += y_change;
 }
@@ -74,5 +75,9 @@ int Character::get_y_loc(){
 
 int Character::get_char(){
     return sprite;
+}
+
+int Character::get_depth(){
+	return depth;
 }
 

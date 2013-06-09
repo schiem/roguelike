@@ -7,7 +7,8 @@
 #include <SDL/SDL.h>
 #include <stdlib.h>
 #include <vector>
-
+#include <Chunk.h>
+#include <Overworld.h>
 #include "DungeonBuilder.h"
 #include "Dungeon.h"
 #include "terrain_defs.h"
@@ -19,7 +20,7 @@ class Canvas
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        Dungeon dungeon;
+        Chunk chunk;
         std::vector<std::vector<Tile> > canvas;
     
     public:
@@ -32,7 +33,7 @@ class Canvas
         void refresh();
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile> >& get_matrix();
-        const Dungeon& get_dungeon();
+        const Chunk& get_chunk();
 };
 
 #endif

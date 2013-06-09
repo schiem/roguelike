@@ -545,7 +545,7 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
 int DungeonBuilder::build_pblind_dungeon(int target, 
                                          int deviation, int squareness)
 {   
-    build_start_room();
+	build_start_room();
     //int target_rooms = rand() % deviation + 
     //                        (_target - (int)(deviation / 2));
     int current_room_num= 0;

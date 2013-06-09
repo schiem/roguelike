@@ -25,8 +25,10 @@ class Dungeon
        Tile get_tile(IntPoint) const;
        void set_tile(int, int, Tile);
        void set_tile(IntPoint, Tile);
-       Dungeon(int, int);
+       const std::vector<std::vector<Tile> >& get_dungeon();
+	   Dungeon(int, int);
        Dungeon();
+	
 };
 
 #endif

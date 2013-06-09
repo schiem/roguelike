@@ -2,9 +2,8 @@
 
 void GUI::OnRender()
 {
-    //canvas.main_char.update_dungeon(canvas.get_dungeon());
     canvas.main_char.perform_action_cont();
-    canvas.refresh(); 
+	canvas.refresh(); 
     TileMatrix tm = canvas.get_matrix();
 
     for(int i = 0; i < tm.size(); i++) {
@@ -12,7 +11,6 @@ void GUI::OnRender()
             drawChr(j, i, tm[i][j].char_count, ascii, screen, white);
         }
     }
-
     SDL_Flip(screen);
     SDL_Delay(50);
 }
