@@ -8,14 +8,15 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
 	height= _height;
 	depth = rand() % 6;
 	//dungeon = new Dungeon[depth];
-    dungeon_floors = vector<Dungeon>(depth);//, Dungeon(width, height));
+    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
 	x = _x;
 	y = _y;
-	DungeonBuilder db = DungeonBuilder(width, height); //doesn't this take 3 parameters?
-	//fill dungeon array with dungeons          //The last parameter is a seed with a default of time(NULL).
+	DungeonBuilder db(width, height); //doesn't this take 3 parameters? ---The last parameter is a seed that defaults to time(NULL).
+    Dungeon* temp_d;
+	//fill dungeon array with dungeons  
 	for (int i=0; i <= depth; i++){
 		db.build_pblind_dungeon(5, 5, 5);
-        Dungeon* temp_d = db.get_dungeon();
+        temp_d = db.get_dungeon();
 		dungeon_floors[i] = *temp_d;
 	}
 	//generate the overworld

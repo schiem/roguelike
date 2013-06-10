@@ -17,18 +17,17 @@ Dungeon::Dungeon()
     }
 }
 
-/*
 Dungeon::Dungeon(const Dungeon& d)
 {
     dungeon = d.dungeon;
     width = d.width;
     height = d.height;
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
 }
-*/
 
 Dungeon::Dungeon(int _width, int _height)
 {
