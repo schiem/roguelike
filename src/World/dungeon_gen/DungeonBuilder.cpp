@@ -10,6 +10,7 @@ DungeonBuilder::DungeonBuilder()
     num_rooms = 0;
 }
 
+/*
 DungeonBuilder::DungeonBuilder(const DungeonBuilder& db)
 {
     width = db.width;
@@ -17,6 +18,7 @@ DungeonBuilder::DungeonBuilder(const DungeonBuilder& db)
     num_rooms = db.num_rooms;
     main_dungeon = db.main_dungeon;
 }
+*/
 
 /* PRE:  Will be given the desired width and height of the
  * dungeon floor.
@@ -553,12 +555,21 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
 int DungeonBuilder::build_pblind_dungeon(int target, 
                                          int deviation, int squareness)
 {   
+    bool dungeon_is_awesome;
 	build_start_room();
-    //int target_rooms = rand() % deviation + 
-    //                        (_target - (int)(deviation / 2));
-    int current_room_num= 0;
-    recursive_pblind_dungeon(target, deviation, squareness);
-    //cout<<*this;
+    int tries = 0;
+    do {
+        tries++;
+        dungeon_is_awesome = true;
+        recursive_pblind_dungeon(target, deviation, squareness);
+        if (num_rooms < (target - 3)) {
+            dungeon_is_awesome = false;
+            main_dungeon = Dungeon(width, height);
+            num_rooms = 0;
+        }
+    } while(!dungeon_is_awesome);
+    cout<<tries;
+
 	return 0;
 }
 
@@ -576,31 +587,40 @@ int DungeonBuilder::build_pblind_dungeon(int target,
 void DungeonBuilder::recursive_pblind_dungeon(int target, int deviation,
                                              int squareness)
 {
-    if (target == 0)
-    {
+    if (target == 0) {
         return;
     }
 
-    Room current_room = main_dungeon.rooms[num_rooms];
-    cout<<"Room points:"<<endl;
-    cout<<current_room.tl;
-    cout<<current_room.br<<endl;
-    IntPoint point = rand_wall_block(current_room);
+    Room current_room;
+    Room new_room;
+    int tries = 0;
+    bool acceptable;
+    int max_tries = 3;
+    do {
+        tries++;
+        acceptable = true;
+        current_room = main_dungeon.rooms[num_rooms];
+        IntPoint point = rand_wall_block(current_room);
 
-    IntPoint path_end = build_path(point, determine_which_wall(point));
-    Room new_room = find_viable_room_space(path_end);
-    if(new_room.tl.row == -1)
-    {
+        IntPoint path_end = build_path(point, determine_which_wall(point));
+        new_room = find_viable_room_space(path_end);
+
+        if(new_room.tl.row == -1) {
+            acceptable = false;
+        }
+
+    } while((acceptable == false) && (tries < max_tries));
+
+    if(!acceptable) {
         return;
+    } else {
+        build_room(new_room.tl, new_room.br, squareness);
+        recursive_pblind_dungeon(target - 1, deviation, squareness);
     }
-    build_room(new_room.tl, new_room.br, squareness);
-
-    recursive_pblind_dungeon(target - 1, deviation, squareness);
-    //build_path(point, 2);
-    //main_dungeon.set_tile(point, PATH);
 }
 
 
-Dungeon DungeonBuilder::get_dungeon(){
-	return main_dungeon;
+Dungeon* DungeonBuilder::get_dungeon(){
+
+	return &main_dungeon;
 }

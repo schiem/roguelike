@@ -5,7 +5,7 @@ using namespace tiledef;
 
 Canvas::Canvas()
 {
-	chunk = Chunk(0, 0, 40, 80);
+	chunk = Chunk(0, 0, 80, 40);
 	//Chunk *_chunk = &chunk;
     main_char = Main_Character(100, 1, 1, 3, &chunk, 0);
 

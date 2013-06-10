@@ -4,6 +4,7 @@ using namespace tiledef;
 Dungeon::Dungeon()
 {
     dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     width = 10;
     height= 10;
@@ -16,6 +17,7 @@ Dungeon::Dungeon()
     }
 }
 
+/*
 Dungeon::Dungeon(const Dungeon& d)
 {
     dungeon = d.dungeon;
@@ -26,10 +28,12 @@ Dungeon::Dungeon(const Dungeon& d)
         this->rooms[i] = d.rooms[i];
     }
 }
+*/
 
 Dungeon::Dungeon(int _width, int _height)
 {
     dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     width = _width;
     height = _height;

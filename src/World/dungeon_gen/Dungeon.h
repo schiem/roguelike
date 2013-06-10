@@ -20,14 +20,14 @@ class Dungeon
        int width;
        int height;
        int num_rooms;
-       Room rooms[MAX_ROOMS];
+       std::vector<Room> rooms;
        Tile get_tile(int, int) const;
        Tile get_tile(IntPoint) const;
        void set_tile(int, int, Tile);
        void set_tile(IntPoint, Tile);
        const std::vector<std::vector<Tile> >& get_dungeon();
 	   Dungeon(int, int);
-       Dungeon(const Dungeon&);
+       //Dungeon(const Dungeon&);
        Dungeon();
 	
 };

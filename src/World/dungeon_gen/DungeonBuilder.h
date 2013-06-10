@@ -50,11 +50,11 @@ class DungeonBuilder
 
 	public:
         DungeonBuilder();
-        DungeonBuilder(const DungeonBuilder&);
+        //DungeonBuilder(const DungeonBuilder&);
 		DungeonBuilder(int, int, int seed=time(NULL));
 		int build_pblind_dungeon(int, int, int);
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
-		Dungeon get_dungeon();
+		Dungeon* get_dungeon();
 };
 
 #endif
