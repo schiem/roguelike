@@ -13,7 +13,7 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
 	y = _y;
 	DungeonBuilder db = DungeonBuilder(80, 40); //doesn't this take 3 parameters?
 	//fill dungeon array with dungeons          //The last parameter is a seed with a default of time(NULL).
-	for (int i=1; i >= depth; i++){
+	for (int i=1; i <= depth; i++){
 		db.build_pblind_dungeon(5, 5, 5);
 		dungeon_floors[i] = db.get_dungeon();
 	}
@@ -30,7 +30,7 @@ Chunk::Chunk(){
 	height = 10;
 	width = 10;
 	DungeonBuilder db = DungeonBuilder(width, height); 
-	for (int i=1; i >= depth; i++){
+	for (int i=1; i <= depth; i++){
 		db.build_pblind_dungeon(5, 5, 5);
 		dungeon_floors[i] = db.get_dungeon();
 	}
