@@ -15,6 +15,7 @@ class Room
         IntPoint tl;
         IntPoint br;
         Room();
+        Room(const Room&);
         Room(IntPoint, IntPoint);
 };
 

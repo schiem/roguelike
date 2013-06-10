@@ -7,20 +7,21 @@
 #include <Overworld.h>
 #include <terrain_defs.h>
 using namespace tiledef;
+using namespace std;
 class Chunk{
 	typedef std::vector<std::vector<Tile> > TileMatrix;
 	private:
 		int x;
 		int y;
 		int depth;
-		Dungeon* dungeon;
+		//Dungeon* dungeon;
+        vector<Dungeon> dungeon_floors;
 		Overworld overworld;
 	public:
 		Chunk(int, int, int, int);
 		int height;
 		int width;
 		Chunk();
-		~Chunk();
 		const std::vector<std::vector<Tile> >& get_floor(int);
 		Tile get_tile(int, int, int) const;
 

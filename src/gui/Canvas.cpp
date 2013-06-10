@@ -6,8 +6,8 @@ using namespace tiledef;
 Canvas::Canvas()
 {
 	chunk = Chunk(0, 0, 40, 80);
-	Chunk *_chunk = &chunk;
-    main_char = Main_Character(100, 1, 1, 3, _chunk, 0);
+	//Chunk *_chunk = &chunk;
+    main_char = Main_Character(100, 1, 1, 3, &chunk, 0);
 
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
 }

@@ -75,7 +75,7 @@ build/GUI_Event.o : GUI_Event.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
 build/GUI.o : GUI.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
 	$(CC) $(CFLAGS) $(GUI)/GUI.cpp -o $@
 
-build/Canvas.o : Canvas.h Canvas.cpp DungeonBuilder.h DungeonBuilder.cpp terrain_defs.h Dungeon.h Dungeon.cpp Character.h Main_Character.cpp
+build/Canvas.o : Canvas.h Canvas.cpp DungeonBuilder.h DungeonBuilder.cpp terrain_defs.h Dungeon.h Dungeon.cpp Character.h Main_Character.cpp Chunk.cpp
 	$(CC) $(CFLAGS) $(GUI)/Canvas.cpp -o $@
 
 build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h terrain_defs.h

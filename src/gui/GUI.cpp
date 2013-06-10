@@ -5,6 +5,7 @@ GUI::GUI()
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
+    //canvas = Canvas();
 
     running = true;
 }

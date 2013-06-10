@@ -10,6 +10,14 @@ DungeonBuilder::DungeonBuilder()
     num_rooms = 0;
 }
 
+DungeonBuilder::DungeonBuilder(const DungeonBuilder& db)
+{
+    width = db.width;
+    height = db.height;
+    num_rooms = db.num_rooms;
+    main_dungeon = db.main_dungeon;
+}
+
 /* PRE:  Will be given the desired width and height of the
  * dungeon floor.
  * POST: Will populate the :char dungeon[][]: array with dummy
