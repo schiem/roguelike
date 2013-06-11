@@ -9,6 +9,7 @@ struct Tile{
 	bool operator==(const Tile& rhs) const{
 		return this->sprite == rhs.sprite;
 		}
+	int color;
 	};
 
 namespace tiledef {
