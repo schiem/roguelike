@@ -1,12 +1,12 @@
 #include <Chunk.h>
-#include <iostream>
 using namespace std;
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)
 {
 	width = _width;
 	height= _height;
-	depth = 4;
+	srand(time(NULL));
+	depth = rand() % 6;
 	//dungeon = new Dungeon[depth];
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
 	x = _x;
@@ -66,4 +66,9 @@ Tile Chunk::get_tile(int depth, int col, int row) const
 	else{
 		return dungeon_floors[depth].get_tile(col, row);
 	}
+}
+
+int Chunk::get_depth() const
+{
+	return depth;
 }

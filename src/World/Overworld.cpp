@@ -1,8 +1,8 @@
 #include <Overworld.h>
 using namespace tiledef;
-
 Overworld::Overworld()
 {
+	srand (time(NULL));
 	ground = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
 	width = 10;
 	height = 10;
@@ -10,7 +10,12 @@ Overworld::Overworld()
     {
         for(int j = 0; j < width; j++)
         {
-            ground[i][j] = DIRT;
+			if (rand() % 5 == 0){
+            ground[i][j] = TREE;
+			}
+			else{
+				ground[i][j] = DIRT;
+			}
         }
     }
 }
@@ -24,7 +29,12 @@ Overworld::Overworld(int _width, int _height)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			ground[i][j] = DIRT;
+			if (rand() % 5 == 0){
+            	ground[i][j] = TREE;
+			}
+			else{
+				ground[i][j] = DIRT;
+			}
 		}
 	}
 }

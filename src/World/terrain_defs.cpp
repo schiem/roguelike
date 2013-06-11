@@ -8,4 +8,5 @@ namespace tiledef {
     //static const Tile PATH = {111, 'o', true};
     Tile PATH = {240, 4, ' ', true};
     Tile MAIN_CHAR = {1, 5, ' ', true}; 
+	Tile TREE = {84, 6, 'T', false};
 }

@@ -5,6 +5,9 @@
 
 #include <terrain_defs.h>
 #include <vector>
+#include <ctime>
+#include <stdlib.h>
+#include <iostream>
 
 class Overworld
 {

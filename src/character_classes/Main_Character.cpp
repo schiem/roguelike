@@ -32,6 +32,15 @@ void Main_Character::perform_action_press(SDLKey key){
 		case SDLK_ESCAPE:
 			std::cout<<"I'm escaping now, but not continuously!"<<std::endl;
 			break;
+		case SDLK_u:
+			if (depth-1>=-1){
+				depth--;
+			}
+			break;
+		case SDLK_d:
+			if (depth+1<chunk->get_depth()){
+				depth++;
+			}
 		default:
 			break;
 	}

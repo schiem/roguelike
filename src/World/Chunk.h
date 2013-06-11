@@ -6,6 +6,8 @@
 #include <Dungeon.h>
 #include <Overworld.h>
 #include <terrain_defs.h>
+#include <ctime>
+#include <iostream>
 using namespace tiledef;
 using namespace std;
 class Chunk{
@@ -24,7 +26,7 @@ class Chunk{
 		Chunk();
 		const std::vector<std::vector<Tile> >& get_floor(int);
 		Tile get_tile(int, int, int) const;
-
+		int get_depth() const;
 };
 
 #endif
