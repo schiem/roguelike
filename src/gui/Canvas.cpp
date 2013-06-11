@@ -7,7 +7,7 @@ Canvas::Canvas()
 {
 	chunk = Chunk(0, 0, 80, 40);
 	//Chunk *_chunk = &chunk;
-    main_char = Main_Character(100, 1, 1, 3, &chunk, 0);
+    main_char = Main_Character(100, 1, 1, 3, &chunk, -1);
 
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
 }

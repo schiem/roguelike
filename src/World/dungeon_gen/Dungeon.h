@@ -29,7 +29,7 @@ class Dungeon
 	   Dungeon(int, int);
        Dungeon(const Dungeon&);
        Dungeon();
-	
+	   Dungeon& operator= (const Dungeon& d);
 };
 
 #endif

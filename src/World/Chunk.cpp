@@ -6,15 +6,17 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
 {
 	width = _width;
 	height= _height;
-	depth = rand() % 6;
+	depth = 4;
 	//dungeon = new Dungeon[depth];
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
 	x = _x;
 	y = _y;
-	DungeonBuilder db(width, height); //doesn't this take 3 parameters? ---The last parameter is a seed that defaults to time(NULL).
     Dungeon* temp_d;
+	DungeonBuilder db(width, height); //doesn't this take 3 parameters? ---The last parameter is a seed that defaults to time(NULL).
 	//fill dungeon array with dungeons  
-	for (int i=0; i <= depth; i++){
+	cout<<"depth:"<<depth<<endl;
+	for (int i=0; i < depth; i++){
+		cout<<"floor "<<i<<" reporting"<<endl;
 		db.build_pblind_dungeon(5, 5, 5);
         temp_d = db.get_dungeon();
 		dungeon_floors[i] = *temp_d;
@@ -48,7 +50,7 @@ Chunk::~Chunk(){
 */
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth){
-	if (depth == 0){
+	if (depth == -1){
 		return overworld.get_ground();
 	}
 	else{
@@ -58,7 +60,7 @@ const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth){
 
 Tile Chunk::get_tile(int depth, int col, int row) const
 {
-	if (depth == 0){
+	if (depth ==-1){
 		return overworld.get_tile(col, row);
 	}
 	else{
