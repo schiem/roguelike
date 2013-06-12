@@ -1,5 +1,6 @@
 #ifndef TERRAIN_DEFS_H
 #define TERRAIN_DEFS_H
+#include <def.h>
 
 struct Tile{
 	int char_count;

@@ -10,7 +10,7 @@ Overworld::Overworld()
     {
         for(int j = 0; j < width; j++)
         {
-			if (rand() % 5 == 0){
+			if (rand() % 8 == 0){
             ground[i][j] = TREE;
 			}
 			else{
@@ -29,7 +29,7 @@ Overworld::Overworld(int _width, int _height)
 	{
 		for(int j = 0; j < width; j++)
 		{
-			if (rand() % 5 == 0){
+			if (rand() % 8 == 0){
             	ground[i][j] = TREE;
 			}
 			else{
