@@ -39,8 +39,8 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 #define GREEN 65280
 #define WHITE 16777215
 #define BLACK 0
-#define DARK_RED 729808896
-#define DARKER_GREEN 2850816
+#define DARK_RED 729808896  //I don't trust this value, it's: 00101011 10000000 00000000 00000000 whereas RED is:
+#define DARKER_GREEN 2850816 //                               11111111 00000000 00000000. What's with the 32-bit vs 24-bit?
 #define DARK_GREEN 3629312
 #define BROWN 6371840
 #define DARK_GRAY 3026478
