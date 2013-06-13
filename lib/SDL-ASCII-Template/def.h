@@ -26,6 +26,9 @@ which gives a final binary number of :
 1111 1111 1111 1111 0000 0000,
 
 which translates to 16776960 in decimal, as you can see below.
+
+There is a python file which will perform this conversion for you,
+which can be obtained from https://github.com/schiem/RGBtoSDL
 */
 
 
@@ -43,5 +46,6 @@ which translates to 16776960 in decimal, as you can see below.
 #define DARK_GRAY 3026478
 #define LIGHT_GRAY 13158600
 #define GRAY 6579300
+#define PERSIAN_BLUE 5243032
 
 #endif

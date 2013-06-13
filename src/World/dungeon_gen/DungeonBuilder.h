@@ -47,6 +47,7 @@ class DungeonBuilder
         IntPoint get_next_point(IntPoint, int) const;
         IntPoint build_path(IntPoint, int);
         void recursive_pblind_dungeon(int, int, int);
+		void reset();
 
 	public:
         DungeonBuilder();

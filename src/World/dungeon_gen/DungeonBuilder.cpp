@@ -542,6 +542,16 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
     return current_point;
 }
 
+/* PRE: Dungeon must be initialized
+ * POST: Resets the num_rooms and main_dungeon variable, effectively
+ * resetting the dungeon
+ */
+void DungeonBuilder::reset()
+{
+	num_rooms = 0;
+	main_dungeon = Dungeon(width, height);
+}
+
 /* PRE: Will be given :int target: to specify a general target
  * number of openings in the dungeon floor, :int deviation: to
  * specify the maximum desired deviation from this target, and
@@ -555,7 +565,8 @@ IntPoint DungeonBuilder::build_path(IntPoint start, int direction)
 int DungeonBuilder::build_pblind_dungeon(int target, 
                                          int deviation, int squareness)
 {   
-    bool dungeon_is_awesome;
+	reset();
+	bool dungeon_is_awesome;
 	build_start_room();
     int tries = 0;
     do {
