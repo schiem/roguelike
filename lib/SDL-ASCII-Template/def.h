@@ -40,6 +40,7 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 #define WHITE 16777215
 #define BLACK 0
 #define DARK_RED 729808896  //I don't trust this value, it's: 00101011 10000000 00000000 00000000 whereas RED is:
+//oopsie, good call.  It's supposed to be 32 bits, because of the alpha, but for some reason, the alpha channel doesn't get factored in like it's supposed to, so it ends up just being 24 bit.  The thread that I got the formula used 32 bit, but when I tried it it didn't work, and after experimentation I realized it was actually 24 bit.
 #define DARKER_GREEN 2850816 //                               11111111 00000000 00000000. What's with the 32-bit vs 24-bit?
 #define DARK_GREEN 3629312
 #define BROWN 6371840
