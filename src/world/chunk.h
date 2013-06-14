@@ -2,7 +2,7 @@
 #define _CHUNK_H
 #include <vector>
 #include <stdlib.h>
-#include <dungeonbuilder.h>
+#include <procedurally_blind_dungeonbuilder.h>
 #include <dungeon.h>
 #include <overworld.h>
 #include <terrain_defs.h>

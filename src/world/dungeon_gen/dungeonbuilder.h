@@ -25,7 +25,7 @@ using namespace std;
 class DungeonBuilder
 {
     friend ostream& operator<<(ostream&, const DungeonBuilder&);
-	private:
+    protected:
         //variables
 		int width;
 		int height;
@@ -37,23 +37,14 @@ class DungeonBuilder
         bool point_is_beyond_bounds(IntPoint) const;
         string edges_collide_with_something(Room&) const;
         int determine_which_wall(IntPoint) const;
-        IntPoint find_viable_starting_point(int, int) const;
         void set_wall_if_not_path(int, int);
         Room build_room(IntPoint, IntPoint, int);
-        Room find_viable_room_space(IntPoint) const;
-        void build_start_room();
         int get_wall_count(const Room&) const;
         IntPoint rand_wall_block(const Room&);
         IntPoint get_next_point(IntPoint, int) const;
-        IntPoint build_path(IntPoint, int);
-        void recursive_pblind_dungeon(int, int, int);
-		void reset();
 
 	public:
         DungeonBuilder();
-        //DungeonBuilder(const DungeonBuilder&);
-		DungeonBuilder(int, int, int seed=time(NULL));
-		int build_pblind_dungeon(int, int, int);
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
 		Dungeon* get_dungeon();
 };

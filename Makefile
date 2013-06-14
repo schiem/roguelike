@@ -45,6 +45,9 @@ build/int_point.o : int_point.h int_point.cpp
 build/dungeonbuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h dungeonbuilder.cpp int_point.h room.h dungeon.h
 	$(CC) $(CFLAGS) $(DGEN)/dungeonbuilder.cpp -o $@
 
+build/procedurally_blind_dungeonbuilder.o : procedurally_blind_dungeonbuilder.h procedurally_blind_dungeonbuilder.cpp terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h int_point.h room.h dungeon.h
+	$(CC) $(CFLAGS) $(DGEN)/procedurally_blind_dungeonbuilder.cpp -o $@
+
 build/room.o : room.h room.cpp int_point.h
 	$(CC) $(CFLAGS) $(DGEN)/room.cpp -o $@
 
@@ -81,7 +84,7 @@ build/canvas.o : canvas.h canvas.cpp dungeonbuilder.h dungeonbuilder.cpp terrain
 build/dungeon.o :  dungeon.h dungeon.cpp int_point.h room.h terrain_defs.h
 	$(CC) $(CFLAGS) $(DGEN)/dungeon.cpp -o $@
 
-build/chunk.o : chunk.h chunk.cpp dungeon.h dungeonbuilder.h overworld.h terrain_defs.h
+build/chunk.o : chunk.h chunk.cpp dungeon.h procedurally_blind_dungeonbuilder.h overworld.h terrain_defs.h
 	$(CC) $(CFLAGS) $(WORL)/chunk.cpp -o $@
 
 build/overworld.o : overworld.h overworld.cpp terrain_defs.h
