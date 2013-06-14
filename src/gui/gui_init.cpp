@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "gui.h"
 
 bool GUI::OnInit()
 {

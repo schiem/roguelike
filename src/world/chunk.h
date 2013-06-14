@@ -2,9 +2,9 @@
 #define _CHUNK_H
 #include <vector>
 #include <stdlib.h>
-#include <DungeonBuilder.h>
-#include <Dungeon.h>
-#include <Overworld.h>
+#include <dungeonbuilder.h>
+#include <dungeon.h>
+#include <overworld.h>
 #include <terrain_defs.h>
 #include <ctime>
 #include <iostream>

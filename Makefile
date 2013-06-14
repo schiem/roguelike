@@ -5,8 +5,8 @@ CFLAGS = -Wall $(WFLAGS) $(IFLAGS) -g -c
 LDFLAGS = -Wall $(WFLAGS) $(IFLAGS) -g
 
 ASCII = lib/SDL-ASCII-Template
-WORL = src/World
-DGEN = src/World/dungeon_gen
+WORL = src/world
+DGEN = src/world/dungeon_gen
 MISC = src/misc_classes
 CHAR = src/character_classes
 GUI = src/gui
@@ -42,50 +42,50 @@ build/ASCII_Lib.o : def.h ASCII_Lib.h ASCII_Lib.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/DungeonBuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h Dungeon.h
-	$(CC) $(CFLAGS) $(DGEN)/DungeonBuilder.cpp -o $@
+build/dungeonbuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h dungeonbuilder.cpp int_point.h room.h dungeon.h
+	$(CC) $(CFLAGS) $(DGEN)/dungeonbuilder.cpp -o $@
 
-build/Room.o : Room.h Room.cpp int_point.h
-	$(CC) $(CFLAGS) $(DGEN)/Room.cpp -o $@
+build/room.o : room.h room.cpp int_point.h
+	$(CC) $(CFLAGS) $(DGEN)/room.cpp -o $@
 
-build/Character.o : Dungeon.h ASCII_Lib.h ASCII_Lib.cpp def.h Character.h Character.cpp 
-	$(CC) $(CFLAGS) $(CHAR)/Character.cpp -o $@
+build/character.o : dungeon.h ASCII_Lib.h ASCII_Lib.cpp def.h character.h character.cpp 
+	$(CC) $(CFLAGS) $(CHAR)/character.cpp -o $@
 
-build/Main_Character.o : def.h ASCII_Lib.h ASCII_Lib.cpp Character.h Main_Character.cpp
-	$(CC) $(CFLAGS) $(CHAR)/Main_Character.cpp -o $@
+build/main_character.o : def.h ASCII_Lib.h ASCII_Lib.cpp character.h main_character.cpp
+	$(CC) $(CFLAGS) $(CHAR)/main_character.cpp -o $@
 
-build/VirtualEvent.o : VirtualEvent.cpp VirtualEvent.h
-	$(CC) $(CFLAGS) $(GUI)/VirtualEvent.cpp -o $@
+build/virtual_event.o : virtual_event.cpp virtual_event.h
+	$(CC) $(CFLAGS) $(GUI)/virtual_event.cpp -o $@
 
-build/GUI_Cleanup.o : GUI_Cleanup.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI_Cleanup.cpp -o $@
+build/gui_cleanup.o : gui_cleanup.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui_cleanup.cpp -o $@
 
-build/GUI_Render.o : GUI_Render.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI_Render.cpp -o $@
+build/gui_render.o : gui_render.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui_render.cpp -o $@
 
-build/GUI_Loop.o : GUI_Loop.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI_Loop.cpp -o $@
+build/gui_loop.o : gui_loop.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui_loop.cpp -o $@
 
-build/GUI_Init.o : GUI_Init.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI_Init.cpp -o $@
+build/gui_init.o : gui_init.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui_init.cpp -o $@
 
-build/GUI_Event.o : GUI_Event.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI_Event.cpp -o $@
+build/gui_event.o : gui_event.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui_event.cpp -o $@
 
-build/GUI.o : GUI.cpp GUI.h VirtualEvent.h Canvas.h terrain_defs.h
-	$(CC) $(CFLAGS) $(GUI)/GUI.cpp -o $@
+build/gui.o : gui.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+	$(CC) $(CFLAGS) $(GUI)/gui.cpp -o $@
 
-build/Canvas.o : Canvas.h Canvas.cpp DungeonBuilder.h DungeonBuilder.cpp terrain_defs.h Dungeon.h Dungeon.cpp Character.h Main_Character.cpp Chunk.cpp
-	$(CC) $(CFLAGS) $(GUI)/Canvas.cpp -o $@
+build/canvas.o : canvas.h canvas.cpp dungeonbuilder.h dungeonbuilder.cpp terrain_defs.h dungeon.h dungeon.cpp character.h main_character.cpp chunk.cpp
+	$(CC) $(CFLAGS) $(GUI)/canvas.cpp -o $@
 
-build/Dungeon.o :  Dungeon.h Dungeon.cpp int_point.h Room.h terrain_defs.h
-	$(CC) $(CFLAGS) $(DGEN)/Dungeon.cpp -o $@
+build/dungeon.o :  dungeon.h dungeon.cpp int_point.h room.h terrain_defs.h
+	$(CC) $(CFLAGS) $(DGEN)/dungeon.cpp -o $@
 
-build/Chunk.o : Chunk.h Chunk.cpp Dungeon.h DungeonBuilder.h Overworld.h terrain_defs.h
-	$(CC) $(CFLAGS) $(WORL)/Chunk.cpp -o $@
+build/chunk.o : chunk.h chunk.cpp dungeon.h dungeonbuilder.h overworld.h terrain_defs.h
+	$(CC) $(CFLAGS) $(WORL)/chunk.cpp -o $@
 
-build/Overworld.o : Overworld.h Overworld.cpp terrain_defs.h
-	$(CC) $(CFLAGS) $(WORL)/Overworld.cpp -o $@
+build/overworld.o : overworld.h overworld.cpp terrain_defs.h
+	$(CC) $(CFLAGS) $(WORL)/overworld.cpp -o $@
 
 clean :
 	rm -r build roguelike

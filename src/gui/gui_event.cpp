@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "gui.h"
 
 void GUI::OnEvent(SDL_Event* Event)
 {

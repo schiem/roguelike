@@ -7,12 +7,12 @@
 #include <SDL/SDL.h>
 #include <stdlib.h>
 #include <vector>
-#include <Chunk.h>
-#include <Overworld.h>
-#include "DungeonBuilder.h"
-#include "Dungeon.h"
+#include <chunk.h>
+#include <overworld.h>
+#include "dungeonbuilder.h"
+#include "dungeon.h"
 #include "terrain_defs.h"
-#include "Character.h"
+#include "character.h"
 
 using namespace std;
 using namespace tiledef;

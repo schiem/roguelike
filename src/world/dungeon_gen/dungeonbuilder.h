@@ -15,9 +15,9 @@
 #include <math.h> //floor, ceil
 
 #include "int_point.h"
-#include "Room.h"
+#include "room.h"
 #include "terrain_defs.h"
-#include "Dungeon.h"
+#include "dungeon.h"
 #include "ASCII_Lib.h"
 
 using namespace std;

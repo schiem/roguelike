@@ -1,4 +1,4 @@
-#include <Character.h>
+#include <character.h>
 #include <iostream>
 
 Character::Character()

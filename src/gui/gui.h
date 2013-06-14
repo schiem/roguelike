@@ -3,8 +3,8 @@
 
 #include <SDL/SDL.h>
 #include <vector>
-#include "VirtualEvent.h"
-#include "Canvas.h"
+#include "virtual_event.h"
+#include "canvas.h"
 #include "terrain_defs.h"
 
 class GUI : public VirtualEvent {

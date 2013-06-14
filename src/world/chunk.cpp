@@ -1,4 +1,4 @@
-#include <Chunk.h>
+#include <chunk.h>
 using namespace std;
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)

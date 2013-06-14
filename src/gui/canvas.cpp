@@ -1,4 +1,4 @@
-#include "Canvas.h"
+#include "canvas.h"
 
 using namespace std;
 using namespace tiledef;
