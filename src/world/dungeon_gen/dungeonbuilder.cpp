@@ -199,6 +199,16 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
     return Room(tl, br);
 }
 
+/* PRE: Dungeon must be initialized
+ * POST: Resets the num_rooms and main_dungeon variables, effectively
+ * cleaning the dungeon.
+ */
+void DungeonBuilder::reset()
+{
+    num_rooms = 0; 
+    main_dungeon = Dungeon(width, height);
+}
+
 /* PRE: Will be given a Room object.
  * POST: Will return the original number of wall spaces in the room 
  * (corners are not included).

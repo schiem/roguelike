@@ -16,7 +16,8 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
 	x = _x;
 	y = _y;
     Dungeon* temp_d;
-	ProcedurallyBlindDungeonBuilder db(width, height); 
+	//ProcedurallyBlindDB db(width, height); 
+    CorruptiblePBlindDB db(width, height);
 
     //Currently, building a new dungeon just does it right on top of the old dungeon. Which actually
     //produces some pretty cool-looking dungeons. But anyway, we need to actually refresh DungeonBuilder's

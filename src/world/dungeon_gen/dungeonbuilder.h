@@ -45,6 +45,7 @@ class DungeonBuilder
 
 	public:
         DungeonBuilder();
+        virtual void reset();
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
 		Dungeon* get_dungeon();
 };

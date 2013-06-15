@@ -1,0 +1,53 @@
+#!/bin/bash
+# Author: Seth A. Yoder 6/15/2013, the day I got tired of manually renaming things.
+# Description: Refactoring tool for c++ projects. Assumes that the makefile is called "Makefile". Stick this script
+#              in the top level of a project directory.
+# Warning: I haven't checked against very many edge cases. Back up your files before you use this.
+
+
+make clean
+
+echo "Would you like to change a file name? (Y/n)"
+read -e ANSWER
+if [ -z $ANSWER ] || [ $ANSWER == "y" ] || [ $ANSWER == "Y" ] || [ $ANSWER == "yes" ] || [ $ANSWER == "Yes" ]; then
+    echo "Please enter the original file name, without an extension. If you use an extension, I will ignore it anyway.
+All files that match the given name, even if they have different extensions, will be renamed. : "
+    read -e FILENAME
+
+    FILENAME=$(echo "$FILENAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
+    echo "To what would you like to rename the file?"
+    read -e NEWNAME
+
+    NEWNAME=$(echo "$NEWNAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
+
+    sed -i -re "s/(\/| )$FILENAME\./\1$NEWNAME\./g" Makefile
+
+    for i in $(find . -type f | grep -v "\/\.git"); do
+        sed -i -re "s/\#include ([\"<])$FILENAME\.h([\">])/\#include \1$NEWNAME\.h\2/g" $i
+    done
+
+    FILES=$(find . -type f | grep "$FILENAME\.")
+    for i in $FILES; do
+        EXTENSION=$(echo $i | sed -re "s/.*\/[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)/\1/g")
+        FILEPATH=$(echo $i | sed -re "s/(.*\/)[a-zA-Z0-9_-]+[\.]?[a-zA-Z0-9_-]+/\1/g")
+        echo "$FILEPATH$FILENAME$EXTENSION   ---> $FILEPATH$NEWNAME$EXTENSION"
+        mv $i "$FILEPATH$NEWNAME$EXTENSION"
+    done
+fi
+
+echo "Would you like to change a class or function name? (Y/n)"
+read -e ANSWER
+if [ -z $ANSWER ] || [ $ANSWER == "y" ] || [ $ANSWER == "Y" ] || [ $ANSWER == "yes" ] || [ $ANSWER == "Yes" ]; then
+    echo "Please enter the original class/function name: "
+    read -e CLASSNAME
+
+    echo "Please enter your new desired class/function name: "
+    read -e NEWNAME
+
+    for FILE in $(find . -type f| grep --color "\(\.\(cpp\|h\)\|Makefile\)"); do
+        sed -i -re "s/([^a-zA-Z]|^)$CLASSNAME([^a-zA-Z])/\1$NEWNAME\2/g" $FILE
+        if grep -q "$NEWNAME" $FILE; then
+            echo "$FILE modified."
+        fi
+    done
+fi

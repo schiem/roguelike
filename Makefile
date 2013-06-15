@@ -32,7 +32,6 @@ roguelike : $(OBJS)
 build/main.o : src/main.cpp
 	$(CC) $(CFLAGS) src/main.cpp -o $@
 
-
 build/terrain_defs.o : terrain_defs.cpp terrain_defs.h
 	$(CC) $(CFLAGS) $(WORL)/terrain_defs.cpp -o $@
 
@@ -42,11 +41,14 @@ build/ASCII_Lib.o : def.h ASCII_Lib.h ASCII_Lib.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/dungeonbuilder.o : terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h dungeonbuilder.cpp int_point.h room.h dungeon.h
+build/dungeonbuilder.o : def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h dungeonbuilder.cpp dungeon.h
 	$(CC) $(CFLAGS) $(DGEN)/dungeonbuilder.cpp -o $@
 
-build/procedurally_blind_dungeonbuilder.o : procedurally_blind_dungeonbuilder.h procedurally_blind_dungeonbuilder.cpp terrain_defs.h def.h ASCII_Lib.h ASCII_Lib.cpp dungeonbuilder.h int_point.h room.h dungeon.h
-	$(CC) $(CFLAGS) $(DGEN)/procedurally_blind_dungeonbuilder.cpp -o $@
+build/procedurally_blind_db.o : procedurally_blind_db.h procedurally_blind_db.cpp dungeonbuilder.h
+	$(CC) $(CFLAGS) $(DGEN)/procedurally_blind_db.cpp -o $@
+
+build/corruptible_pblind_db.o : corruptible_pblind_db.h corruptible_pblind_db.cpp procedurally_blind_db.cpp
+	$(CC) $(CFLAGS) $(DGEN)/corruptible_pblind_db.cpp -o $@
 
 build/room.o : room.h room.cpp int_point.h
 	$(CC) $(CFLAGS) $(DGEN)/room.cpp -o $@
@@ -54,37 +56,37 @@ build/room.o : room.h room.cpp int_point.h
 build/character.o : dungeon.h ASCII_Lib.h ASCII_Lib.cpp def.h character.h character.cpp 
 	$(CC) $(CFLAGS) $(CHAR)/character.cpp -o $@
 
-build/main_character.o : def.h ASCII_Lib.h ASCII_Lib.cpp character.h main_character.cpp
+build/main_character.o : def.h character.h main_character.cpp
 	$(CC) $(CFLAGS) $(CHAR)/main_character.cpp -o $@
 
 build/virtual_event.o : virtual_event.cpp virtual_event.h
 	$(CC) $(CFLAGS) $(GUI)/virtual_event.cpp -o $@
 
-build/gui_cleanup.o : gui_cleanup.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+build/gui_cleanup.o : gui_cleanup.cpp gui.h
 	$(CC) $(CFLAGS) $(GUI)/gui_cleanup.cpp -o $@
 
-build/gui_render.o : gui_render.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+build/gui_render.o : gui_render.cpp gui.h
 	$(CC) $(CFLAGS) $(GUI)/gui_render.cpp -o $@
 
-build/gui_loop.o : gui_loop.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+build/gui_loop.o : gui_loop.cpp gui.h
 	$(CC) $(CFLAGS) $(GUI)/gui_loop.cpp -o $@
 
-build/gui_init.o : gui_init.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+build/gui_init.o : gui_init.cpp gui.h
 	$(CC) $(CFLAGS) $(GUI)/gui_init.cpp -o $@
 
-build/gui_event.o : gui_event.cpp gui.h virtual_event.h canvas.h terrain_defs.h
+build/gui_event.o : gui_event.cpp gui.h
 	$(CC) $(CFLAGS) $(GUI)/gui_event.cpp -o $@
 
 build/gui.o : gui.cpp gui.h virtual_event.h canvas.h terrain_defs.h
 	$(CC) $(CFLAGS) $(GUI)/gui.cpp -o $@
 
-build/canvas.o : canvas.h canvas.cpp dungeonbuilder.h dungeonbuilder.cpp terrain_defs.h dungeon.h dungeon.cpp character.h main_character.cpp chunk.cpp
+build/canvas.o : canvas.h canvas.cpp character.h main_character.cpp chunk.cpp
 	$(CC) $(CFLAGS) $(GUI)/canvas.cpp -o $@
 
 build/dungeon.o :  dungeon.h dungeon.cpp int_point.h room.h terrain_defs.h
 	$(CC) $(CFLAGS) $(DGEN)/dungeon.cpp -o $@
 
-build/chunk.o : chunk.h chunk.cpp dungeon.h procedurally_blind_dungeonbuilder.h overworld.h terrain_defs.h
+build/chunk.o : chunk.h chunk.cpp dungeon.h procedurally_blind_db.h overworld.h terrain_defs.h
 	$(CC) $(CFLAGS) $(WORL)/chunk.cpp -o $@
 
 build/overworld.o : overworld.h overworld.cpp terrain_defs.h
