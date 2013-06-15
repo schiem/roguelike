@@ -91,7 +91,7 @@ build/overworld.o : overworld.h overworld.cpp terrain_defs.h
 	$(CC) $(CFLAGS) $(WORL)/overworld.cpp -o $@
 
 clean :
-	rm -r build roguelike
+	if [ -x roguelike ]; then rm roguelike; fi; if [ -x build ]; then rm -rf build; fi
 
 what :
 	echo $(OBJS)
