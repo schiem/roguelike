@@ -5,7 +5,7 @@
 # Warning: I haven't checked against very many edge cases. Back up your files before you use this.
 
 
-make clean
+#make clean
 
 echo "Would you like to change a file name? (Y/n)"
 read -e ANSWER
@@ -45,6 +45,7 @@ if [ -z $ANSWER ] || [ $ANSWER == "y" ] || [ $ANSWER == "Y" ] || [ $ANSWER == "y
     read -e NEWNAME
 
     for FILE in $(find . -type f| grep --color "\(\.\(cpp\|h\)\|Makefile\)"); do
+        sed -i -re "s/class $CLASSNAME([^a-zA-Z]|$)/class $NEWNAME\1/g" $FILE
         sed -i -re "s/([^a-zA-Z]|^)$CLASSNAME([^a-zA-Z])/\1$NEWNAME\2/g" $FILE
         if grep -q "$NEWNAME" $FILE; then
             echo "$FILE modified."
