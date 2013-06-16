@@ -22,9 +22,9 @@
 
 using namespace std;
 
-class DungeonBuilder
+class PoopBuilder
 {
-    friend ostream& operator<<(ostream&, const DungeonBuilder&);
+    friend ostream& operator<<(ostream&, const PoopBuilder&);
     protected:
         //variables
 		int width;
@@ -44,7 +44,7 @@ class DungeonBuilder
         IntPoint get_next_point(IntPoint, int) const;
 
 	public:
-        DungeonBuilder();
+        PoopBuilder();
         virtual void reset();
 		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
 		Dungeon* get_dungeon();
