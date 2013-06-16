@@ -15,7 +15,7 @@ class Character
         int x;
         int y;
         //Skills skill[];
-        char sprite;
+		char sprite;
         int armor;
         const Chunk* chunk;
         int depth;

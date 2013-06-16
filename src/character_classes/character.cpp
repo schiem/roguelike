@@ -26,12 +26,6 @@ void Character::display_character(int character, SDL_Surface* ascii, SDL_Surface
 	drawChr(x, y, character, ascii, screen, color); 
 }
 
-/*
-void Character::update_dungeon(Dungeon _dungeon){
-	dungeon = _dungeon;
-}
-*/
-
 /* PRE: None
  * POST: Returns true if the character is still alive (health is > max_health)
 */

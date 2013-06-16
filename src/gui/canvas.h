@@ -2,7 +2,7 @@
 #define _CANVAS_H
 
 #define STARTING_WIDTH 100
-#define STARTING_HEIGHT 100
+#define STARTING_HEIGHT 50
 
 #include <SDL/SDL.h>
 #include <stdlib.h>
@@ -18,11 +18,14 @@ using namespace std;
 using namespace tiledef;
 class Canvas 
 {
+	typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         Chunk chunk;
         std::vector<std::vector<Tile> > canvas;
-    
+   		std::vector<std::vector<Chunk> > chunk_map; //temporary, we'll need to serialize this
+		std::vector<std::vector<Tile> > buffer;
+		void update_buffer();
     public:
         Canvas();
         //TODO do something about these two. Events.cpp?
