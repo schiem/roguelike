@@ -1,54 +1,81 @@
 #!/bin/bash
 # Author: Seth A. Yoder 6/15/2013, the day I got tired of manually renaming things.
-# Description: Refactoring tool for c++ projects. Assumes that the makefile is called "Makefile". Stick this script
-#              in the top level of a project directory.
-# Warning: I haven't checked against very many edge cases. Back up your files before you use this.
+# Description: Refactoring tool for c++ projects. Stick this script in the top level of your project directory. I'm
+#              currently assuming your makefile is there, and assuming it has "akefile" in its name, and that there is
+#              only one file named as such.
 
+# I haven't checked against every edge case. Back up your files before you use this. However, if anything goes wrong,
+# nothing should happen besides compiler errors.
 
 #make clean
 
-echo "Would you like to change a file name? (Y/n)"
-read -e ANSWER
-if [ -z $ANSWER ] || [ $ANSWER == "y" ] || [ $ANSWER == "Y" ] || [ $ANSWER == "yes" ] || [ $ANSWER == "Yes" ]; then
-    echo "Please enter the original file name, without an extension. If you use an extension, I will ignore it anyway.
-All files that match the given name, even if they have different extensions, will be renamed. : "
-    read -e FILENAME
+echo "1) Change a class name and all references"
+echo -e "2) Change a file name and all corresponding \043include statements"
+read -p "Choose an option, or enter anything else to quit: " ANSWER
 
-    FILENAME=$(echo "$FILENAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
-    echo "To what would you like to rename the file?"
-    read -e NEWNAME
-
-    NEWNAME=$(echo "$NEWNAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
-
-    sed -i -re "s/(\/| )$FILENAME\./\1$NEWNAME\./g" Makefile
-
-    for i in $(find . -type f | grep -v "\/\.git"); do
-        sed -i -re "s/\#include ([\"<])$FILENAME\.h([\">])/\#include \1$NEWNAME\.h\2/g" $i
-    done
-
-    FILES=$(find . -type f | grep "$FILENAME\.")
-    for i in $FILES; do
-        EXTENSION=$(echo $i | sed -re "s/.*\/[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)/\1/g")
-        FILEPATH=$(echo $i | sed -re "s/(.*\/)[a-zA-Z0-9_-]+[\.]?[a-zA-Z0-9_-]+/\1/g")
-        echo "$FILEPATH$FILENAME$EXTENSION   ---> $FILEPATH$NEWNAME$EXTENSION"
-        mv $i "$FILEPATH$NEWNAME$EXTENSION"
-    done
-fi
-
-echo "Would you like to change a class or function name? (Y/n)"
-read -e ANSWER
-if [ -z $ANSWER ] || [ $ANSWER == "y" ] || [ $ANSWER == "Y" ] || [ $ANSWER == "yes" ] || [ $ANSWER == "Yes" ]; then
+if [ $ANSWER == "1" ]; then
     echo "Please enter the original class/function name: "
     read -e CLASSNAME
 
     echo "Please enter your new desired class/function name: "
     read -e NEWNAME
+    ANYMODIFIED=false
 
     for FILE in $(find . -type f| grep --color "\(\.\(cpp\|h\)\|Makefile\)"); do
-        sed -i -re "s/class $CLASSNAME([^a-zA-Z]|$)/class $NEWNAME\1/g" $FILE
-        sed -i -re "s/([^a-zA-Z]|^)$CLASSNAME([^a-zA-Z])/\1$NEWNAME\2/g" $FILE
-        if grep -q "$NEWNAME" $FILE; then
+        if $(grep -Eq " $CLASSNAME([^a-zA-Z]|$)" $FILE) || $(grep -Eq "[^a-zA-Z|^]$CLASSNAME[^a-zA-Z]" $FILE) ; then 
+            sed -i -re "s/ $CLASSNAME([^a-zA-Z]|$)/ $NEWNAME\1/g" $FILE
+            sed -i -re "s/([^a-zA-Z]|^)$CLASSNAME([^a-zA-Z])/\1$NEWNAME\2/g" $FILE
             echo "$FILE modified."
+            ANYMODIFIED=true
         fi
     done
+    if ! $ANYMODIFIED; then
+        echo "No classes with that name were found. If you believe this is in error, report the issue!"
+    fi
+fi
+
+if [ $ANSWER == "2" ]; then
+    echo "Please enter the original file name, without an extension. If you use an extension, I will ignore it anyway."
+    read -p "All files that match the given name, even if they have different extensions, will be renamed: " FILENAME
+
+    FILENAME=$(echo "$FILENAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
+    read -p "Enter your new file name: " NEWNAME
+
+    NEWNAME=$(echo "$NEWNAME" | sed -re "s/([a-zA-Z0-9_-]+)([\.]?[a-zA-Z0-9_-]+)?/\1/g" )
+
+    echo ""
+    MAKEFILE=$(ls . | grep akefile) #lol
+    if [ -r $MAKEFILE ]; then
+        if grep -qE "(\/| )$FILENAME\." $MAKEFILE; then
+            echo "$MAKEFILE modified."
+            sed -i -re "s/(\/| )$FILENAME\./\1$NEWNAME\./g" $MAKEFILE
+        fi
+    fi
+
+    INCLUDESMODIFIED=false
+    for i in $(find . -type f | grep -v "\/\.git"); do
+        if grep -qE "\#include ([\"<])$FILENAME\.h([\">])" $i ; then
+            INCLUDESMODIFIED=true
+            sed -i -re "s/\#include ([\"<])$FILENAME\.h([\">])/\#include \1$NEWNAME\.h\2/g" $i
+            echo "$i modified."
+        fi
+    done
+
+    NAMESMODIFIED=false
+    FILES=$(find . -type f | grep "$FILENAME\.")
+    for i in $FILES; do
+        NAMESMODIFIED=true
+        EXTENSION=$(echo $i | sed -re "s/.*\/[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)/\1/g")
+        FILEPATH=$(echo $i | sed -re "s/(.*\/)[a-zA-Z0-9_-]+[\.]?[a-zA-Z0-9_-]+/\1/g")
+        echo "$FILEPATH$FILENAME$EXTENSION   ----->   $FILEPATH$NEWNAME$EXTENSION"
+        mv $i "$FILEPATH$NEWNAME$EXTENSION"
+    done
+
+    if ! $INCLUDESMODIFIED; then
+        echo -e "No \043includes were found for the file you renamed."
+    fi
+
+    if ! $NAMESMODIFIED; then
+        echo "No files with that name were found. If you believe this is in error, report the issue!"
+    fi
 fi
