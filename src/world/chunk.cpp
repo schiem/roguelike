@@ -7,6 +7,7 @@ Chunk::Chunk(){
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)
 {
+	cout<<"generating"<<endl;
 	width = _width;
 	height= _height;
 	srand(time(NULL));
@@ -19,16 +20,7 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
 	//ProcedurallyBlindDB db(width, height); 
     CorruptiblePBlindDB db(width, height);
 
-    //Currently, building a new dungeon just does it right on top of the old dungeon. Which actually
-    //produces some pretty cool-looking dungeons. But anyway, we need to actually refresh PoopBuilder's
-    //dungeon... Possibly by reconstructing db on every new loop? So then, the problem with that will be that
-    //sometimes there will be no way for the character to traverse between floors (if no rooms overlap). A solution
-    //there is to pick the last room in the "rooms" vector as the "destination" room, which will have stairs to
-    //the lower level. The lower level of the dungeon would then be built off of that point. This probably means
-    //making some changes to build_pblind_dungeon().
-	cout<<"depth:"<<depth<<endl;
 	for (int i=0; i < depth; i++){
-		cout<<"floor "<<i<<" reporting"<<endl;
 		db.build_dungeon(5, 5, 5);
         temp_d = db.get_dungeon();
 		dungeon_floors[i] = *temp_d;
@@ -66,3 +58,14 @@ int Chunk::get_depth() const
 {
 	return depth;
 }
+
+int Chunk::get_x() const
+{
+	return x;
+}
+
+int Chunk::get_y() const
+{
+	return y;
+}
+

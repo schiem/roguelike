@@ -42,7 +42,7 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-    
+    std::cout<<"sprite:"<<chunk->get_tile(depth, y+y_change, x+x_change).sprite<<std::endl;
 	if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
 		x += x_change;
 		y += y_change;
@@ -75,3 +75,10 @@ int Character::get_depth(){
 	return depth;
 }
 
+int Character::get_chunk_x(){
+	return chunk->get_x();
+}
+
+int Character::get_chunk_y(){
+	return chunk->get_y();
+}

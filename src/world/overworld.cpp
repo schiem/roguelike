@@ -36,6 +36,7 @@ Overworld::Overworld(int _width, int _height)
 				ground[i][j] = DIRT;
 			}
 		}
+		ground[1][1] = TREE;
 	}
 }
 

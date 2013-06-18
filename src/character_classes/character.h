@@ -32,6 +32,9 @@ class Character
         int get_y_loc();
         int get_char();
 		int get_depth();		
+		int get_chunk_x();
+		int get_chunk_y();
+		
 		//terrain get_surroundings
 
 };

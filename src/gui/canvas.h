@@ -21,7 +21,8 @@ class Canvas
 	typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        Chunk chunk;
+		int chunk_x;
+		int chunk_y;
         std::vector<std::vector<Tile> > canvas;
    		std::vector<std::vector<Chunk> > chunk_map; //temporary, we'll need to serialize this
 		std::vector<std::vector<Tile> > buffer;
@@ -31,7 +32,7 @@ class Canvas
         //TODO do something about these two. Events.cpp?
         //The way the project is now structured, yeah.  Typical games consist of 5 sections:
 		//init, input, process, display, cleanup.  As it is, we've started dividing those into files, but we don't have it the whole way yet. Most of those are sitting in Display, and could be given their own files. 
-		PoopBuilder db;
+		PoopBuilder db;  //wut?
         Main_Character main_char;
         void refresh();
         void resize_canvas(int, int);
