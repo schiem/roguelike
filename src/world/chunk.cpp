@@ -7,65 +7,65 @@ Chunk::Chunk(){
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)
 {
-	cout<<"generating"<<endl;
-	width = _width;
-	height= _height;
-	srand(time(NULL));
-	depth = rand() % 6;
-	//dungeon = new Dungeon[depth];
+    cout<<"generating"<<endl;
+    width = _width;
+    height= _height;
+    srand(time(NULL));
+    depth = rand() % 6;
+    //dungeon = new Dungeon[depth];
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
-	x = _x;
-	y = _y;
+    x = _x;
+    y = _y;
     Dungeon* temp_d;
-	//ProcedurallyBlindDB db(width, height); 
+    //ProcedurallyBlindDB db(width, height); 
     CorruptiblePBlindDB db(width, height);
 
-	for (int i=0; i < depth; i++){
-		db.build_dungeon(5, 5, 5);
+    for (int i=0; i < depth; i++){
+        db.build_dungeon(5, 5, 5);
         temp_d = db.get_dungeon();
-		dungeon_floors[i] = *temp_d;
-	}
-	//generate the overworld
-	overworld = Overworld(width, height);
+        dungeon_floors[i] = *temp_d;
+    }
+    //generate the overworld
+    overworld = Overworld(width, height);
 }
 
 /*
 Chunk::~Chunk(){
-	delete []dungeon;
+    delete []dungeon;
 }
 */
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth){
-	if (depth == -1){
-		return overworld.get_ground();
-	}
-	else{
-		return dungeon_floors[depth].get_dungeon();
-	}
+    if (depth == -1){
+        return overworld.get_ground();
+    }
+    else{
+        return dungeon_floors[depth].get_dungeon();
+    }
 }
 
 Tile Chunk::get_tile(int depth, int col, int row) const
 {
-	if (depth ==-1){
-		return overworld.get_tile(col, row);
-	}
-	else{
-		return dungeon_floors[depth].get_tile(col, row);
-	}
+    if (depth ==-1){
+        return overworld.get_tile(col, row);
+    }
+    else{
+        return dungeon_floors[depth].get_tile(col, row);
+    }
 }
 
 int Chunk::get_depth() const
 {
-	return depth;
+    return depth;
 }
 
 int Chunk::get_x() const
 {
-	return x;
+    return x;
 }
 
 int Chunk::get_y() const
 {
-	return y;
+    return y;
 }
 

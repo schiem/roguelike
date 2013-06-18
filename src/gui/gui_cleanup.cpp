@@ -2,6 +2,6 @@
 
 void GUI::OnCleanup()
 {
-	SDL_FreeSurface (ascii);
-	SDL_Quit();
+    SDL_FreeSurface (ascii);
+    SDL_Quit();
 }

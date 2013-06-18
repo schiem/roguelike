@@ -7,7 +7,7 @@
 #include <chunk.h>
 class Character
 {
-	protected:
+    protected:
         //variables
         int current_health;
         int max_health;
@@ -15,27 +15,27 @@ class Character
         int x;
         int y;
         //Skills skill[];
-		char sprite;
+        char sprite;
         int armor;
         const Chunk* chunk;
         int depth;
-		//methods
-	public:
+        //methods
+    public:
         Character();
-		Character(int, int, int, int, const Chunk*, int);
-		void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
-		bool is_alive() const;
-		void move(int, int);
-		void take_damage(int);
+        Character(int, int, int, int, const Chunk*, int);
+        void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
+        bool is_alive() const;
+        void move(int, int);
+        void take_damage(int);
         void attack(int x_direction, int y_direction);
-		int get_x_loc();
+        int get_x_loc();
         int get_y_loc();
         int get_char();
-		int get_depth();		
-		int get_chunk_x();
-		int get_chunk_y();
-		
-		//terrain get_surroundings
+        int get_depth();        
+        int get_chunk_x();
+        int get_chunk_y();
+        
+        //terrain get_surroundings
 
 };
 
@@ -47,8 +47,8 @@ class Main_Character : public Character{
    public:
         Main_Character();
         Main_Character(int, int, int, int, const Chunk*, int);
-		void perform_action_cont();
-		void perform_action_press(SDLKey);
+        void perform_action_cont();
+        void perform_action_press(SDLKey);
 };
 
 #endif

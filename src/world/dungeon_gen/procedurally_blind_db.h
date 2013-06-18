@@ -3,7 +3,7 @@
 
 #include "dungeonbuilder.h"
 
-class ProcedurallyBlindDB : public PoopBuilder 
+class ProcedurallyBlindDB : public DungeonBuilder 
 {
     protected:
         //methods

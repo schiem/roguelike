@@ -22,18 +22,18 @@
 
 using namespace std;
 
-class PoopBuilder
+class DungeonBuilder
 {
-    friend ostream& operator<<(ostream&, const PoopBuilder&);
+    friend ostream& operator<<(ostream&, const DungeonBuilder&);
     protected:
         //variables
-		int width;
-		int height;
+        int width;
+        int height;
         int num_rooms;
         Dungeon main_dungeon;
         //methods
-		bool rolled_over(int) const;
-		bool is_empty_space(IntPoint) const;
+        bool rolled_over(int) const;
+        bool is_empty_space(IntPoint) const;
         bool point_is_beyond_bounds(IntPoint) const;
         string edges_collide_with_something(Room&) const;
         int determine_which_wall(IntPoint) const;
@@ -43,11 +43,11 @@ class PoopBuilder
         IntPoint rand_wall_block(const Room&);
         IntPoint get_next_point(IntPoint, int) const;
 
-	public:
-        PoopBuilder();
+    public:
+        DungeonBuilder();
         virtual void reset();
-		void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
-		Dungeon* get_dungeon();
+        void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
+        Dungeon* get_dungeon();
 };
 
 #endif

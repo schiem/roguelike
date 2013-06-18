@@ -26,10 +26,10 @@ class Dungeon
        void set_tile(int, int, Tile);
        void set_tile(IntPoint, Tile);
        const std::vector<std::vector<Tile> >& get_dungeon();
-	   Dungeon(int, int);
+       Dungeon(int, int);
        Dungeon(const Dungeon&);
        Dungeon();
-	   Dungeon& operator= (const Dungeon& d);
+       Dungeon& operator= (const Dungeon& d);
 };
 
 #endif

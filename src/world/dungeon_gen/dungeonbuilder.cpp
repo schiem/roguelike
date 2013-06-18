@@ -2,19 +2,19 @@
 
 using namespace tiledef;
 
-PoopBuilder::PoopBuilder()
+DungeonBuilder::DungeonBuilder()
 {
 }
 
-void PoopBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const
+void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const
 {
-	for(int i = 0; i < height; i++)
-	{
-		for(int j = 0; j < width; j++)
-		{
-			drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
-		}
-	}
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            drawChr(i, j, main_dungeon.get_tile(i, j).char_count, ascii, screen, color);
+        }
+    }
 }
 
 /* PRE: Will be given :int given:, a number under 100.
@@ -23,17 +23,17 @@ void PoopBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) cons
  * Will return true if result <= given; will return false if 
  * result > given.
  */
-bool PoopBuilder::rolled_over(int given) const
+bool DungeonBuilder::rolled_over(int given) const
 {
-	int generated = rand() % 100;
-	if(generated <= given)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    int generated = rand() % 100;
+    if(generated <= given)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 /* PRE: Will be given :IntPoint point:
@@ -41,7 +41,7 @@ bool PoopBuilder::rolled_over(int given) const
  * POST: Will determine whether or not the point is an empty
  * space.
  */
-bool PoopBuilder::is_empty_space(IntPoint point) const
+bool DungeonBuilder::is_empty_space(IntPoint point) const
 {
     return ((main_dungeon.get_tile(point) == EMPTY) || (main_dungeon.get_tile(point) == PATH));
 }
@@ -51,7 +51,7 @@ bool PoopBuilder::is_empty_space(IntPoint point) const
  * POST: Will determine whether or not the given point is beyond the 
  * bounds of the dungeon.
  */
-bool PoopBuilder::point_is_beyond_bounds(IntPoint point) const
+bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const
 {
     if((point.row < 0) or (point.row >= main_dungeon.height))
     {
@@ -71,7 +71,7 @@ bool PoopBuilder::point_is_beyond_bounds(IntPoint point) const
  *       Order: Top, right, bottom, left. A 1 means something collided,
  *       and a 0 means nothing collided.
  */
-string PoopBuilder::edges_collide_with_something(Room& r) const
+string DungeonBuilder::edges_collide_with_something(Room& r) const
 {
     string bin_string = "0000";
     for(int row = r.tl.row; row <= r.br.row; row++)
@@ -110,7 +110,7 @@ string PoopBuilder::edges_collide_with_something(Room& r) const
  * POST: Will determine which wall of the room the point lies on based
  *       on the surrounding tiles.
  */
-int PoopBuilder::determine_which_wall(IntPoint point) const
+int DungeonBuilder::determine_which_wall(IntPoint point) const
 {
     int direction;
 
@@ -153,7 +153,7 @@ int PoopBuilder::determine_which_wall(IntPoint point) const
  * POST: If that row and column is not currently a PATH tile, set it to a 
  *       WALL tile.
  */
-void PoopBuilder::set_wall_if_not_path(int a, int b) 
+void DungeonBuilder::set_wall_if_not_path(int a, int b) 
 {
     if(main_dungeon.get_tile(a, b).tile_id != 4)
     {
@@ -166,7 +166,7 @@ void PoopBuilder::set_wall_if_not_path(int a, int b)
  * 
  * POST: Will draw a room on the dungeon array with the given parameters.
  */
-Room PoopBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
+Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
 {
     set_wall_if_not_path(tl.row, tl.col);
     set_wall_if_not_path(tl.row, br.col);
@@ -203,7 +203,7 @@ Room PoopBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
  * POST: Resets the num_rooms and main_dungeon variables, effectively
  * cleaning the dungeon.
  */
-void PoopBuilder::reset()
+void DungeonBuilder::reset()
 {
     num_rooms = 0; 
     main_dungeon = Dungeon(width, height);
@@ -213,7 +213,7 @@ void PoopBuilder::reset()
  * POST: Will return the original number of wall spaces in the room 
  * (corners are not included).
  */
-int PoopBuilder::get_wall_count(const Room &R) const
+int DungeonBuilder::get_wall_count(const Room &R) const
 {
     return (R.br.row - R.tl.row - 1) * 2 + (R.br.col - R.tl.col - 1) * 2;
 }
@@ -222,7 +222,7 @@ int PoopBuilder::get_wall_count(const Room &R) const
  * PRE: Will be given a Room object.
  * POST: Will return a random wall block that lies on the circumference of the given room.
  */
-IntPoint PoopBuilder::rand_wall_block(const Room &current_room)
+IntPoint DungeonBuilder::rand_wall_block(const Room &current_room)
 { 
     int height = (current_room.br.row - current_room.tl.row) - 1;
     int width = (current_room.br.col - current_room.tl.col) - 1;
@@ -262,7 +262,7 @@ IntPoint PoopBuilder::rand_wall_block(const Room &current_room)
  *      :int direction:, which refers to the proposed direction.
  * POST: Will return the next point given the proposed direction.
  */
-IntPoint PoopBuilder::get_next_point(IntPoint this_point, int direction) const
+IntPoint DungeonBuilder::get_next_point(IntPoint this_point, int direction) const
 {
     IntPoint next_point = this_point;
     switch (direction)
@@ -284,7 +284,7 @@ IntPoint PoopBuilder::get_next_point(IntPoint this_point, int direction) const
     return next_point;
 }   
 
-Dungeon* PoopBuilder::get_dungeon(){
+Dungeon* DungeonBuilder::get_dungeon(){
 
-	return &main_dungeon;
+    return &main_dungeon;
 }

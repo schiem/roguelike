@@ -13,27 +13,27 @@
 using namespace tiledef;
 using namespace std;
 class Chunk{
-	typedef std::vector<std::vector<Tile> > TileMatrix;
-	private:
-		int x;
-		int y;
-		int depth;
-		//Dungeon* dungeon;
+    typedef std::vector<std::vector<Tile> > TileMatrix;
+    private:
+        int x;
+        int y;
+        int depth;
+        //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
-		Overworld overworld;
-	public:
-		Chunk(int, int, int, int);
-		int height;
-		int width;
-		Chunk();
-		const std::vector<std::vector<Tile> >& get_floor(int);
-		Tile get_tile(int, int, int) const;
-		int get_depth() const;
-		int get_x() const;
-		int get_y() const;
+        Overworld overworld;
+    public:
+        Chunk(int, int, int, int);
+        int height;
+        int width;
+        Chunk();
+        const std::vector<std::vector<Tile> >& get_floor(int);
+        Tile get_tile(int, int, int) const;
+        int get_depth() const;
+        int get_x() const;
+        int get_y() const;
 
 };
 
 #endif
 
-					
+                    

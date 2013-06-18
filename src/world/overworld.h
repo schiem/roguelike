@@ -11,19 +11,19 @@
 
 class Overworld
 {
-	typedef std::vector<std::vector<Tile> > TileMatrix;
+    typedef std::vector<std::vector<Tile> > TileMatrix;
 
-	private:
-		TileMatrix ground;
+    private:
+        TileMatrix ground;
 
-	public:
-		int width;
-		int height;
-		Tile get_tile(int, int) const;
-		void set_tile(int, int, Tile);
-		Overworld(int, int);
-		Overworld();
-		const std::vector<std::vector<Tile> >& get_ground();
+    public:
+        int width;
+        int height;
+        Tile get_tile(int, int) const;
+        void set_tile(int, int, Tile);
+        Overworld(int, int);
+        Overworld();
+        const std::vector<std::vector<Tile> >& get_ground();
 };
 
 #endif

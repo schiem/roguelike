@@ -53,7 +53,7 @@ Dungeon::Dungeon(int _width, int _height)
 }
 
 Dungeon& Dungeon::operator= (const Dungeon& d){
-	dungeon = d.dungeon;
+    dungeon = d.dungeon;
     width = d.width;
     height = d.height;
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
@@ -61,7 +61,7 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     for(int i = 0; i < 2; i++) {
         this->rooms[i] = d.rooms[i];
     }
-	return *this;
+    return *this;
 }
 
 
@@ -87,6 +87,6 @@ void Dungeon::set_tile(IntPoint point, Tile theTile)
 }
 
 const std::vector<std::vector<Tile> >&  Dungeon::get_dungeon(){
-	return dungeon;
+    return dungeon;
 }
 

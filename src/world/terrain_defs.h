@@ -3,15 +3,15 @@
 #include <def.h>
 
 struct Tile{
-	int char_count;
+    int char_count;
     int tile_id;
-	char sprite;
-	bool can_be_moved_through;
-	bool operator==(const Tile& rhs) const{
-		return this->sprite == rhs.sprite;
-		}
-	int color;
-	};
+    char sprite;
+    bool can_be_moved_through;
+    bool operator==(const Tile& rhs) const{
+        return this->sprite == rhs.sprite;
+        }
+    int color;
+    };
 
 namespace tiledef {
 
@@ -22,7 +22,7 @@ namespace tiledef {
     //static const Tile PATH = {111, 'o', true};
     extern Tile PATH;
     extern Tile MAIN_CHAR; 
-	extern Tile TREE;
+    extern Tile TREE;
 }
 
 #endif

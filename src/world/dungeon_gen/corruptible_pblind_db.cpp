@@ -53,14 +53,17 @@ CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) :
  */
 void CorruptiblePBlindDB::corrupt_walls()
 { 
+    for(int i = 0; i < num_rooms; i++) {
+        Room &current_room = main_dungeon.rooms[i];
     
+    }   
 }
 
 void CorruptiblePBlindDB::build_dungeon(int target, int deviation, int squareness)
 {   
-	reset();
-	bool dungeon_is_awesome;
-	build_start_room();
+    reset();
+    bool dungeon_is_awesome;
+    build_start_room();
     int tries = 0;
     do {
         tries++;

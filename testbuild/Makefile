@@ -32,8 +32,8 @@ build/test.o : test.cpp
 build/int_point.o : int_point.h int_point.cpp
 	$(CC) $(CFLAGS) $(MISC)/int_point.cpp -o $@
 
-build/PoopBuilder.o : PoopBuilder.h PoopBuilder.cpp int_point.h Room.h
-	$(CC) $(CFLAGS) $(DGEN)/PoopBuilder.cpp -o $@
+build/DungeonBuilder.o : DungeonBuilder.h DungeonBuilder.cpp int_point.h Room.h
+	$(CC) $(CFLAGS) $(DGEN)/DungeonBuilder.cpp -o $@
 
 build/Room.o : Room.h Room.cpp int_point.h
 	$(CC) $(CFLAGS) $(DGEN)/Room.cpp -o $@

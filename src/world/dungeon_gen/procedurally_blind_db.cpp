@@ -17,16 +17,16 @@ ProcedurallyBlindDB::ProcedurallyBlindDB()
  */
 ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed)
 {
-	width = _width;
-	height = _height;
+    width = _width;
+    height = _height;
     num_rooms = 0;
 
-	if(width > MAX_WIDTH) {
-		width = MAX_WIDTH;
-	}
-	if(height > MAX_HEIGHT) {
-		height = MAX_HEIGHT;
-	}
+    if(width > MAX_WIDTH) {
+        width = MAX_WIDTH;
+    }
+    if(height > MAX_HEIGHT) {
+        height = MAX_HEIGHT;
+    }
 
     main_dungeon = Dungeon(width, height);
     srand(seed);
@@ -276,9 +276,9 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
 void ProcedurallyBlindDB::build_dungeon(int target, 
                                                    int deviation, int squareness)
 {   
-	reset();
-	bool dungeon_is_awesome;
-	build_start_room();
+    reset();
+    bool dungeon_is_awesome;
+    build_start_room();
     int tries = 0;
     do {
         tries++;
