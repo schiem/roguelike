@@ -58,7 +58,8 @@ void Canvas::update_buffer()
         for(int j=main_char.get_chunk_y()-1;j<=main_char.get_chunk_y()+1;j++) {
             for (int a=0;a<STARTING_HEIGHT;a++) {
                 for (int b=0;b<STARTING_WIDTH;b++) {
-                    buffer[a + ((x * STARTING_HEIGHT)-1) * (x>0)][b + ((y * STARTING_WIDTH)-1) * (y>0)] = chunk_map[i][j].get_tile(-1, a, b);  //this is gross, i'm so sorry.
+                     //this is gross, i'm so sorry.
+                    buffer[a + ((x * STARTING_HEIGHT)-1) * (x>0)][b + ((y * STARTING_WIDTH)-1) * (y>0)] = chunk_map[i][j].get_tile(-1, a, b); 
                 }
             }
             y++;
