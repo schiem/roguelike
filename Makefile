@@ -1,6 +1,6 @@
 CC = g++
 IFLAGS = -I. -I$(DGEN) -I$(MISC) -I$(CHAR) -I$(WORL) -I$(ASCII) -I$(GUI)
-WFLAGS = -Wno-unused-variable -Wno-sign-compare
+#WFLAGS = -Wno-unused-variable -Wno-sign-compare
 CFLAGS = -Wall $(WFLAGS) $(IFLAGS) -g -c 
 LDFLAGS = -Wall $(WFLAGS) $(IFLAGS) -g
 

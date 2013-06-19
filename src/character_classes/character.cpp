@@ -45,7 +45,7 @@ void Character::move(int x_change, int y_change){
     if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
         x += x_change;
         y += y_change;
-}
+    }
 }
 
 /* PRE: Takes damage to reduce a character's health by
@@ -55,7 +55,7 @@ void Character::take_damage(int damage){
     current_health -= damage;
     if (is_alive() == false){
         //delete the character, end the game
-        }
+    }
 }
 
 void Character::set_x(int _x)
