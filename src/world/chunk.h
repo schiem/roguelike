@@ -15,6 +15,7 @@ using namespace std;
 class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
+        bool initialized;
         int x;
         int y;
         int depth;
@@ -31,6 +32,7 @@ class Chunk{
         int get_depth() const;
         int get_x() const;
         int get_y() const;
+        bool is_initialized() const;
 
 };
 

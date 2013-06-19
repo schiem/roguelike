@@ -10,7 +10,7 @@ Character::Character()
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, int _sprite, Chunk const *_chunk, int _depth)
+Character::Character(int _max_health, int _x, int _y, int _sprite, Chunk  *_chunk, int _depth)
 {
     current_health = _max_health;
     max_health = _max_health;
@@ -42,7 +42,6 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-    std::cout<<"sprite:"<<chunk->get_tile(depth, y+y_change, x+x_change).sprite<<std::endl;
     if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
         x += x_change;
         y += y_change;
@@ -58,6 +57,17 @@ void Character::take_damage(int damage){
         //delete the character, end the game
         }
 }
+
+void Character::set_x(int _x)
+{
+    x = _x;
+}
+
+void Character::set_y(int _y)
+{
+    y = _y;
+}
+
 
 int Character::get_x_loc(){
     return x;
@@ -81,4 +91,8 @@ int Character::get_chunk_x(){
 
 int Character::get_chunk_y(){
     return chunk->get_y();
+}
+
+void Character::update_dungeon(Chunk *_chunk){
+    chunk = _chunk;
 }

@@ -1,5 +1,5 @@
 #include  "canvas.h"
-
+#include <iostream>
 using namespace std;
 using namespace tiledef;
 
@@ -18,31 +18,79 @@ Canvas::Canvas()
         main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][5], -1);
         canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
         update_buffer();
-    }
+}
 
 
-    void Canvas::refresh()
+void Canvas::refresh()
+{
+    if(out_of_bounds())
     {
-        if(main_char.get_depth() >=0)
-        {
-            for(int i = 0; i < STARTING_HEIGHT; i++) {
-                for(int j = 0; j < STARTING_WIDTH; j++) {
-                    canvas[i][j] = chunk_map[chunk_x][chunk_y].get_tile(main_char.get_depth(),i, j);
-                }
+        update_chunk();
+        update_buffer();
+    }
+    if(main_char.get_depth() >=0)
+    {
+        for(int i = 0; i < STARTING_HEIGHT; i++) {
+            for(int j = 0; j < STARTING_WIDTH; j++) {
+                canvas[i][j] = chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(),i, j);
             }
-            canvas[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
         }
-        else
+        canvas[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
+    }
+    else
+    {
+        for(int i = 0; i < STARTING_HEIGHT; i++) //STARTING_HEIGHT is actually screen height, same for STARTING_WIDTH
         {
-            for(int i = 0; i < STARTING_HEIGHT; i++) //STARTING_HEIGHT is actually screen height, same for STARTING_WIDTH
-            {
-                for (int j = 0; j < STARTING_WIDTH; j++) {
-                    canvas[i][j] = buffer[(STARTING_HEIGHT + main_char.get_y_loc()) - (STARTING_HEIGHT/2) + i][(STARTING_WIDTH + main_char.get_x_loc()) - (STARTING_WIDTH/2) + j];
-                }
+            for (int j = 0; j < STARTING_WIDTH; j++) {
+                canvas[i][j] = buffer[(STARTING_HEIGHT + main_char.get_y_loc()) - (STARTING_HEIGHT/2) + i][(STARTING_WIDTH + main_char.get_x_loc()) - (STARTING_WIDTH/2) + j];
             }
-            canvas[25][50] = MAIN_CHAR;
+        }
+        canvas[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
         }
     }
+
+
+
+bool Canvas::out_of_bounds()
+{
+    return (main_char.get_x_loc() < 0 || main_char.get_x_loc() >= STARTING_WIDTH || main_char.get_y_loc() < 0 || main_char.get_y_loc() >= STARTING_HEIGHT);
+}
+
+void Canvas::update_chunk()
+{
+    int x = main_char.get_chunk_x();
+    int y = main_char.get_chunk_y();
+
+    
+    if (main_char.get_x_loc() < 0 )
+    {
+        std::cout<<"1"<<std::endl;
+        x -= 1;
+        main_char.set_x(STARTING_WIDTH-1);
+    }
+    else if (main_char.get_x_loc() >= STARTING_WIDTH)
+    {
+        std::cout<<"2"<<std::endl;
+        x += 1;
+        main_char.set_x(0);
+    }
+    if(main_char.get_y_loc() < 0)
+    {
+        std::cout<<"3"<<std::endl;
+        y += 1;
+        main_char.set_y(STARTING_HEIGHT-1);
+    }
+    else if (main_char.get_y_loc()>= STARTING_HEIGHT)
+    {
+        std::cout<<"4"<<std::endl;
+        y -= 1;
+        main_char.set_y(0);
+    }
+    
+    main_char.update_dungeon(&chunk_map[y][x]);
+    std::cout<<main_char.get_chunk_y()<<" "<<main_char.get_chunk_x()<<std::endl;
+}
+
 
 /*
 This function is an abomination, a sin against code.
@@ -54,11 +102,24 @@ void Canvas::update_buffer()
 {
     int x = 0;
     int y = 0;
-    for(int i=main_char.get_chunk_x() - 1;i<=main_char.get_chunk_x()+1;i++) {
-        for(int j=main_char.get_chunk_y()-1;j<=main_char.get_chunk_y()+1;j++) {
+    for(int i=main_char.get_chunk_y() - 1;i<=main_char.get_chunk_y()+1;i++) {
+        if(chunk_map.size() < i)
+        {
+            chunk_map.resize(i);
+        }
+        for(int j=main_char.get_chunk_x()-1;j<=main_char.get_chunk_x()+1;j++) {
+            if (chunk_map[i].size() < j)
+            {
+                chunk_map.resize(j);
+            }
+            if (chunk_map[i][j].is_initialized() == false)
+            {
+                chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
+            }
+            std::cout<<"y: "<<i<< " x: "<<j<<std::endl;
             for (int a=0;a<STARTING_HEIGHT;a++) {
                 for (int b=0;b<STARTING_WIDTH;b++) {
-                    buffer[a + ((x * STARTING_HEIGHT)-1) * (x>0)][b + ((y * STARTING_WIDTH)-1) * (y>0)] = chunk_map[i][j].get_tile(-1, a, b);  //this is gross, i'm so sorry.
+                    buffer[a + (x * STARTING_HEIGHT)][b + (y * STARTING_WIDTH)] = chunk_map[i][j].get_tile(-1, a, b);  //this is gross, i'm so sorry.
                 }
             }
             y++;

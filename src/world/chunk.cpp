@@ -2,12 +2,12 @@
 using namespace std;
 
 Chunk::Chunk(){
-
+    initialized = false;
 }
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)
 {
-    cout<<"generating"<<endl;
+    initialized = true;
     width = _width;
     height= _height;
     srand(time(NULL));
@@ -67,5 +67,9 @@ int Chunk::get_x() const
 int Chunk::get_y() const
 {
     return y;
+}
+bool Chunk::is_initialized() const
+{
+    return initialized;
 }
 

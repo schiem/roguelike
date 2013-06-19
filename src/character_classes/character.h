@@ -17,12 +17,12 @@ class Character
         //Skills skill[];
         char sprite;
         int armor;
-        const Chunk* chunk;
+        Chunk* chunk;
         int depth;
         //methods
     public:
         Character();
-        Character(int, int, int, int, const Chunk*, int);
+        Character(int, int, int, int, Chunk*, int);
         void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
         bool is_alive() const;
         void move(int, int);
@@ -34,7 +34,9 @@ class Character
         int get_depth();        
         int get_chunk_x();
         int get_chunk_y();
-        
+        void set_x(int);
+        void set_y(int);
+        void update_dungeon(Chunk*);       
         //terrain get_surroundings
 
 };
@@ -46,7 +48,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, int, const Chunk*, int);
+        Main_Character(int, int, int, int,  Chunk*, int);
         void perform_action_cont();
         void perform_action_press(SDLKey);
 };
