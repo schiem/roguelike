@@ -17,6 +17,53 @@ CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) :
 
 }
 
+void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners)
+{
+    int vert = 0;
+    int horiz = 0;
+    int wall_blocks_found = 0;
+    //push some corners in.
+    //std::vector.size() returns an unsigned long...
+    for(size_t j = 0; j < corners.size(); j++) {
+        if (rolled_over(20)) {
+            main_dungeon.set_tile(corners[j], EMPTY);
+            return;
+        }
+
+        if (rolled_over(40)) {
+            vert = 0; horiz = 0; wall_blocks_found = 0;
+            //There are a number of ways I could go about doing this. 
+            //I'm going with the weirdest, because YOLO.
+            //This is for the first rule listed above corrupt_walls().
+
+            //If the block below this point is a WALL block...
+            if((corners[j].row + 1 < main_dungeon.height) && (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) == WALL)) {
+                vert = 1;
+                wall_blocks_found++;
+            } 
+            if ((corners[j].row - 1 >= 0) && (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) == WALL)) {
+                vert = -1;
+                wall_blocks_found++;
+            } 
+            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) == WALL)) {
+                horiz = 1;
+                wall_blocks_found++;
+            } 
+            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) == WALL)) {
+                horiz = -1;
+                wall_blocks_found++;
+            }
+
+            if (wall_blocks_found != 2) {
+                return;
+            } else {
+                main_dungeon.set_tile(corners[j], EMPTY);
+                main_dungeon.set_tile(corners[j].row + vert, corners[j].col + horiz, WALL);
+            }
+        }
+    }
+}
+
 /*
  * PRE: Will be called after a dungeon is built.
  * POST: Will "corrupt" dungeon walls according to the following rules:
@@ -64,29 +111,11 @@ void CorruptiblePBlindDB::corrupt_walls()
         IntPoint br = current_room.br;
         vector<IntPoint> corners = vector<IntPoint>(4);
         corners[0] = tl; corners[1] = tr; corners[2] = bl; corners[3] = br;
-        
-        //push some corners in.
-        //std::vector.size() returns an unsigned long...
-        for(unsigned long j = 0; j < corners.size(); j++) {
-            if (rolled_over(10)) {
-                main_dungeon.set_tile(corners[j], DIRT);
-            } else if (rolled_over(10)) {
-                main_dungeon.set_tile(corners[j], DIRT);
-                //There are a number of ways I could do this. I'm going with the weirdest, because YOLO.
-                //This is for the first rule listed up above.
-                int vert = 0; int horiz = 0;
-                //If the block below this point is a WALL block...
-                if(main_dungeon.get_tile(corners[j].row + 1, corners[j].col) == WALL) {
-                    vert = 1;
-                } else {
-                    //the block above this point is a WALL block... I hope. TODO watch out for room clusters!!
-                }
-            }
-        }
+        corrupt_corners(corners);
     }   
 }
 
-void CorruptiblePBlindDB::build_dungeon(int target, int deviation, int squareness)
+void CorruptiblePBlindDB::build_dungeon(int target, int deviation)
 {   
     reset();
     bool dungeon_is_awesome;
@@ -95,7 +124,8 @@ void CorruptiblePBlindDB::build_dungeon(int target, int deviation, int squarenes
     do {
         tries++;
         dungeon_is_awesome = true;
-        build_dungeon_recursive(target, deviation, squareness);
+        build_dungeon_recursive(target, deviation);
+        corrupt_walls();
         if (num_rooms < (target - 3)) {
             dungeon_is_awesome = false;
             main_dungeon = Dungeon(width, height);

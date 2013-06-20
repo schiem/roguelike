@@ -45,7 +45,7 @@ void ProcedurallyBlindDB::build_start_room()
                                                         STD_ROOM_HEIGHT);
     IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
                            starting_point.col + (room_width + 1));
-    build_room(starting_point, br, 2);
+    build_room(starting_point, br);
 }
 
 /* PRE: Will be given :IntPoint the_point:
@@ -273,8 +273,7 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
  * floor (in which a room is built near the center, and rooms and
  * hallways crawl off of that room.
  */
-void ProcedurallyBlindDB::build_dungeon(int target, 
-                                                   int deviation, int squareness)
+void ProcedurallyBlindDB::build_dungeon(int target, int deviation)
 {   
     reset();
     bool dungeon_is_awesome;
@@ -283,7 +282,7 @@ void ProcedurallyBlindDB::build_dungeon(int target,
     do {
         tries++;
         dungeon_is_awesome = true;
-        build_dungeon_recursive(target, deviation, squareness);
+        build_dungeon_recursive(target, deviation);
         if (num_rooms < (target - 3)) {
             dungeon_is_awesome = false;
             main_dungeon = Dungeon(width, height);
@@ -303,8 +302,7 @@ void ProcedurallyBlindDB::build_dungeon(int target,
  * again with that room's index passed as :int current_room_num:. 
  *
  */
-void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation,
-                                                             int squareness)
+void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
 {
     if (target == 0) {
         return;
@@ -318,7 +316,7 @@ void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation,
     do {
         tries++;
         acceptable = true;
-        current_room = main_dungeon.rooms[num_rooms];
+        current_room = main_dungeon.rooms[num_rooms - 1];
         IntPoint point = rand_wall_block(current_room);
 
         IntPoint path_end = build_path(point, determine_which_wall(point));
@@ -333,8 +331,8 @@ void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation,
     if(!acceptable) {
         return;
     } else {
-        build_room(new_room.tl, new_room.br, squareness);
-        build_dungeon_recursive(target - 1, deviation, squareness);
+        build_room(new_room.tl, new_room.br);
+        build_dungeon_recursive(target - 1, deviation);
     }
 }
 

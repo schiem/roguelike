@@ -38,7 +38,7 @@ class DungeonBuilder
         string edges_collide_with_something(Room&) const;
         int determine_which_wall(IntPoint) const;
         void set_wall_if_not_path(int, int);
-        Room build_room(IntPoint, IntPoint, int);
+        Room build_room(IntPoint, IntPoint);
         int get_wall_count(const Room&) const;
         IntPoint rand_wall_block(const Room&);
         IntPoint get_next_point(IntPoint, int) const;

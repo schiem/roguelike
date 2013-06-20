@@ -103,12 +103,12 @@ void Canvas::update_buffer()
     int x = 0;
     int y = 0;
     for(int i=main_char.get_chunk_y() - 1;i<=main_char.get_chunk_y()+1;i++) {
-        if(chunk_map.size() < i)
+        if(chunk_map.size() < (size_t) i) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
         {
             chunk_map.resize(i);
         }
         for(int j=main_char.get_chunk_x()-1;j<=main_char.get_chunk_x()+1;j++) {
-            if (chunk_map[i].size() < j)
+            if (chunk_map[i].size() < (size_t) j) //Make sure this cast works TODO
             {
                 chunk_map.resize(j);
             }

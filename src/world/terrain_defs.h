@@ -22,6 +22,9 @@ namespace tiledef {
     //static const Tile PATH = {111, 'o', true};
     extern Tile PATH;
     extern Tile MAIN_CHAR; 
+    extern Tile MAIN_CHAR2;
+    extern Tile MAIN_CHAR3;
+    extern Tile MAIN_CHAR4;
     extern Tile TREE;
 }
 

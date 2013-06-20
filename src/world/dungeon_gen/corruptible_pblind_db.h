@@ -7,11 +7,12 @@ class CorruptiblePBlindDB : public ProcedurallyBlindDB
 {
     private:
         void corrupt_walls();
+        void corrupt_corners(vector<IntPoint> corners);
 
     public:
         CorruptiblePBlindDB();
         CorruptiblePBlindDB(int _width, int _height, int seed=time(NULL));
-        void build_dungeon(int target, int deviation, int squareness);
+        void build_dungeon(int target, int deviation);
 };
 
 #endif

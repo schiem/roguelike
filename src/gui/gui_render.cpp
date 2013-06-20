@@ -6,8 +6,8 @@ void GUI::OnRender()
     canvas.refresh(); 
     TileMatrix tm = canvas.get_matrix();
 
-    for(int i = 0; i < tm.size(); i++) {
-        for(int j = 0; j < tm[i].size(); j++) {
+    for(size_t i = 0; i < tm.size(); i++) {
+        for(size_t j = 0; j < tm[i].size(); j++) {
             drawChr(j, i, tm[i][j].char_count, ascii, screen, tm[i][j].color);
         }
     }

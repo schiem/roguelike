@@ -112,7 +112,7 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const
  */
 int DungeonBuilder::determine_which_wall(IntPoint point) const
 {
-    int direction;
+    int direction = 0;
 
     if(point.col == 0) {
         return 3;
@@ -166,7 +166,7 @@ void DungeonBuilder::set_wall_if_not_path(int a, int b)
  * 
  * POST: Will draw a room on the dungeon array with the given parameters.
  */
-Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
+Room DungeonBuilder::build_room(IntPoint tl, IntPoint br)
 {
     set_wall_if_not_path(tl.row, tl.col);
     set_wall_if_not_path(tl.row, br.col);
@@ -193,8 +193,8 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br, int squareness)
             main_dungeon.set_tile(i, j, DIRT);
         }
     }
-    num_rooms++;
     main_dungeon.rooms[num_rooms] = Room(tl, br);
+    num_rooms++;
     
     return Room(tl, br);
 }

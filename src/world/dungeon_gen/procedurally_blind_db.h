@@ -11,12 +11,12 @@ class ProcedurallyBlindDB : public DungeonBuilder
         Room find_viable_room_space(IntPoint) const;
         IntPoint find_viable_starting_point(int std_width, int std_height) const;
         IntPoint build_path(IntPoint start, int direction);
-        void build_dungeon_recursive(int target, int deviation, int squareness);
+        void build_dungeon_recursive(int target, int deviation);
     
     public:
         ProcedurallyBlindDB();
         ProcedurallyBlindDB(int _width, int _height, int seed=time(NULL));
-        virtual void build_dungeon(int target, int deviation, int squareness);
+        virtual void build_dungeon(int target, int deviation);
 };
 
 #endif
