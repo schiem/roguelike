@@ -206,7 +206,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br)
 void DungeonBuilder::reset()
 {
     num_rooms = 0; 
-    main_dungeon = Dungeon(width, height);
+    main_dungeon = Dungeon(width, height, target_rooms);
 }
 
 /* PRE: Will be given a Room object.

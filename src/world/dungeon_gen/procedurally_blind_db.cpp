@@ -6,7 +6,7 @@ ProcedurallyBlindDB::ProcedurallyBlindDB()
 {
     width = 80;
     height = 40;
-    main_dungeon = Dungeon(width, height);
+    main_dungeon = Dungeon(width, height, 15);
     num_rooms = 0;
 }
 
@@ -15,20 +15,23 @@ ProcedurallyBlindDB::ProcedurallyBlindDB()
  * POST: Will populate the :char dungeon[][]: array with dummy
  * values.
  */
-ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed)
+ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int _target_rooms, int seed)
 {
     width = _width;
     height = _height;
     num_rooms = 0;
+    target_rooms = _target_rooms;
 
+    /*
     if(width > MAX_WIDTH) {
         width = MAX_WIDTH;
     }
     if(height > MAX_HEIGHT) {
         height = MAX_HEIGHT;
     }
+    */
 
-    main_dungeon = Dungeon(width, height);
+    //main_dungeon = Dungeon(width, height, target_rooms);
     srand(seed);
 }
 
@@ -214,6 +217,7 @@ IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_
  */
 IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
 {
+    main_dungeon = Dungeon(width, height, target_rooms);
     int path_length = rand() % (MAX_PATH_LENGTH - MIN_PATH_LENGTH) + MIN_PATH_LENGTH;
     IntPoint current_point = start;
     int current_direction = direction;
@@ -273,19 +277,19 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
  * floor (in which a room is built near the center, and rooms and
  * hallways crawl off of that room.
  */
-void ProcedurallyBlindDB::build_dungeon(int target, int deviation)
+void ProcedurallyBlindDB::build_dungeon()
 {   
     reset();
-    bool dungeon_is_awesome;
     build_start_room();
+    bool dungeon_is_awesome;
     int tries = 0;
     do {
         tries++;
         dungeon_is_awesome = true;
-        build_dungeon_recursive(target, deviation);
-        if (num_rooms < (target - 3)) {
+        build_dungeon_recursive(target_rooms);
+        if (num_rooms < (target_rooms - 3)) {
             dungeon_is_awesome = false;
-            main_dungeon = Dungeon(width, height);
+            main_dungeon = Dungeon(width, height, target_rooms);
             num_rooms = 0;
         }
     } while(!dungeon_is_awesome);
@@ -302,7 +306,7 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation)
  * again with that room's index passed as :int current_room_num:. 
  *
  */
-void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
+void ProcedurallyBlindDB::build_dungeon_recursive(int target)
 {
     if (target == 0) {
         return;
@@ -332,7 +336,7 @@ void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
         return;
     } else {
         build_room(new_room.tl, new_room.br);
-        build_dungeon_recursive(target - 1, deviation);
+        build_dungeon_recursive(target - 1);
     }
 }
 

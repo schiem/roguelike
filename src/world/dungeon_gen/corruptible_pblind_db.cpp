@@ -11,8 +11,8 @@ CorruptiblePBlindDB::CorruptiblePBlindDB()
 /*
  * Just call the super constructor
  */
-CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) : 
-    ProcedurallyBlindDB(_width, _height, seed)
+CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int _target_rooms, int seed) : 
+    ProcedurallyBlindDB(_width, _height, _target_rooms, seed)
 {
 
 }
@@ -64,6 +64,54 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners)
     }
 }
 
+void CorruptiblePBlindDB::corrupt_walls(Room& room) {
+    int static_col;
+    int mod;
+    for(int i = 0; i < 2; i++) {
+        if(i == 0) {
+            //Loop through the blocks on the left wall
+            static_col = room.tl.col;
+            mod = 1;
+        } else if (i == 1) {
+            //Loop through the blocks on the right wall
+            static_col = room.br.col;
+            mod = -1;
+        }
+        for(int cur_row = room.tl.row + 1; cur_row < room.br.row; cur_row++) {
+            if( (abs(cur_row - room.tl.row) > 1) && (abs(cur_row - room.br.row) > 1) &&
+                (main_dungeon.get_tile(cur_row - 1, static_col) == WALL) && 
+                (main_dungeon.get_tile(cur_row + 1, static_col) == WALL) &&
+                (main_dungeon.get_tile(cur_row - 1, static_col + mod) == DIRT) &&
+                (main_dungeon.get_tile(cur_row + 1, static_col + mod) == DIRT) &&
+                (main_dungeon.get_tile(cur_row, static_col + mod) == DIRT)) {
+                if(rolled_over(5)) {
+                    //rule 1
+                    main_dungeon.set_tile(cur_row, static_col, EMPTY);
+                    main_dungeon.set_tile(cur_row, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row + 1, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row - 1, static_col + mod, WALL);
+                } else if (rolled_over(5)) {
+                    //rule 2
+                    main_dungeon.set_tile(cur_row, static_col, EMPTY);
+                    main_dungeon.set_tile(cur_row, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row - 1, static_col + mod, DIRT);
+                    main_dungeon.set_tile(cur_row + 1, static_col + mod, DIRT);
+                } else if (rolled_over(5)) {
+                    //rule 3
+                    main_dungeon.set_tile(cur_row, static_col, EMPTY);
+                    main_dungeon.set_tile(cur_row, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row + 1, static_col + mod, DIRT);
+                    main_dungeon.set_tile(cur_row - 1, static_col + mod, WALL);
+                } else if (rolled_over(5)) {
+                    main_dungeon.set_tile(cur_row, static_col, EMPTY);
+                    main_dungeon.set_tile(cur_row, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row + 1, static_col + mod, WALL);
+                    main_dungeon.set_tile(cur_row - 1, static_col + mod, DIRT);
+                }
+            }
+        }
+    }
+}
 /*
  * PRE: Will be called after a dungeon is built.
  * POST: Will "corrupt" dungeon walls according to the following rules:
@@ -100,11 +148,13 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners)
  *                X O X
  *                X X .
  */
-void CorruptiblePBlindDB::corrupt_walls()
+void CorruptiblePBlindDB::corrupt_dungeon()
 { 
     //Loop through the rooms.
     for(int i = 0; i < num_rooms; i++) {
         Room& current_room = main_dungeon.rooms[i];
+        corrupt_walls(current_room);
+
         IntPoint tl = current_room.tl;
         IntPoint tr = IntPoint(current_room.tl.row, current_room.br.col);
         IntPoint bl = IntPoint(current_room.br.row, current_room.tl.col);
@@ -115,20 +165,20 @@ void CorruptiblePBlindDB::corrupt_walls()
     }   
 }
 
-void CorruptiblePBlindDB::build_dungeon(int target, int deviation)
+void CorruptiblePBlindDB::build_dungeon()
 {   
     reset();
-    bool dungeon_is_awesome;
     build_start_room();
+    bool dungeon_is_awesome;
     int tries = 0;
     do {
         tries++;
         dungeon_is_awesome = true;
-        build_dungeon_recursive(target, deviation);
-        corrupt_walls();
-        if (num_rooms < (target - 3)) {
+        build_dungeon_recursive(target_rooms);
+        corrupt_dungeon();
+        if (num_rooms < (target_rooms - 3)) {
             dungeon_is_awesome = false;
-            main_dungeon = Dungeon(width, height);
+            main_dungeon = Dungeon(width, height, target_rooms);
             num_rooms = 0;
         }
     } while(!dungeon_is_awesome);

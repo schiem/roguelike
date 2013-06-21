@@ -13,15 +13,15 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
     srand(time(NULL));
     depth = rand() % 6;
     //dungeon = new Dungeon[depth];
-    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height, 5));
     x = _x;
     y = _y;
     Dungeon* temp_d;
     //ProcedurallyBlindDB db(width, height); 
-    CorruptiblePBlindDB db(width, height);
+    CorruptiblePBlindDB db(width, height, 5);
 
     for (int i=0; i < depth; i++){
-        db.build_dungeon(5, 5);
+        db.build_dungeon();
         temp_d = db.get_dungeon();
         dungeon_floors[i] = *temp_d;
     }
