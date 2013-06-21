@@ -28,9 +28,9 @@ class Dungeon
        void set_tile(IntPoint, Tile);
        const std::vector<std::vector<Tile> >& get_dungeon();
        Dungeon(int _width, int _height, int _target_rooms);
-       Dungeon(const Dungeon&);
+       //Dungeon(const Dungeon&);
        Dungeon();
-       Dungeon& operator= (const Dungeon& d);
+       //Dungeon& operator= (const Dungeon& d);
 };
 
 #endif

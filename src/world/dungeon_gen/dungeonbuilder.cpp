@@ -193,6 +193,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br)
             main_dungeon.set_tile(i, j, DIRT);
         }
     }
+    
     main_dungeon.rooms[num_rooms] = Room(tl, br);
     num_rooms++;
     
