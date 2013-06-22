@@ -3,11 +3,11 @@ using namespace tiledef;
 
 Dungeon::Dungeon()
 {
+    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     width = 10;
     height= 10;
-    dungeon = TileMatrix(height, std::vector<Tile>(width, EMPTY));
-    rooms = std::vector<Room>(num_rooms, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
@@ -21,8 +21,7 @@ Dungeon::Dungeon(const Dungeon& d)
     dungeon = d.dungeon;
     width = d.width;
     height = d.height;
-    target_rooms = d.target_rooms;
-    rooms = std::vector<Room>(target_rooms, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
@@ -31,16 +30,13 @@ Dungeon::Dungeon(const Dungeon& d)
 
 
 
-Dungeon::Dungeon(int _width, int _height, int _target_rooms)
+Dungeon::Dungeon(int _width, int _height)
 {
-    //dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
-    target_rooms = _target_rooms;
     width = _width;
     height = _height;
-    dungeon = TileMatrix(_height + 2, std::vector<Tile>(_width + 2, EMPTY));
-    rooms = std::vector<Room>(target_rooms, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
-    
     for(int i = 0; i < _height; i++)
     {
         for(int j = 0; j < _width; j++)
@@ -60,14 +56,15 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     dungeon = d.dungeon;
     width = d.width;
     height = d.height;
-    target_rooms = d.target_rooms;
-    rooms = std::vector<Room>(target_rooms, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
-    for(int i = 0; i < target_rooms; i++) {
+    for(int i = 0; i < 2; i++) {
         this->rooms[i] = d.rooms[i];
     }
     return *this;
 }
+
+
 
 Tile Dungeon::get_tile(int row, int col) const
 {

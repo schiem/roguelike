@@ -1,7 +1,7 @@
 #ifndef DUNGEONBUILDER_H
 #define DUNGEONBUILDER_H
 
-#define MAX_PATH_LENGTH 50
+#define MAX_PATH_LENGTH 75
 #define MIN_PATH_LENGTH 16 
 #define STD_ROOM_WIDTH 8
 #define STD_ROOM_HEIGHT 6
@@ -27,7 +27,6 @@ class DungeonBuilder
     friend ostream& operator<<(ostream&, const DungeonBuilder&);
     protected:
         //variables
-        int target_rooms;
         int width;
         int height;
         int num_rooms;

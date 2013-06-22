@@ -6,14 +6,13 @@
 class CorruptiblePBlindDB : public ProcedurallyBlindDB
 {
     private:
-        void corrupt_walls(Room&);
+        void corrupt_walls();
         void corrupt_corners(vector<IntPoint> corners);
-        void corrupt_dungeon();
 
     public:
         CorruptiblePBlindDB();
-        CorruptiblePBlindDB(int _width, int _height, int _target_rooms, int seed=time(NULL));
-        void build_dungeon();
+        CorruptiblePBlindDB(int _width, int _height, int seed=time(NULL));
+        void build_dungeon(int target, int deviation);
 };
 
 #endif
