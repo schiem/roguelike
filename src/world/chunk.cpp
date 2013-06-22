@@ -2,9 +2,7 @@
 using namespace std;
 
 Chunk::Chunk(){
-    /*
     initialized = false;
-    */
 }
 
 Chunk::Chunk(int _x, int _y, int _width, int _height)
@@ -30,6 +28,12 @@ Chunk::Chunk(int _x, int _y, int _width, int _height)
     //generate the overworld
     overworld = Overworld(width, height);
 }
+
+/*
+Chunk::~Chunk(){
+    delete []dungeon;
+}
+*/
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth){
     if (depth == -1){

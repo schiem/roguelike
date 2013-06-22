@@ -7,8 +7,9 @@ struct Tile{
     int tile_id;
     char sprite;
     bool can_be_moved_through;
-    bool operator==(const Tile& rhs) const {
-        return this->sprite == rhs.sprite;}
+    bool operator==(const Tile& rhs) const{
+        return this->sprite == rhs.sprite;
+        }
     int color;
     };
 

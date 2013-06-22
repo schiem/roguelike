@@ -3,7 +3,6 @@ using namespace tiledef;
 
 Dungeon::Dungeon()
 {
-    /*
     num_rooms = 0;
     width = 10;
     height= 10;
@@ -16,10 +15,7 @@ Dungeon::Dungeon()
             dungeon[i][j] = DIRT;
         }
     }
-    */
 }
-
-/*
 Dungeon::Dungeon(const Dungeon& d)
 {
     dungeon = d.dungeon;
@@ -32,7 +28,8 @@ Dungeon::Dungeon(const Dungeon& d)
         this->rooms[i] = d.rooms[i];
     }
 }
-*/
+
+
 
 Dungeon::Dungeon(int _width, int _height, int _target_rooms)
 {
@@ -59,7 +56,6 @@ Dungeon::Dungeon(int _width, int _height, int _target_rooms)
     }
 }
 
-/*
 Dungeon& Dungeon::operator= (const Dungeon& d){
     dungeon = d.dungeon;
     width = d.width;
@@ -72,7 +68,6 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     }
     return *this;
 }
-*/
 
 Tile Dungeon::get_tile(int row, int col) const
 {

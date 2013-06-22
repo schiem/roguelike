@@ -5,13 +5,11 @@ Room::Room()
 
 }
 
-/*
 Room::Room(const Room& r)
 {
     tl = r.tl;
     br = r.br;
 }
-*/
 
 Room::Room(IntPoint _tl, IntPoint _br)
 {
