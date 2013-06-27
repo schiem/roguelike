@@ -6,18 +6,18 @@ using namespace tiledef;
 Canvas::Canvas()
 {
     chunk_x = 5;
-        chunk_y = 5;
-        chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
-        buffer = TileMatrix(150, vector<Tile>(300));
-        for(int i=4;i<7;i++){
-            for(int j=4;j<7;j++){
-                chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
-            }
+    chunk_y = 5;
+    chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
+    buffer = TileMatrix(150, vector<Tile>(300));
+    for(int i=4;i<7;i++){
+        for(int j=4;j<7;j++){
+            chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
         }
-        
-        main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][5], -1);
-        canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
-        update_buffer();
+    }
+    
+    main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][5], -1);
+    canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
+    update_buffer();
 }
 
 
@@ -87,8 +87,11 @@ void Canvas::update_chunk()
         main_char.set_y(0);
     }
     
+    chunk_x = x;
+    chunk_y = y;
     main_char.update_dungeon(&chunk_map[y][x]);
     std::cout<<main_char.get_chunk_y()<<" "<<main_char.get_chunk_x()<<std::endl;
+    std::cout<<chunk_y<<" "<<chunk_x<<std::endl;
 }
 
 
@@ -103,14 +106,14 @@ void Canvas::update_buffer()
     int x = 0;
     int y = 0;
     for(int i=main_char.get_chunk_y() - 1;i<=main_char.get_chunk_y()+1;i++) {
-        if(chunk_map.size() < (size_t) i) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
+        if(chunk_map.size() <= (size_t) i) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
         {
-            chunk_map.resize(i);
+            chunk_map.resize(i + 1);
         }
         for(int j=main_char.get_chunk_x()-1;j<=main_char.get_chunk_x()+1;j++) {
-            if (chunk_map[i].size() < (size_t) j) //Make sure this cast works TODO
+            if (chunk_map[i].size() <= (size_t) j) //Make sure this cast works TODO
             {
-                chunk_map.resize(j);
+                chunk_map.resize(j + 1);
             }
             if (chunk_map[i][j].is_initialized() == false)
             {

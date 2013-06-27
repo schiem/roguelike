@@ -5,7 +5,7 @@ Chunk::Chunk(){
     initialized = false;
 }
 
-Chunk::Chunk(int _x, int _y, int _width, int _height)
+Chunk::Chunk(int _y, int _x, int _width, int _height)
 {
     initialized = true;
     width = _width;

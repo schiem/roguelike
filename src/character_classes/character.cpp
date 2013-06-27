@@ -42,7 +42,12 @@ bool Character::is_alive() const{
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change){
-    if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
+    if((x+x_change < 0) ||  (x+x_change >= chunk->width) || (y+y_change < 0) ||  (y + y_change >= chunk->height))
+    {
+        x += x_change;
+        y += y_change;
+    }
+    else if (chunk->get_tile(depth, y+y_change, x+x_change).can_be_moved_through){
         x += x_change;
         y += y_change;
     }
