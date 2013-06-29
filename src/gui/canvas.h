@@ -21,8 +21,6 @@ class Canvas
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        int chunk_x;
-        int chunk_y;
         std::vector<std::vector<Tile> > canvas;
         std::vector<std::vector<Chunk> > chunk_map; //temporary, we'll need to serialize this
         std::vector<std::vector<Tile> > buffer;

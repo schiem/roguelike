@@ -5,19 +5,10 @@ using namespace tiledef;
 
 Canvas::Canvas()
 {
-    chunk_x = 5;
-    chunk_y = 5;
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     buffer = TileMatrix(150, vector<Tile>(300));
-    /*
-    for(int i=4;i<7;i++){
-        for(int j=4;j<7;j++){
-            chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
-        }
-    }
-    */
-    chunk_map[5][5] = Chunk(5, 5, STARTING_WIDTH, STARTING_HEIGHT);
-    main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][5], -1);
+    chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
+    main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][8], -1);
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
     update_buffer();
 }
@@ -84,9 +75,6 @@ void Canvas::update_chunk()
         y += 1;
         main_char.set_y(0);
     }
-    
-    chunk_x = x;
-    chunk_y = y;
     main_char.update_dungeon(&chunk_map[y][x]);
 }
 
@@ -101,39 +89,38 @@ void Canvas::update_buffer()
 {
     int x = 0;
     int y = 0;
-    for(int i=main_char.get_chunk_y() - 1;i<=main_char.get_chunk_y()+1;i++) {
-        if(chunk_map.size() < (size_t) i + 1) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
+    for(int col=main_char.get_chunk_y() - 1;col<=main_char.get_chunk_y()+1;col++) {
+        if(chunk_map.size() < (size_t) col + 1) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
         {
-            chunk_map.resize(i + 1);
-            std::cout<<"resizing that biznatch"<<std::endl;
+            chunk_map.resize(col + 1);
         }
-        for(int j=main_char.get_chunk_x()-1;j<=main_char.get_chunk_x()+1;j++) {
-            if (chunk_map[i].size() <= (size_t) j + 1) //Make sure this cast works TODO
+        for(int row=main_char.get_chunk_x()-1;row<=main_char.get_chunk_x()+1;row++) {
+            if (chunk_map[col].size() < (size_t) row + 1) //Make sure this cast works TODO
             {
-                chunk_map.resize(j + 1);
+                Chunk temp_chunk;
+                chunk_map[col].push_back(temp_chunk);
             }
-            if (chunk_map[i][j].is_initialized() == false)
+            if (chunk_map[col][row].is_initialized() == false)
             {
-                chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
+                std::cout<<"initializing with "<<col<<" & "<<row<<std::endl;
+                chunk_map[col][row] = Chunk(col, row, STARTING_WIDTH, STARTING_HEIGHT);
             }
             for (int a=0;a<STARTING_HEIGHT;a++) {
                 for (int b=0;b<STARTING_WIDTH;b++) {
-                    buffer[a + (x * STARTING_HEIGHT)][b + (y * STARTING_WIDTH)] = chunk_map[i][j].get_tile(-1, a, b);  //this is gross, i'm so sorry.
+                    buffer[a + (x * STARTING_HEIGHT)][b + (y * STARTING_WIDTH)] = chunk_map[col][row].get_tile(-1, a, b);  //this is gross, i'm so sorry.
                 }
             }
             y++;
-            std::cout<<"y: "<<i<<" x: "<<j<<std::endl;
         }
         y = 0;
         x++;
     }
 
-        std::cout<<std::endl;
 }
 
 const Chunk& Canvas::get_chunk()
 {
-    return chunk_map[chunk_x][chunk_y];
+    return chunk_map[main_char.get_chunk_x()][main_char.get_chunk_y()];
 }
 
 //Since this is a const reference, will we have to call it
