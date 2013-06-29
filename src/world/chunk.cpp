@@ -10,7 +10,7 @@ Chunk::Chunk(int _y, int _x, int _width, int _height)
     initialized = true;
     width = _width;
     height= _height;
-    srand(time(NULL));
+    //srand(time(NULL));
     depth = rand() % 6;
     //dungeon = new Dungeon[depth];
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));

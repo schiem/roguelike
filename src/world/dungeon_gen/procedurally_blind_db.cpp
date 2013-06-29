@@ -29,7 +29,7 @@ ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed)
     }
 
     main_dungeon = Dungeon(width, height);
-    srand(seed);
+    //srand(seed);
 }
 
 /* PRE:

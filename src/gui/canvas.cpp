@@ -9,12 +9,14 @@ Canvas::Canvas()
     chunk_y = 5;
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     buffer = TileMatrix(150, vector<Tile>(300));
+    /*
     for(int i=4;i<7;i++){
         for(int j=4;j<7;j++){
             chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
         }
     }
-    
+    */
+    chunk_map[5][5] = Chunk(5, 5, STARTING_WIDTH, STARTING_HEIGHT);
     main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][5], -1);
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
     update_buffer();
@@ -120,10 +122,13 @@ void Canvas::update_buffer()
                 }
             }
             y++;
+            std::cout<<"y: "<<i<<" x: "<<j<<std::endl;
         }
         y = 0;
         x++;
     }
+
+        std::cout<<std::endl;
 }
 
 const Chunk& Canvas::get_chunk()
