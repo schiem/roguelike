@@ -64,34 +64,28 @@ void Canvas::update_chunk()
     
     if (main_char.get_x_loc() < 0 )
     {
-        std::cout<<"1"<<std::endl;
         x -= 1;
         main_char.set_x(STARTING_WIDTH-1);
     }
     else if (main_char.get_x_loc() >= STARTING_WIDTH)
     {
-        std::cout<<"2"<<std::endl;
         x += 1;
         main_char.set_x(0);
     }
     if(main_char.get_y_loc() < 0)
     {
-        std::cout<<"3"<<std::endl;
-        y += 1;
+        y -= 1;
         main_char.set_y(STARTING_HEIGHT-1);
     }
     else if (main_char.get_y_loc()>= STARTING_HEIGHT)
     {
-        std::cout<<"4"<<std::endl;
-        y -= 1;
+        y += 1;
         main_char.set_y(0);
     }
     
     chunk_x = x;
     chunk_y = y;
     main_char.update_dungeon(&chunk_map[y][x]);
-    std::cout<<main_char.get_chunk_y()<<" "<<main_char.get_chunk_x()<<std::endl;
-    std::cout<<chunk_y<<" "<<chunk_x<<std::endl;
 }
 
 
@@ -106,12 +100,13 @@ void Canvas::update_buffer()
     int x = 0;
     int y = 0;
     for(int i=main_char.get_chunk_y() - 1;i<=main_char.get_chunk_y()+1;i++) {
-        if(chunk_map.size() <= (size_t) i) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
+        if(chunk_map.size() < (size_t) i + 1) //Make sure this cast works TODO (this avoids -Wsign-compare warnings.
         {
             chunk_map.resize(i + 1);
+            std::cout<<"resizing that biznatch"<<std::endl;
         }
         for(int j=main_char.get_chunk_x()-1;j<=main_char.get_chunk_x()+1;j++) {
-            if (chunk_map[i].size() <= (size_t) j) //Make sure this cast works TODO
+            if (chunk_map[i].size() <= (size_t) j + 1) //Make sure this cast works TODO
             {
                 chunk_map.resize(j + 1);
             }
@@ -119,7 +114,6 @@ void Canvas::update_buffer()
             {
                 chunk_map[i][j] = Chunk(i, j, STARTING_WIDTH, STARTING_HEIGHT);
             }
-            std::cout<<"y: "<<i<< " x: "<<j<<std::endl;
             for (int a=0;a<STARTING_HEIGHT;a++) {
                 for (int b=0;b<STARTING_WIDTH;b++) {
                     buffer[a + (x * STARTING_HEIGHT)][b + (y * STARTING_WIDTH)] = chunk_map[i][j].get_tile(-1, a, b);  //this is gross, i'm so sorry.
