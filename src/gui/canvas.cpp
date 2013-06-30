@@ -8,7 +8,7 @@ Canvas::Canvas()
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     buffer = TileMatrix(150, vector<Tile>(300));
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
-    main_char = Main_Character(100, 50, 25, 3, &chunk_map[5][8], -1);
+    main_char = Main_Character(100, 50, 25, 3, chunk_map[5][8], -1);
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
     update_buffer();
 }
@@ -75,7 +75,7 @@ void Canvas::update_chunk()
         y += 1;
         main_char.set_y(0);
     }
-    main_char.update_dungeon(&chunk_map[y][x]);
+    main_char.update_dungeon(chunk_map[y][x]);
 }
 
 

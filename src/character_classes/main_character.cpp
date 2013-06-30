@@ -6,7 +6,7 @@ Main_Character::Main_Character()
 
 }
 
-Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite,  Chunk *_chunk, int _depth) : Character(_max_health, _x, _y,  _sprite, _chunk, _depth){
+Main_Character::Main_Character(int _max_health, int _x, int _y, int _sprite,  Chunk _chunk, int _depth) : Character(_max_health, _x, _y,  _sprite, _chunk, _depth){
 }
 void Main_Character::perform_action_cont(){
     SDL_PumpEvents();
@@ -38,7 +38,7 @@ void Main_Character::perform_action_press(SDLKey key){
             }
             break;
         case SDLK_d:
-            if (depth+1<chunk->get_depth()){
+            if (depth+1<chunk.get_depth()){
                 depth++;
             }
         default:
