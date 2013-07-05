@@ -1,9 +1,10 @@
 #include "gui.h"
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 bool GUI::OnInit()
 {
     //initialize stuff
+    srand(time(NULL));
     SDL_Init(SDL_INIT_EVERYTHING);
 
     //Set up screen
@@ -24,6 +25,5 @@ bool GUI::OnInit()
     //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
-    srand(time(NULL));
     return true;
 }
