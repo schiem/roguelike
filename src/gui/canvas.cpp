@@ -7,40 +7,37 @@ Canvas::Canvas()
 {
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     buffer = TileMatrix(150, vector<Tile>(300));
+    //TODO What are these numbers for?
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
     main_char = Main_Character(100, 50, 25, 3, chunk_map[5][8], -1);
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
     update_buffer();
+    cout<<"buffer updated."<<endl;
 }
 
 
 void Canvas::refresh()
 {
-    if(out_of_bounds())
-    {
+    if(out_of_bounds()) {
         update_chunk();
         update_buffer();
     }
-    if(main_char.get_depth() >=0)
-    {
+    if(main_char.get_depth() >=0) {
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for(int j = 0; j < STARTING_WIDTH; j++) {
                 canvas[i][j] = chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(),i, j);
             }
         }
         canvas[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
-    }
-    else
-    {
-        for(int i = 0; i < STARTING_HEIGHT; i++) //STARTING_HEIGHT is actually screen height, same for STARTING_WIDTH
-        {
+    } else {
+        for(int i = 0; i < STARTING_HEIGHT; i++) { //STARTING_HEIGHT is actually screen height, same for STARTING_WIDTH
             for (int j = 0; j < STARTING_WIDTH; j++) {
                 canvas[i][j] = buffer[(STARTING_HEIGHT + main_char.get_y_loc()) - (STARTING_HEIGHT/2) + i][(STARTING_WIDTH + main_char.get_x_loc()) - (STARTING_WIDTH/2) + j];
             }
         }
         canvas[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
-        }
     }
+}
 
 
 

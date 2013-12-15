@@ -18,7 +18,7 @@ Chunk::Chunk(int _y, int _x, int _width, int _height)
     y = _y;
     Dungeon* temp_d;
     //ProcedurallyBlindDB db(width, height); 
-    CorruptiblePBlindDB db(width, height);
+    ProcedurallyBlindDB db(width, height);
     /*
     for (int i=0; i < depth; i++){
         db.build_dungeon(5, 5);

@@ -11,6 +11,7 @@ void GUI::OnRender()
             drawChr(j, i, tm[i][j].char_count, ascii, screen, tm[i][j].color);
         }
     }
+
     SDL_Flip(screen);
     SDL_Delay(50);
 }

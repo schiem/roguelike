@@ -92,12 +92,10 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
                            (the_point.col + (int) floor(min_room_width / 2.0))));
 
     //Check if the room is out-of-bounds; if so, return a null room
-    /*
     if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
     {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
-    */
 
     //Check the room's walls to see if they clip with anything else.
     if (edges_collide_with_something(test_room) != "0000")
@@ -186,7 +184,15 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
     bottom_row_upper_bound = min(bottom_row_upper_bound, test_room.br.row - 1);
     lower_bound = rand() % (abs(test_room.br.row - bottom_row_upper_bound)) + test_room.br.row;
 
-    return Room(IntPoint(upper_bound, left_bound), IntPoint(lower_bound, right_bound));
+    IntPoint tl = IntPoint(upper_bound, left_bound);
+    IntPoint br = IntPoint(lower_bound, right_bound);
+
+    if((point_is_beyond_bounds(tl)) || (point_is_beyond_bounds(br))) {
+        //TODO This really shouldn't happen
+        return Room(IntPoint(-1, -1), IntPoint(-1, 1));
+    }
+
+    return Room(tl, br);
 
 }
 
@@ -316,12 +322,19 @@ void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
     do {
         tries++;
         acceptable = true;
+        //TODO sometimes num_rooms is 0. This shouldn't happen.
+        if(num_rooms == 0) {
+            acceptable = false;
+            break;
+        }
         current_room = main_dungeon.rooms[num_rooms - 1];
         IntPoint point = rand_wall_block(current_room);
 
         IntPoint path_end = build_path(point, determine_which_wall(point));
         new_room = find_viable_room_space(path_end);
 
+        //This ensures that the room is valid. If this value is -1, it is
+        //because find_viable_room_space couldn't make a valid room.
         if(new_room.tl.row == -1) {
             acceptable = false;
         }
