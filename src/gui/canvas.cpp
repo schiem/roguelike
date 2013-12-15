@@ -97,8 +97,7 @@ void Canvas::update_buffer()
         for(int row=main_char.get_chunk_x()-1;row<=main_char.get_chunk_x()+1;row++) {
             if (chunk_map[col].size() < (size_t) row + 1) //Make sure this cast works TODO
             {
-                Chunk temp_chunk;
-                chunk_map[col].push_back(temp_chunk);
+                chunk_map[col].resize(row + 1);
             }
             if (chunk_map[col][row].is_initialized() == false)
             {
