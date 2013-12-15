@@ -5,9 +5,10 @@ GUI::GUI()
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
-    //canvas = Canvas();
+    canvas = Canvas();
 
     running = true;
+    cout<<"GUI construction complete."<<endl;
 }
 
 int GUI::OnExecute()

@@ -2,5 +2,5 @@
 
 void GUI::OnLoop()
 {
-
+    SDL_Delay(2);
 }

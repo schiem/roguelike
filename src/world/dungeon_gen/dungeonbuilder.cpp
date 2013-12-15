@@ -82,7 +82,7 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const
             bin_string[3] = '1';
         }
 
-        if (point_is_beyond_bounds(IntPoint(row, r.tl.col))) {
+        if (point_is_beyond_bounds(IntPoint(row, r.br.col))) {
             bin_string[1] = '1';
         } else if (main_dungeon.get_tile(row, r.br.col).can_be_moved_through == false) {
             bin_string[1] = '1';
@@ -116,11 +116,13 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const
 
     if(point.col == 0) {
         return 3;
-    } 
-
-    else if (point.row == 0) {
+    } else if (point.row == 0) {
         return 0;
-    } 
+    } else if (point.col == main_dungeon.width - 1) {
+        return 1;
+    } else if (point.row == main_dungeon.height - 1) {
+        return 2;
+    }
 
     else if((main_dungeon.get_tile(point.row, point.col - 1) == WALL) or
        (main_dungeon.get_tile(point.row, point.col + 1) == WALL)) {
