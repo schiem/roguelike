@@ -5,7 +5,6 @@ Overworld::Overworld()
     ground = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
     width = 10;
     height = 10;
-    //srand(time(NULL));
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
