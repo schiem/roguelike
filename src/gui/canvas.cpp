@@ -147,22 +147,19 @@ void Canvas::update_buffer()
     for(int col=main_char.get_chunk_y() - 1;col<=main_char.get_chunk_y()+1;col++) {
         
         //Check to ensure that the chunk map is big enough.
-        if(chunk_map.size() < (size_t) col + 1) 
-        {
+        if(chunk_map.size() < (size_t) col + 1) {
             chunk_map.resize(col + 1);
         }
         
         //as above, but with the x coordinate.
         for(int row=main_char.get_chunk_x()-1;row<=main_char.get_chunk_x()+1;row++) {
             
-            if (chunk_map[col].size() < (size_t) row + 1)
-            {
+            if (chunk_map[col].size() < (size_t) row + 1) {
                 chunk_map[col].resize(row + 1);
             }
             
             //check to ensure that the chunk we're about to operate on is initialized.  If not, initialize it.
-            if (chunk_map[col][row].is_initialized() == false)
-            {
+            if (chunk_map[col][row].is_initialized() == false) {
                 std::cout<<"initializing with "<<col<<" & "<<row<<std::endl;
                 chunk_map[col][row] = Chunk(col, row, STARTING_WIDTH, STARTING_HEIGHT);
             }
@@ -179,15 +176,18 @@ void Canvas::update_buffer()
                         The first chunk should start writing tiles to the buffer at 0,0.  The second chunk should start writing tiles at
                         0 + CHUNK_WIDTH, and the third tile should start writing at 0 + (CHUNK_WIDTH * 2).
                     */
-                    
-                    
+
+
+                    // This is always true. Setting them here to avoid
+                    // awkward incrementing.
+                    x = col - (main_char.get_chunk_y() - 1);
+                    y = row - (main_char.get_chunk_x() - 1);
+
                     buffer[a + (x * STARTING_HEIGHT)][b + (y * STARTING_WIDTH)] = chunk_map[col][row].get_tile(-1, a, b);  //this is gross, i'm so sorry.
                 }
             }
-            y++;
+            cout<<"y = "<<y<<";col - (main_char.get_chunk_y - 1) = "<<row - (main_char.get_chunk_x() - 1)<<endl;
         }
-        y = 0;
-        x++;
     }
 
 }
