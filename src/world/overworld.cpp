@@ -2,17 +2,14 @@
 using namespace tiledef;
 Overworld::Overworld()
 {
-    ground = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
     width = 10;
     height = 10;
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
-            if (rand() % 8 == 0){
-            ground[i][j] = TREE;
-            }
-            else{
+    ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
+            if (rand() % 8 == 0) {
+                ground[i][j] = TREE;
+            } else {
                 ground[i][j] = DIRT;
             }
         }
@@ -21,17 +18,14 @@ Overworld::Overworld()
 
 Overworld::Overworld(int _width, int _height)
 {
-    ground = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, EMPTY));
     width = _width;
     height = _height;
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
+    ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
             if (rand() % 8 == 0){
                 ground[i][j] = TREE;
-            }
-            else{
+            } else {
                 ground[i][j] = DIRT;
             }
         }
