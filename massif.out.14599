@@ -1,0 +1,1176 @@
+desc: (none)
+cmd: ./roguelike
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=220170091
+mem_heap_B=97765500
+mem_heap_extra_B=109708
+mem_stacks_B=0
+heap_tree=detailed
+n2: 97765500 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 97590400 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 97590400 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 97590400 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 97590400 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 97590400 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 97590400 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 97590400 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 97590400 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 97590400 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 97441600 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n4: 97441600 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 88000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n2: 88000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 72000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 72000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n1: 72000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 72000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 72000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n1: 68000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n1: 68000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                   n1: 4000000 0x8050F8F: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n1: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 4000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 4000000 0x80563E7: main (main.cpp:6)
+              n1: 16000000 0x805142F: void std::__uninitialized_fill_n<false>::__uninit_fill_n<Dungeon*, unsigned int, Dungeon>(Dungeon*, unsigned int, Dungeon const&) (stl_uninitialized.h:187)
+               n1: 16000000 0x8051404: void std::uninitialized_fill_n<Dungeon*, unsigned int, Dungeon>(Dungeon*, unsigned int, Dungeon const&) (stl_uninitialized.h:223)
+                n1: 16000000 0x80513E3: void std::__uninitialized_fill_n_a<Dungeon*, unsigned int, Dungeon, Dungeon>(Dungeon*, unsigned int, Dungeon const&, std::allocator<Dungeon>&) (stl_uninitialized.h:334)
+                 n1: 16000000 0x8051386: std::vector<Dungeon, std::allocator<Dungeon> >::_M_fill_initialize(unsigned int, Dungeon const&) (stl_vector.h:1214)
+                  n1: 16000000 0x80512E9: std::vector<Dungeon, std::allocator<Dungeon> >::vector(unsigned int, Dungeon const&, std::allocator<Dungeon> const&) (stl_vector.h:298)
+                   n1: 16000000 0x8050F7A: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n1: 16000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 16000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 16000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 16000000 0x80563E7: main (main.cpp:6)
+            n1: 4000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 4000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n1: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n2: 4000000 0x804BA3A: Dungeon::Dungeon(int, int) (dungeon.cpp:35)
+             n2: 4000000 0x8050F57: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+              n1: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+               n1: 4000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                 n0: 4000000 0x80563E7: main (main.cpp:6)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+             n0: 0 in 2 places, all below massif's threshold (01.00%)
+            n0: 1441600 in 5 places, all below massif's threshold (01.00%)
+          n0: 148800 in 1 place, below massif's threshold (01.00%)
+       n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+ n0: 175100 in 6 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=2
+#-----------
+time=447725737
+mem_heap_B=178766964
+mem_heap_extra_B=202476
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=554262707
+mem_heap_B=227815708
+mem_heap_extra_B=252436
+mem_stacks_B=0
+heap_tree=peak
+n2: 227815708 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 227414400 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 227414400 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 227414400 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 227414400 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 227414400 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 227414400 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 227414400 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 227414400 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 227414400 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 227121600 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n4: 227121600 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 212000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n2: 212000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 200000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 200000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n1: 200000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 200000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 200000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n1: 188000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n1: 188000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 188000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 100000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 100000000 0x80563E7: main (main.cpp:6)
+                      n1: 88000000 0x805609B: GUI::GUI() (gui.cpp:8)
+                       n0: 88000000 0x80563E7: main (main.cpp:6)
+                   n1: 12000000 0x8050F8F: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n1: 12000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 12000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 12000000 0x805609B: GUI::GUI() (gui.cpp:8)
+                       n0: 12000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 12000000 0x805142F: void std::__uninitialized_fill_n<false>::__uninit_fill_n<Dungeon*, unsigned int, Dungeon>(Dungeon*, unsigned int, Dungeon const&) (stl_uninitialized.h:187)
+               n1: 12000000 0x8051404: void std::uninitialized_fill_n<Dungeon*, unsigned int, Dungeon>(Dungeon*, unsigned int, Dungeon const&) (stl_uninitialized.h:223)
+                n1: 12000000 0x80513E3: void std::__uninitialized_fill_n_a<Dungeon*, unsigned int, Dungeon, Dungeon>(Dungeon*, unsigned int, Dungeon const&, std::allocator<Dungeon>&) (stl_uninitialized.h:334)
+                 n1: 12000000 0x8051386: std::vector<Dungeon, std::allocator<Dungeon> >::_M_fill_initialize(unsigned int, Dungeon const&) (stl_vector.h:1214)
+                  n1: 12000000 0x80512E9: std::vector<Dungeon, std::allocator<Dungeon> >::vector(unsigned int, Dungeon const&, std::allocator<Dungeon> const&) (stl_vector.h:298)
+                   n1: 12000000 0x8050F7A: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n1: 12000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 12000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 12000000 0x805609B: GUI::GUI() (gui.cpp:8)
+                       n0: 12000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 8000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 8000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 8000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n1: 4000000 0x805609B: GUI::GUI() (gui.cpp:8)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n2: 4000000 0x804BA3A: Dungeon::Dungeon(int, int) (dungeon.cpp:35)
+             n2: 4000000 0x8050F57: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+              n1: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+               n2: 4000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                n1: 4000000 0x805609B: GUI::GUI() (gui.cpp:8)
+                 n0: 4000000 0x80563E7: main (main.cpp:6)
+                n0: 0 in 1 place, below massif's threshold (01.00%)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+             n0: 0 in 2 places, all below massif's threshold (01.00%)
+            n0: 3121600 in 5 places, all below massif's threshold (01.00%)
+          n0: 292800 in 1 place, below massif's threshold (01.00%)
+       n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+ n0: 401308 in 6 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=4
+#-----------
+time=695050562
+mem_heap_B=107081462
+mem_heap_extra_B=129146
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=829647737
+mem_heap_B=106905135
+mem_heap_extra_B=197297
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=934173779
+mem_heap_B=106905135
+mem_heap_extra_B=197297
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=1073534291
+mem_heap_B=106905135
+mem_heap_extra_B=197297
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=1212922487
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=1352328244
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=1526588036
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=1700850743
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=1840214467
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=1944716971
+mem_heap_B=106905123
+mem_heap_extra_B=197285
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=2097865037
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=2202346925
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=2341673023
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=2481119962
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=2655456365
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=2794910733
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=2934291975
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=3038829873
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=3213026243
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=3352360857
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=3491571232
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=3596037148
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=3770198876
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=3874719192
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=4014084081
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=4153419209
+mem_heap_B=119160591
+mem_heap_extra_B=210305
+mem_stacks_B=0
+heap_tree=detailed
+n2: 119160591 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 118060800 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 118060800 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 118060800 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 118060800 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 118060800 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 118060800 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 118060800 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 118060800 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 118060800 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 117840000 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n3: 117840000 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 112000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n2: 112000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 112000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 112000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n2: 112000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 112000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 112000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n3: 112000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n1: 68000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+                    n1: 32000000 0x80553CC: Chunk* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:335)
+                     n1: 32000000 0x8055305: Chunk* std::__copy_move_a<false, Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:390)
+                      n1: 32000000 0x805522B: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:428)
+                       n1: 32000000 0x805506E: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::copy<__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:460)
+                        n1: 32000000 0x8054DFA: std::vector<Chunk, std::allocator<Chunk> >::operator=(std::vector<Chunk, std::allocator<Chunk> > const&) (vector.tcc:200)
+                         n1: 32000000 0x80548E1: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:335)
+                          n1: 32000000 0x805419C: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move_a<false, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:390)
+                           n1: 32000000 0x805351C: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:428)
+                            n1: 32000000 0x805305B: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::copy<__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:460)
+                             n1: 32000000 0x805290C: std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > >::operator=(std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > const&) (vector.tcc:200)
+                              n0: 32000000 0x8056292: Canvas::operator=(Canvas const&) (canvas.h:19)
+                    n1: 12000000 0x804F68F: Character::update_dungeon(Chunk) (character.cpp:102)
+                     n1: 12000000 0x805203D: Canvas::update_chunk() (canvas.cpp:125)
+                      n1: 12000000 0x8051C2C: Canvas::refresh() (canvas.cpp:63)
+                       n1: 12000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                        n1: 12000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                         n0: 12000000 0x80563F3: main (main.cpp:7)
+                   n0: 0 in 1 place, below massif's threshold (01.00%)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 4000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 4000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n0: 0 in 1 place, below massif's threshold (01.00%)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n0: 1840000 in 6 places, all below massif's threshold (01.00%)
+          n0: 220800 in 1 place, below massif's threshold (01.00%)
+       n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+ n0: 1099791 in 246 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=30
+#-----------
+time=4289299300
+mem_heap_B=123088251
+mem_heap_extra_B=214021
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=4405554920
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=4544892920
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=4684195574
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=detailed
+n2: 123403615 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 122296000 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 122296000 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 122296000 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 122296000 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 122296000 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 122296000 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 122296000 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 122296000 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 122296000 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 122080000 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n4: 122080000 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 116000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n2: 116000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 116000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 116000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n2: 116000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 116000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 116000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n3: 116000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n2: 84000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                    n1: 32000000 0x80553CC: Chunk* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:335)
+                     n1: 32000000 0x8055305: Chunk* std::__copy_move_a<false, Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:390)
+                      n1: 32000000 0x805522B: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:428)
+                       n1: 32000000 0x805506E: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::copy<__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:460)
+                        n1: 32000000 0x8054DFA: std::vector<Chunk, std::allocator<Chunk> >::operator=(std::vector<Chunk, std::allocator<Chunk> > const&) (vector.tcc:200)
+                         n1: 32000000 0x80548E1: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:335)
+                          n1: 32000000 0x805419C: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move_a<false, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:390)
+                           n1: 32000000 0x805351C: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:428)
+                            n1: 32000000 0x805305B: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::copy<__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:460)
+                             n1: 32000000 0x805290C: std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > >::operator=(std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > const&) (vector.tcc:200)
+                              n0: 32000000 0x8056292: Canvas::operator=(Canvas const&) (canvas.h:19)
+                    n0: 0 in 1 place, below massif's threshold (01.00%)
+                   n0: 0 in 1 place, below massif's threshold (01.00%)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 4000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 4000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n0: 0 in 1 place, below massif's threshold (01.00%)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n2: 1280000 0x804F75E: Overworld::operator=(Overworld const&) (overworld.h:12)
+             n1: 1280000 0x804F7E1: Chunk::operator=(Chunk const&) (chunk.h:15)
+              n0: 1280000 in 4 places, all below massif's threshold (01.00%)
+             n0: 0 in 1 place, below massif's threshold (01.00%)
+            n0: 800000 in 5 places, all below massif's threshold (01.00%)
+          n0: 216000 in 1 place, below massif's threshold (01.00%)
+       n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+ n0: 1107615 in 246 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=34
+#-----------
+time=4823528630
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=4962883384
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=5102221296
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=5241589743
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=5450622636
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=5589880843
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=5729148245
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=5868416466
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=6007668025
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=6146946619
+mem_heap_B=123403615
+mem_heap_extra_B=215329
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=6321670651
+mem_heap_B=152742307
+mem_heap_extra_B=244493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=6497194003
+mem_heap_B=152742307
+mem_heap_extra_B=244493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=6672717268
+mem_heap_B=152742307
+mem_heap_extra_B=244493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=6848240620
+mem_heap_B=152742307
+mem_heap_extra_B=244493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=7023763885
+mem_heap_B=152742307
+mem_heap_extra_B=244493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=7155675364
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=7260141935
+mem_heap_B=148872307
+mem_heap_extra_B=240621
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=7364609250
+mem_heap_B=150776307
+mem_heap_extra_B=242525
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=7469075395
+mem_heap_B=152574307
+mem_heap_extra_B=244325
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=7573541812
+mem_heap_B=154366307
+mem_heap_extra_B=246117
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=7679067202
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=7783534366
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=detailed
+n2: 148896307 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 147745600 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 147745600 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 147745600 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 147745600 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 147737600 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 147737600 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 146217600 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 146217600 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 146217600 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 146081600 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n3: 146081600 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 136000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n3: 136000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 132000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 132000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n2: 132000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 132000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 132000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n3: 116000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n2: 84000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                    n1: 32000000 0x80553CC: Chunk* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:335)
+                     n1: 32000000 0x8055305: Chunk* std::__copy_move_a<false, Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:390)
+                      n1: 32000000 0x805522B: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:428)
+                       n1: 32000000 0x805506E: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::copy<__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:460)
+                        n1: 32000000 0x8054DFA: std::vector<Chunk, std::allocator<Chunk> >::operator=(std::vector<Chunk, std::allocator<Chunk> > const&) (vector.tcc:200)
+                         n1: 32000000 0x80548E1: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:335)
+                          n1: 32000000 0x805419C: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move_a<false, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:390)
+                           n1: 32000000 0x805351C: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:428)
+                            n1: 32000000 0x805305B: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::copy<__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:460)
+                             n1: 32000000 0x805290C: std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > >::operator=(std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > const&) (vector.tcc:200)
+                              n0: 32000000 0x8056292: Canvas::operator=(Canvas const&) (canvas.h:19)
+                    n0: 0 in 1 place, below massif's threshold (01.00%)
+                   n1: 16000000 0x8050F8F: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n2: 16000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                     n0: 0 in 1 place, below massif's threshold (01.00%)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x8050108: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:75)
+               n1: 4000000 0x804FF73: Dungeon* std::uninitialized_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:117)
+                n1: 4000000 0x804FDAF: Dungeon* std::__uninitialized_copy_a<Dungeon*, Dungeon*, Dungeon>(Dungeon*, Dungeon*, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 4000000 0x804FAA1: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:206)
+                  n1: 4000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                   n1: 4000000 0x804F68F: Character::update_dungeon(Chunk) (character.cpp:102)
+                    n1: 4000000 0x805203D: Canvas::update_chunk() (canvas.cpp:125)
+                     n1: 4000000 0x8051C2C: Canvas::refresh() (canvas.cpp:63)
+                      n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 4000000 0x80563F3: main (main.cpp:7)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 8000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 8000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x804A57A: ProcedurallyBlindDB::ProcedurallyBlindDB(int, int, int) (procedurally_blind_db.cpp:18)
+               n2: 4000000 0x8050FF4: Chunk::Chunk(int, int, int, int) (chunk.cpp:21)
+                n2: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                 n1: 4000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                  n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                   n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                    n0: 4000000 0x80563F3: main (main.cpp:7)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+                n0: 0 in 1 place, below massif's threshold (01.00%)
+            n0: 2081600 in 6 places, all below massif's threshold (01.00%)
+          n0: 136000 in 1 place, below massif's threshold (01.00%)
+       n1: 1520000 0x804D652: void std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:187)
+        n1: 1520000 0x804D277: void std::uninitialized_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:223)
+         n1: 1520000 0x804CE37: void std::__uninitialized_fill_n_a<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:334)
+          n1: 1520000 0x804C7CA: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_fill_initialize(unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:1214)
+           n2: 1520000 0x804C0EF: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::vector(unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > > const&) (stl_vector.h:298)
+            n2: 1520000 0x804BA28: Dungeon::Dungeon(int, int) (dungeon.cpp:35)
+             n1: 1520000 0x804B268: ProcedurallyBlindDB::build_dungeon(int, int) (procedurally_blind_db.cpp:294)
+              n1: 1520000 0x805101B: Chunk::Chunk(int, int, int, int) (chunk.cpp:23)
+               n1: 1520000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                n1: 1520000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                 n1: 1520000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                  n1: 1520000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                   n0: 1520000 0x80563F3: main (main.cpp:7)
+             n0: 0 in 3 places, all below massif's threshold (01.00%)
+            n0: 0 in 5 places, all below massif's threshold (01.00%)
+     n0: 8000 in 1 place, below massif's threshold (01.00%)
+ n0: 1150707 in 246 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=56
+#-----------
+time=7888001036
+mem_heap_B=150848307
+mem_heap_extra_B=242597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=7992468688
+mem_heap_B=152758307
+mem_heap_extra_B=244509
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=8096935164
+mem_heap_B=154654307
+mem_heap_extra_B=246405
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=8202386658
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=8306854383
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=8411321314
+mem_heap_B=150848307
+mem_heap_extra_B=242597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=8515788879
+mem_heap_B=152758307
+mem_heap_extra_B=244509
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=8620255898
+mem_heap_B=154654307
+mem_heap_extra_B=246405
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=8725707392
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=8830174643
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=detailed
+n2: 148896307 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 147745600 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 147745600 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 147745600 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 147745600 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 147737600 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 147737600 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 146217600 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 146217600 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 146217600 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 146081600 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n3: 146081600 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 136000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n3: 136000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 132000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 132000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n2: 132000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 132000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 132000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n3: 116000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n2: 84000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                    n1: 32000000 0x80553CC: Chunk* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:335)
+                     n1: 32000000 0x8055305: Chunk* std::__copy_move_a<false, Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:390)
+                      n1: 32000000 0x805522B: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:428)
+                       n1: 32000000 0x805506E: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::copy<__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:460)
+                        n1: 32000000 0x8054DFA: std::vector<Chunk, std::allocator<Chunk> >::operator=(std::vector<Chunk, std::allocator<Chunk> > const&) (vector.tcc:200)
+                         n1: 32000000 0x80548E1: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:335)
+                          n1: 32000000 0x805419C: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move_a<false, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:390)
+                           n1: 32000000 0x805351C: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:428)
+                            n1: 32000000 0x805305B: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::copy<__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:460)
+                             n1: 32000000 0x805290C: std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > >::operator=(std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > const&) (vector.tcc:200)
+                              n0: 32000000 0x8056292: Canvas::operator=(Canvas const&) (canvas.h:19)
+                    n0: 0 in 1 place, below massif's threshold (01.00%)
+                   n1: 16000000 0x8050F8F: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n2: 16000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                     n0: 0 in 1 place, below massif's threshold (01.00%)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x8050108: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:75)
+               n1: 4000000 0x804FF73: Dungeon* std::uninitialized_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:117)
+                n1: 4000000 0x804FDAF: Dungeon* std::__uninitialized_copy_a<Dungeon*, Dungeon*, Dungeon>(Dungeon*, Dungeon*, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 4000000 0x804FAA1: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:206)
+                  n1: 4000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                   n1: 4000000 0x804F68F: Character::update_dungeon(Chunk) (character.cpp:102)
+                    n1: 4000000 0x805203D: Canvas::update_chunk() (canvas.cpp:125)
+                     n1: 4000000 0x8051C2C: Canvas::refresh() (canvas.cpp:63)
+                      n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 4000000 0x80563F3: main (main.cpp:7)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 8000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 8000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x804A57A: ProcedurallyBlindDB::ProcedurallyBlindDB(int, int, int) (procedurally_blind_db.cpp:18)
+               n2: 4000000 0x8050FF4: Chunk::Chunk(int, int, int, int) (chunk.cpp:21)
+                n2: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                 n1: 4000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                  n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                   n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                    n0: 4000000 0x80563F3: main (main.cpp:7)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+                n0: 0 in 1 place, below massif's threshold (01.00%)
+            n0: 2081600 in 6 places, all below massif's threshold (01.00%)
+          n0: 136000 in 1 place, below massif's threshold (01.00%)
+       n1: 1520000 0x804D652: void std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:187)
+        n1: 1520000 0x804D277: void std::uninitialized_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:223)
+         n1: 1520000 0x804CE37: void std::__uninitialized_fill_n_a<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:334)
+          n1: 1520000 0x804C7CA: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_fill_initialize(unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:1214)
+           n2: 1520000 0x804C0EF: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::vector(unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > > const&) (stl_vector.h:298)
+            n2: 1520000 0x804BA28: Dungeon::Dungeon(int, int) (dungeon.cpp:35)
+             n1: 1520000 0x804B268: ProcedurallyBlindDB::build_dungeon(int, int) (procedurally_blind_db.cpp:294)
+              n1: 1520000 0x805101B: Chunk::Chunk(int, int, int, int) (chunk.cpp:23)
+               n1: 1520000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                n1: 1520000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                 n1: 1520000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                  n1: 1520000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                   n0: 1520000 0x80563F3: main (main.cpp:7)
+             n0: 0 in 3 places, all below massif's threshold (01.00%)
+            n0: 0 in 5 places, all below massif's threshold (01.00%)
+     n0: 8000 in 1 place, below massif's threshold (01.00%)
+ n0: 1150707 in 246 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=66
+#-----------
+time=8934641313
+mem_heap_B=150848307
+mem_heap_extra_B=242597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=9039108965
+mem_heap_B=152758307
+mem_heap_extra_B=244509
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=9143575441
+mem_heap_B=154654307
+mem_heap_extra_B=246405
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=9249026935
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=9353494099
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=9457960856
+mem_heap_B=150848307
+mem_heap_extra_B=242597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=9562428421
+mem_heap_B=152758307
+mem_heap_extra_B=244509
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=9666894897
+mem_heap_B=154654307
+mem_heap_extra_B=246405
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=9772346391
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=9876813642
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=detailed
+n2: 148896307 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 147745600 0x804D600: __gnu_cxx::new_allocator<Tile>::allocate(unsigned int, void const*) (new_allocator.h:104)
+  n1: 147745600 0x804D214: std::_Vector_base<Tile, std::allocator<Tile> >::_M_allocate(unsigned int) (in /home/atticus/programming/cpp/roguelike/roguelike)
+   n1: 147745600 0x804CD56: std::_Vector_base<Tile, std::allocator<Tile> >::_M_create_storage(unsigned int) (stl_vector.h:181)
+    n2: 147745600 0x804C6ED: std::_Vector_base<Tile, std::allocator<Tile> >::_Vector_base(unsigned int, std::allocator<Tile> const&) (stl_vector.h:136)
+     n1: 147737600 0x804DDCD: std::vector<Tile, std::allocator<Tile> >::vector(std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:312)
+      n2: 147737600 0x804D86A: void std::_Construct<std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > const&) (stl_construct.h:83)
+       n1: 146217600 0x804D6D5: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:75)
+        n1: 146217600 0x804D2CF: std::vector<Tile, std::allocator<Tile> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*>(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*) (stl_uninitialized.h:117)
+         n2: 146217600 0x804CE98: std::vector<Tile, std::allocator<Tile> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::vector<Tile, std::allocator<Tile> > >(__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, std::vector<Tile, std::allocator<Tile> >*, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:258)
+          n1: 146081600 0x804C8AC: std::vector<Tile, std::allocator<Tile> >* std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > > >(unsigned int, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >, __gnu_cxx::__normal_iterator<std::vector<Tile, std::allocator<Tile> > const*, std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > >) (stl_vector.h:1141)
+           n3: 146081600 0x804C194: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::operator=(std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > > const&) (vector.tcc:188)
+            n1: 136000000 0x804B820: Dungeon::Dungeon(Dungeon const&) (dungeon.cpp:21)
+             n3: 136000000 0x8050340: void std::_Construct<Dungeon, Dungeon>(Dungeon*, Dungeon const&) (stl_construct.h:83)
+              n1: 132000000 0x80501AB: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:75)
+               n1: 132000000 0x804FFFA: Dungeon* std::uninitialized_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*) (stl_uninitialized.h:117)
+                n2: 132000000 0x804FE3E: Dungeon* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, Dungeon>(__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 132000000 0x804FC38: Dungeon* std::vector<Dungeon, std::allocator<Dungeon> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > > >(unsigned int, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >, __gnu_cxx::__normal_iterator<Dungeon const*, std::vector<Dungeon, std::allocator<Dungeon> > >) (stl_vector.h:1141)
+                  n2: 132000000 0x804F8DC: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:188)
+                   n3: 116000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                    n2: 84000000 0x805226D: Canvas::update_buffer() (canvas.cpp:169)
+                     n2: 68000000 0x8051A6C: Canvas::Canvas() (canvas.cpp:51)
+                      n1: 68000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                       n0: 68000000 0x80563E7: main (main.cpp:6)
+                      n0: 0 in 1 place, below massif's threshold (01.00%)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                    n1: 32000000 0x80553CC: Chunk* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:335)
+                     n1: 32000000 0x8055305: Chunk* std::__copy_move_a<false, Chunk const*, Chunk*>(Chunk const*, Chunk const*, Chunk*) (stl_algobase.h:390)
+                      n1: 32000000 0x805522B: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:428)
+                       n1: 32000000 0x805506E: __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > std::copy<__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > > >(__gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk const*, std::vector<Chunk, std::allocator<Chunk> > >, __gnu_cxx::__normal_iterator<Chunk*, std::vector<Chunk, std::allocator<Chunk> > >) (stl_algobase.h:460)
+                        n1: 32000000 0x8054DFA: std::vector<Chunk, std::allocator<Chunk> >::operator=(std::vector<Chunk, std::allocator<Chunk> > const&) (vector.tcc:200)
+                         n1: 32000000 0x80548E1: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:335)
+                          n1: 32000000 0x805419C: std::vector<Chunk, std::allocator<Chunk> >* std::__copy_move_a<false, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*>(std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<Chunk, std::allocator<Chunk> >*) (stl_algobase.h:390)
+                           n1: 32000000 0x805351C: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:428)
+                            n1: 32000000 0x805305B: __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > std::copy<__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > > >(__gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> > const*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >, __gnu_cxx::__normal_iterator<std::vector<Chunk, std::allocator<Chunk> >*, std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > >) (stl_algobase.h:460)
+                             n1: 32000000 0x805290C: std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > >::operator=(std::vector<std::vector<Chunk, std::allocator<Chunk> >, std::allocator<std::vector<Chunk, std::allocator<Chunk> > > > const&) (vector.tcc:200)
+                              n0: 32000000 0x8056292: Canvas::operator=(Canvas const&) (canvas.h:19)
+                    n0: 0 in 1 place, below massif's threshold (01.00%)
+                   n1: 16000000 0x8050F8F: Chunk::Chunk(int, int, int, int) (chunk.cpp:16)
+                    n2: 16000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                     n1: 16000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                      n1: 16000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 16000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 16000000 0x80563F3: main (main.cpp:7)
+                     n0: 0 in 1 place, below massif's threshold (01.00%)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x8050108: Dungeon* std::__uninitialized_copy<false>::__uninit_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:75)
+               n1: 4000000 0x804FF73: Dungeon* std::uninitialized_copy<Dungeon*, Dungeon*>(Dungeon*, Dungeon*, Dungeon*) (stl_uninitialized.h:117)
+                n1: 4000000 0x804FDAF: Dungeon* std::__uninitialized_copy_a<Dungeon*, Dungeon*, Dungeon>(Dungeon*, Dungeon*, Dungeon*, std::allocator<Dungeon>&) (stl_uninitialized.h:258)
+                 n1: 4000000 0x804FAA1: std::vector<Dungeon, std::allocator<Dungeon> >::operator=(std::vector<Dungeon, std::allocator<Dungeon> > const&) (vector.tcc:206)
+                  n1: 4000000 0x804F7C9: Chunk::operator=(Chunk const&) (chunk.h:15)
+                   n1: 4000000 0x804F68F: Character::update_dungeon(Chunk) (character.cpp:102)
+                    n1: 4000000 0x805203D: Canvas::update_chunk() (canvas.cpp:125)
+                     n1: 4000000 0x8051C2C: Canvas::refresh() (canvas.cpp:63)
+                      n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                       n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                        n0: 4000000 0x80563F3: main (main.cpp:7)
+              n0: 0 in 1 place, below massif's threshold (01.00%)
+            n1: 8000000 0x804B5E8: Dungeon::Dungeon() (dungeon.cpp:6)
+             n2: 8000000 0x804913B: DungeonBuilder::DungeonBuilder() (dungeonbuilder.cpp:5)
+              n2: 4000000 0x80516C1: Canvas::Canvas() (canvas.cpp:36)
+               n1: 4000000 0x8056066: GUI::GUI() (gui.cpp:3)
+                n0: 4000000 0x80563E7: main (main.cpp:6)
+               n0: 0 in 1 place, below massif's threshold (01.00%)
+              n1: 4000000 0x804A57A: ProcedurallyBlindDB::ProcedurallyBlindDB(int, int, int) (procedurally_blind_db.cpp:18)
+               n2: 4000000 0x8050FF4: Chunk::Chunk(int, int, int, int) (chunk.cpp:21)
+                n2: 4000000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                 n1: 4000000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                  n1: 4000000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                   n1: 4000000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                    n0: 4000000 0x80563F3: main (main.cpp:7)
+                 n0: 0 in 1 place, below massif's threshold (01.00%)
+                n0: 0 in 1 place, below massif's threshold (01.00%)
+            n0: 2081600 in 6 places, all below massif's threshold (01.00%)
+          n0: 136000 in 1 place, below massif's threshold (01.00%)
+       n1: 1520000 0x804D652: void std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:187)
+        n1: 1520000 0x804D277: void std::uninitialized_fill_n<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_uninitialized.h:223)
+         n1: 1520000 0x804CE37: void std::__uninitialized_fill_n_a<std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> >, std::vector<Tile, std::allocator<Tile> > >(std::vector<Tile, std::allocator<Tile> >*, unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > >&) (stl_uninitialized.h:334)
+          n1: 1520000 0x804C7CA: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::_M_fill_initialize(unsigned int, std::vector<Tile, std::allocator<Tile> > const&) (stl_vector.h:1214)
+           n2: 1520000 0x804C0EF: std::vector<std::vector<Tile, std::allocator<Tile> >, std::allocator<std::vector<Tile, std::allocator<Tile> > > >::vector(unsigned int, std::vector<Tile, std::allocator<Tile> > const&, std::allocator<std::vector<Tile, std::allocator<Tile> > > const&) (stl_vector.h:298)
+            n2: 1520000 0x804BA28: Dungeon::Dungeon(int, int) (dungeon.cpp:35)
+             n1: 1520000 0x804B268: ProcedurallyBlindDB::build_dungeon(int, int) (procedurally_blind_db.cpp:294)
+              n1: 1520000 0x805101B: Chunk::Chunk(int, int, int, int) (chunk.cpp:23)
+               n1: 1520000 0x805223A: Canvas::update_buffer() (canvas.cpp:169)
+                n1: 1520000 0x8051C37: Canvas::refresh() (canvas.cpp:64)
+                 n1: 1520000 0x805565F: GUI::OnRender() (gui_render.cpp:6)
+                  n1: 1520000 0x8056198: GUI::OnExecute() (gui.cpp:29)
+                   n0: 1520000 0x80563F3: main (main.cpp:7)
+             n0: 0 in 3 places, all below massif's threshold (01.00%)
+            n0: 0 in 5 places, all below massif's threshold (01.00%)
+     n0: 8000 in 1 place, below massif's threshold (01.00%)
+ n0: 1150707 in 246 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=76
+#-----------
+time=9981280312
+mem_heap_B=150848307
+mem_heap_extra_B=242597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=10085747053
+mem_heap_B=152750307
+mem_heap_extra_B=244501
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=10190213616
+mem_heap_B=154646307
+mem_heap_extra_B=246397
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=10295667020
+mem_heap_B=151368787
+mem_heap_extra_B=243133
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=10400134184
+mem_heap_B=148896307
+mem_heap_extra_B=240645
+mem_stacks_B=0
+heap_tree=empty

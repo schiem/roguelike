@@ -1,6 +1,5 @@
 #include "gui.h"
 
-void GUI::OnLoop()
-{
+void GUI::OnLoop() {
     SDL_Delay(2);
 }

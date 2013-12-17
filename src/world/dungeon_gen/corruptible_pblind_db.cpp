@@ -3,8 +3,7 @@
 using namespace std;
 using namespace tiledef;
 //Default constructor
-CorruptiblePBlindDB::CorruptiblePBlindDB()
-{
+CorruptiblePBlindDB::CorruptiblePBlindDB() {
 
 }
 
@@ -12,13 +11,11 @@ CorruptiblePBlindDB::CorruptiblePBlindDB()
  * Just call the super constructor
  */
 CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) : 
-    ProcedurallyBlindDB(_width, _height, seed)
-{
+    ProcedurallyBlindDB(_width, _height, seed) {
 
 }
 
-void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners)
-{
+void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
     int vert = 0;
     int horiz = 0;
     int wall_blocks_found = 0;

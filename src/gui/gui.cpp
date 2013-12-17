@@ -1,7 +1,6 @@
 #include "gui.h"
 
-GUI::GUI() 
-{
+GUI::GUI() {
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
@@ -11,10 +10,8 @@ GUI::GUI()
     cout<<"GUI construction complete."<<endl;
 }
 
-int GUI::OnExecute()
-{   
-    if(OnInit() == false)
-    {
+int GUI::OnExecute() {   
+    if(OnInit() == false) {
         return -1;
     }
 

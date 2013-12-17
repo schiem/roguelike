@@ -1,8 +1,7 @@
 #include "gui.h"
 #include <stdlib.h>
 #include <ctime>
-bool GUI::OnInit()
-{
+bool GUI::OnInit() {
     //initialize stuff
     srand(time(NULL));
     SDL_Init(SDL_INIT_EVERYTHING);

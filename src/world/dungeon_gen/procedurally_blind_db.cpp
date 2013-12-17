@@ -2,8 +2,7 @@
 
 using namespace tiledef;
 
-ProcedurallyBlindDB::ProcedurallyBlindDB()
-{
+ProcedurallyBlindDB::ProcedurallyBlindDB() {
     width = 80;
     height = 40;
     main_dungeon = Dungeon(width, height);
@@ -15,8 +14,7 @@ ProcedurallyBlindDB::ProcedurallyBlindDB()
  * POST: Will populate the :char dungeon[][]: array with dummy
  * values.
  */
-ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed)
-{
+ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed) {
     width = _width;
     height = _height;
     num_rooms = 0;
@@ -35,8 +33,7 @@ ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed)
 /* PRE:
  * POST: Will build a good starting room in the dungeon space
  */
-void ProcedurallyBlindDB::build_start_room()
-{
+void ProcedurallyBlindDB::build_start_room() {
     int room_width = rand() % ROOM_WIDTH_DEV + 
                              (STD_ROOM_WIDTH - (int)(ROOM_WIDTH_DEV/2));
     int room_height = rand() % ROOM_WIDTH_DEV +
@@ -52,8 +49,7 @@ void ProcedurallyBlindDB::build_start_room()
  * POST: Will find and return a viable room space, or a room with 
  *       tl.row, tl.col, br.row, br.col = '-1' if there is no viable space.
  */
-Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
-{
+Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     /*
      *  pseudocode for this method:
      *
@@ -92,14 +88,12 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
                            (the_point.col + (int) floor(min_room_width / 2.0))));
 
     //Check if the room is out-of-bounds; if so, return a null room
-    if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br)))
-    {
+    if((point_is_beyond_bounds(test_room.tl)) || (point_is_beyond_bounds(test_room.br))) {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
 
     //Check the room's walls to see if they clip with anything else.
-    if (edges_collide_with_something(test_room) != "0000")
-    {
+    if (edges_collide_with_something(test_room) != "0000") {
         return Room(IntPoint(-1, -1), IntPoint(-1, -1));
     }
 
@@ -115,8 +109,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
     //until each rectangle edge is unable to grow any more:
     while ((test_room.br.col - test_room.tl.col < max_room_width) &&
            (test_room.br.row - test_room.tl.row < max_room_height) &&
-           (upper_bound + lower_bound + left_bound + right_bound > 0))
-    { 
+           (upper_bound + lower_bound + left_bound + right_bound > 0)) { 
         //move the edges out
         test_room.tl.row -= upper_bound;
         test_room.tl.col -= left_bound;
@@ -126,19 +119,19 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
         //if we ran into a solid block, set *_bound to 0 for that edge,
         //then move that edge one step toward the room center...
         string collision_bin_str = edges_collide_with_something(test_room);
-        if(collision_bin_str[0] == '1'){
+        if(collision_bin_str[0] == '1') {
             upper_bound = 0;
             test_room.tl.row += 1;
         }
-        if(collision_bin_str[1] == '1'){
+        if(collision_bin_str[1] == '1') {
             right_bound = 0;
             test_room.br.col -= 1;
         }
-        if(collision_bin_str[2] == '1'){
+        if(collision_bin_str[2] == '1') {
             lower_bound = 0;
             test_room.br.row -= 1;
         }
-        if(collision_bin_str[3] == '1'){
+        if(collision_bin_str[3] == '1') {
             left_bound = 0;
             test_room.tl.col += 1;
         }
@@ -199,8 +192,8 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const
 /* PRE:
  * POST: Will find a good starting point for a procedurally-blind dungeon
  */
-IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_height) const
-{
+IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_height) const {
+
     int good_row = rand() % (int)(height/2) + (int)(height/4) - (int)(std_height / 2);
     int good_col = rand() % (int)(width/2) + (int)(width/4) - (int)(std_width / 2);
     return IntPoint(good_row, good_col);
@@ -225,20 +218,16 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
     int current_direction = direction;
     bool bad_direction;
     IntPoint potential_point;
-    for(int i = 0; i < path_length; i++)
-    {
+    for(int i = 0; i < path_length; i++) {
         main_dungeon.set_tile(current_point, PATH);
         //For at least 2 or 3 blocks, just go straight. otherwise,
         //we may change direction.
-        if (i > 3)
-        {
+        if (i > 3) {
             //Do we change direction?
             int dirchange = rand() % 100;
-            if (dirchange < 15)
-            {
+            if (dirchange < 15) {
                 //Which direction do we change to?
-                switch (dirchange % 2)
-                {
+                switch (dirchange % 2) {
                     case 0:
                         current_direction -= 1;
                         current_direction = (current_direction % 4);
@@ -252,12 +241,10 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
         }
 
         int tries = 0;
-        do
-        {
+        do {
             bad_direction = false;
             potential_point = get_next_point(current_point, current_direction);
-            if ((point_is_beyond_bounds(potential_point)) || (!is_empty_space(potential_point)))
-            {
+            if ((point_is_beyond_bounds(potential_point)) || (!is_empty_space(potential_point))) {
                 bad_direction = true;
                 current_direction += 1;
             }
@@ -279,8 +266,7 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
  * floor (in which a room is built near the center, and rooms and
  * hallways crawl off of that room.
  */
-void ProcedurallyBlindDB::build_dungeon(int target, int deviation)
-{   
+void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {   
     reset();
     bool dungeon_is_awesome;
     build_start_room();

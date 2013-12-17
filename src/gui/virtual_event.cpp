@@ -5,26 +5,33 @@ VirtualEvent::VirtualEvent() {
 VirtualEvent::~VirtualEvent() {
     //Do nothing
 }
+
 void VirtualEvent::OnEvent(SDL_Event* Event) {
     switch(Event->type) {
         case SDL_ACTIVEEVENT: {
             switch(Event->active.state) {
                 case SDL_APPMOUSEFOCUS: {
-                    if ( Event->active.gain )   OnMouseFocus();
-                    else                OnMouseBlur();
-
+                    if ( Event->active.gain ) {
+                        OnMouseFocus();
+                    } else {
+                        OnMouseBlur();
+                    }
                     break;
                 }
                 case SDL_APPINPUTFOCUS: {
-                    if ( Event->active.gain )   OnInputFocus();
-                    else                OnInputBlur();
-
+                    if ( Event->active.gain ) {  
+                        OnInputFocus();
+                    } else {
+                        OnInputBlur();
+                    }
                     break;
                 }
                 case SDL_APPACTIVE: {
-                    if ( Event->active.gain )   OnRestore();
-                    else                OnMinimize();
-
+                    if ( Event->active.gain ){ 
+                        OnRestore();
+                    } else {
+                        OnMinimize();
+                    }
                     break;
                 }
             }

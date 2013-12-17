@@ -1,7 +1,6 @@
 #include "gui.h"
 
-void GUI::OnCleanup()
-{
+void GUI::OnCleanup() {
     SDL_FreeSurface (ascii);
     SDL_Quit();
 }

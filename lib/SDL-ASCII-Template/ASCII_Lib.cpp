@@ -1,6 +1,5 @@
 #include <ASCII_Lib.h>
-void drawChr(int x, int y, int smiley, SDL_Surface* source, SDL_Surface* destination, Uint32 color)
-{
+void drawChr(int x, int y, int smiley, SDL_Surface* source, SDL_Surface* destination, Uint32 color) {
     //Holds offsets
     SDL_Rect offset;
     SDL_Rect clip[1];
@@ -28,11 +27,9 @@ void drawChr(int x, int y, int smiley, SDL_Surface* source, SDL_Surface* destina
 
 
 
-void drawStr(int x, int y, char stringy[], SDL_Surface* source, SDL_Surface* destination, Uint32 color)
-{
+void drawStr(int x, int y, char stringy[], SDL_Surface* source, SDL_Surface* destination, Uint32 color) {
     size_t i;
-    for ( i = 0; i < strlen(stringy); i++)
-    {
+    for ( i = 0; i < strlen(stringy); i++) {
         drawChr( x+i, y, stringy[i], source, destination, color);
     }
 }
@@ -45,15 +42,15 @@ void drawInt(int x, int y, int number, SDL_Surface* source, SDL_Surface* destina
     // > 1 and the number will be represented with 'size' digits.
 
     char buf[size];
-    if ( size > 1 )
-    {
+    if ( size > 1 ) {
         int exp = 1;
-        for ( int i = 0; i < (size-1); i++ ) { exp = exp*10; }
+        for ( int i = 0; i < (size-1); i++ ) { 
+            exp = exp*10;
+        }
         number = number + exp;
     }
     //itoa(number, buf, 10);
-    if ( size > 1 )
-    {
+    if ( size > 1 ) {
         buf[0] = 48;
     }
     drawStr(x, y, buf, source, destination, color);

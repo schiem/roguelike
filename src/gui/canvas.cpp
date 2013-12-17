@@ -33,8 +33,7 @@ taken from the buffer with the character at the center.
 */
 
 
-Canvas::Canvas()
-{
+Canvas::Canvas() {
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
@@ -55,8 +54,7 @@ Canvas::Canvas()
 /*
 This is to refresh the screen whenever the character moves.
 */
-void Canvas::refresh()
-{
+void Canvas::refresh() {
     //If the character has gone out of bounds of the chunk,t hen the chunk and
     //buffer need updated
     if(out_of_bounds()) {
@@ -93,16 +91,14 @@ void Canvas::refresh()
 
 
 
-bool Canvas::out_of_bounds()
-{
+bool Canvas::out_of_bounds() {
     return (main_char.get_x_loc() < 0 || 
             main_char.get_x_loc() >= STARTING_WIDTH || 
             main_char.get_y_loc() < 0 || 
             main_char.get_y_loc() >= STARTING_HEIGHT);
 }
 
-void Canvas::update_chunk()
-{
+void Canvas::update_chunk() {
     int x = main_char.get_chunk_x();
     int y = main_char.get_chunk_y();
 
@@ -141,8 +137,7 @@ current chunk.  This should be broken into several functions.  This will be
 called whenever the character moves into a new chunk, so that the buffer
 reflects the chunks surrounding the characters current one.
 */
-void Canvas::update_buffer()
-{
+void Canvas::update_buffer() {
     int x = 0;
     int y = 0;
    
@@ -192,10 +187,10 @@ void Canvas::update_buffer()
                     */
 
 
-                    // These two things are always true. Setting them here to avoid
-                    // awkward incrementing. I always think it's a bad idea
-                    // to do incrementing (y++, x++) after every run of a for-loop, because
-                    // of the redundancy.
+                    // These two things are always true. Setting them here to
+                    // avoid awkward incrementing. I always think it's a bad
+                    // idea to do incrementing (y++, x++) after every run of a
+                    // for-loop, because of the redundancy.
                     x = col - (main_char.get_chunk_y() - 1);
                     y = row - (main_char.get_chunk_x() - 1);
 
@@ -210,14 +205,12 @@ void Canvas::update_buffer()
     }
 }
 
-const Chunk& Canvas::get_chunk()
-{
+const Chunk& Canvas::get_chunk() {
     return chunk_map[main_char.get_chunk_x()][main_char.get_chunk_y()];
 }
 
 //Since this is a const reference, will we have to call it
 //more than once? Maybe not...
-const std::vector<std::vector<Tile> >& Canvas::get_matrix()
-{
+const std::vector<std::vector<Tile> >& Canvas::get_matrix() {
     return canvas;
 }
