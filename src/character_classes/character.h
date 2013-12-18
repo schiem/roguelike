@@ -48,6 +48,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
+        //Main_Character(const Main_Character& m_C);
         Main_Character(int, int, int, int,  Chunk, int);
         void perform_action_cont();
         void perform_action_press(SDLKey);

@@ -14,6 +14,7 @@ Dungeon::Dungeon()
         }
     }
 }
+
 Dungeon::Dungeon(const Dungeon& d)
 {
     dungeon = d.dungeon;
@@ -25,8 +26,6 @@ Dungeon::Dungeon(const Dungeon& d)
         this->rooms[i] = d.rooms[i];
     }
 }
-
-
 
 Dungeon::Dungeon(int _width, int _height)
 {
@@ -59,8 +58,6 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     }
     return *this;
 }
-
-
 
 Tile Dungeon::get_tile(int row, int col) const {
     return dungeon[row][col];

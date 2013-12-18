@@ -3,9 +3,11 @@
 using namespace std;
 using namespace tiledef;
 //Default constructor
+/*
 CorruptiblePBlindDB::CorruptiblePBlindDB() {
 
 }
+*/
 
 /*
  * Just call the super constructor

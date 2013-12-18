@@ -11,20 +11,28 @@ of half of one chunk and half of another.
 
 Let's say that this is an array of chunks:
 
-111222333 111222333 111222333
+111222333 
+111222333 
+111222333
 
 and the screen is 3x3, to give us a view of:
 
-222 2X2 222
+222 
+2X2 
+223
 
 with X being the character.  If the character moves left, then we get:
 
-122 1X2 122
+122 
+1X2 
+122
 
 So, there is a buffer, which essentially holds all of the surrounding chunks.
 A buffer might look like:
 
-123 456 789
+123 
+456 
+789
 
 Where each number is a different chunk.  But, we only want part of this to get
 written to the screen.  So, we have a canvas, which is the size of the screen
@@ -34,6 +42,8 @@ taken from the buffer with the character at the center.
 
 
 Canvas::Canvas() {
+    STARTING_WIDTH = 100;
+    STARTING_HEIGHT = 50;
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
@@ -43,12 +53,20 @@ Canvas::Canvas() {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
-    main_char = Main_Character(100, 50, 25, 3, chunk_map[5][8], -1);
+    main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
     
     //What gets drawn to the screen
     canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
     update_buffer();
     cout<<"buffer updated."<<endl;
+}
+
+void Canvas::set_tile(int row, int col, Tile tile) {
+    assert(row >= 0);
+    assert(row < STARTING_HEIGHT);
+    assert(col >= 0);
+    assert(col < STARTING_WIDTH);
+    canvas[row][col] = tile;
 }
 
 /*
@@ -87,9 +105,23 @@ void Canvas::refresh() {
         }
         canvas[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
     }
+
+    //draw_visibility_lines();
 }
 
+void Canvas::draw_visibility_lines() {
+    IntPoint point1 = IntPoint(main_char.get_y_loc() + 10, 
+                               main_char.get_x_loc() + 8);
+    IntPoint character_loc = IntPoint(main_char.get_y_loc(),
+                                      main_char.get_x_loc());
+    std::vector<IntPoint> points = bresenham_line(character_loc, point1);
+    IntPoint current_point;
+    for(size_t i = 0; i < points.size(); i++){
+        current_point = points[i];
+        canvas[current_point.row][current_point.col] = WALL;
+    }
 
+}
 
 bool Canvas::out_of_bounds() {
     return (main_char.get_x_loc() < 0 || 
@@ -144,12 +176,11 @@ void Canvas::update_buffer() {
     //loop through the characters y chunk coordinate, +/- 1.  If the character
     //was in chunk 7, this would loops through 6, 7, 8. 
     for(int col=main_char.get_chunk_y() - 1;col<=main_char.get_chunk_y()+1;col++) {
-        
         //Check to ensure that the chunk map is big enough.
         if(chunk_map.size() < (size_t) col + 1) {
             chunk_map.resize(col + 1);
         }
-        
+
         //as above, but with the x coordinate.
         for(int row=main_char.get_chunk_x()-1;row<=main_char.get_chunk_x()+1;row++) {
             

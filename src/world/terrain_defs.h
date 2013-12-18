@@ -5,12 +5,12 @@
 struct Tile {
     int char_count;
     int tile_id;
-    char sprite;
     bool can_be_moved_through;
-    bool operator==(const Tile& rhs) const {
-        return this->sprite == rhs.sprite;
-    }
+    bool visible;
     int color;
+    bool operator==(const Tile& rhs) const {
+        return this->tile_id == rhs.tile_id;
+    }
 };
 
 namespace tiledef {

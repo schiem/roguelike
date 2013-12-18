@@ -80,7 +80,7 @@ build/gui_event.o : gui_event.cpp gui.h
 build/gui.o : gui.cpp gui.h virtual_event.h canvas.h terrain_defs.h
 	$(CC) $(CFLAGS) $(GUI)/gui.cpp -o $@
 
-build/canvas.o : canvas.h canvas.cpp character.h main_character.cpp chunk.cpp
+build/canvas.o : canvas.h canvas.cpp character.h main_character.cpp chunk.cpp bresenham.h
 	$(CC) $(CFLAGS) $(GUI)/canvas.cpp -o $@
 
 build/dungeon.o :  dungeon.h dungeon.cpp int_point.h room.h terrain_defs.h
@@ -91,6 +91,9 @@ build/chunk.o : chunk.h chunk.cpp dungeon.h procedurally_blind_db.h overworld.h 
 
 build/overworld.o : overworld.h overworld.cpp terrain_defs.h
 	$(CC) $(CFLAGS) $(WORL)/overworld.cpp -o $@
+
+build/bresenham.o : bresenham.h bresenham.cpp
+	$(CC) $(CFLAGS) $(MISC)/bresenham.cpp -o $@
 
 clean :
 	if [ -x roguelike ]; then rm roguelike; fi; if [ -d build ]; then rm -rf build; fi

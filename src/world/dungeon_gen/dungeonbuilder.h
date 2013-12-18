@@ -44,7 +44,7 @@ class DungeonBuilder
         IntPoint get_next_point(IntPoint, int) const;
 
     public:
-        DungeonBuilder();
+        //DungeonBuilder();
         virtual void reset();
         void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
         Dungeon* get_dungeon();

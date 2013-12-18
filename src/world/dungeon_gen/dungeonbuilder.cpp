@@ -2,8 +2,10 @@
 
 using namespace tiledef;
 
+/*
 DungeonBuilder::DungeonBuilder() {
 }
+*/
 
 void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const {
     for(int i = 0; i < height; i++) {

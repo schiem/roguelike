@@ -12,8 +12,6 @@ class Dungeon
     typedef std::vector<std::vector<Tile> > TileMatrix;
 
     private:
-        //TODO
-       //Tile dungeon[MAX_WIDTH][MAX_HEIGHT];
        TileMatrix dungeon;
 
     public:

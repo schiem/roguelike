@@ -4,7 +4,7 @@
 bool GUI::OnInit() {
     //initialize stuff
     srand(time(NULL));
-    SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO );
 
     //Set up screen
     screen = SDL_SetVideoMode( 800, 600, 32, SDL_SWSURFACE );
