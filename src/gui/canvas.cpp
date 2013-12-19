@@ -61,6 +61,11 @@ Canvas::Canvas() {
     cout<<"buffer updated."<<endl;
 }
 
+/*
+ * PRE: Will be given two integers representing a row and column.
+ * POST: Will run the point represented by this row and column through a series
+ * of assertions to ensure that it will not produce a segfault.
+ */
 void Canvas::point_assertions(int row, int col) {
     assert(row >= 0);
     assert(row < STARTING_HEIGHT);
@@ -68,39 +73,69 @@ void Canvas::point_assertions(int row, int col) {
     assert(col < STARTING_WIDTH);
 }
 
+/**
+ * PRE: Will be given two integers representing a row and a column.
+ * POST: Returns a pointer to the tile on the canvas at that row and column,
+ * using assertions in point_assertions.
+ */
 Tile* Canvas::get_tile(int row, int col) {
     point_assertions(row, col);
     return &canvas[row][col];
 }
 
+/**
+ * PRE: Will be given an IntPoint.
+ * POST: Returns a pointer to the tile on the canvas at that point, using
+ * assertions in point_assertions.
+ */
 Tile* Canvas::get_tile(IntPoint point) {
     point_assertions(point.row, point.col);
     return &canvas[point.row][point.col];
 }
 
+/**
+ * PRE: Will be given two ints representing a row and column, and a Tile.
+ * POST: Sets the tile at the given point on the canvas to the given tile,
+ * using assertions in point_assertions.
+ */
 void Canvas::set_tile(int row, int col, Tile tile) {
     point_assertions(row, col);
     canvas[row][col] = tile;
 }
 
+/**
+ * PRE: Will be given an IntPoint and a Tile.
+ * POST: Sets the tile at the given point on the canvas to the given tile,
+ * using assertions in point_assertions.
+ */
 void Canvas::set_tile(IntPoint point, Tile tile) {
     point_assertions(point.row, point.col);
     canvas[point.row][point.col] = tile;
 }
 
+/**
+ * PRE: Will be given an IntPoint.
+ * POST: Returns true if the given point is out of bounds on the canvas, and
+ * false otherwise.
+ */
 bool Canvas::out_of_bounds(IntPoint point) {
     return (point.col < 0 || point.col >= STARTING_WIDTH ||
             point.row < 0 || point.row >= STARTING_HEIGHT);
 }
 
+/**
+ * PRE: Will be given two ints representing a row and column.
+ * POST: Returns true if the given point is out of bounds on the canvas, and
+ * false otherwise.
+ */
 bool Canvas::out_of_bounds(int row, int col) {
     return (col < 0 || col >= STARTING_WIDTH || 
             row < 0 || row >= STARTING_HEIGHT);
 }
 
-/*
-This is to refresh the screen whenever the character moves.
-*/
+/**
+ *This is to refresh the screen whenever the character moves.
+ */
 void Canvas::refresh() {
     //If the character has gone out of bounds of the chunk,t hen the chunk and
     //buffer need to be updated
@@ -173,10 +208,14 @@ void Canvas::draw_visibility_lines() {
     }
 }
 
+
+/*
+ * PRE: TODO
+ * POST: TODO
+ */
 void Canvas::update_chunk() {
     int x = main_char.get_chunk_x();
     int y = main_char.get_chunk_y();
-
     
     if (main_char.get_x_loc() < 0 ) {
         x -= 1;
