@@ -26,11 +26,16 @@ class Canvas
         //temporary, we'll need to serialize this
         ChunkMatrix chunk_map; 
         TileMatrix buffer;
+        void point_assertions(int, int);
+        void set_tile(int, int, Tile);
+        void set_tile(IntPoint, Tile);
+        Tile* get_tile(int, int);
+        Tile* get_tile(IntPoint);
+        bool out_of_bounds(IntPoint);
+        bool out_of_bounds(int, int);
         void update_buffer();
         void update_chunk();
-        bool out_of_bounds();
         void draw_visibility_lines();
-        void set_tile(int, int, Tile);
     public:
         Canvas();
         //TODO do something about these two. Events.cpp?  The way the project

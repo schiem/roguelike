@@ -5,3 +5,4 @@
 #include <vector>
 
 std::vector<IntPoint> bresenham_line(IntPoint&, IntPoint&);
+std::vector<IntPoint> bresenham_circle(IntPoint&, int);

@@ -279,6 +279,7 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
             dungeon_is_awesome = false;
             main_dungeon = Dungeon(width, height);
             num_rooms = 0;
+            build_start_room();
         }
     } while(!dungeon_is_awesome);
 }
@@ -309,6 +310,7 @@ void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
         tries++;
         acceptable = true;
         //TODO sometimes num_rooms is 0. This shouldn't happen.
+        assert(num_rooms > 0);
         if(num_rooms == 0) {
             acceptable = false;
             break;

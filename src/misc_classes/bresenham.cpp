@@ -7,7 +7,7 @@
  * starting and ending point.
  */
 std::vector<IntPoint> bresenham_line(IntPoint& first, IntPoint& second) {
-    std::vector<IntPoint> points = std::vector<IntPoint>(1);
+    std::vector<IntPoint> points = std::vector<IntPoint>();
     int x0 = first.col;
     int y0 = first.row;
     int x1 = second.col;
@@ -20,7 +20,7 @@ std::vector<IntPoint> bresenham_line(IntPoint& first, IntPoint& second) {
         std::swap(x1, y1);
     }
 
-    int deltax = x1 - x0;
+    int deltax = abs(x1 - x0);
     int deltay = abs(y1 - y0);
     int error = deltax / 2;
     int y = y0;
@@ -53,6 +53,37 @@ std::vector<IntPoint> bresenham_line(IntPoint& first, IntPoint& second) {
         if (error < 0) {
             y = y + ystep;
             error = error + deltax;
+        }
+    }
+
+    return points;
+}
+
+std::vector<IntPoint> bresenham_circle(IntPoint& start, int radius) {
+    std::vector<IntPoint> points = std::vector<IntPoint>();
+    int x0 = start.row;
+    int y0 = start.col;
+
+    int x = radius;
+    int y = 0;
+    int radius_error = 1 - x;
+
+    while(x >= y) {
+        points.push_back(IntPoint(x + x0, y + y0));
+        points.push_back(IntPoint(y + x0, x + y0));
+        points.push_back(IntPoint(-x + x0, y + y0));
+        points.push_back(IntPoint(-y + x0, x + y0));
+        points.push_back(IntPoint(-x + x0, -y + y0));
+        points.push_back(IntPoint(-y + x0, -x + y0));
+        points.push_back(IntPoint(x + x0, -y + y0));
+        points.push_back(IntPoint(y + x0, -x + y0));
+
+        y++;
+        if(radius_error < 0) {
+            radius_error += (2*y + 1);
+        } else {
+            x--;
+            radius_error += (2*(y-x + 1));
         }
     }
 

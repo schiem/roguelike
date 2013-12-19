@@ -5,9 +5,10 @@
 struct Tile {
     int char_count;
     int tile_id;
+    int color;
     bool can_be_moved_through;
     bool visible;
-    int color;
+    bool opaque;
     bool operator==(const Tile& rhs) const {
         return this->tile_id == rhs.tile_id;
     }

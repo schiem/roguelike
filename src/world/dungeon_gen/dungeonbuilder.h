@@ -13,6 +13,7 @@
 #include <string>
 #include <stdlib.h>
 #include <math.h> //floor, ceil
+#include <assert.h>
 
 #include "int_point.h"
 #include "room.h"

@@ -61,12 +61,41 @@ Canvas::Canvas() {
     cout<<"buffer updated."<<endl;
 }
 
-void Canvas::set_tile(int row, int col, Tile tile) {
+void Canvas::point_assertions(int row, int col) {
     assert(row >= 0);
     assert(row < STARTING_HEIGHT);
     assert(col >= 0);
     assert(col < STARTING_WIDTH);
+}
+
+Tile* Canvas::get_tile(int row, int col) {
+    point_assertions(row, col);
+    return &canvas[row][col];
+}
+
+Tile* Canvas::get_tile(IntPoint point) {
+    point_assertions(point.row, point.col);
+    return &canvas[point.row][point.col];
+}
+
+void Canvas::set_tile(int row, int col, Tile tile) {
+    point_assertions(row, col);
     canvas[row][col] = tile;
+}
+
+void Canvas::set_tile(IntPoint point, Tile tile) {
+    point_assertions(point.row, point.col);
+    canvas[point.row][point.col] = tile;
+}
+
+bool Canvas::out_of_bounds(IntPoint point) {
+    return (point.col < 0 || point.col >= STARTING_WIDTH ||
+            point.row < 0 || point.row >= STARTING_HEIGHT);
+}
+
+bool Canvas::out_of_bounds(int row, int col) {
+    return (col < 0 || col >= STARTING_WIDTH || 
+            row < 0 || row >= STARTING_HEIGHT);
 }
 
 /*
@@ -74,8 +103,8 @@ This is to refresh the screen whenever the character moves.
 */
 void Canvas::refresh() {
     //If the character has gone out of bounds of the chunk,t hen the chunk and
-    //buffer need updated
-    if(out_of_bounds()) {
+    //buffer need to be updated
+    if(out_of_bounds(main_char.get_x_loc(), main_char.get_y_loc())) {
         update_chunk();
         update_buffer();
     }
@@ -88,46 +117,64 @@ void Canvas::refresh() {
             for(int j = 0; j < STARTING_WIDTH; j++) {
                 Chunk* current_chunk =
                     &chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()];
-                canvas[i][j] = current_chunk->get_tile(main_char.get_depth(),i,j);
+                set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
         }
-        canvas[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
+        //draw_visibility_lines();
+        set_tile(main_char.get_y_loc(), main_char.get_x_loc(), MAIN_CHAR);
     } else {
-        //STARTING_HEIGHT is actually screen height, same for STARTING_WIDTH
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
             for (int j = 0; j < STARTING_WIDTH; j++) {
                 int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y_loc()) -
                     (STARTING_HEIGHT/2) + i; 
                 int buffer_tile_col = (STARTING_WIDTH + main_char.get_x_loc()) -
                     (STARTING_WIDTH/2) + j; 
-                canvas[i][j] = buffer[buffer_tile_row][buffer_tile_col];
+                set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        canvas[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
+        set_tile(STARTING_HEIGHT/2, STARTING_WIDTH/2, MAIN_CHAR);
     }
-
-    //draw_visibility_lines();
 }
 
+/*
+ * PRE: None
+ * POST: Draws a field-of-vision around the player - sets tiles' visibility
+ * to true if they have been seen by the player.
+ */
 void Canvas::draw_visibility_lines() {
-    IntPoint point1 = IntPoint(main_char.get_y_loc() + 10, 
-                               main_char.get_x_loc() + 8);
     IntPoint character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
-    std::vector<IntPoint> points = bresenham_line(character_loc, point1);
+
+    std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 7);
+    std::vector<IntPoint> line_points;
     IntPoint current_point;
-    for(size_t i = 0; i < points.size(); i++){
-        current_point = points[i];
-        canvas[current_point.row][current_point.col] = WALL;
+    IntPoint circle_point;
+
+    //For each point in the circle,
+    for(size_t i = 0; i < circle_points.size(); i++) {
+        circle_point = circle_points[i];
+        line_points = bresenham_line(character_loc, circle_point);
+
+        //Step through a line starting from the player's location
+        //to the current circle point
+        for(size_t j = 0; j < line_points.size(); j++) {
+            current_point = line_points[j];
+
+            if(!out_of_bounds(current_point)) {
+                //If the tile is transparent...
+                if(!get_tile(current_point)->opaque) {
+                    //Set visibility to true. 
+                    get_tile(current_point.row, 
+                            current_point.col)->visible = true;                
+                } else {
+                    //Otherwise, break the loop; we can't see past opaque
+                    //things.
+                    break;
+                }
+            }
+            set_tile(current_point.row, current_point.col, WALL);
+        }
     }
-
-}
-
-bool Canvas::out_of_bounds() {
-    return (main_char.get_x_loc() < 0 || 
-            main_char.get_x_loc() >= STARTING_WIDTH || 
-            main_char.get_y_loc() < 0 || 
-            main_char.get_y_loc() >= STARTING_HEIGHT);
 }
 
 void Canvas::update_chunk() {
