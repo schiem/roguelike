@@ -8,7 +8,13 @@ void GUI::OnRender()
 
     for(size_t i = 0; i < tm.size(); i++) {
         for(size_t j = 0; j < tm[i].size(); j++) {
-            drawChr(j, i, tm[i][j].char_count, ascii, screen, tm[i][j].color);
+            if(tm[i][j].visible) {
+                drawChr(j, i, tm[i][j].char_count, ascii, screen, tm[i][j].color);
+            } else {
+                //Draw an empty tile
+                //TODO horrible program design
+                drawChr(j, i, 0, ascii, screen, 0);
+            }
         }
     }
 

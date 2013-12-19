@@ -15,6 +15,7 @@ struct Tile {
 };
 
 namespace tiledef {
+    extern Tile OVERWORLD_DIRT;
     extern Tile DIRT;
     extern Tile WALL;
     extern Tile EMPTY;

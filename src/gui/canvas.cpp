@@ -120,7 +120,7 @@ void Canvas::refresh() {
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
         }
-        //draw_visibility_lines();
+        draw_visibility_lines();
         set_tile(main_char.get_y_loc(), main_char.get_x_loc(), MAIN_CHAR);
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
@@ -145,7 +145,7 @@ void Canvas::draw_visibility_lines() {
     IntPoint character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
 
-    std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 7);
+    std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 15);
     std::vector<IntPoint> line_points;
     IntPoint current_point;
     IntPoint circle_point;
@@ -161,18 +161,14 @@ void Canvas::draw_visibility_lines() {
             current_point = line_points[j];
 
             if(!out_of_bounds(current_point)) {
-                //If the tile is transparent...
-                if(!get_tile(current_point)->opaque) {
-                    //Set visibility to true. 
-                    get_tile(current_point.row, 
-                            current_point.col)->visible = true;                
-                } else {
-                    //Otherwise, break the loop; we can't see past opaque
-                    //things.
+                //Set visibility to true. 
+                get_tile(current_point.row, 
+                        current_point.col)->visible = true;                
+                //If the tile is opaque, don't draw any past it.
+                if(get_tile(current_point)->opaque) {
                     break;
                 }
             }
-            set_tile(current_point.row, current_point.col, WALL);
         }
     }
 }
