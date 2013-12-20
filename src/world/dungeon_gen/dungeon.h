@@ -3,6 +3,7 @@
 #define MAX_WIDTH 500 
 #define MAX_HEIGHT 500
 #define MAX_ROOMS 15
+//#define ROOM_COUNT_DEBUG
 #include <vector>
 #include <assert.h>
 #include <terrain_defs.h>
