@@ -53,6 +53,13 @@ Canvas::Canvas() {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
+
+    //TODO I (Seth) am not sure if the character should know about its
+    //position in the chunk. Ideally, we should be doing this initialization
+    //with an initialization list; otherwise, there is actually another
+    //main_char that gets created using the default constructor. I have tested
+    //this; there are in fact two instances until the end of this constructor.
+    //I'll look into it more.
     main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
     
     //What gets drawn to the screen
