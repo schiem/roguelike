@@ -3,9 +3,10 @@
 #define MAX_WIDTH 500 
 #define MAX_HEIGHT 500
 #define MAX_ROOMS 15
+#include <vector>
+#include <assert.h>
 #include <terrain_defs.h>
 #include "room.h"
-#include <vector>
 
 class Dungeon
 {
@@ -19,6 +20,7 @@ class Dungeon
        int height;
        int num_rooms;
        std::vector<Room> rooms;
+       void tile_assertions(int, int) const;
        Tile get_tile(int, int) const;
        Tile get_tile(IntPoint) const;
        void set_tile(int, int, Tile);

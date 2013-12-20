@@ -1,3 +1,19 @@
+/**
+ * PROCEDURALLY-BLIND DUNGEON BUILDER
+ * ==================================
+ *
+ * The method for this dungeon generation technique is:
+ *
+ * 1. Create a viable "first" dungeon room.
+ * 2. Tunnel out from that room in a number of paths.
+ * 3. At the end of the last path that was created, try to create another room.
+ * 4. Repeat this until one of two conditions is met:
+ *      a. The room limit is reached
+ *      b. There is no viable room space at the end of the path.
+ * 5. If the resulting dungeon does not have very many rooms, scrap it and start
+ * over. This currently happens <25% of the time.
+ */
+
 #include "procedurally_blind_db.h"
 
 using namespace tiledef;
@@ -53,28 +69,26 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     /*
      *  pseudocode for this method:
      *
-     *  declare min room width and min room height;
-     *  declare and define test_room based on this width and height;
-     *  declare upper_bound, lower_bound, left_bound, right_bound = 1
+     *  declare min room width and min room height; declare and define test_room
+     *  based on this width and height; declare upper_bound, lower_bound,
+     *  left_bound, right_bound = 1
      *
-     *  if test_room collides with something solid:
-     *      return something nullish
+     *  if test_room collides with something solid: return something nullish
      *
-     *  while (room width < max) and (room height < max) AND
-     *      (upper_bound + lower_bound + left_bound + right_bound > 0):
+     *  while (room width < max) and (room height < max) AND (upper_bound +
+     *  lower_bound + left_bound + right_bound > 0):
      *
-     *      move all of test_room's points out: (subroutine probably)
-     *          subtract upper_bound from row value of both upper points;
-     *          subtract left_bound from col value of both left side points;
-     *          add lower_bound to row value of both lower points;
-     *          add right_bound to col value of both right side points;
+     *      move all of test_room's points out: (subroutine probably) subtract
+     *      upper_bound from row value of both upper points; subtract left_bound
+     *      from col value of both left side points; add lower_bound to row
+     *      value of both lower points; add right_bound to col value of both
+     *      right side points;
      *
      *      "scan" across those newly created edges;
      *
-     *      if, during the scan, we ran into a solid block:
-     *          which side did it occur on?
-     *          Set the *_bound to 0 for that side;
-     *          move the points on that side one step toward the room center;
+     *      if, during the scan, we ran into a solid block: which side did it
+     *      occur on?  Set the *_bound to 0 for that side; move the points on
+     *      that side one step toward the room center;
      *
      */
 
@@ -139,28 +153,30 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     //Here, test_room should be a viable area in which to stick a real room.
 
     /*
-     *  problems:
-     *      -shouldn't just use the largest room possible, that would be dumb. Instead, use that space
-     *          to create a random room. But how to ensure that the path intersects this room?
+     *  problem: shouldn't just use the largest room possible, that would be
+     *  dumb. Instead, use that space to create a random room. But how to ensure
+     *  that the path intersects this room?
      *
      *      solution to that issue:
      *
-     *          -start with a left column that is between the left rectangle wall and (the lesser value of:
-     *              (the right wall column - MIN_ROOM_WIDTH), the path column)
+     *          -start with a left column that is between the left rectangle
+     *          wall and (the lesser value of: (the right wall column -
+     *          MIN_ROOM_WIDTH), the path column)
      *
-     *          -get a right column somewhere between (the larger value of: (left room column + MIN_ROOM_WIDTH),
-     *              the path column) and the right wall
+     *          -get a right column somewhere between (the larger value of:
+     *          (left room column + MIN_ROOM_WIDTH), the path column) and the
+     *          right wall
      *            
-     *          -get a top row somewhere between the top wall and (the lesser value of:
-     *              (the bottom wall row - MIN_ROOM_HEIGHT),the path row)
+     *          -get a top row somewhere between the top wall and (the lesser
+     *          value of: (the bottom wall row - MIN_ROOM_HEIGHT),the path row)
      *
-     *          -get a bottom row somewhere between (the larger value of: (top room row + MIN_ROOM_HEIGHT),
-     *              the path row) and the bottom wall 
+     *          -get a bottom row somewhere between (the larger value of: (top
+     *          room row + MIN_ROOM_HEIGHT), the path row) and the bottom wall 
      * 
      */
     
-    //I am using the same variables, but for an entirely different purpose... call the cops.
-    //Holy shit math/logic. I am going to screw something up.
+    //I am using the same variables, but for an entirely different purpose...
+    //call the cops.
     int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
     left_column_right_bound = max(left_column_right_bound, test_room.tl.col + 1);
     left_bound = rand() % (abs(left_column_right_bound - test_room.tl.col)) + test_room.tl.col;
@@ -189,7 +205,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
 
 }
 
-/* PRE:
+/* PRE: 
  * POST: Will find a good starting point for a procedurally-blind dungeon
  */
 IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_height) const {
@@ -199,17 +215,17 @@ IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_
     return IntPoint(good_row, good_col);
 }
 
-/* PRE: Will be given :IntPoint start:, which refers to the wall block of the room at
- * which the path starts, and :int direction:, which refers to the starting direction
- * of the path according to this scheme:
+/* PRE: Will be given :IntPoint start:, which refers to the wall block of the
+ * room at which the path starts, and :int direction:, which refers to the
+ * starting direction of the path according to this scheme:
  * 0 = up
  * 1 = right
  * 2 = down
  * 3 = left
  *
- * POST: Will attempt to build a path from the given Room and block. If this succeds,
- * will return the IntPoint of the end of the path. If it fails, it will return an 
- * IntPoint with row=-1 and col=-1.
+ * POST: Will attempt to build a path from the given Room and block. If this
+ * succeds, will return the IntPoint of the end of the path. If it fails, it
+ * will return an IntPoint with row=-1 and col=-1.
  */
 IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
 {
@@ -244,7 +260,8 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
         do {
             bad_direction = false;
             potential_point = get_next_point(current_point, current_direction);
-            if ((point_is_beyond_bounds(potential_point)) || (!is_empty_space(potential_point))) {
+            if (point_is_beyond_bounds(potential_point) ||
+                    !is_empty_space(potential_point)) {
                 bad_direction = true;
                 current_direction += 1;
             }
@@ -256,15 +273,13 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
     return current_point;
 }
 
-/* PRE: Will be given :int target: to specify a general target
- * number of openings in the dungeon floor, :int deviation: to
- * specify the maximum desired deviation from this target, and
- * :int squareness:, a number from 0 to 100, which determines 
- * how square the rooms are.
+/* PRE: Will be given :int target: to specify a general target number of
+ * openings in the dungeon floor, :int deviation: to specify the maximum desired
+ * deviation from this target, and :int squareness:, a number from 0 to 100,
+ * which determines how square the rooms are.
  *
- * POST: Will build a procedurally-blind dungeon in the dungeon
- * floor (in which a room is built near the center, and rooms and
- * hallways crawl off of that room.
+ * POST: Builds a procedurally-blind dungeon in the dungeon floor (in which a
+ * room is built near the center, and rooms and hallways crawl off of that room.
  */
 void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {   
     reset();
@@ -284,15 +299,15 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
     } while(!dungeon_is_awesome);
 }
 
-/* PRE: Will be given :int target:, :int deviation:, :int squareness:,
- * :int std_room_width:, :int room_width_deviation:, 
- * :int room_height_deviation: from the parent function :int build_pblind_dungeon():,
- * and :int current_room_num:, which is an index of the "rooms" array.
+/* PRE: Will be given :int target:, :int deviation:, :int squareness:, :int
+ * std_room_width:, :int room_width_deviation:, :int room_height_deviation: from
+ * the parent function :int build_pblind_dungeon():, and :int current_room_num:,
+ * which is an index of the "rooms" array.
  *
- * POST: Will build the dungeon by finding 0 to 2 viable wall blocks in the given
- * room, building paths outward from those wall blocks, and (often) building rooms
- * at the end of those paths. Every time a new room is built, the function is called
- * again with that room's index passed as :int current_room_num:. 
+ * POST: Builds the dungeon by finding 0 to 2 viable wall blocks in the given
+ * room, building paths outward from those wall blocks, and (often) building
+ * rooms at the end of those paths. Every time a new room is built, the function
+ * is called again with that room's index passed as :int current_room_num:. 
  *
  */
 void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)

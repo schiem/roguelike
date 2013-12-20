@@ -59,19 +59,41 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     return *this;
 }
 
+/**
+ * PRE: Will be given two integers representing a row and column.
+ * POST: Will run the given point in the dungeon through a series of assertions
+ * to ensure that it is valid.
+ */
+void Dungeon::tile_assertions(int row, int col) const {
+    assert(row >= 0);
+    assert(row < height);
+    assert(col >= 0);
+    assert(col < width);
+}
+
+/**
+ * self-explanatory getters
+ */
 Tile Dungeon::get_tile(int row, int col) const {
+    tile_assertions(row, col);
     return dungeon[row][col];
 }
 
 Tile Dungeon::get_tile(IntPoint point) const {
+    tile_assertions(point.row, point.col);
     return dungeon[point.row][point.col];
 }
 
+/**
+ * self-explanatory setters
+ */
 void Dungeon::set_tile(int row, int col, Tile theTile) {
+    tile_assertions(row, col);
     dungeon[row][col] = theTile;
 }
 
 void Dungeon::set_tile(IntPoint point, Tile theTile) {
+    tile_assertions(point.row, point.col);
     dungeon[point.row][point.col] = theTile;
 }
 

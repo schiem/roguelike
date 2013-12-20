@@ -3,10 +3,6 @@
 using namespace tiledef;
 
 /*
-DungeonBuilder::DungeonBuilder() {
-}
-*/
-
 void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) const {
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -14,6 +10,8 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
         }
     }
 }
+
+*/
 
 /* PRE: Will be given :int given:, a number under 100.
  *

@@ -1,13 +1,18 @@
+/**
+ * CORRUPTIBLE PROCEDURALLY-BLIND DUNGEON GENERATION
+ * =================================================
+ *
+ * This variant on a procedurally-blind dungeon has a more decayed look. Its
+ * walls are often caved in. This is achieved by passing over the created
+ * dungeon with an algorithm that modifies cells according to their surroundings
+ * and random chance.
+ */
+
+
 #include "corruptible_pblind_db.h"
 
 using namespace std;
 using namespace tiledef;
-//Default constructor
-/*
-CorruptiblePBlindDB::CorruptiblePBlindDB() {
-
-}
-*/
 
 /*
  * Just call the super constructor
@@ -17,6 +22,20 @@ CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) :
 
 }
 
+/**
+ * PRE: Will be given a vector of IntPoints containing corner blocks on a room.
+ * dungeon.
+ *
+ * POST: Does this:
+ *
+ *   O O O   15%  O O O
+ *   O X X  --->  O O X
+ *   O X .        O X X
+ *     |
+ *     |     15%  O O O
+ *     \------->  O O X
+ *                O X .
+ */
 void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
     int vert = 0;
     int horiz = 0;
@@ -36,19 +55,27 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
             //This is for the first rule listed above corrupt_walls().
 
             //If the block below this point is a ROOM_WALL block...
-            if((corners[j].row + 1 < main_dungeon.height) && (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) == ROOM_WALL)) {
+            if((corners[j].row + 1 < main_dungeon.height) && 
+                    (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) 
+                     == ROOM_WALL)) {
                 vert = 1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].row - 1 >= 0) && (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) == ROOM_WALL)) {
+            if ((corners[j].row - 1 >= 0) && 
+                    (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) 
+                     == ROOM_WALL)) {
                 vert = -1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) == ROOM_WALL)) {
+            if ((corners[j].col + 1 < main_dungeon.width) && 
+                    (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) 
+                     == ROOM_WALL)) {
                 horiz = 1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) == ROOM_WALL)) {
+            if ((corners[j].col + 1 < main_dungeon.width) && 
+                    (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) 
+                     == ROOM_WALL)) {
                 horiz = -1;
                 wall_blocks_found++;
             }
@@ -57,7 +84,9 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
                 return;
             } else {
                 main_dungeon.set_tile(corners[j], EMPTY);
-                main_dungeon.set_tile(corners[j].row + vert, corners[j].col + horiz, ROOM_WALL);
+                main_dungeon.set_tile(corners[j].row + vert, 
+                        corners[j].col + horiz, 
+                        ROOM_WALL);
             }
         }
     }
