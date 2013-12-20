@@ -88,9 +88,12 @@ void Canvas::point_assertions(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that row and column,
  * using assertions in point_assertions.
  */
-Tile* Canvas::get_tile(int row, int col) {
+Tile Canvas::get_tile(int row, int col) {
+    
     point_assertions(row, col);
-    return &canvas[row][col];
+    //return &canvas[row][col];
+
+    return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), row, col);
 }
 
 /**
@@ -98,9 +101,11 @@ Tile* Canvas::get_tile(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that point, using
  * assertions in point_assertions.
  */
-Tile* Canvas::get_tile(IntPoint point) {
+Tile Canvas::get_tile(IntPoint point) {
     point_assertions(point.row, point.col);
-    return &canvas[point.row][point.col];
+    
+    //return &canvas[point.row][point.col];
+    return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), point.row, point.col);
 }
 
 /**
@@ -214,10 +219,11 @@ void Canvas::draw_visibility_lines() {
 
             if(!out_of_bounds(current_point)) {
                 //Set visibility to true. 
-                get_tile(current_point.row, 
-                        current_point.col)->visible = true;                
+                Tile vis_tile = get_tile(current_point.row, current_point.col);
+                vis_tile.visible = true;
+                chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].set_tile(main_char.get_depth(), current_point.row, current_point.col, vis_tile);            
                 //If the tile is opaque, don't draw any past it.
-                if(get_tile(current_point)->opaque) {
+                if(get_tile(current_point).opaque) {
                     break;
                 }
             }

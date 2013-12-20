@@ -29,8 +29,8 @@ class Canvas
         void point_assertions(int, int);
         void set_tile(int, int, Tile);
         void set_tile(IntPoint, Tile);
-        Tile* get_tile(int, int);
-        Tile* get_tile(IntPoint);
+        Tile get_tile(int, int);
+        Tile get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
         bool out_of_bounds(int, int);
         void update_buffer();

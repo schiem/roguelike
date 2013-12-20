@@ -47,6 +47,16 @@ Tile Chunk::get_tile(int depth, int col, int row) const {
     }
 }
 
+void Chunk::set_tile(int depth, int row, int col, Tile tile){
+    if (depth == -1){
+        overworld.set_tile(row, col, tile);
+    }
+    else
+    {
+        dungeon_floors[depth].set_tile(row, col, tile);   
+    }
+}
+
 std::vector<int> Chunk::get_up_stair(int depth) const{
     assert(depth>=0);
     return dungeon_floors[depth].up_stair;
