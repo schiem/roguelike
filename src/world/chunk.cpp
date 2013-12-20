@@ -9,6 +9,7 @@ Chunk::Chunk(int _y, int _x, int _width, int _height) {
     initialized = true;
     width = _width;
     height= _height;
+    bool is_dungeon;
     srand(time(NULL));
     depth = rand() % 6 + 1;
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
@@ -18,12 +19,14 @@ Chunk::Chunk(int _y, int _x, int _width, int _height) {
     ProcedurallyBlindDB db(width, height); 
     //CorruptiblePBlindDB db(width, height);
     for (int i=0; i < depth; i++) {
+        is_dungeon = (i < depth - 1);
         db.build_dungeon(5, 5);
         temp_d = db.get_dungeon();
         dungeon_floors[i] = *temp_d;
     }
     //generate the overworld
-    overworld = Overworld(width, height);
+    is_dungeon = (depth > 0);
+    overworld = Overworld(width, height, is_dungeon);
 }
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {
@@ -35,7 +38,7 @@ const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {
 }
 
 Tile Chunk::get_tile(int depth, int col, int row) const {
-    if (depth ==-1){
+    if (depth == -1){
         return overworld.get_tile(col, row);
     } else {
         return dungeon_floors[depth].get_tile(col, row);

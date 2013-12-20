@@ -17,11 +17,12 @@ class Overworld
         TileMatrix ground;
 
     public:
+        bool is_dungeon;
         int width;
         int height;
         Tile get_tile(int, int) const;
         void set_tile(int, int, Tile);
-        Overworld(int, int);
+        Overworld(int, int, bool);
         Overworld();
         const std::vector<std::vector<Tile> >& get_ground();
 };

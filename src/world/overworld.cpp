@@ -3,6 +3,7 @@ using namespace tiledef;
 Overworld::Overworld() {
     width = 10;
     height = 10;
+    is_dungeon = false;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -15,9 +16,10 @@ Overworld::Overworld() {
     }
 }
 
-Overworld::Overworld(int _width, int _height) {
+Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     width = _width;
     height = _height;
+    is_dungeon = _is_dungeon;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -27,7 +29,12 @@ Overworld::Overworld(int _width, int _height) {
                 ground[i][j] = OVERWORLD_DIRT;
             }
         }
-        ground[1][1] = TREE;
+    }
+    if(is_dungeon)
+    {
+        int door_x = rand() % width;
+        int door_y = rand() % height;
+        ground[door_y][door_x] = DOWN_STAIR;
     }
 }
 

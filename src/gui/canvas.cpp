@@ -60,6 +60,9 @@ Canvas::Canvas() {
     //main_char that gets created using the default constructor. I have tested
     //this; there are in fact two instances until the end of this constructor.
     //I'll look into it more.
+    
+    //TODO I (Michael) agree.  It really shouldn't know about its position.  But that
+    //means that either the canvas or the chunk will have to keep track of that.
     main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
     
     //What gets drawn to the screen

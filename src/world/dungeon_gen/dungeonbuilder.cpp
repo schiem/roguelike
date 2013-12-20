@@ -34,7 +34,7 @@ bool DungeonBuilder::rolled_over(int given) const {
  * space.
  */
 bool DungeonBuilder::is_empty_space(IntPoint point) const {
-    return ((main_dungeon.get_tile(point) == EMPTY) || (main_dungeon.get_tile(point) == PATH));
+    return ((main_dungeon.get_tile(point) == BLOCK_WALL) || (main_dungeon.get_tile(point) == PATH));
 }
 
 /* PRE: Will be given :IntPoint point:

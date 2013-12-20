@@ -27,6 +27,9 @@ namespace tiledef {
     extern Tile MAIN_CHAR3;
     extern Tile MAIN_CHAR4;
     extern Tile TREE;
+    extern Tile BLOCK_WALL;
+    extern Tile DOWN_STAIR;
+    extern Tile UP_STAIR;
 }
 
 #endif
