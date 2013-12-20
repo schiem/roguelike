@@ -294,6 +294,7 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
             dungeon_is_awesome = false;
             main_dungeon = Dungeon(width, height);
             num_rooms = 0;
+            main_dungeon.num_rooms = 0;
             build_start_room();
         }
     } while(!dungeon_is_awesome);
