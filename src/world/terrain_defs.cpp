@@ -3,7 +3,7 @@
 namespace tiledef {
     Tile OVERWORLD_DIRT = {250, 1, BROWN, true, true, false};
     Tile DIRT = {250, 1, BROWN, true, false, false};
-    Tile WALL = {35, 2, GRAY, false, false, true};
+    Tile ROOM_WALL = {35, 2, GRAY, false, false, true};
     Tile EMPTY = {0, 3, 0, true, false, false};
     Tile PATH = {240, 4, GRAY, true, false, false};
     Tile MAIN_CHAR = {1, 5, DARK_RED, true, true, false}; 

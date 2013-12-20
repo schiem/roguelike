@@ -35,20 +35,20 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
             //I'm going with the weirdest, because YOLO.
             //This is for the first rule listed above corrupt_walls().
 
-            //If the block below this point is a WALL block...
-            if((corners[j].row + 1 < main_dungeon.height) && (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) == WALL)) {
+            //If the block below this point is a ROOM_WALL block...
+            if((corners[j].row + 1 < main_dungeon.height) && (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) == ROOM_WALL)) {
                 vert = 1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].row - 1 >= 0) && (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) == WALL)) {
+            if ((corners[j].row - 1 >= 0) && (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) == ROOM_WALL)) {
                 vert = -1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) == WALL)) {
+            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) == ROOM_WALL)) {
                 horiz = 1;
                 wall_blocks_found++;
             } 
-            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) == WALL)) {
+            if ((corners[j].col + 1 < main_dungeon.width) && (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) == ROOM_WALL)) {
                 horiz = -1;
                 wall_blocks_found++;
             }
@@ -57,7 +57,7 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
                 return;
             } else {
                 main_dungeon.set_tile(corners[j], EMPTY);
-                main_dungeon.set_tile(corners[j].row + vert, corners[j].col + horiz, WALL);
+                main_dungeon.set_tile(corners[j].row + vert, corners[j].col + horiz, ROOM_WALL);
             }
         }
     }

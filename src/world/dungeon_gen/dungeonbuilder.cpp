@@ -64,13 +64,13 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const {
     for(int row = r.tl.row; row <= r.br.row; row++) {
         if (point_is_beyond_bounds(IntPoint(row, r.tl.col))) {
             bin_string[3] = '1';
-        } else if (main_dungeon.get_tile(row, r.tl.col).can_be_moved_through == false) {
+        } else if (main_dungeon.get_tile(row, r.tl.col) == ROOM_WALL) {
             bin_string[3] = '1';
         }
 
         if (point_is_beyond_bounds(IntPoint(row, r.br.col))) {
             bin_string[1] = '1';
-        } else if (main_dungeon.get_tile(row, r.br.col).can_be_moved_through == false) {
+        } else if (main_dungeon.get_tile(row, r.br.col) == ROOM_WALL) {
             bin_string[1] = '1';
         }
     }
@@ -78,13 +78,13 @@ string DungeonBuilder::edges_collide_with_something(Room& r) const {
     for(int col = r.tl.col; col <= r.br.col; col++) {
         if (point_is_beyond_bounds(IntPoint(r.tl.row, col))) {
             bin_string[0] = '1';
-        } else if (main_dungeon.get_tile(r.tl.row, col).can_be_moved_through == false) {
+        } else if (main_dungeon.get_tile(r.tl.row, col) == ROOM_WALL) {
             bin_string[0] = '1';
         }
 
         if (point_is_beyond_bounds(IntPoint(r.br.row, col))) {
             bin_string[2] = '1';
-        } else if (main_dungeon.get_tile(r.br.row, col).can_be_moved_through == false) {
+        } else if (main_dungeon.get_tile(r.br.row, col) == ROOM_WALL) {
             bin_string[2] = '1';
         }
     }
@@ -106,8 +106,8 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
         return 1;
     } else if (point.row == main_dungeon.height - 1) {
         return 2;
-    } else if((main_dungeon.get_tile(point.row, point.col - 1) == WALL) or
-       (main_dungeon.get_tile(point.row, point.col + 1) == WALL)) {
+    } else if((main_dungeon.get_tile(point.row, point.col - 1) == ROOM_WALL) or
+       (main_dungeon.get_tile(point.row, point.col + 1) == ROOM_WALL)) {
 
         if (main_dungeon.get_tile(point.row - 1, point.col) == DIRT) {
             direction = 2;
@@ -116,8 +116,8 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
         else if (main_dungeon.get_tile(point.row + 1, point.col) == DIRT) {
             direction = 0;
         }
-    } else if ((main_dungeon.get_tile(point.row - 1, point.col) == WALL) or
-        (main_dungeon.get_tile(point.row + 1, point.col) == WALL)) {
+    } else if ((main_dungeon.get_tile(point.row - 1, point.col) == ROOM_WALL) or
+        (main_dungeon.get_tile(point.row + 1, point.col) == ROOM_WALL)) {
 
         if (main_dungeon.get_tile(point.row, point.col - 1) == DIRT) {
             direction = 1;
@@ -133,11 +133,11 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
 
 /* PRE: Will be given :int a: and :int b:, representing a row and column.
  * POST: If that row and column is not currently a PATH tile, set it to a 
- *       WALL tile.
+ *       ROOM_WALL tile.
  */
 void DungeonBuilder::set_wall_if_not_path(int a, int b)  {
     if(main_dungeon.get_tile(a, b).tile_id != 4) {
-        main_dungeon.set_tile(a, b, WALL);
+        main_dungeon.set_tile(a, b, ROOM_WALL);
     }
 }
 /* PRE: Will be given :IntPoint tl:, which represents the top-left corner,
@@ -157,7 +157,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
         set_wall_if_not_path(tl.row, i);
         set_wall_if_not_path(br.row, i);
     }
-    //draw left and right WALLs
+    //draw left and right ROOM_WALLs
     for(int i = tl.row + 1; i <= br.row - 1; i++) {
         set_wall_if_not_path(i, tl.col);
         set_wall_if_not_path(i, br.col);

@@ -17,7 +17,7 @@ struct Tile {
 namespace tiledef {
     extern Tile OVERWORLD_DIRT;
     extern Tile DIRT;
-    extern Tile WALL;
+    extern Tile ROOM_WALL;
     extern Tile EMPTY;
     //static const Tile PATH = {88, 'X', true};
     //static const Tile PATH = {111, 'o', true};
