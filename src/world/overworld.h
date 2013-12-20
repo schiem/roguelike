@@ -18,8 +18,7 @@ class Overworld
 
     public:
         bool is_dungeon;
-        int spawn_x;
-        int spawn_y;
+        std::vector<int> down_stair;
         int width;
         int height;
         Tile get_tile(int, int) const;

@@ -47,6 +47,22 @@ Tile Chunk::get_tile(int depth, int col, int row) const {
     }
 }
 
+std::vector<int> Chunk::get_up_stair(int depth) const{
+    assert(depth>=0);
+    return dungeon_floors[depth].up_stair;
+}
+
+std::vector<int> Chunk::get_down_stair(int depth) const{
+    if(depth==-1)
+    {
+        return overworld.down_stair;
+    }
+    else
+    {
+        return dungeon_floors[depth].down_stair;
+    }
+}
+
 int Chunk::get_depth() const {
     return depth;
 }

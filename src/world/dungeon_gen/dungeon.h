@@ -19,8 +19,8 @@ class Dungeon
        int width;
        int height;
        int num_rooms;
-       int down_stair[2];
-       int up_stair[2];
+       std::vector<int> down_stair;
+       std::vector<int> up_stair;
        std::vector<Room> rooms;
        void make_stairs(bool);
        void tile_assertions(int, int) const;

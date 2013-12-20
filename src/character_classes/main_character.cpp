@@ -45,6 +45,8 @@ void Main_Character::perform_action_press(SDLKey key) {
                 if(chunk.get_tile(depth, y, x) == UP_STAIR)
                 {
                     depth--;
+                    x = chunk.get_down_stair(depth)[0];
+                    y = chunk.get_down_stair(depth)[1];
                 }
             }
             break;
@@ -53,6 +55,9 @@ void Main_Character::perform_action_press(SDLKey key) {
                 if(chunk.get_tile(depth, y, x) == DOWN_STAIR)
                 {
                     depth++;
+                    x = chunk.get_up_stair(depth)[0];
+                    y = chunk.get_up_stair(depth)[1];
+
                 }
             }
         default:
