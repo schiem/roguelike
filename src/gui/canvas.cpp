@@ -192,7 +192,10 @@ void Canvas::refresh() {
  * to true if they have been seen by the player.
  */
 void Canvas::draw_visibility_lines() {
-    IntPoint character_loc;
+    IntPoint character_loc = IntPoint(main_char.get_y_loc(),
+                                      main_char.get_x_loc());
+
+    /*
     if(main_char.get_depth()>=0)
     {
         character_loc = IntPoint(main_char.get_y_loc(),
@@ -202,6 +205,7 @@ void Canvas::draw_visibility_lines() {
     {
         character_loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
     }
+    */
     std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 15);
     std::vector<IntPoint> line_points;
     IntPoint current_point;
