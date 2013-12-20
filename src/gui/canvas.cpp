@@ -165,7 +165,6 @@ void Canvas::refresh() {
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
         }
-        draw_visibility_lines();
         set_tile(main_char.get_y_loc(), main_char.get_x_loc(), MAIN_CHAR);
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
@@ -179,6 +178,7 @@ void Canvas::refresh() {
         }
         set_tile(STARTING_HEIGHT/2, STARTING_WIDTH/2, MAIN_CHAR);
     }
+    draw_visibility_lines();
 }
 
 /*
@@ -187,9 +187,16 @@ void Canvas::refresh() {
  * to true if they have been seen by the player.
  */
 void Canvas::draw_visibility_lines() {
-    IntPoint character_loc = IntPoint(main_char.get_y_loc(),
+    IntPoint character_loc;
+    if(main_char.get_depth()>=0)
+    {
+        character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
-
+    }
+    else
+    {
+        character_loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    }
     std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 15);
     std::vector<IntPoint> line_points;
     IntPoint current_point;
