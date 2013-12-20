@@ -168,9 +168,11 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
     }
     main_dungeon.rooms[num_rooms] = Room(tl, br);
     num_rooms++;
+    /*
     cout<<"ROOM BUILT AT ROW "<<tl.row<<". NUM_ROOMS: "<<num_rooms<<endl;
     cout<<"ROOM "<<num_rooms - 1<<": "<<main_dungeon.rooms[num_rooms - 1].tl.row
         <<", "<<main_dungeon.rooms[num_rooms - 1].tl.col<<endl;
+        */
     
     return Room(tl, br);
 }

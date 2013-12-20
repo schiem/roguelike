@@ -102,14 +102,11 @@ void Dungeon::make_stairs(bool is_dungeon){
     //Room up_room = rooms[rand() % num_rooms];
     //Room down_room = rooms[rand() % num_rooms];
     
-    /*Dungeon Dump:
-   
     for (int i=0; i<num_rooms;i++)
     {
         cout<<i<<": "<<rooms[i].tl.col<<", "<<rooms[i].tl.row<<endl;
         cout<<i<<": "<<rooms[i].br.col<<", "<<rooms[i].br.row<<endl;
     }
-    */
     //Find the locations of up/down stairs. 
     up_stair[0] = up_room.tl.col + rand() % (up_room.br.col - up_room.tl.col);
     up_stair[1] = up_room.tl.row + rand() % (up_room.br.row - up_room.tl.row);
