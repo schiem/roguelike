@@ -18,6 +18,8 @@ class Overworld
 
     public:
         bool is_dungeon;
+        int spawn_x;
+        int spawn_y;
         int width;
         int height;
         Tile get_tile(int, int) const;

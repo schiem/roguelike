@@ -1,4 +1,5 @@
 #include "dungeon.h"
+#include <stdlib.h>
 using namespace tiledef;
 
 Dungeon::Dungeon()
@@ -47,6 +48,8 @@ Dungeon::Dungeon(int _width, int _height)
     }
 }
 
+
+
 Dungeon& Dungeon::operator= (const Dungeon& d){
     dungeon = d.dungeon;
     width = d.width;
@@ -70,6 +73,48 @@ void Dungeon::tile_assertions(int row, int col) const {
     assert(col >= 0);
     assert(col < width);
 }
+
+/**
+ * PRE: Given a bool whether there is a dungeon below it in the chunk.
+ * POST: Will create a set of upstairs in a random rooms, and a set of
+ * downstairs if there is a chunk below it.
+ * 
+ * Also contains a dungeon dump, to view the coordinates of the rooms in
+ * the dungeon which this method is called on.  Currently commented out.
+ */
+
+
+void Dungeon::make_stairs(bool is_dungeon){
+    assert(num_rooms > 0);
+    
+    //This is currently 2 because only 2 rooms are initialized.
+    Room up_room = rooms[rand() % 2];
+    Room down_room = rooms[rand() % 2];
+    
+    //Room up_room = rooms[rand() % num_rooms];
+    //Room down_room = rooms[rand() % num_rooms];
+    
+    /*Dungeon Dump:
+   
+    for (int i=0; i<num_rooms;i++)
+    {
+        cout<<i<<": "<<rooms[i].tl.col<<", "<<rooms[i].tl.row<<endl;
+        cout<<i<<": "<<rooms[i].br.col<<", "<<rooms[i].br.row<<endl;
+    }
+    */
+    //Find the locations of up/down stairs. 
+    up_stair[0] = up_room.tl.col + rand() % (up_room.br.col - up_room.tl.col);
+    up_stair[1] = up_room.tl.row + rand() % (up_room.br.row - up_room.tl.row);
+    if(is_dungeon)
+    {
+        down_stair[0] = down_room.tl.col + (rand() % (down_room.br.col - down_room.tl.col));
+        down_stair[1] = down_room.tl.row + (rand() % (down_room.br.row - down_room.tl.row));
+        dungeon[down_stair[1]][down_stair[0]] = DOWN_STAIR;
+    }
+    dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
+
+}
+
 
 /**
  * self-explanatory getters

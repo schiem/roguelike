@@ -23,6 +23,8 @@ Chunk::Chunk(int _y, int _x, int _width, int _height) {
         db.build_dungeon(5, 5);
         temp_d = db.get_dungeon();
         dungeon_floors[i] = *temp_d;
+        //makes the staircases in a dungeon
+        dungeon_floors[i].make_stairs(is_dungeon);
     }
     //generate the overworld
     is_dungeon = (depth > 0);

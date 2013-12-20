@@ -297,6 +297,7 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
             build_start_room();
         }
     } while(!dungeon_is_awesome);
+    main_dungeon.num_rooms = num_rooms;
 }
 
 /* PRE: Will be given :int target:, :int deviation:, :int squareness:, :int

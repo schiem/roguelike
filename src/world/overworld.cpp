@@ -20,6 +20,8 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     width = _width;
     height = _height;
     is_dungeon = _is_dungeon;
+    spawn_x = rand() % width;
+    spawn_y = rand() % height;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -32,9 +34,7 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     }
     if(is_dungeon)
     {
-        int door_x = rand() % width;
-        int door_y = rand() % height;
-        ground[door_y][door_x] = DOWN_STAIR;
+        ground[spawn_y][spawn_x] = DOWN_STAIR;
     }
 }
 

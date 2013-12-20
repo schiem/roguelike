@@ -13,6 +13,6 @@ namespace tiledef {
     Tile MAIN_CHAR4 = {1, 5, GRAY, true, true, false};
     Tile TREE = {84, 6, DARK_GREEN, false, true, true};
     Tile BLOCK_WALL = {35, 7, GRAY, false, false, true};
-    Tile DOWN_STAIR = {31, 8, GRAY, true, true, true};
-    Tile UP_STAIR = {30, 9, GRAY, true, true, true};
+    Tile DOWN_STAIR = {31, 8, GRAY, true, true, false};
+    Tile UP_STAIR = {30, 9, GRAY, true, true, false};
 }

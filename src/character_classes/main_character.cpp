@@ -42,12 +42,18 @@ void Main_Character::perform_action_press(SDLKey key) {
             break;
         case SDLK_u:
             if (depth-1>=-1) {
-                depth--;
+                if(chunk.get_tile(depth, y, x) == UP_STAIR)
+                {
+                    depth--;
+                }
             }
             break;
         case SDLK_d:
             if (depth+1<chunk.get_depth()) {
-                depth++;
+                if(chunk.get_tile(depth, y, x) == DOWN_STAIR)
+                {
+                    depth++;
+                }
             }
         default:
             break;
