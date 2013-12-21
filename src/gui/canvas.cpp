@@ -47,7 +47,7 @@ Canvas::Canvas() {
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
-    buffer = TileMatrix(150, vector<Tile>(300));
+    buffer = TilePointerMatrix(150, vector<Tile*>(300));
     
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
@@ -64,9 +64,10 @@ Canvas::Canvas() {
     //TODO I (Michael) agree.  It really shouldn't know about its position.  But that
     //means that either the canvas or the chunk will have to keep track of that.
     main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
+    main_char_tile = &MAIN_CHAR;
     
     //What gets drawn to the screen
-    canvas = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH));
+    canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
     update_buffer();
     cout<<"buffer updated."<<endl;
 }
@@ -88,12 +89,12 @@ void Canvas::point_assertions(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that row and column,
  * using assertions in point_assertions.
  */
-Tile Canvas::get_tile(int row, int col) {
+Tile* Canvas::get_tile(int row, int col) {
     
     point_assertions(row, col);
-    //return &canvas[row][col];
+    return canvas[row][col];
 
-    return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), row, col);
+    ///return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), row, col);
 }
 
 /**
@@ -101,11 +102,12 @@ Tile Canvas::get_tile(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that point, using
  * assertions in point_assertions.
  */
-Tile Canvas::get_tile(IntPoint point) {
+Tile* Canvas::get_tile(IntPoint point) {
     point_assertions(point.row, point.col);
     
-    //return &canvas[point.row][point.col];
-    return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), point.row, point.col);
+    return canvas[point.row][point.col];
+
+    //return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), point.row, point.col);
 }
 
 /**
@@ -113,7 +115,7 @@ Tile Canvas::get_tile(IntPoint point) {
  * POST: Sets the tile at the given point on the canvas to the given tile,
  * using assertions in point_assertions.
  */
-void Canvas::set_tile(int row, int col, Tile tile) {
+void Canvas::set_tile(int row, int col, Tile* tile) {
     point_assertions(row, col);
     canvas[row][col] = tile;
 }
@@ -123,7 +125,7 @@ void Canvas::set_tile(int row, int col, Tile tile) {
  * POST: Sets the tile at the given point on the canvas to the given tile,
  * using assertions in point_assertions.
  */
-void Canvas::set_tile(IntPoint point, Tile tile) {
+void Canvas::set_tile(IntPoint point, Tile* tile) {
     point_assertions(point.row, point.col);
     canvas[point.row][point.col] = tile;
 }
@@ -170,7 +172,7 @@ void Canvas::refresh() {
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
         }
-        set_tile(main_char.get_y_loc(), main_char.get_x_loc(), MAIN_CHAR);
+        set_tile(main_char.get_y_loc(), main_char.get_x_loc(), main_char_tile);
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
             for (int j = 0; j < STARTING_WIDTH; j++) {
@@ -181,7 +183,7 @@ void Canvas::refresh() {
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        set_tile(STARTING_HEIGHT/2, STARTING_WIDTH/2, MAIN_CHAR);
+        set_tile(STARTING_HEIGHT/2, STARTING_WIDTH/2, main_char_tile);
     }
     draw_visibility_lines();
 }
@@ -223,11 +225,12 @@ void Canvas::draw_visibility_lines() {
 
             if(!out_of_bounds(current_point)) {
                 //Set visibility to true. 
-                Tile vis_tile = get_tile(current_point.row, current_point.col);
-                vis_tile.visible = true;
-                chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].set_tile(main_char.get_depth(), current_point.row, current_point.col, vis_tile);            
+                //Tile* vis_tile = get_tile(current_point.row, current_point.col);
+                chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].
+                    get_tile(main_char.get_depth(), current_point.row, 
+                            current_point.col)->visible = true;
                 //If the tile is opaque, don't draw any past it.
-                if(get_tile(current_point).opaque) {
+                if(get_tile(current_point)->opaque) {
                     break;
                 }
             }
@@ -327,16 +330,12 @@ void Canvas::update_buffer() {
                     */
 
 
-                    // These two things are always true. Setting them here to
-                    // avoid awkward incrementing. I always think it's a bad
-                    // idea to do incrementing (y++, x++) after every run of a
-                    // for-loop, because of the redundancy.
                     x = col - (main_char.get_chunk_y() - 1);
                     y = row - (main_char.get_chunk_x() - 1);
 
                     int buffer_row = a + (x * STARTING_HEIGHT);
                     int buffer_col = b + (y * STARTING_WIDTH);
-                    Tile buffer_tile = chunk_map[col][row].get_tile(-1, a, b);
+                    Tile* buffer_tile = chunk_map[col][row].get_tile(-1, a, b);
 
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
@@ -349,8 +348,8 @@ const Chunk& Canvas::get_chunk() {
     return chunk_map[main_char.get_chunk_x()][main_char.get_chunk_y()];
 }
 
-//Since this is a const reference, will we have to call it
+//Since this is a const reference, will we have to call
 //more than once? Maybe not...
-const std::vector<std::vector<Tile> >& Canvas::get_matrix() {
+const std::vector<std::vector<Tile*> >& Canvas::get_matrix() {
     return canvas;
 }

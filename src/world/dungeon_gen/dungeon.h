@@ -27,6 +27,7 @@ class Dungeon
        void tile_assertions(int, int) const;
        Tile get_tile(int, int) const;
        Tile get_tile(IntPoint) const;
+       Tile* get_tile_pointer(int, int);
        void set_tile(int, int, Tile);
        void set_tile(IntPoint, Tile);
        const std::vector<std::vector<Tile> >& get_dungeon();

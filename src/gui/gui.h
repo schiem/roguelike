@@ -9,7 +9,7 @@
 
 class GUI : public VirtualEvent {
 
-    typedef std::vector< std::vector<Tile> > TileMatrix;
+    typedef std::vector< std::vector<Tile*> > TilePointerMatrix;
 
     private:
         bool running;
@@ -28,8 +28,8 @@ class GUI : public VirtualEvent {
         bool OnInit();
 
         void OnEvent(SDL_Event* Event);
-            void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
-            void OnExit();
+        void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+        void OnExit();
 };
 
 #endif

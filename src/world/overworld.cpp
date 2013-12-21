@@ -41,12 +41,12 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     }
 }
 
-Tile Overworld::get_tile(int row, int col) const {
-    return ground[row][col];
+Tile* Overworld::get_tile(int row, int col) {
+    return &ground[row][col];
 }
 
-void Overworld::set_tile(int row, int col, Tile tile) {
-    ground[row][col] = tile;
+void Overworld::set_tile(int row, int col, Tile* tile) {
+    ground[row][col] = *tile;
 }
 
 const std::vector<std::vector<Tile> >& Overworld::get_ground() {

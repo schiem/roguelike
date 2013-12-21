@@ -19,11 +19,11 @@ class Character
         int armor;
         Chunk chunk;
         int depth;
+        Tile underfoot;
         //methods
     public:
         Character();
         Character(int, int, int, int, Chunk, int);
-        void display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color);
         bool is_alive() const;
         void move(int, int);
         void take_damage(int);
@@ -36,6 +36,7 @@ class Character
         int get_chunk_y();
         void set_x(int);
         void set_y(int);
+        Tile* get_underfoot();
         void update_dungeon(Chunk);       
         //terrain get_surroundings
 

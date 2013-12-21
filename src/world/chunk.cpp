@@ -60,21 +60,19 @@ const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {
     }
 }
 
-Tile Chunk::get_tile(int depth, int col, int row) const {
+Tile* Chunk::get_tile(int depth, int row, int col) {
     if (depth == -1){
-        return overworld.get_tile(col, row);
+        return overworld.get_tile(row, col);
     } else {
-        return dungeon_floors[depth].get_tile(col, row);
+        return dungeon_floors[depth].get_tile_pointer(row, col);
     }
 }
 
-void Chunk::set_tile(int depth, int row, int col, Tile tile){
-    if (depth == -1){
+void Chunk::set_tile(int depth, int row, int col, Tile* tile){
+    if (depth == -1) {
         overworld.set_tile(row, col, tile);
-    }
-    else
-    {
-        dungeon_floors[depth].set_tile(row, col, tile);   
+    } else {
+        dungeon_floors[depth].set_tile(row, col, *tile);   
     }
 }
 

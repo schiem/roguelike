@@ -17,11 +17,9 @@ Character::Character(int _max_health, int _x, int _y, int _sprite, Chunk  _chunk
     sprite = _sprite;
     chunk = _chunk;
     depth = _depth;
-}
-
-
-void Character::display_character(int character, SDL_Surface* ascii, SDL_Surface* screen, Uint32 color) {
-    drawChr(x, y, character, ascii, screen, color); 
+    //This is a janky way to keep track of what the character is currently
+    //standing on. There could be a better way to do this in the future.
+    underfoot = *chunk.get_tile(depth, y, x);
 }
 
 /* PRE: None
@@ -39,14 +37,18 @@ bool Character::is_alive() const {
  * POST: Will change the character's coordinates to match this
 */
 void Character::move(int x_change, int y_change) {
+    chunk.set_tile(depth, y, x, &underfoot);
     if((x+x_change < 0) ||  (x+x_change >= chunk.width) || 
             (y+y_change < 0) ||  (y + y_change >= chunk.height)) {
         x += x_change;
         y += y_change;
-    } else if (chunk.get_tile(depth, y+y_change, x+x_change).can_be_moved_through) {
+    } else if (chunk.get_tile(depth, y+y_change, x+x_change)->can_be_moved_through) {
         x += x_change;
         y += y_change;
     }
+
+    //TODO THIS CAUSES AN INVALID READ UPON CROSSING CHUNKS. FIX FIRST!!!
+    underfoot = *chunk.get_tile(depth, y, x);
 }
 
 /* PRE: Takes damage to reduce a character's health by
@@ -90,6 +92,10 @@ int Character::get_chunk_x() {
 
 int Character::get_chunk_y() {
     return chunk.get_y();
+}
+
+Tile* Character::get_underfoot() {
+    return &underfoot;
 }
 
 void Character::update_dungeon(Chunk _chunk) {

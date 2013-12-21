@@ -136,6 +136,11 @@ Tile Dungeon::get_tile(IntPoint point) const {
     return dungeon[point.row][point.col];
 }
 
+Tile* Dungeon::get_tile_pointer(int row, int col) {
+    tile_assertions(row, col);
+    return &dungeon[row][col];
+}
+
 /**
  * self-explanatory setters
  */

@@ -28,10 +28,10 @@ class Chunk{
         std::vector<int> get_down_stair(int) const;
         int height;
         int width;
-        void set_tile(int, int, int, Tile); 
+        void set_tile(int, int, int, Tile*); 
         Chunk();
         const std::vector<std::vector<Tile> >& get_floor(int);
-        Tile get_tile(int, int, int) const;
+        Tile* get_tile(int, int, int);
         int get_depth() const;
         int get_x() const;
         int get_y() const;

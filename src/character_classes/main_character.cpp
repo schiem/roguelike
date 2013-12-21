@@ -42,7 +42,7 @@ void Main_Character::perform_action_press(SDLKey key) {
             break;
         case SDLK_u:
             if (depth-1>=-1) {
-                if(chunk.get_tile(depth, y, x) == UP_STAIR)
+                if(*chunk.get_tile(depth, y, x) == UP_STAIR)
                 {
                     depth--;
                     x = chunk.get_down_stair(depth)[0];
@@ -52,7 +52,7 @@ void Main_Character::perform_action_press(SDLKey key) {
             break;
         case SDLK_d:
             if (depth+1<chunk.get_depth()) {
-                if(chunk.get_tile(depth, y, x) == DOWN_STAIR)
+                if(*chunk.get_tile(depth, y, x) == DOWN_STAIR)
                 {
                     depth++;
                     x = chunk.get_up_stair(depth)[0];
