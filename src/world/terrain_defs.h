@@ -17,12 +17,13 @@ struct Tile {
 namespace tiledef {
     extern Tile OVERWORLD_DIRT;
     extern Tile DIRT;
+    extern Tile DUNGEON_BORDER;
     extern Tile ROOM_WALL;
     extern Tile EMPTY;
     //static const Tile PATH = {88, 'X', true};
     //static const Tile PATH = {111, 'o', true};
     extern Tile PATH;
-    extern Tile MAIN_CHAR; 
+    extern Tile MAIN_CHAR;
     extern Tile MAIN_CHAR2;
     extern Tile MAIN_CHAR3;
     extern Tile MAIN_CHAR4;
