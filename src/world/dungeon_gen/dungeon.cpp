@@ -93,13 +93,9 @@ void Dungeon::tile_assertions(int row, int col) const {
 void Dungeon::make_stairs(bool is_dungeon){
     assert(num_rooms > 0);
     
-    //This is currently 2 because only 2 rooms are initialized.
     Room up_room = rooms[rand() % num_rooms];
     Room down_room = rooms[rand() % num_rooms];
     
-    //Room up_room = rooms[rand() % num_rooms];
-    //Room down_room = rooms[rand() % num_rooms];
-
 #ifdef ROOM_COUNT_DEBUG
     cout<<"DUNGEON2: "<<num_rooms<<endl;
     for (int i=0; i<num_rooms;i++) {
@@ -119,7 +115,7 @@ void Dungeon::make_stairs(bool is_dungeon){
         dungeon[down_stair[1]][down_stair[0]] = DOWN_STAIR;
     }
     dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
-
+    cout<<"I'm getting called"<<endl;
 }
 
 

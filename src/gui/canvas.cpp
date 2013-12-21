@@ -209,15 +209,23 @@ void Canvas::refresh() {
  * to true if they have been seen by the player.
  */
 void Canvas::draw_visibility_lines() {
-    IntPoint character_loc = IntPoint(main_char.get_y_loc(),
+    IntPoint character_loc;
+    if(main_char.get_depth() >=0)
+    {
+        character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
+    }
+    else
+    {
+        character_loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    }
     Tile* current_chunk_tile;
     IntPoint current_point;
-    int chunk_row = main_char.get_chunk_y();
-    int chunk_col = main_char.get_chunk_x();
-    int depth = main_char.get_depth();
+    //int chunk_row = main_char.get_chunk_y();
+    //int chunk_col = main_char.get_chunk_x();
+    //int depth = main_char.get_depth();
     int row, col;
-    Chunk* chunk = &chunk_map[chunk_row][chunk_col];
+    //Chunk* chunk = &chunk_map[chunk_row][chunk_col];
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
         for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
@@ -226,7 +234,8 @@ void Canvas::draw_visibility_lines() {
             col = current_point.col + character_loc.col;
             
             if(!out_of_bounds(IntPoint(row, col))) {
-                current_chunk_tile = chunk->get_tile(depth, row, col);
+                current_chunk_tile = get_tile(row, col);
+                //current_chunk_tile = chunk->get_tile(depth, row, col);
                 current_chunk_tile->visible = true;
                 if(current_chunk_tile->opaque) {
                     break;
