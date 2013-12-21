@@ -71,6 +71,24 @@ Canvas::Canvas() {
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
     update_buffer();
     cout<<"buffer updated."<<endl;
+    
+    recalculate_visibility_lines(15);
+}
+
+/**
+ * PRE: Will be given :int size:, the radius of the FOV circle
+ * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
+ * points for raytraced lines.
+ */
+void Canvas::recalculate_visibility_lines(int size) {
+    IntPoint true_center = IntPoint(0, 0);
+    std::vector<IntPoint> circle_points = bresenham_circle(true_center, size);
+    std::vector<IntPoint> line_points;
+
+    for(size_t i = 0; i < circle_points.size(); i++) {
+        line_points = bresenham_line(true_center, circle_points[i]); 
+        bresenham_lines.push_back(line_points);
+    }
 }
 
 /*
@@ -186,41 +204,30 @@ void Canvas::refresh() {
 }
 
 /*
- * PRE: None
+ * PRE: bresenham_lines should already be set by recalculate_visibility_lines().
  * POST: Draws a field-of-vision around the player - sets tiles' visibility
  * to true if they have been seen by the player.
  */
 void Canvas::draw_visibility_lines() {
     IntPoint character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
-
-    std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 15);
-    std::vector<IntPoint> line_points;
+    Tile* current_chunk_tile;
     IntPoint current_point;
-    IntPoint circle_point;
+    int chunk_row = main_char.get_chunk_y();
+    int chunk_col = main_char.get_chunk_x();
+    int depth = main_char.get_depth();
+    int row, col;
+    Chunk* chunk = &chunk_map[chunk_row][chunk_col];
 
-    //For each point in the circle,
-    for(size_t i = 0; i < circle_points.size(); i++) {
-        circle_point = circle_points[i];
-        line_points = bresenham_line(character_loc, circle_point);
-
-        //Step through a line starting from the player's location
-        //to the current circle point
-        for(size_t j = 0; j < line_points.size(); j++) {
-            current_point = line_points[j];
-
-            if(!out_of_bounds(current_point)) {
-                //Set visibility to true. 
-                //TODO Perhaps use canvas coordinates, because wow such line
-                //length
-                Tile* current_chunk_tile = 
-                    chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].
-                    get_tile(main_char.get_depth(), current_point.row, 
-                            current_point.col);
-                
+    for(size_t i = 0; i < bresenham_lines.size(); i++) {
+        for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
+            current_point = bresenham_lines[i][j];
+            row = current_point.row + character_loc.row;
+            col = current_point.col + character_loc.col;
+            
+            if(!out_of_bounds(IntPoint(row, col))) {
+                current_chunk_tile = chunk->get_tile(depth, row, col);
                 current_chunk_tile->visible = true;
-
-                //If the tile is opaque, don't draw any past it.
                 if(current_chunk_tile->opaque) {
                     break;
                 }
@@ -255,6 +262,7 @@ void Canvas::update_chunk() {
     }
     main_char.update_dungeon(chunk_map[y][x]);
 }
+
 
 
 /*

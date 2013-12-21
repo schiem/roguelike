@@ -27,6 +27,8 @@ class Canvas
         ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
         Tile* main_char_tile;
+        std::vector<std::vector<IntPoint> > bresenham_lines;
+        void recalculate_visibility_lines(int radius);
         void point_assertions(int, int);
         void set_tile(int, int, Tile*);
         void set_tile(IntPoint, Tile*);
@@ -43,7 +45,7 @@ class Canvas
         //now structured, yeah.  Typical games consist of 5 sections: init,
         //input, process, display, cleanup.  As it is, we've started dividing
         //those into files, but we don't have it the whole way yet. Most of
-        //those are sitting in Display, and could be given their own files. 
+        //those are sitting in Display, and could be given their own files.
         DungeonBuilder db;
         Main_Character main_char;
         void refresh();
