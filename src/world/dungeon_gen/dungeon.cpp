@@ -45,10 +45,10 @@ Dungeon::Dungeon(int _width, int _height)
         for(int j = 0; j < _width; j++) {
             dungeon[i][j] = BLOCK_WALL;
             if((j == 0) || (j == _width - 1)) {
-                dungeon[i][j] = DIRT;
+                dungeon[i][j] = DUNGEON_BORDER;
             }
             if((i == 0) || (i == _height - 1)) {
-                dungeon[i][j] = DIRT;
+                dungeon[i][j] = DUNGEON_BORDER;
             }
         }
     }
