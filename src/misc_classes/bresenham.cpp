@@ -56,6 +56,11 @@ std::vector<IntPoint> bresenham_line(IntPoint& first, IntPoint& second) {
         }
     }
 
+    //if(!steep) {
+        //cout<<"REVERSED"<<endl;
+        //std::reverse(points.begin(), points.end());
+    //}
+
     return points;
 }
 

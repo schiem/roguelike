@@ -30,17 +30,20 @@ Chunk::Chunk(int _y, int _x, int _width, int _height) {
         cout<<"DUNGEONBUILDER: "<<db.num_rooms<<endl;
         cout<<"(dungeon): "<<db.get_dungeon()->num_rooms<<endl;
         for(int j = 0; j < db.num_rooms; j++) {
-            cout<<j<<": "<<db.get_dungeon()->rooms[j].tl.col<<", "<<db.get_dungeon()->rooms[j].tl.row<<endl;
+            cout<<j<<": "<<db.get_dungeon()->rooms[j].tl.col
+                <<", "<<db.get_dungeon()->rooms[j].tl.row<<endl;
         }
         cout<<endl;
 
         cout<<"TEMP_D: "<<temp_d->num_rooms<<endl;
         for(int j = 0; j < temp_d->num_rooms; j++) {
-            cout<<j<<": "<<temp_d->rooms[j].tl.col<<", "<<temp_d->rooms[j].tl.row<<endl;
+            cout<<j<<": "<<temp_d->rooms[j].tl.col<<", "
+                <<temp_d->rooms[j].tl.row<<endl;
         }
         cout<<"DUNGEON1: "<<dungeon_floors[i].num_rooms<<endl;
         for(int j = 0; j < dungeon_floors[i].num_rooms; j++) {
-            cout<<j<<": "<<dungeon_floors[i].rooms[j].tl.col<<", "<<dungeon_floors[i].rooms[j].tl.row<<endl;
+            cout<<j<<": "<<dungeon_floors[i].rooms[j].tl.col
+                <<", "<<dungeon_floors[i].rooms[j].tl.row<<endl;
         }
 #endif
 
@@ -106,4 +109,3 @@ int Chunk::get_y() const {
 bool Chunk::is_initialized() const {
     return initialized;
 }
-

@@ -28,7 +28,7 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            if (rand() % 8 == 0){
+            if (rand() % 18 == 0){
                 ground[i][j] = TREE;
             } else {
                 ground[i][j] = OVERWORLD_DIRT;
@@ -49,7 +49,7 @@ void Overworld::set_tile(int row, int col, Tile* tile) {
     ground[row][col] = *tile;
 }
 
-const std::vector<std::vector<Tile> >& Overworld::get_ground() {
+std::vector<std::vector<Tile> >& Overworld::get_ground() {
     return ground;
 }
 

@@ -3,7 +3,7 @@
 void GUI::OnRender()
 {
     canvas.main_char.perform_action_cont();
-    canvas.refresh(); 
+    canvas.refresh();
     TilePointerMatrix tm = canvas.get_matrix();
 
     for(size_t i = 0; i < tm.size(); i++) {

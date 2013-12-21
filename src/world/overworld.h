@@ -25,7 +25,7 @@ class Overworld
         void set_tile(int, int, Tile*);
         Overworld(int, int, bool);
         Overworld();
-        const std::vector<std::vector<Tile> >& get_ground();
+        std::vector<std::vector<Tile> >& get_ground();
 };
 
 #endif

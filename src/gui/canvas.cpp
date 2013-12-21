@@ -54,15 +54,16 @@ Canvas::Canvas() {
     //This is the "starting" chunk (arbitrary).
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
 
-    //TODO I (Seth) am not sure if the character should know about its
-    //position in the chunk. Ideally, we should be doing this initialization
-    //with an initialization list; otherwise, there is actually another
-    //main_char that gets created using the default constructor. I have tested
-    //this; there are in fact two instances until the end of this constructor.
-    //I'll look into it more.
+    //TODO I (Seth) am not sure if the character should know about its position
+    //in the chunk. Ideally, we should be doing this initialization with an
+    //initialization list; otherwise, there is actually another main_char that
+    //gets created using the default constructor. I have tested this; there are
+    //in fact two instances until the end of this constructor.  I'll look into
+    //it more.
     
-    //TODO I (Michael) agree.  It really shouldn't know about its position.  But that
-    //means that either the canvas or the chunk will have to keep track of that.
+    //TODO I (Michael) agree.  It really shouldn't know about its position.  But
+    //that means that either the canvas or the chunk will have to keep track of
+    //that.
     main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
     main_char_tile = &MAIN_CHAR;
     
@@ -93,8 +94,6 @@ Tile* Canvas::get_tile(int row, int col) {
     
     point_assertions(row, col);
     return canvas[row][col];
-
-    ///return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), row, col);
 }
 
 /**
@@ -106,8 +105,6 @@ Tile* Canvas::get_tile(IntPoint point) {
     point_assertions(point.row, point.col);
     
     return canvas[point.row][point.col];
-
-    //return chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].get_tile(main_char.get_depth(), point.row, point.col);
 }
 
 /**
@@ -197,17 +194,6 @@ void Canvas::draw_visibility_lines() {
     IntPoint character_loc = IntPoint(main_char.get_y_loc(),
                                       main_char.get_x_loc());
 
-    /*
-    if(main_char.get_depth()>=0)
-    {
-        character_loc = IntPoint(main_char.get_y_loc(),
-                                      main_char.get_x_loc());
-    }
-    else
-    {
-        character_loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-    }
-    */
     std::vector<IntPoint> circle_points = bresenham_circle(character_loc, 15);
     std::vector<IntPoint> line_points;
     IntPoint current_point;
@@ -225,12 +211,17 @@ void Canvas::draw_visibility_lines() {
 
             if(!out_of_bounds(current_point)) {
                 //Set visibility to true. 
-                //Tile* vis_tile = get_tile(current_point.row, current_point.col);
-                chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].
+                //TODO Perhaps use canvas coordinates, because wow such line
+                //length
+                Tile* current_chunk_tile = 
+                    chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].
                     get_tile(main_char.get_depth(), current_point.row, 
-                            current_point.col)->visible = true;
+                            current_point.col);
+                
+                current_chunk_tile->visible = true;
+
                 //If the tile is opaque, don't draw any past it.
-                if(get_tile(current_point)->opaque) {
+                if(current_chunk_tile->opaque) {
                     break;
                 }
             }

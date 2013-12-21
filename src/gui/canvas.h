@@ -15,7 +15,7 @@
 
 using namespace std;
 using namespace tiledef;
-class Canvas 
+class Canvas
 {
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
@@ -24,7 +24,7 @@ class Canvas
         int STARTING_HEIGHT;
         TilePointerMatrix canvas;
         //temporary, we'll need to serialize this
-        ChunkMatrix chunk_map; 
+        ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
         Tile* main_char_tile;
         void point_assertions(int, int);
@@ -44,13 +44,12 @@ class Canvas
         //input, process, display, cleanup.  As it is, we've started dividing
         //those into files, but we don't have it the whole way yet. Most of
         //those are sitting in Display, and could be given their own files. 
-        DungeonBuilder db; 
+        DungeonBuilder db;
         Main_Character main_char;
         void refresh();
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile*> >& get_matrix();
         const Chunk& get_chunk();
-    
 };
 
 #endif
