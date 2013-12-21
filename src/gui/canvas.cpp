@@ -190,8 +190,8 @@ void Canvas::refresh() {
                     &chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()];
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
-        }
         top_layer[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
+        }
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
             for (int j = 0; j < STARTING_WIDTH; j++) {
@@ -305,6 +305,7 @@ void Canvas::update_buffer() {
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[col][row].is_initialized() == false) {
+                cout<<"chunk x: "<<row<<endl;
                 std::cout<<"initializing with "<<col<<" & "<<row<<std::endl;
                 chunk_map[col][row] = Chunk(col, row, STARTING_WIDTH, STARTING_HEIGHT);
             }
@@ -331,12 +332,11 @@ void Canvas::update_buffer() {
                         start writing at 0 + (CHUNK_WIDTH * 2).
                     */
 
-
                     x = col - (main_char.get_chunk_y() - 1);
                     y = row - (main_char.get_chunk_x() - 1);
                     int buffer_row = a + (x * STARTING_HEIGHT);
                     int buffer_col = b + (y * STARTING_WIDTH);
-                    Tile* buffer_tile = chunk_map[col][row].get_tile(main_char.get_depth(), a, b);
+                    Tile* buffer_tile = chunk_map[col][row].get_tile(-1, a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
