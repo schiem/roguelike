@@ -115,7 +115,6 @@ void Dungeon::make_stairs(bool is_dungeon){
         dungeon[down_stair[1]][down_stair[0]] = DOWN_STAIR;
     }
     dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
-    cout<<"I'm getting called"<<endl;
 }
 
 

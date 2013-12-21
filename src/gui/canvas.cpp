@@ -253,7 +253,6 @@ void Canvas::draw_visibility_lines() {
 void Canvas::update_chunk() {
     int x = main_char.get_chunk_x();
     int y = main_char.get_chunk_y();
-    
     if (main_char.get_x_loc() < 0 ) {
         x -= 1;
         main_char.set_x(STARTING_WIDTH-1);
@@ -275,15 +274,6 @@ void Canvas::update_chunk() {
 
 
 /*
-This function is an abomination, a sin against code.
-
-SACERDOS ab Ordinario delegatus, rite confessus, aut saltem corde peccata sua
-detestans, peracto, si commode fieri possit, Sanctissimo Missæ sacrificio,
-divinoque auxilio piis precibus implorato, superpelliceo et stola violacea
-indutus, et coram se habens obsessum ligatum, si sit periculum, eum, se et
-astantes communiat signo crucis, et aspergat aqua benedicta, et genibus flexis,
-aliis respondentibus, dicat Litanias ordinarias usque ad Preces exclusive.
-
 Here, we update the buffer based on the chunks surrounding the character's
 current chunk.  This should be broken into several functions.  This will be
 called whenever the character moves into a new chunk, so that the buffer
@@ -319,7 +309,7 @@ void Canvas::update_buffer() {
                 for (int b=0;b<STARTING_WIDTH;b++) {
                     /*
                         This part is a bit confusing.  What I need is to write
-                        the contents of the chunkt to the appropriate place in
+                        the contents of the chunk to the appropriate place in
                         the buffer.  A and B represent the Y and X of
                         individual tiles.  So, for each chunk, the X and Y are
                         written to the buffer.  The chunks that we're iterating
@@ -340,11 +330,10 @@ void Canvas::update_buffer() {
 
                     x = col - (main_char.get_chunk_y() - 1);
                     y = row - (main_char.get_chunk_x() - 1);
-
+                    
                     int buffer_row = a + (x * STARTING_HEIGHT);
                     int buffer_col = b + (y * STARTING_WIDTH);
                     Tile* buffer_tile = chunk_map[col][row].get_tile(-1, a, b);
-
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
