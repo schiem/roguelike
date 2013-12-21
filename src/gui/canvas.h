@@ -19,6 +19,7 @@ class Canvas
 {
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
+    typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
@@ -26,6 +27,7 @@ class Canvas
         //temporary, we'll need to serialize this
         ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
+        TileMatrix top_layer;
         Tile* main_char_tile;
         std::vector<std::vector<IntPoint> > bresenham_lines;
         void recalculate_visibility_lines(int radius);
@@ -52,6 +54,7 @@ class Canvas
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile*> >& get_matrix();
         const Chunk& get_chunk();
+        const std::vector<std::vector<Tile> > get_top_layer();
 };
 
 #endif

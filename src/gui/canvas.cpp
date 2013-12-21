@@ -54,6 +54,8 @@ Canvas::Canvas() {
     //This is the "starting" chunk (arbitrary).
     chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
 
+
+    top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
     //TODO I (Seth) am not sure if the character should know about its position
     //in the chunk. Ideally, we should be doing this initialization with an
     //initialization list; otherwise, there is actually another main_char that
@@ -169,6 +171,8 @@ bool Canvas::out_of_bounds(int row, int col) {
  *This is to refresh the screen whenever the character moves.
  */
 void Canvas::refresh() {
+    //Reset the top layer
+    top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
     //If the character has gone out of bounds of the chunk,t hen the chunk and
     //buffer need to be updated
     if(out_of_bounds(main_char.get_x_loc(), main_char.get_y_loc())) {
@@ -187,7 +191,7 @@ void Canvas::refresh() {
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
         }
-        set_tile(main_char.get_y_loc(), main_char.get_x_loc(), main_char_tile);
+        top_layer[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) { 
             for (int j = 0; j < STARTING_WIDTH; j++) {
@@ -198,7 +202,7 @@ void Canvas::refresh() {
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        set_tile(STARTING_HEIGHT/2, STARTING_WIDTH/2, main_char_tile);
+        top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
     }
     draw_visibility_lines();
 }
@@ -291,7 +295,7 @@ void Canvas::update_buffer() {
             chunk_map.resize(col + 1);
         }
 
-        //as above, but with the x coordinate.
+        //as above but with the x coordinate.
         for(int row=main_char.get_chunk_x()-1;row<=main_char.get_chunk_x()+1;row++) {
             
             if (chunk_map[col].size() < (size_t) row + 1) {
@@ -330,10 +334,9 @@ void Canvas::update_buffer() {
 
                     x = col - (main_char.get_chunk_y() - 1);
                     y = row - (main_char.get_chunk_x() - 1);
-                    
                     int buffer_row = a + (x * STARTING_HEIGHT);
                     int buffer_col = b + (y * STARTING_WIDTH);
-                    Tile* buffer_tile = chunk_map[col][row].get_tile(-1, a, b);
+                    Tile* buffer_tile = chunk_map[col][row].get_tile(main_char.get_depth(), a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
@@ -349,4 +352,8 @@ const Chunk& Canvas::get_chunk() {
 //more than once? Maybe not...
 const std::vector<std::vector<Tile*> >& Canvas::get_matrix() {
     return canvas;
+}
+
+const std::vector<std::vector<Tile> > Canvas::get_top_layer(){
+    return top_layer;
 }

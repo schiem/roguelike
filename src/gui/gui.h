@@ -10,7 +10,7 @@
 class GUI : public VirtualEvent {
 
     typedef std::vector< std::vector<Tile*> > TilePointerMatrix;
-
+    typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         bool running;
         Canvas canvas;

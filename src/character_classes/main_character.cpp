@@ -31,9 +31,6 @@ void Main_Character::perform_action_cont() {
 
 void Main_Character::perform_action_press(SDLKey key) {
     switch (key) {
-        case SDLK_ESCAPE:
-            std::cout<<"I'm escaping now, but not continuously!"<<std::endl;
-            break;
         case SDLK_u:
             if (depth-1>=-1) {
                 if(*chunk->get_tile(depth, y, x) == UP_STAIR)

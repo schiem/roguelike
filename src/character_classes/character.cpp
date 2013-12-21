@@ -17,9 +17,6 @@ Character::Character(int _max_health, int _x, int _y, int _sprite, Chunk &_chunk
     sprite = _sprite;
     chunk = &_chunk;
     depth = _depth;
-    //This is a janky way to keep track of what the character is currently
-    //standing on. There could be a better way to do this in the future.
-    underfoot = *chunk->get_tile(depth, y, x);
 }
 
 /* PRE: None
@@ -42,8 +39,6 @@ void Character::move(int x_change, int y_change) {
         x += x_change;
         y += y_change;
     } else if (chunk->get_tile(depth, y+y_change, x+x_change)->can_be_moved_through) {
-        chunk->set_tile(depth, y, x, &underfoot);
-        underfoot = *chunk->get_tile(depth, y+y_change, x+x_change);
         x += x_change;
         y += y_change;
     }
@@ -91,11 +86,6 @@ int Character::get_chunk_x() {
 int Character::get_chunk_y() {
     return chunk->get_y();
 }
-
-Tile* Character::get_underfoot() {
-    return &underfoot;
-}
-
 void Character::update_dungeon(Chunk &_chunk) {
     chunk = &_chunk;
 }
