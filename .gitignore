@@ -1,0 +1,16 @@
+*.swp
+*.swo
+*.swn
+gitignore
+build/*
+roguelike
+aclocal.m4
+autom4te.cache/*
+config.h*
+config.log
+config.status
+depconf
+install-sh
+Makefile.in
+missing
+stamp-h1
