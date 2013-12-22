@@ -1,8 +1,8 @@
 *.swp
 *.swo
 *.swn
+*.o
 gitignore
-build/*
 roguelike
 aclocal.m4
 autom4te.cache/*
@@ -14,3 +14,5 @@ install-sh
 Makefile.in
 missing
 stamp-h1
+configure
+depcomp
