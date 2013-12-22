@@ -256,7 +256,8 @@ void Canvas::update_chunk() {
         row += 1;
         main_char.set_y(0);
     }
-    main_char_chunk = IntPoint(mc_row, mc_col);
+    cout<<row<<" "<<col<<endl;
+    main_char_chunk = IntPoint(row, col);
 }
 
 
