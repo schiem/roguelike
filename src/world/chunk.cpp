@@ -5,7 +5,7 @@ Chunk::Chunk() {
     initialized = false;
 }
 
-Chunk::Chunk(int _y, int _x, int _width, int _height) {
+Chunk::Chunk(int _width, int _height) {
     initialized = true;
     width = _width;
     height= _height;
@@ -13,8 +13,6 @@ Chunk::Chunk(int _y, int _x, int _width, int _height) {
     srand(time(NULL));
     depth = rand() % 6 + 1;
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
-    x = _x;
-    y = _y;
     Dungeon* temp_d;
     ProcedurallyBlindDB db(width, height); 
     //CorruptiblePBlindDB db(width, height);
@@ -99,13 +97,6 @@ int Chunk::get_depth() const {
     return depth;
 }
 
-int Chunk::get_x() const {
-    return x;
-}
-
-int Chunk::get_y() const {
-    return y;
-}
 bool Chunk::is_initialized() const {
     return initialized;
 }

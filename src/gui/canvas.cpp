@@ -52,7 +52,7 @@ Canvas::Canvas() {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    chunk_map[5][8] = Chunk(5, 8, STARTING_WIDTH, STARTING_HEIGHT);
+    chunk_map[5][8] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
 
 
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
@@ -62,7 +62,7 @@ Canvas::Canvas() {
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
-    update_buffer();
+    update_buffer(main_char_chunk);
 
     recalculate_visibility_lines(15);
 }
@@ -151,7 +151,7 @@ bool Canvas::out_of_bounds(IntPoint point) {
  * false otherwise.
  */
 bool Canvas::out_of_bounds(int row, int col) {
-    return (col < 0 || col >= STARTING_WIDTH || 
+    return (col < 0 || col >= STARTING_WIDTH ||
             row < 0 || row >= STARTING_HEIGHT);
 }
 
@@ -165,7 +165,6 @@ void Canvas::refresh() {
     //buffer need to be updated
     if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
         update_chunk();
-        update_buffer();
     }
     //This section checks if the character is in a dungeon, or the overworld. In
     //the dungeon, the character moves around the screen.  In the overworld, a
@@ -237,27 +236,25 @@ void Canvas::draw_visibility_lines() {
  * POST: TODO
  */
 void Canvas::update_chunk() {
-    int col = main_char_chunk.col;
-    int row = main_char_chunk.row;
     int mc_row = main_char.get_y();
     int mc_col = main_char.get_x();
     if (mc_col < 0 ) {
-        col -= 1;
+        main_char_chunk.col -= 1;
         main_char.set_x(STARTING_WIDTH-1);
     } else if (mc_col >= STARTING_WIDTH) {
-        col += 1;
+        main_char_chunk.col += 1;
         main_char.set_x(0);
     }
 
     if(mc_row < 0) {
-        row -= 1;
+        main_char_chunk.row -= 1;
         main_char.set_y(STARTING_HEIGHT-1);
     } else if (mc_row >= STARTING_HEIGHT) {
-        row += 1;
+        main_char_chunk.row += 1;
         main_char.set_y(0);
     }
-    cout<<row<<" "<<col<<endl;
-    main_char_chunk = IntPoint(row, col);
+    update_buffer(main_char_chunk);
+    cout<<main_char_chunk.row<<" "<<main_char_chunk.col<<endl;
 }
 
 
@@ -268,30 +265,32 @@ current chunk.  This should be broken into several functions.  This will be
 called whenever the character moves into a new chunk, so that the buffer
 reflects the chunks surrounding the characters current one.
 */
-void Canvas::update_buffer() {
+void Canvas::update_buffer(IntPoint central_chunk) {
     int x, y;
     //loop through the characters y chunk coordinate, +/- 1.  If the character
     //was in chunk 7, this would loops through 6, 7, 8.
-    for(int row=main_char_chunk.row - 1;row<=main_char_chunk.row+1;row++) {
+    for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
         //Check to ensure that the chunk map is big enough.
         if(chunk_map.size() < (size_t) row + 1) {
             chunk_map.resize(row + 1);
         }
 
         //as above but with the x coordinate.
-        for(int col=main_char_chunk.col-1;col<=main_char_chunk.col+1;col++) {
+        for(int col=central_chunk.col-1;col<=central_chunk.col+1;col++) {
             if (chunk_map[row].size() < (size_t) col + 1) {
                 chunk_map[row].resize(col + 1);
+                cout<<"RESIZING"<<endl;
             }
 
             //Need to reset the main character's chunk, because we just dicked
             //over its pointer.
-            //main_char.set_chunk(&chunk_map[main_char_chunk.row][main_char_chunk.col]);
+            //main_char.set_chunk(&chunk_map[central_chunk.row][central_chunk.col]);
 
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
-                chunk_map[row][col] = Chunk(col, row, STARTING_WIDTH, STARTING_HEIGHT);
+                cout<<"ROW: "<<row<<" COL: "<<col<<" IS NOT INITIALIZED."<<endl;
+                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
             }
 
             for (int a=0;a<STARTING_HEIGHT;a++) {
@@ -316,11 +315,11 @@ void Canvas::update_buffer() {
                      *  start writing at 0 + (CHUNK_WIDTH * 2).
                      */
 
-                    x = col - (main_char_chunk.col - 1);
-                    y = row - (main_char_chunk.row - 1);
+                    x = col - (central_chunk.col - 1);
+                    y = row - (central_chunk.row - 1);
                     int buffer_col = b + (x * STARTING_WIDTH);
                     //cout<<"row="<<row<<", col="<<col<<", a="<<a<<", b="<<b<<", x="<<x<<", y="<<y<<endl;
-                    //cout<<"main_char_chunk.row="<<main_char_chunk.row<<endl;
+                    //cout<<"central_chunk.row="<<central_chunk.row<<endl;
                     int buffer_row = a + (y * STARTING_HEIGHT);
                     Tile* buffer_tile = chunk_map[row][col].get_tile(-1, a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;

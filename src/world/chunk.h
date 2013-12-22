@@ -16,14 +16,12 @@ class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         bool initialized;
-        int x;
-        int y;
         int depth;
         //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
     public:
-        Chunk(int, int, int, int);
+        Chunk(int, int);
         std::vector<int> get_up_stair(int) const;
         std::vector<int> get_down_stair(int) const;
         int height;
@@ -33,8 +31,6 @@ class Chunk{
         const std::vector<std::vector<Tile> >& get_floor(int);
         Tile* get_tile(int, int, int) ;
         int get_depth() const;
-        int get_x() const;
-        int get_y() const;
         bool is_initialized() const;
 };
 

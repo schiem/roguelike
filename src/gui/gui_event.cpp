@@ -95,10 +95,6 @@ void GUI::perform_action_cont() {
 void GUI::char_move(int col_change, int row_change) {
     int row = canvas.main_char.get_y();
     int col = canvas.main_char.get_x();
-    /**
-    cout<<"ROW: "<<row<<" COL: "<<col<<endl;
-    cout<<"WIDTH: "<<canvas.get_chunk()->width<<" HEIGHT: "<<canvas.get_chunk()->height;
-    */
     int next_col = col + col_change;
     int next_row = row + row_change;
     if((next_col < 0) ||  (next_col >= canvas.get_chunk()->width) || 

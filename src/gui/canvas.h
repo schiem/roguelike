@@ -38,7 +38,7 @@ class Canvas
         Tile* get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
         bool out_of_bounds(int, int);
-        void update_buffer();
+        void update_buffer(IntPoint);
         void update_chunk();
         void draw_visibility_lines();
     public:
