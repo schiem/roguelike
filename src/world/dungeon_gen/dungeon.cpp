@@ -4,7 +4,7 @@ using namespace tiledef;
 
 Dungeon::Dungeon()
 {
-    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, BLOCK_WALL));
+    dungeon = TileMatrix(30, std::vector<Tile>(30, BLOCK_WALL));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     width = 10;
@@ -18,27 +18,13 @@ Dungeon::Dungeon()
     }
 }
 
-Dungeon::Dungeon(const Dungeon& d)
-{
-    dungeon = d.dungeon;
-    width = d.width;
-    height = d.height;
-    down_stair = d.down_stair;
-    up_stair = d.up_stair;
-    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
-    num_rooms = d.num_rooms;
-    for(int i = 0; i < d.num_rooms; i++) {
-        this->rooms[i] = d.rooms[i];
-    }
-}
-
 Dungeon::Dungeon(int _width, int _height)
-{
-    dungeon = TileMatrix(MAX_HEIGHT, std::vector<Tile>(MAX_WIDTH, BLOCK_WALL));
-    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
-    num_rooms = 0;
+{   
     width = _width;
     height = _height;
+    dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
+    num_rooms = 0;
     down_stair = std::vector<int>(2);
     up_stair = std::vector<int>(2);
     for(int i = 0; i < _height; i++) {
@@ -51,6 +37,21 @@ Dungeon::Dungeon(int _width, int _height)
                 dungeon[i][j] = DUNGEON_BORDER;
             }
         }
+    }
+}
+
+
+Dungeon::Dungeon(const Dungeon& d)
+{   
+    dungeon = d.dungeon;
+    width = d.width;
+    height = d.height;
+    down_stair = d.down_stair;
+    up_stair = d.up_stair;
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
+    num_rooms = d.num_rooms;
+    for(int i = 0; i < d.num_rooms; i++) {
+        this->rooms[i] = d.rooms[i];
     }
 }
 

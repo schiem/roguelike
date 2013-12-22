@@ -8,16 +8,16 @@ bool GUI::OnInit() {
 
     //Set up screen
     screen = SDL_SetVideoMode( 800, 600, 32, SDL_SWSURFACE );
-    
+
     //Load ascii characters
     asciiBase = SDL_LoadBMP( "resources/ascii.bmp" );
-    
+
     //Create an optimized image
     ascii = SDL_DisplayFormat( asciiBase );
 
     //Free the old image
     SDL_FreeSurface( asciiBase );
-    
+
     //Map the color key
     Uint32 colorkey = SDL_MapRGB( ascii->format, 0xFF, 0, 0xFF );
 

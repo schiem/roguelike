@@ -27,6 +27,8 @@ class DungeonBuilder
 {
     friend ostream& operator<<(ostream&, const DungeonBuilder&);
     protected:
+        static const int START_WIDTH=30;
+        static const int START_HEIGHT=30;
         //variables
         int width;
         int height;

@@ -35,12 +35,14 @@ ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed) {
     height = _height;
     num_rooms = 0;
 
-    if(width > MAX_WIDTH) {
-        width = MAX_WIDTH;
+    /*
+    if(width > START_WIDTH) {
+        width = START_WIDTH;
     }
-    if(height > MAX_HEIGHT) {
-        height = MAX_HEIGHT;
+    if(height > START_HEIGHT) {
+        height = START_HEIGHT;
     }
+    */
 
     main_dungeon = Dungeon(width, height);
     //srand(seed);

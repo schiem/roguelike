@@ -1,7 +1,5 @@
 #ifndef _OVERWORLD_H
 #define _OVERWORLD_H
-#define MAX_WIDTH 500 
-#define MAX_HEIGHT 500
 
 #include <terrain_defs.h>
 #include <vector>
