@@ -280,7 +280,7 @@ void Canvas::update_buffer() {
         //as above but with the x coordinate.
         for(int col=main_char_chunk.col-1;col<=main_char_chunk.col+1;col++) {
             if (chunk_map[row].size() < (size_t) col + 1) {
-                //chunk_map[row].resize(col + 1);
+                chunk_map[row].resize(col + 1);
             }
 
             //Need to reset the main character's chunk, because we just dicked

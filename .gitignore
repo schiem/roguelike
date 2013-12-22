@@ -2,7 +2,9 @@
 *.swo
 *.swn
 *.o
-gitignore
+*.deps/
+*.dirstamp
+
 roguelike
 aclocal.m4
 autom4te.cache/*
@@ -12,6 +14,7 @@ config.status
 depconf
 install-sh
 Makefile.in
+Makefile
 missing
 stamp-h1
 configure
