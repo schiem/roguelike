@@ -31,12 +31,11 @@ class Chunk{
         void set_tile(int, int, int, Tile*);
         Chunk();
         const std::vector<std::vector<Tile> >& get_floor(int);
-        Tile* get_tile(int, int, int);
+        Tile* get_tile(int, int, int) ;
         int get_depth() const;
         int get_x() const;
         int get_y() const;
         bool is_initialized() const;
-
 };
 
 #endif

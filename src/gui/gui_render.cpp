@@ -2,7 +2,7 @@
 
 void GUI::OnRender()
 {
-    canvas.main_char.perform_action_cont();
+    perform_action_cont();
     canvas.refresh();
     TilePointerMatrix tm = canvas.get_matrix();
     TileMatrix tl = canvas.get_top_layer();

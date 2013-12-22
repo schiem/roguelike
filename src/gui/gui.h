@@ -3,6 +3,8 @@
 
 #include <SDL/SDL.h>
 #include <vector>
+
+#include "chunk.h"
 #include "virtual_event.h"
 #include "canvas.h"
 #include "terrain_defs.h"
@@ -30,6 +32,10 @@ class GUI : public VirtualEvent {
         void OnEvent(SDL_Event* Event);
         void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
         void OnExit();
+
+        void perform_action_press(SDLKey);
+        void perform_action_cont();
+        void char_move(int, int);
 };
 
 #endif

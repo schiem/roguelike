@@ -56,23 +56,13 @@ Canvas::Canvas() {
 
 
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
-    //TODO I (Seth) am not sure if the character should know about its position
-    //in the chunk. Ideally, we should be doing this initialization with an
-    //initialization list; otherwise, there is actually another main_char that
-    //gets created using the default constructor. I have tested this; there are
-    //in fact two instances until the end of this constructor.  I'll look into
-    //it more.
-
-    //TODO I (Michael) agree.  It really shouldn't know about its position.  But
-    //that means that either the canvas or the chunk will have to keep track of
-    //that.
-    main_char = Main_Character(101, 50, 25, 3, chunk_map[5][8], -1);
-    main_char_tile = &MAIN_CHAR;
+    main_char = Main_Character(101, 50, 25, 3, -1);
+    main_char_chunk.row = 5;
+    main_char_chunk.col = 8;
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
     update_buffer();
-    cout<<"buffer updated."<<endl;
 
     recalculate_visibility_lines(15);
 }
@@ -173,8 +163,7 @@ void Canvas::refresh() {
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
     //If the character has gone out of bounds of the chunk,t hen the chunk and
     //buffer need to be updated
-    if(out_of_bounds(main_char.get_y_loc(), main_char.get_x_loc())) {
-        cout<<"OUT OF BOUNDS"<<endl;
+    if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
         update_chunk();
         update_buffer();
     }
@@ -186,17 +175,17 @@ void Canvas::refresh() {
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for(int j = 0; j < STARTING_WIDTH; j++) {
                 Chunk* current_chunk =
-                    &chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()];
+                    &chunk_map[main_char_chunk.row][main_char_chunk.col];
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
-        top_layer[main_char.get_y_loc()][main_char.get_x_loc()] = MAIN_CHAR;
+        top_layer[main_char.get_y()][main_char.get_x()] = MAIN_CHAR;
         }
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for (int j = 0; j < STARTING_WIDTH; j++) {
-                int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y_loc()) -
+                int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
                     (STARTING_HEIGHT/2) + i;
-                int buffer_tile_col = (STARTING_WIDTH + main_char.get_x_loc()) -
+                int buffer_tile_col = (STARTING_WIDTH + main_char.get_x()) -
                     (STARTING_WIDTH/2) + j;
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
@@ -212,31 +201,27 @@ void Canvas::refresh() {
  * to true if they have been seen by the player.
  */
 void Canvas::draw_visibility_lines() {
-    IntPoint character_loc;
+    IntPoint character;
     if(main_char.get_depth() >=0)
     {
-        character_loc = IntPoint(main_char.get_y_loc(),
-                                      main_char.get_x_loc());
+        character = IntPoint(main_char.get_y(),
+                                      main_char.get_x());
     } else {
-        character_loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+        character = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
     }
     Tile* current_chunk_tile;
     IntPoint current_point;
-    //int chunk_row = main_char.get_chunk_y();
-    //int chunk_col = main_char.get_chunk_x();
     //int depth = main_char.get_depth();
     int row, col;
-    //Chunk* chunk = &chunk_map[chunk_row][chunk_col];
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
         for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
             current_point = bresenham_lines[i][j];
-            row = current_point.row + character_loc.row;
-            col = current_point.col + character_loc.col;
+            row = current_point.row + character.row;
+            col = current_point.col + character.col;
 
             if(!out_of_bounds(IntPoint(row, col))) {
                 current_chunk_tile = get_tile(row, col);
-                //current_chunk_tile = chunk->get_tile(depth, row, col);
                 current_chunk_tile->visible = true;
                 if(current_chunk_tile->opaque) {
                     break;
@@ -252,24 +237,26 @@ void Canvas::draw_visibility_lines() {
  * POST: TODO
  */
 void Canvas::update_chunk() {
-    int x = main_char.get_chunk_x();
-    int y = main_char.get_chunk_y();
-    if (main_char.get_x_loc() < 0 ) {
-        x -= 1;
+    int col = main_char_chunk.col;
+    int row = main_char_chunk.row;
+    int mc_row = main_char.get_y();
+    int mc_col = main_char.get_x();
+    if (mc_col < 0 ) {
+        col -= 1;
         main_char.set_x(STARTING_WIDTH-1);
-    } else if (main_char.get_x_loc() >= STARTING_WIDTH) {
-        x += 1;
+    } else if (mc_col >= STARTING_WIDTH) {
+        col += 1;
         main_char.set_x(0);
     }
 
-    if(main_char.get_y_loc() < 0) {
-        y -= 1;
+    if(mc_row < 0) {
+        row -= 1;
         main_char.set_y(STARTING_HEIGHT-1);
-    } else if (main_char.get_y_loc()>= STARTING_HEIGHT) {
-        y += 1;
+    } else if (mc_row >= STARTING_HEIGHT) {
+        row += 1;
         main_char.set_y(0);
     }
-    main_char.update_dungeon(chunk_map[y][x]);
+    main_char_chunk = IntPoint(mc_row, mc_col);
 }
 
 
@@ -282,56 +269,57 @@ reflects the chunks surrounding the characters current one.
 */
 void Canvas::update_buffer() {
     int x, y;
-
     //loop through the characters y chunk coordinate, +/- 1.  If the character
     //was in chunk 7, this would loops through 6, 7, 8.
-    for(int row=main_char.get_chunk_y() - 1;row<=main_char.get_chunk_y()+1;row++) {
+    for(int row=main_char_chunk.row - 1;row<=main_char_chunk.row+1;row++) {
         //Check to ensure that the chunk map is big enough.
         if(chunk_map.size() < (size_t) row + 1) {
             chunk_map.resize(row + 1);
         }
 
         //as above but with the x coordinate.
-        for(int col=main_char.get_chunk_x()-1;col<=main_char.get_chunk_x()+1;col++) {
-
+        for(int col=main_char_chunk.col-1;col<=main_char_chunk.col+1;col++) {
             if (chunk_map[row].size() < (size_t) col + 1) {
-                chunk_map[row].resize(col + 1);
+                //chunk_map[row].resize(col + 1);
             }
+
+            //Need to reset the main character's chunk, because we just dicked
+            //over its pointer.
+            //main_char.set_chunk(&chunk_map[main_char_chunk.row][main_char_chunk.col]);
 
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
-                cout<<"chunk x: "<<col<<endl;
-                std::cout<<"initializing with "<<row<<" & "<<col<<std::endl;
                 chunk_map[row][col] = Chunk(col, row, STARTING_WIDTH, STARTING_HEIGHT);
             }
 
             for (int a=0;a<STARTING_HEIGHT;a++) {
                 for (int b=0;b<STARTING_WIDTH;b++) {
-                    /*
-                        This part is a bit confusing.  What I need is to write
-                        the contents of the chunk to the appropriate place in
-                        the buffer.  A and B represent the Y and X of
-                        individual tiles.  So, for each chunk, the X and Y are
-                        written to the buffer.  The chunks that we're iterating
-                        through are essentially a 3x3 array.  Each chunk needs
-                        to start being written at the appropriate location
-                        (e.g. the second chunk needs to start where the first
-                        one left off...), which is where the x and y variables
-                        come in.  Starting at 0, the x and y are multiplied by
-                        the width/height of the chunk, which is added to a and
-                        b to get where the tile from the chunk corresponding to
-                        a and b should be written to the buffer.  For example:
-                        The first chunk should start writing tiles to the
-                        buffer at 0,0.  The second chunk should start writing
-                        tiles at 0 + CHUNK_WIDTH, and the third tile should
-                        start writing at 0 + (CHUNK_WIDTH * 2).
-                    */
+                    /**
+                     *  This part is a bit confusing.  What I need is to write
+                     *  the contents of the chunk to the appropriate place in
+                     *  the buffer.  A and B represent the Y and X of
+                     *  individual tiles.  So, for each chunk, the X and Y are
+                     *  written to the buffer.  The chunks that we're iterating
+                     *  through are essentially a 3x3 array.  Each chunk needs
+                     *  to start being written at the appropriate location
+                     *  (e.g. the second chunk needs to start where the first
+                     *  one left off...), which is where the x and y variables
+                     *  come in.  Starting at 0, the x and y are multiplied by
+                     *  the width/height of the chunk, which is added to a and
+                     *  b to get where the tile from the chunk corresponding to
+                     *  a and b should be written to the buffer.  For example:
+                     *  The first chunk should start writing tiles to the
+                     *  buffer at 0,0.  The second chunk should start writing
+                     *  tiles at 0 + CHUNK_WIDTH, and the third tile should
+                     *  start writing at 0 + (CHUNK_WIDTH * 2).
+                     */
 
-                    x = col - (main_char.get_chunk_x() - 1);
-                    y = row - (main_char.get_chunk_y() - 1);
+                    x = col - (main_char_chunk.col - 1);
+                    y = row - (main_char_chunk.row - 1);
                     int buffer_col = b + (x * STARTING_WIDTH);
-                    cout<<"row="<<row<<", col="<<col", a="<<a<<", b="<<b<<", x="<<x<<", y="<<y<<endl;
+                    //cout<<"row="<<row<<", col="<<col<<", a="<<a<<", b="<<b<<", x="<<x<<", y="<<y<<endl;
+                    //cout<<"main_char_chunk.row="<<main_char_chunk.row<<endl;
                     int buffer_row = a + (y * STARTING_HEIGHT);
                     Tile* buffer_tile = chunk_map[row][col].get_tile(-1, a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
@@ -341,8 +329,8 @@ void Canvas::update_buffer() {
     }
 }
 
-const Chunk& Canvas::get_chunk() {
-    return chunk_map[main_char.get_chunk_x()][main_char.get_chunk_y()];
+Chunk* Canvas::get_chunk() {
+    return &chunk_map[main_char_chunk.col][main_char_chunk.row];
 }
 
 //Since this is a const reference, will we have to call

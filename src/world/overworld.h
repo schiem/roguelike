@@ -21,7 +21,7 @@ class Overworld
         std::vector<int> down_stair;
         int width;
         int height;
-        Tile* get_tile(int, int);
+        Tile* get_tile(int, int) ;
         void set_tile(int, int, Tile*);
         Overworld(int, int, bool);
         Overworld();

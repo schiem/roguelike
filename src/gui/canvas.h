@@ -28,7 +28,7 @@ class Canvas
         ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
         TileMatrix top_layer;
-        Tile* main_char_tile;
+        IntPoint main_char_chunk;
         std::vector<std::vector<IntPoint> > bresenham_lines;
         void recalculate_visibility_lines(int radius);
         void point_assertions(int, int);
@@ -53,7 +53,7 @@ class Canvas
         void refresh();
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile*> >& get_matrix();
-        const Chunk& get_chunk();
+        Chunk* get_chunk();
         const std::vector<std::vector<Tile> > get_top_layer();
 };
 
