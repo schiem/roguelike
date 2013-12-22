@@ -104,8 +104,8 @@ void Dungeon::make_stairs(bool is_dungeon){
 #endif
 
     //Find the locations of up/down stairs. 
-    up_stair[0] = up_room.tl.col + rand() % (up_room.br.col - up_room.tl.col);
-    up_stair[1] = up_room.tl.row + rand() % (up_room.br.row - up_room.tl.row);
+    up_stair[0] = 1 + up_room.tl.col + rand() % (up_room.br.col - (up_room.tl.col + 1));
+    up_stair[1] = 1 + up_room.tl.row + rand() % (up_room.br.row - (up_room.tl.row + 1));
 
     if(is_dungeon) {
         down_stair[0] = down_room.tl.col + 

@@ -49,8 +49,8 @@ void GUI::perform_action_press(SDLKey key) {
             if (main_char_depth-1 >= -1) {
                 if(*current_tile == UP_STAIR) {
                     main_char->set_depth(main_char_depth - 1);
-                    main_char->set_x(current_chunk->get_up_stair(main_char_depth)[0]);
-                    main_char->set_y(current_chunk->get_up_stair(main_char_depth)[1]);
+                    main_char->set_x(current_chunk->get_down_stair(main_char_depth - 1)[0]);
+                    main_char->set_y(current_chunk->get_down_stair(main_char_depth - 1)[1]);
                 }
             }
             break;
@@ -58,8 +58,8 @@ void GUI::perform_action_press(SDLKey key) {
             if (main_char_depth+1 < current_chunk->get_depth()) {
                 if(*current_tile == DOWN_STAIR) {
                     main_char->set_depth(main_char_depth + 1);
-                    main_char->set_x(current_chunk->get_down_stair(main_char_depth)[0]);
-                    main_char->set_y(current_chunk->get_down_stair(main_char_depth)[1]);
+                    main_char->set_x(current_chunk->get_up_stair(main_char_depth + 1)[0]);
+                    main_char->set_y(current_chunk->get_up_stair(main_char_depth + 1)[1]);
                 }
             }
         default:
@@ -91,6 +91,7 @@ void GUI::perform_action_cont() {
  * POST: Will change the character's coordinates to match this
  *
  * TODO Maybe defer this to canvas or something else.
+ * I think this should be in the canvas.
  */
 void GUI::char_move(int col_change, int row_change) {
     int row = canvas.main_char.get_y();
