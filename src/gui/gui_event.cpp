@@ -49,8 +49,8 @@ void GUI::perform_action_press(SDLKey key) {
             if (main_char_depth-1 >= -1) {
                 if(*current_tile == UP_STAIR) {
                     main_char->set_depth(main_char_depth - 1);
-                    main_char->set_x(current_chunk->get_down_stair(main_char_depth)[0]);
-                    main_char->set_y(current_chunk->get_down_stair(main_char_depth)[1]);
+                    main_char->set_x(current_chunk->get_up_stair(main_char_depth)[0]);
+                    main_char->set_y(current_chunk->get_up_stair(main_char_depth)[1]);
                 }
             }
             break;
@@ -58,8 +58,8 @@ void GUI::perform_action_press(SDLKey key) {
             if (main_char_depth+1 < current_chunk->get_depth()) {
                 if(*current_tile == DOWN_STAIR) {
                     main_char->set_depth(main_char_depth + 1);
-                    main_char->set_x(current_chunk->get_up_stair(main_char_depth)[0]);
-                    main_char->set_y(current_chunk->get_up_stair(main_char_depth)[1]);
+                    main_char->set_x(current_chunk->get_down_stair(main_char_depth)[0]);
+                    main_char->set_y(current_chunk->get_down_stair(main_char_depth)[1]);
                 }
             }
         default:
@@ -95,6 +95,10 @@ void GUI::perform_action_cont() {
 void GUI::char_move(int col_change, int row_change) {
     int row = canvas.main_char.get_y();
     int col = canvas.main_char.get_x();
+    /**
+    cout<<"ROW: "<<row<<" COL: "<<col<<endl;
+    cout<<"WIDTH: "<<canvas.get_chunk()->width<<" HEIGHT: "<<canvas.get_chunk()->height;
+    */
     int next_col = col + col_change;
     int next_row = row + row_change;
     if((next_col < 0) ||  (next_col >= canvas.get_chunk()->width) || 

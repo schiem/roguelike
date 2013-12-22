@@ -331,7 +331,7 @@ void Canvas::update_buffer() {
 }
 
 Chunk* Canvas::get_chunk() {
-    return &chunk_map[main_char_chunk.col][main_char_chunk.row];
+    return &chunk_map[main_char_chunk.row][main_char_chunk.col];
 }
 
 //Since this is a const reference, will we have to call
