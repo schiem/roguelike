@@ -34,34 +34,31 @@ void GUI::OnExit() {
  *
  * -SAY 12/21/2013
  */
+
+/**
+ * The problem that I'm finding with this model is that we don't have
+ * any functionality in the character...all of the processing has been
+ * handed to the GUI classes.  What I'm thinking should happen is the
+ * GUI calls functions in the character with the appropriate values
+ * being passed.  That way, the gui isn't doing processing that should
+ * really belong to the character.  But, then the problem with that is
+ * character doesn't know anything about the chunk...which leads me to
+ * think that the GUI should pass functions to the canvas, which will
+ * handle the processing by calling appropriate functions in the classes.
+ * -MJY 12/22/2013...holy balls, Christmas is 3 days away...
+ */
+
+
+
 void GUI::perform_action_press(SDLKey key) {
     //This is a pointer to a const value. The pointer can be modified, but the
     //value at the pointer cannot be modified from this name. Future Seth:
     //remember that 'const' is left-binding.
-    Chunk * current_chunk = canvas.get_chunk();
-    Main_Character* main_char = &canvas.main_char;
-    Tile* current_tile = current_chunk->get_tile(main_char->get_depth(),
-            main_char->get_y(), main_char->get_x()); 
-    int main_char_depth = main_char->get_depth();
-
     switch (key) {
         case SDLK_u:
-            if (main_char_depth-1 >= -1) {
-                if(*current_tile == UP_STAIR) {
-                    main_char->set_depth(main_char_depth - 1);
-                    main_char->set_x(current_chunk->get_down_stair(main_char_depth - 1)[0]);
-                    main_char->set_y(current_chunk->get_down_stair(main_char_depth - 1)[1]);
-                }
-            }
-            break;
+            canvas.change_main_depth(-1);
         case SDLK_d:
-            if (main_char_depth+1 < current_chunk->get_depth()) {
-                if(*current_tile == DOWN_STAIR) {
-                    main_char->set_depth(main_char_depth + 1);
-                    main_char->set_x(current_chunk->get_up_stair(main_char_depth + 1)[0]);
-                    main_char->set_y(current_chunk->get_up_stair(main_char_depth + 1)[1]);
-                }
-            }
+            canvas.change_main_depth(1);
         default:
             break;
     }
@@ -73,40 +70,16 @@ void GUI::perform_action_cont() {
     Uint8* keystate = SDL_GetKeyState(NULL);
 
     if(keystate[SDLK_LEFT]){
-        char_move(-1, 0);
+        canvas.move_main_char(-1, 0);
     }
     if(keystate[SDLK_RIGHT]){
-        char_move(1, 0);
+        canvas.move_main_char(1, 0);
     }
     if(keystate[SDLK_UP]){
-        char_move(0, -1);
+        canvas.move_main_char(0, -1);
     }
     if(keystate[SDLK_DOWN]){
-        char_move(0, 1);
+        canvas.move_main_char(0, 1);
     }
 }
 
-/**
- * PRE: Will be passed the desired change in x and y coordinates
- * POST: Will change the character's coordinates to match this
- *
- * TODO Maybe defer this to canvas or something else.
- * I think this should be in the canvas.
- */
-void GUI::char_move(int col_change, int row_change) {
-    int row = canvas.main_char.get_y();
-    int col = canvas.main_char.get_x();
-    int next_col = col + col_change;
-    int next_row = row + row_change;
-    if((next_col < 0) ||  (next_col >= canvas.get_chunk()->width) || 
-            (next_row < 0) ||  (next_row >= canvas.get_chunk()->height)) {
-        col += col_change;
-        row += row_change;
-    } else if (canvas.get_chunk()->get_tile(canvas.main_char.get_depth(),
-                next_row, next_col)->can_be_moved_through) {
-        col += col_change;
-        row += row_change;
-    }
-    canvas.main_char.set_x(col);
-    canvas.main_char.set_y(row);
-}

@@ -39,7 +39,7 @@ bool Character::is_alive() const {
 void Character::take_damage(int damage){
     current_health -= damage;
     if (is_alive() == false) {
-        //delete the character, end the game
+        //delete the character
     }
 }
 

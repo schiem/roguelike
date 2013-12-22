@@ -25,6 +25,7 @@ class Canvas
         int STARTING_HEIGHT;
         TilePointerMatrix canvas;
         //temporary, we'll need to serialize this
+        //unless we decide to make the world finite and cap it.
         ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
         TileMatrix top_layer;
@@ -56,6 +57,8 @@ class Canvas
         const std::vector<std::vector<Tile*> >& get_matrix();
         Chunk* get_chunk();
         const std::vector<std::vector<Tile> > get_top_layer();
+        void change_main_depth(int);
+        void move_main_char(int, int);
 };
 
 #endif

@@ -35,7 +35,6 @@ class GUI : public VirtualEvent {
 
         void perform_action_press(SDLKey);
         void perform_action_cont();
-        void char_move(int, int);
 };
 
 #endif

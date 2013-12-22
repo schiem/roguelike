@@ -9,7 +9,7 @@ Overworld::Overworld() {
     srand(time(NULL));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            if (rand() % 20 == 0) {
+            if (rand() % 10 == 0) {
                 ground[i][j] = TREE;
             } else {
                 ground[i][j] = OVERWORLD_DIRT;
@@ -28,7 +28,7 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            if (rand() % 10 == 0){
+            if (rand() % 20 == 0){
                 ground[i][j] = TREE;
             } else {
                 ground[i][j] = OVERWORLD_DIRT;
