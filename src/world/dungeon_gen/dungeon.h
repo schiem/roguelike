@@ -12,8 +12,6 @@ class Dungeon
     typedef std::vector<std::vector<Tile> > TileMatrix;
 
     private:
-        static const int START_WIDTH = 30;
-        static const int START_HEIGHT = 30;
         TileMatrix dungeon;
 
     public:

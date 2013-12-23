@@ -350,24 +350,22 @@ void Canvas::change_main_depth(int direction)
     Chunk * current_chunk;
     current_chunk = get_chunk();
     Tile* current_tile = current_chunk->get_tile(main_char.get_depth(),
-            main_char.get_y(), main_char.get_x()); 
-    if(direction == -1)
-    {
-     if (main_char.get_depth()-1 >= -1) {
-        if(*current_tile == UP_STAIR) {
-            main_char.set_depth(main_char.get_depth() - 1);
-            main_char.set_x(current_chunk->get_down_stair(main_char.get_depth())[0]);
-            main_char.set_y(current_chunk->get_down_stair(main_char.get_depth())[1]);
-                }
-            }   
-    }
-    else
-    {
-    if (main_char.get_depth()+1 < current_chunk->get_depth()) {
-        if(*current_tile == DOWN_STAIR) {
-            main_char.set_depth(main_char.get_depth() + 1);
-            main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
-            main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
+            main_char.get_y(), main_char.get_x());
+
+    if(direction == -1) {
+        if (main_char.get_depth()-1 >= -1) {
+            if(*current_tile == UP_STAIR) {
+                main_char.set_depth(main_char.get_depth() - 1);
+                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth())[0]);
+                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth())[1]);
+            }
+        }
+    } else {
+        if (main_char.get_depth()+1 < current_chunk->get_depth()) {
+            if(*current_tile == DOWN_STAIR) {
+                main_char.set_depth(main_char.get_depth() + 1);
+                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
+                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
             }
         }
     }
@@ -380,7 +378,7 @@ void Canvas::move_main_char(int col_change, int row_change)
     int col = main_char.get_x();
     int next_col = col + col_change;
     int next_row = row + row_change;
-    if((next_col < 0) ||  (next_col >= get_chunk()->width) || 
+    if((next_col < 0) ||  (next_col >= get_chunk()->width) ||
             (next_row < 0) ||  (next_row >= get_chunk()->height)) {
         col += col_change;
         row += row_change;

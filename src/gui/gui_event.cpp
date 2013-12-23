@@ -57,8 +57,10 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_u:
             canvas.change_main_depth(-1);
+            break;
         case SDLK_d:
             canvas.change_main_depth(1);
+            break;
         default:
             break;
     }
