@@ -19,7 +19,7 @@ Dungeon::Dungeon()
 }
 
 Dungeon::Dungeon(int _width, int _height)
-{   
+{
     width = _width;
     height = _height;
     dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
@@ -30,19 +30,13 @@ Dungeon::Dungeon(int _width, int _height)
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             dungeon[i][j] = BLOCK_WALL;
-            if((j == 0) || (j == _width - 1)) {
-                dungeon[i][j] = DUNGEON_BORDER;
-            }
-            if((i == 0) || (i == _height - 1)) {
-                dungeon[i][j] = DUNGEON_BORDER;
-            }
         }
     }
 }
 
 
 Dungeon::Dungeon(const Dungeon& d)
-{   
+{
     dungeon = d.dungeon;
     width = d.width;
     height = d.height;
@@ -87,35 +81,45 @@ void Dungeon::tile_assertions(int row, int col) const {
  * PRE: Given a bool whether there is a dungeon below it in the chunk.
  * POST: Will create a set of upstairs in a random rooms, and a set of
  * downstairs if there is a chunk below it.
- * 
+ *
  * Also contains a dungeon dump, to view the coordinates of the rooms in
  * the dungeon which this method is called on.  Currently commented out.
  */
-void Dungeon::make_stairs(bool is_dungeon){
+void Dungeon::make_stairs(bool has_layer_below){
     assert(num_rooms > 0);
-    
+
     Room up_room = rooms[rand() % num_rooms];
     Room down_room = rooms[rand() % num_rooms];
-    
-#ifdef ROOM_COUNT_DEBUG
-    cout<<"DUNGEON2: "<<num_rooms<<endl;
-    for (int i=0; i<num_rooms;i++) {
-        cout<<i<<": "<<rooms[i].tl.col<<", "<<rooms[i].tl.row<<endl;
-    }
-#endif
 
-    //Find the locations of up/down stairs. 
+    //Find the locations of up/down stairs.
     up_stair[0] = 1 + up_room.tl.col + rand() % (up_room.br.col - (up_room.tl.col + 1));
     up_stair[1] = 1 + up_room.tl.row + rand() % (up_room.br.row - (up_room.tl.row + 1));
 
-    if(is_dungeon) {
-        down_stair[0] = down_room.tl.col + 
+    if(has_layer_below) {
+        down_stair[0] = down_room.tl.col +
             (rand() % (down_room.br.col - down_room.tl.col));
-        down_stair[1] = down_room.tl.row + 
+        down_stair[1] = down_room.tl.row +
             (rand() % (down_room.br.row - down_room.tl.row));
         dungeon[down_stair[1]][down_stair[0]] = DOWN_STAIR;
     }
     dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
+}
+
+/**
+ * PRE: None
+ * POST: Will replace the outer edge of the dungeon with a border.
+ */
+void Dungeon::make_border() {
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
+            if((j == 0) || (j == width - 1)) {
+                dungeon[i][j] = DUNGEON_BORDER;
+            }
+            if((i == 0) || (i == height - 1)) {
+                dungeon[i][j] = DUNGEON_BORDER;
+            }
+        }
+    }
 }
 
 

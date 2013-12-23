@@ -15,7 +15,7 @@ class Overworld
         TileMatrix ground;
 
     public:
-        bool is_dungeon;
+        bool has_layer_below;
         std::vector<int> down_stair;
         int width;
         int height;

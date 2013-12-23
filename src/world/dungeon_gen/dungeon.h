@@ -13,6 +13,7 @@ class Dungeon
 
     private:
         TileMatrix dungeon;
+        void tile_assertions(int, int) const;
 
     public:
         int width;
@@ -22,7 +23,7 @@ class Dungeon
         std::vector<int> up_stair;
         std::vector<Room> rooms;
         void make_stairs(bool);
-        void tile_assertions(int, int) const;
+        void make_border();
         Tile get_tile(int, int) const;
         Tile get_tile(IntPoint) const;
         Tile* get_tile_pointer(int, int);

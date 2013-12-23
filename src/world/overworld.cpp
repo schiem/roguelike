@@ -3,7 +3,7 @@ using namespace tiledef;
 Overworld::Overworld() {
     width = 10;
     height = 10;
-    is_dungeon = false;
+    has_layer_below = false;
     down_stair = std::vector<int>(2);
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     srand(time(NULL));
@@ -18,10 +18,10 @@ Overworld::Overworld() {
     }
 }
 
-Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
+Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
     width = _width;
     height = _height;
-    is_dungeon = _is_dungeon;
+    has_layer_below = _has_layer_below;
     down_stair = std::vector<int>(2);
     down_stair[0] = rand() % width;
     down_stair[1] = rand() % height;
@@ -35,8 +35,7 @@ Overworld::Overworld(int _width, int _height, bool _is_dungeon) {
             }
         }
     }
-    if(is_dungeon)
-    {
+    if(has_layer_below) {
         ground[down_stair[1]][down_stair[0]] = DOWN_STAIR;
     }
 }

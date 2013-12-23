@@ -344,8 +344,7 @@ const std::vector<std::vector<Tile> > Canvas::get_top_layer(){
 
 
 /*--------------------Main Char Functions----------------------*/
-void Canvas::change_main_depth(int direction)
-{
+void Canvas::change_main_depth(int direction) {
     assert(direction == -1 || direction == 1);
     Chunk * current_chunk;
     current_chunk = get_chunk();
@@ -370,10 +369,13 @@ void Canvas::change_main_depth(int direction)
         }
     }
 
+    //Dungeon FOV is shorter than overworld FOV
+    if(main_char.get_depth() >= 0) {
+        recalculate_visibility_lines(10);
+    }
 }
 
-void Canvas::move_main_char(int col_change, int row_change)
-{
+void Canvas::move_main_char(int col_change, int row_change) {
     int row = main_char.get_y();
     int col = main_char.get_x();
     int next_col = col + col_change;
