@@ -4,10 +4,16 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/character_classes\
 			  -Isrc/world\
 			  -Ilib/SDL-ASCII-Template\
-			  -Isrc/gui
+			  -Isrc/gui\
+			  $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS =  -lSDLmain\
-			  -lSDL
+			  -lSDL\
+			  -lboost_system\
+			  -lboost_filesystem\
+			  $(BOOST_LDFLAGS)
+
+ACLOCAL_AMFLAGS = -I m4
 
 bin_PROGRAMS = roguelike
 roguelikedir = .
