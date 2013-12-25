@@ -1,16 +1,16 @@
 #include "gui.h"
 
-GUI::GUI() {
+GUI::GUI() : world_map(50,80) {
+    current_screen = MAP_SCREEN;
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
     //canvas = Canvas();
 
     running = true;
-    cout<<"GUI construction complete."<<endl;
 }
 
-int GUI::OnExecute() {   
+int GUI::OnExecute() {
     if(OnInit() == false) {
         return -1;
     }

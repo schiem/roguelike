@@ -55,6 +55,11 @@ void GUI::perform_action_press(SDLKey key) {
     //value at the pointer cannot be modified from this name. Future Seth:
     //remember that 'const' is left-binding.
     switch (key) {
+        case SDLK_RETURN:
+            if(current_screen == MAP_SCREEN) {
+                current_screen = GAME_SCREEN;
+            }
+            break;
         case SDLK_u:
             canvas.change_main_depth(-1);
             break;

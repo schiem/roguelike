@@ -35,6 +35,7 @@ roguelike_SOURCES = \
 	src/world/overworld.cpp\
 	src/world/chunk.cpp\
 	src/world/terrain_defs.cpp\
+	src/world/world_map.cpp\
 	src/world/dungeon_gen/dungeon.cpp\
 	src/world/dungeon_gen/procedurally_blind_db.cpp\
 	src/world/dungeon_gen/room.cpp\

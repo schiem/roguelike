@@ -8,13 +8,22 @@
 #include "virtual_event.h"
 #include "canvas.h"
 #include "terrain_defs.h"
+#include "world_map.h"
+#include "def.h"
 
 class GUI : public VirtualEvent {
 
     typedef std::vector< std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
+        //This is by no means a good system. Just temporary.
+        static int const MAP_SCREEN = 0;
+        static int const GAME_SCREEN = 1;
+
         bool running;
+        int current_screen;
+
+        WorldMap world_map;
         Canvas canvas;
         SDL_Event event;
         SDL_Surface* screen;
