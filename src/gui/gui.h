@@ -8,7 +8,7 @@
 #include "virtual_event.h"
 #include "canvas.h"
 #include "terrain_defs.h"
-#include "world_map.h"
+#include "world_map_gui.h"
 #include "def.h"
 
 class GUI : public VirtualEvent {
@@ -23,7 +23,7 @@ class GUI : public VirtualEvent {
         bool running;
         int current_screen;
 
-        WorldMap world_map;
+        WorldMapGUI world_map_gui;
         Canvas canvas;
         SDL_Event event;
         SDL_Surface* screen;

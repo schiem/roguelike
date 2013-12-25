@@ -32,6 +32,7 @@ roguelike_SOURCES = \
 	src/gui/canvas.cpp\
 	src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
+	src/gui/world_map_gui.cpp\
 	src/world/overworld.cpp\
 	src/world/chunk.cpp\
 	src/world/terrain_defs.cpp\
@@ -50,6 +51,7 @@ roguelike_HEADERS = \
 	src/gui/virtual_event.h\
 	src/gui/gui.h\
 	src/gui/canvas.h\
+	src/gui/world_map_gui.h\
 	src/world/terrain_defs.h\
 	src/world/chunk.h\
 	src/world/dungeon_gen/dungeonbuilder.h\

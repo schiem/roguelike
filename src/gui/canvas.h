@@ -24,8 +24,6 @@ class Canvas
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
         TilePointerMatrix canvas;
-        //temporary, we'll need to serialize this
-        //unless we decide to make the world finite and cap it.
         ChunkMatrix chunk_map;
         TilePointerMatrix buffer;
         TileMatrix top_layer;
@@ -45,11 +43,6 @@ class Canvas
         void draw_visibility_lines();
     public:
         Canvas();
-        //TODO do something about these two. Events.cpp?  The way the project is
-        //now structured, yeah.  Typical games consist of 5 sections: init,
-        //input, process, display, cleanup.  As it is, we've started dividing
-        //those into files, but we don't have it the whole way yet. Most of
-        //those are sitting in Display, and could be given their own files.
         DungeonBuilder db;
         Main_Character main_char;
         void refresh();

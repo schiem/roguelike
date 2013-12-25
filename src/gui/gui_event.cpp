@@ -76,17 +76,31 @@ void GUI::perform_action_cont() {
     SDL_PumpEvents();
     Uint8* keystate = SDL_GetKeyState(NULL);
 
-    if(keystate[SDLK_LEFT]){
-        canvas.move_main_char(-1, 0);
-    }
-    if(keystate[SDLK_RIGHT]){
-        canvas.move_main_char(1, 0);
-    }
-    if(keystate[SDLK_UP]){
-        canvas.move_main_char(0, -1);
-    }
-    if(keystate[SDLK_DOWN]){
-        canvas.move_main_char(0, 1);
+    if(current_screen == GAME_SCREEN) {
+        if(keystate[SDLK_LEFT]){
+            canvas.move_main_char(-1, 0);
+        }
+        if(keystate[SDLK_RIGHT]){
+            canvas.move_main_char(1, 0);
+        }
+        if(keystate[SDLK_UP]){
+            canvas.move_main_char(0, -1);
+        }
+        if(keystate[SDLK_DOWN]){
+            canvas.move_main_char(0, 1);
+        }
+    } else if (current_screen == MAP_SCREEN) {
+        if(keystate[SDLK_LEFT]){
+            world_map_gui.move_cursor(-1, 0);
+        }
+        if(keystate[SDLK_RIGHT]){
+            world_map_gui.move_cursor(1, 0);
+        }
+        if(keystate[SDLK_UP]){
+            world_map_gui.move_cursor(0, -1);
+        }
+        if(keystate[SDLK_DOWN]){
+            world_map_gui.move_cursor(0, 1);
+        }
     }
 }
-

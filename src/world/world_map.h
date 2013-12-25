@@ -16,11 +16,13 @@ struct MapTile {
 namespace map_tile {
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
-    extern MapTile MAP_DIRT;
+    extern MapTile CURSOR;
 }
 
 class WorldMap {
+    typedef std::vector<std::vector<MapTile> > MapTileMatrix;
     private:
+        MapTileMatrix canvas;
         std::vector<std::vector<MapTile> > map;
         int height;
         int width;
@@ -35,5 +37,5 @@ class WorldMap {
     public:
         WorldMap();
         WorldMap(int height, int width);
-        std::vector<std::vector<MapTile> > get_map() const;
+        const std::vector<std::vector<MapTile> >& get_map() const;
 };

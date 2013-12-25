@@ -3,7 +3,7 @@
 namespace map_tile {
     MapTile MAP_DEFAULT = {146, GREEN};
     MapTile MAP_WATER = {247, BLUE};
-    MapTile MAP_DIRT = {100, RED};
+    MapTile CURSOR = {88, WHITE};
 }
 
 using namespace std;
@@ -23,7 +23,7 @@ WorldMap::WorldMap(int h, int w) {
 
 }
 
-std::vector<std::vector<MapTile> > WorldMap::get_map() const {
+const std::vector<std::vector<MapTile> >& WorldMap::get_map() const {
     return map;
 }
 

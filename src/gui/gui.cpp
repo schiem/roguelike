@@ -1,11 +1,10 @@
 #include "gui.h"
 
-GUI::GUI() : world_map(50,80) {
+GUI::GUI() : world_map_gui(50,80) {
     current_screen = MAP_SCREEN;
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
-    //canvas = Canvas();
 
     running = true;
 }

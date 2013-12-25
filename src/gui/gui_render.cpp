@@ -3,13 +3,16 @@
 void GUI::OnRender()
 {
     if(current_screen == MAP_SCREEN) {
-        std::vector<std::vector<MapTile> > map = world_map.get_map();
-        for(size_t i = 0; i < map.size(); i++) {
-            for(size_t j = 0; j < map[i].size(); j++) {
-                drawChr(j, i, map[i][j].char_count, ascii, screen, map[i][j].color);
+        perform_action_cont();
+        std::vector<std::vector<MapTile> > canvas = world_map_gui.get_canvas();
+        for(size_t i = 0; i < canvas.size(); i++) {
+            for(size_t j = 0; j < canvas[i].size(); j++) {
+                drawChr(j, i, canvas[i][j].char_count, ascii, screen, canvas[i][j].color);
             }
         }
-        drawStr(0, 0, "Press ENTER to continue.", ascii, screen, WHITE);
+        drawStr(0, 48, "Use the arrow keys to move the cursor.", ascii, screen, WHITE);
+        drawStr(0, 49, "Press ENTER to spawn on the selected map tile.", ascii, screen, WHITE);
+
     } else {
         perform_action_cont();
         canvas.refresh();
