@@ -30,7 +30,7 @@ class WorldMap {
         void generate_land_mass();
         void set_land_or_water(int, int, int, bool);
         void ocean_borders(int);
-        void smoothing_pass(MapTile);
+        void smoothing_pass(MapTile, int);
 
     public:
         WorldMap();
