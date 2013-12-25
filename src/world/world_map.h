@@ -16,6 +16,7 @@ struct MapTile {
 namespace map_tile {
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
+    extern MapTile MAP_DIRT;
 }
 
 class WorldMap {

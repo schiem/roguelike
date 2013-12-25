@@ -3,6 +3,7 @@
 namespace map_tile {
     MapTile MAP_DEFAULT = {146, GREEN};
     MapTile MAP_WATER = {247, BLUE};
+    MapTile MAP_DIRT = {100, RED};
 }
 
 using namespace std;
@@ -30,7 +31,7 @@ bool WorldMap::out_of_bounds(int row, int col) {
     return (row < 0 ||
             row >= height ||
             col < 0 ||
-            col >= height);
+            col >= width);
 }
 
 void WorldMap::set_land_or_water(int row, int col, 
@@ -79,6 +80,7 @@ int WorldMap::count_in_surrounding_tiles(int row, int col,
                                         MapTile tile_type) {
     int num = 0;
     int newrow, newcol;
+
     for(int i = -1; i < 2; i++) {
         for(int j = -1; j < 2; j++) {
             if(!(i==0 && j==0)) {
@@ -133,6 +135,17 @@ void WorldMap::generate_land_mass() {
     int border_size = 5;
     ocean_borders(border_size);
     starting_noise(border_size);
-    smoothing_pass(map_tile::MAP_WATER);
-    smoothing_pass(map_tile::MAP_DEFAULT);
+    cout<<height<<" "<<width<<endl;
+    for(int i = 0; i < 10; i++) {
+        smoothing_pass(map_tile::MAP_WATER);
+    }
+    for(int i = 0; i < 3; i++) {
+        smoothing_pass(map_tile::MAP_DEFAULT);
+    }
+    for(int i = 0; i < 5; i++) {
+        smoothing_pass(map_tile::MAP_WATER);
+    }
+    for(int i = 0; i < 3; i++) {
+        smoothing_pass(map_tile::MAP_DEFAULT);
+    }
 }
