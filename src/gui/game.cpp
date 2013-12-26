@@ -215,7 +215,7 @@ void Game::draw_visibility_lines() {
                                       main_char.get_x());
     } else {
     */
-    m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    IntPoint m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
     //}
     Tile* current_chunk_tile;
     IntPoint current_point;
