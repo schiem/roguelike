@@ -174,6 +174,7 @@ void Canvas::refresh() {
     //the dungeon, the character moves around the screen.  In the overworld, a
     //calculation is done to keep the character at the center of the screen.
     //This is where the canvas is written to.
+    /*
     if(main_char.get_depth() >=0) {
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for(int j = 0; j < STARTING_WIDTH; j++) {
@@ -184,6 +185,7 @@ void Canvas::refresh() {
         top_layer[main_char.get_y()][main_char.get_x()] = main_char.get_char();
         }
     } else {
+        */
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for (int j = 0; j < STARTING_WIDTH; j++) {
                 int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
@@ -194,7 +196,7 @@ void Canvas::refresh() {
             }
         }
         top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
-    }
+    //}
     draw_visibility_lines();
 }
 
@@ -205,13 +207,15 @@ void Canvas::refresh() {
  */
 void Canvas::draw_visibility_lines() {
     IntPoint character;
+    /* 
     if(main_char.get_depth() >=0)
     {
         character = IntPoint(main_char.get_y(),
                                       main_char.get_x());
     } else {
-        character = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-    }
+    */
+    character = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    //}
     Tile* current_chunk_tile;
     IntPoint current_point;
     //int depth = main_char.get_depth();
@@ -320,7 +324,7 @@ void Canvas::update_buffer(IntPoint central_chunk) {
                     y = row - (central_chunk.row - 1);
                     int buffer_col = b + (x * STARTING_WIDTH);
                     int buffer_row = a + (y * STARTING_HEIGHT);
-                    Tile* buffer_tile = chunk_map[row][col].get_tile(-1, a, b);
+                    Tile* buffer_tile = chunk_map[row][col].get_tile(main_char.get_depth(), a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
@@ -370,6 +374,7 @@ void Canvas::change_main_depth(int direction) {
     }
 
     //Dungeon FOV is shorter than overworld FOV
+    update_buffer(main_char_chunk);
     if(main_char.get_depth() >= 0) {
         recalculate_visibility_lines(10);
     }
