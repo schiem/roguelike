@@ -32,7 +32,7 @@ roguelike_SOURCES = \
 	src/gui/virtual_event.cpp\
 	src/gui/gui_event.cpp\
 	src/gui/gui_init.cpp\
-	src/gui/canvas.cpp\
+	src/gui/game.cpp\
 	src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
@@ -56,7 +56,7 @@ roguelike_HEADERS = \
     src/character_classes/spawner.h\
     src/gui/virtual_event.h\
 	src/gui/gui.h\
-	src/gui/canvas.h\
+	src/gui/game.h\
 	src/gui/world_map_gui.h\
 	src/world/terrain_defs.h\
 	src/world/chunk.h\

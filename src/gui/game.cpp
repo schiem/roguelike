@@ -1,4 +1,4 @@
-#include  "canvas.h"
+#include  "game.h"
 #include <iostream>
 using namespace std;
 using namespace tiledef;
@@ -41,7 +41,7 @@ taken from the buffer with the character at the center.
 */
 
 
-Canvas::Canvas() {
+Game::Game() {
     STARTING_WIDTH = 100;
     STARTING_HEIGHT = 50;
     chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
@@ -66,6 +66,8 @@ Canvas::Canvas() {
     update_buffer(main_char_chunk);
 
     recalculate_visibility_lines(15);
+    refresh();
+    draw_visibility_lines();
 }
 
 /**
@@ -73,7 +75,7 @@ Canvas::Canvas() {
  * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
  * points for raytraced lines.
  */
-void Canvas::recalculate_visibility_lines(int size) {
+void Game::recalculate_visibility_lines(int size) {
     IntPoint true_center = IntPoint(0, 0);
     std::vector<IntPoint> circle_points = bresenham_circle(true_center, size);
     std::vector<IntPoint> line_points;
@@ -89,7 +91,7 @@ void Canvas::recalculate_visibility_lines(int size) {
  * POST: Will run the point represented by this row and column through a series
  * of assertions to ensure that it will not produce a segfault.
  */
-void Canvas::point_assertions(int row, int col) {
+void Game::point_assertions(int row, int col) {
     assert(row >= 0);
     assert(row < STARTING_HEIGHT);
     assert(col >= 0);
@@ -101,7 +103,7 @@ void Canvas::point_assertions(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that row and column,
  * using assertions in point_assertions.
  */
-Tile* Canvas::get_tile(int row, int col) {
+Tile* Game::get_tile(int row, int col) {
     point_assertions(row, col);
     return canvas[row][col];
 }
@@ -111,7 +113,7 @@ Tile* Canvas::get_tile(int row, int col) {
  * POST: Returns a pointer to the tile on the canvas at that point, using
  * assertions in point_assertions.
  */
-Tile* Canvas::get_tile(IntPoint point) {
+Tile* Game::get_tile(IntPoint point) {
     point_assertions(point.row, point.col);
     return canvas[point.row][point.col];
 }
@@ -121,7 +123,7 @@ Tile* Canvas::get_tile(IntPoint point) {
  * POST: Sets the tile at the given point on the canvas to the given tile,
  * using assertions in point_assertions.
  */
-void Canvas::set_tile(int row, int col, Tile* tile) {
+void Game::set_tile(int row, int col, Tile* tile) {
     point_assertions(row, col);
     canvas[row][col] = tile;
 }
@@ -131,7 +133,7 @@ void Canvas::set_tile(int row, int col, Tile* tile) {
  * POST: Sets the tile at the given point on the canvas to the given tile,
  * using assertions in point_assertions.
  */
-void Canvas::set_tile(IntPoint point, Tile* tile) {
+void Game::set_tile(IntPoint point, Tile* tile) {
     point_assertions(point.row, point.col);
     canvas[point.row][point.col] = tile;
 }
@@ -141,7 +143,7 @@ void Canvas::set_tile(IntPoint point, Tile* tile) {
  * POST: Returns true if the given point is out of bounds on the canvas, and
  * false otherwise.
  */
-bool Canvas::out_of_bounds(IntPoint point) {
+bool Game::out_of_bounds(IntPoint point) {
     return (point.col < 0 || point.col >= STARTING_WIDTH ||
             point.row < 0 || point.row >= STARTING_HEIGHT);
 }
@@ -151,7 +153,7 @@ bool Canvas::out_of_bounds(IntPoint point) {
  * POST: Returns true if the given point is out of bounds on the canvas, and
  * false otherwise.
  */
-bool Canvas::out_of_bounds(int row, int col) {
+bool Game::out_of_bounds(int row, int col) {
     return (col < 0 || col >= STARTING_WIDTH ||
             row < 0 || row >= STARTING_HEIGHT);
 }
@@ -159,7 +161,7 @@ bool Canvas::out_of_bounds(int row, int col) {
 /**
  *This is to refresh the screen whenever the character moves.
  */
-void Canvas::refresh() {
+void Game::refresh() {
     //Reset the top layer
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
     //If the character has gone out of bounds of the chunk,t hen the chunk and
@@ -205,31 +207,60 @@ void Canvas::refresh() {
  * POST: Draws a field-of-vision around the player - sets tiles' visibility
  * to true if they have been seen by the player.
  */
-void Canvas::draw_visibility_lines() {
-    IntPoint character;
-    /* 
-    if(main_char.get_depth() >=0)
-    {
-        character = IntPoint(main_char.get_y(),
+void Game::draw_visibility_lines() {
+    /*
+    IntPoint m_char;
+    if(main_char.get_depth() >=0) {
+        m_char = IntPoint(main_char.get_y(),
                                       main_char.get_x());
     } else {
     */
-    character = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
     //}
     Tile* current_chunk_tile;
     IntPoint current_point;
-    //int depth = main_char.get_depth();
     int row, col;
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
         for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
             current_point = bresenham_lines[i][j];
-            row = current_point.row + character.row;
-            col = current_point.col + character.col;
+            row = current_point.row + m_char.row;
+            col = current_point.col + m_char.col;
 
             if(!out_of_bounds(IntPoint(row, col))) {
                 current_chunk_tile = get_tile(row, col);
                 current_chunk_tile->visible = true;
+                current_chunk_tile->seen = true;
+                if(current_chunk_tile->opaque) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void Game::undo_visibility() {
+    IntPoint m_char;
+    if(main_char.get_depth() >=0) {
+        m_char = IntPoint(main_char.get_y(),
+                                      main_char.get_x());
+    } else {
+        m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    }
+
+    Tile* current_chunk_tile;
+    IntPoint current_point;
+    int row, col;
+
+    for(size_t i = 0; i < bresenham_lines.size(); i++) {
+        for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
+            current_point = bresenham_lines[i][j];
+            row = current_point.row + m_char.row;
+            col = current_point.col + m_char.col;
+
+            if(!out_of_bounds(IntPoint(row, col))) {
+                current_chunk_tile = get_tile(row, col);
+                current_chunk_tile->visible = false;
                 if(current_chunk_tile->opaque) {
                     break;
                 }
@@ -243,7 +274,7 @@ void Canvas::draw_visibility_lines() {
  * PRE: TODO
  * POST: TODO
  */
-void Canvas::update_chunk() {
+void Game::update_chunk() {
     int mc_row = main_char.get_y();
     int mc_col = main_char.get_x();
     if (mc_col < 0 ) {
@@ -263,7 +294,7 @@ void Canvas::update_chunk() {
     }
 }
 
-void Canvas::update_chunk_map(IntPoint central_chunk) {
+void Game::update_chunk_map(IntPoint central_chunk) {
     for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
         //Check to ensure that the chunk map is big enough.
         if(chunk_map.size() < (size_t) row + 1) {
@@ -291,7 +322,7 @@ current chunk.  This should be broken into several functions.  This will be
 called whenever the character moves into a new chunk, so that the buffer
 reflects the chunks surrounding the characters current one.
 */
-void Canvas::update_buffer(IntPoint central_chunk) {
+void Game::update_buffer(IntPoint central_chunk) {
     int x, y;
 
     for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
@@ -332,23 +363,23 @@ void Canvas::update_buffer(IntPoint central_chunk) {
     }
 }
 
-Chunk* Canvas::get_chunk() {
+Chunk* Game::get_chunk() {
     return &chunk_map[main_char_chunk.row][main_char_chunk.col];
 }
 
 //Since this is a const reference, will we have to call
 //more than once? Maybe not...
-const std::vector<std::vector<Tile*> >& Canvas::get_matrix() {
+const std::vector<std::vector<Tile*> >& Game::get_matrix() {
     return canvas;
 }
 
-const std::vector<std::vector<Tile> > Canvas::get_top_layer(){
+const std::vector<std::vector<Tile> > Game::get_top_layer(){
     return top_layer;
 }
 
 
 /*--------------------Main Char Functions----------------------*/
-void Canvas::change_main_depth(int direction) {
+void Game::change_main_depth(int direction) {
     assert(direction == -1 || direction == 1);
     Chunk * current_chunk;
     current_chunk = get_chunk();
@@ -380,7 +411,8 @@ void Canvas::change_main_depth(int direction) {
     }
 }
 
-void Canvas::move_main_char(int col_change, int row_change) {
+void Game::move_main_char(int col_change, int row_change) {
+    undo_visibility();
     int row = main_char.get_y();
     int col = main_char.get_x();
     int next_col = col + col_change;
@@ -396,5 +428,5 @@ void Canvas::move_main_char(int col_change, int row_change) {
     }
     main_char.set_x(col);
     main_char.set_y(row);
-
+    draw_visibility_lines();
 }
