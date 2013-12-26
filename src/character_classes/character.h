@@ -24,6 +24,7 @@ class Character
     public:
         Character();
         Character(int, int, int, Tile, int);
+        Character(int, int, int);
         bool is_alive() const;
         void take_damage(int);
         void attack(int x_direction, int y_direction);

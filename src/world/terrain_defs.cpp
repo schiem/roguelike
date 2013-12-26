@@ -16,4 +16,5 @@ namespace tiledef {
     Tile BLOCK_WALL = {219, 7, DARK_GRAY, false, false, true};
     Tile DOWN_STAIR = {31, 8, GRAY, true, false, false};
     Tile UP_STAIR = {30, 9, GRAY, true, false, false};
+    Tile KOBOLD = {107, 10, RED, false, false, false};
 }

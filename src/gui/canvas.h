@@ -18,8 +18,8 @@ using namespace tiledef;
 class Canvas
 {
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
-    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
+    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     private:
         int STARTING_WIDTH;
         int STARTING_HEIGHT;

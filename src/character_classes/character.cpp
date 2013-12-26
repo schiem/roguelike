@@ -18,6 +18,16 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _depth) 
     depth = _depth;
 }
 
+/*
+ * Constructor for the enemy class
+ */
+Character::Character(int _x, int _y, int _depth)
+{
+    x = _x;
+    y = _y;
+    depth = _depth;
+}
+
 /* PRE: None
  * POST: Returns true if the character is still alive (health is > max_health)
 */

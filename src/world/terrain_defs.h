@@ -31,6 +31,7 @@ namespace tiledef {
     extern Tile BLOCK_WALL;
     extern Tile DOWN_STAIR;
     extern Tile UP_STAIR;
+    extern Tile KOBOLD;
 }
 
 #endif
