@@ -1,4 +1,4 @@
-#include  "canvas.h"
+#include  "game.h"
 #include <iostream>
 using namespace std;
 using namespace tiledef;
@@ -66,6 +66,8 @@ Game::Game() {
     update_buffer(main_char_chunk);
 
     recalculate_visibility_lines(15);
+    refresh();
+    draw_visibility_lines();
 }
 
 /**
@@ -195,7 +197,6 @@ void Game::refresh() {
         }
         top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
     }
-    draw_visibility_lines();
 }
 
 /*
@@ -204,28 +205,57 @@ void Game::refresh() {
  * to true if they have been seen by the player.
  */
 void Game::draw_visibility_lines() {
-    IntPoint character;
-    if(main_char.get_depth() >=0)
-    {
-        character = IntPoint(main_char.get_y(),
+    IntPoint m_char;
+    if(main_char.get_depth() >=0) {
+        m_char = IntPoint(main_char.get_y(),
                                       main_char.get_x());
     } else {
-        character = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+        m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
     }
     Tile* current_chunk_tile;
     IntPoint current_point;
-    //int depth = main_char.get_depth();
     int row, col;
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
         for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
             current_point = bresenham_lines[i][j];
-            row = current_point.row + character.row;
-            col = current_point.col + character.col;
+            row = current_point.row + m_char.row;
+            col = current_point.col + m_char.col;
 
             if(!out_of_bounds(IntPoint(row, col))) {
                 current_chunk_tile = get_tile(row, col);
                 current_chunk_tile->visible = true;
+                current_chunk_tile->seen = true;
+                if(current_chunk_tile->opaque) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void Game::undo_visibility() {
+    IntPoint m_char;
+    if(main_char.get_depth() >=0) {
+        m_char = IntPoint(main_char.get_y(),
+                                      main_char.get_x());
+    } else {
+        m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    }
+
+    Tile* current_chunk_tile;
+    IntPoint current_point;
+    int row, col;
+
+    for(size_t i = 0; i < bresenham_lines.size(); i++) {
+        for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
+            current_point = bresenham_lines[i][j];
+            row = current_point.row + m_char.row;
+            col = current_point.col + m_char.col;
+
+            if(!out_of_bounds(IntPoint(row, col))) {
+                current_chunk_tile = get_tile(row, col);
+                current_chunk_tile->visible = false;
                 if(current_chunk_tile->opaque) {
                     break;
                 }
@@ -376,6 +406,7 @@ void Game::change_main_depth(int direction) {
 }
 
 void Game::move_main_char(int col_change, int row_change) {
+    undo_visibility();
     int row = main_char.get_y();
     int col = main_char.get_x();
     int next_col = col + col_change;
@@ -391,5 +422,5 @@ void Game::move_main_char(int col_change, int row_change) {
     }
     main_char.set_x(col);
     main_char.set_y(row);
-
+    draw_visibility_lines();
 }

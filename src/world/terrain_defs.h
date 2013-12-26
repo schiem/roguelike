@@ -9,6 +9,7 @@ struct Tile {
     bool can_be_moved_through;
     bool visible;
     bool opaque;
+    bool seen;
     bool operator==(const Tile& rhs) const {
         return this->tile_id == rhs.tile_id;
     }

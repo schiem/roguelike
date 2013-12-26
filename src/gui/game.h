@@ -41,6 +41,7 @@ class Game
         void update_chunk_map(IntPoint);
         void update_chunk();
         void draw_visibility_lines();
+        void undo_visibility();
     public:
         Game();
         DungeonBuilder db;
