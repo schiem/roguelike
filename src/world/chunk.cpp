@@ -20,15 +20,13 @@ Chunk::Chunk(int _width, int _height) {
     for (int i=0; i < depth; i++) {
         has_layer_below = (i < depth - 1);
         db.build_dungeon(5, 5);
-
         temp_d = db.get_dungeon();
 
         dungeon_floors[i] = *temp_d;
 
-        dungeon_floors[i].make_border();
-
         //makes the staircases in a dungeon
         dungeon_floors[i].make_stairs(has_layer_below);
+        dungeon_floors[i].make_border();
     }
     //generate the overworld
     has_layer_below = (depth > 0);
