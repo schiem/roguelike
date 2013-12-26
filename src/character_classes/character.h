@@ -15,7 +15,7 @@ class Character
         int x;
         int y;
         //Skills skill[];
-        char sprite;
+        Tile sprite;
         int armor;
         int depth;
         Tile underfoot;
@@ -23,13 +23,13 @@ class Character
 
     public:
         Character();
-        Character(int, int, int, int, int);
+        Character(int, int, int, Tile, int);
         bool is_alive() const;
         void take_damage(int);
         void attack(int x_direction, int y_direction);
         int get_x();
         int get_y();
-        int get_char();
+        Tile get_char();
         int get_depth();
         void set_x(int);
         void set_y(int);
@@ -46,7 +46,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, int, int);
+        Main_Character(int, int, int, Tile, int);
 };
 
 #endif

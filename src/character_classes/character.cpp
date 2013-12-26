@@ -9,7 +9,7 @@ Character::Character() {
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, int _sprite, int _depth) {
+Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _depth) {
     current_health = _max_health;
     max_health = _max_health;
     x = _x;
@@ -63,7 +63,7 @@ int Character::get_y() {
     return y;
 }
 
-int Character::get_char() {
+Tile Character::get_char() {
     return sprite;
 }
 

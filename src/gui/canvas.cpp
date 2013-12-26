@@ -56,7 +56,7 @@ Canvas::Canvas() {
 
 
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
-    main_char = Main_Character(101, 50, 25, 3, -1);
+    main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
     main_char_chunk.row = 5;
     main_char_chunk.col = 8;
 
@@ -181,7 +181,7 @@ void Canvas::refresh() {
                     &chunk_map[main_char_chunk.row][main_char_chunk.col];
                 set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
             }
-        top_layer[main_char.get_y()][main_char.get_x()] = MAIN_CHAR;
+        top_layer[main_char.get_y()][main_char.get_x()] = main_char.get_char();
         }
     } else {
         for(int i = 0; i < STARTING_HEIGHT; i++) {
@@ -193,7 +193,7 @@ void Canvas::refresh() {
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = MAIN_CHAR;
+        top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
     }
     draw_visibility_lines();
 }
