@@ -15,7 +15,7 @@
 
 using namespace std;
 using namespace tiledef;
-class Canvas
+class Game
 {
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
@@ -42,7 +42,7 @@ class Canvas
         void update_chunk();
         void draw_visibility_lines();
     public:
-        Canvas();
+        Game();
         DungeonBuilder db;
         Main_Character main_char;
         void refresh();

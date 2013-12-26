@@ -6,7 +6,7 @@
 
 #include "chunk.h"
 #include "virtual_event.h"
-#include "canvas.h"
+#include "game.h"
 #include "terrain_defs.h"
 #include "world_map_gui.h"
 #include "def.h"
@@ -24,7 +24,7 @@ class GUI : public VirtualEvent {
         int current_screen;
 
         WorldMapGUI world_map_gui;
-        Canvas canvas;
+        Game canvas;
         SDL_Event event;
         SDL_Surface* screen;
         SDL_Surface* asciiBase;
