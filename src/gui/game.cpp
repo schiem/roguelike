@@ -156,36 +156,22 @@ bool Game::out_of_bounds(int row, int col) {
             row < 0 || row >= STARTING_HEIGHT);
 }
 
-/**
- *This is to refresh the screen whenever the character moves.
+/*
+ * Resets the top layer.
+ * Checks to see if the character is out of the chunk.  If so, update the chunk/chunk_map
+ * Updates the canvas with the area around the character in terms of buffer coordinates.
+ * Adds the player to the top_layer.
+ * Draws visibility lines.
+ * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    //Reset the top layer
     top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
-    //If the character has gone out of bounds of the chunk,t hen the chunk and
-    //buffer need to be updated
     if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
         update_chunk();
         update_chunk_map(main_char_chunk);
         cout<<main_char_chunk<<endl;
         update_buffer(main_char_chunk);
     }
-    //This section checks if the character is in a dungeon, or the overworld. In
-    //the dungeon, the character moves around the screen.  In the overworld, a
-    //calculation is done to keep the character at the center of the screen.
-    //This is where the canvas is written to.
-    /*
-    if(main_char.get_depth() >=0) {
-        for(int i = 0; i < STARTING_HEIGHT; i++) {
-            for(int j = 0; j < STARTING_WIDTH; j++) {
-                Chunk* current_chunk =
-                    &chunk_map[main_char_chunk.row][main_char_chunk.col];
-                set_tile(i, j, current_chunk->get_tile(main_char.get_depth(),i,j));
-            }
-        top_layer[main_char.get_y()][main_char.get_x()] = main_char.get_char();
-        }
-    } else {
-        */
         for(int i = 0; i < STARTING_HEIGHT; i++) {
             for (int j = 0; j < STARTING_WIDTH; j++) {
                 int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
@@ -196,10 +182,15 @@ void Game::refresh() {
             }
         }
         top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
-    //}
     draw_visibility_lines();
 }
 
+/* PRE: None
+ * POST: Iterates through the chunks which are part of the buffer and runs any
+ * spawner (TODO: make it so it will run any spawners, plural).  If the spawner
+ * returns that it should spawn, then it will spawn an enemy based on the type
+ * of spawner that it is and append it to the enemy list.
+ */
 
 void Game::run_spawners()
 {
@@ -217,7 +208,13 @@ void Game::run_spawners()
     }
 }
 
-
+/* PRE: None
+ * POST: Iterates through the enemy list.  For each enemy, it checks to see if
+ * it is in the current buffer.  If not, it deletes it.  It then checks to see if
+ * it is at the current depth.  If not, it does nothing.  If it is, then it runs the
+ * AI and places checks to see if it is in the visible range (the canvas).  If so,
+ * it appends it to the top_layer.
+ */
 void Game::run_enemies()
 {
     Enemy* enemy;
@@ -478,12 +475,23 @@ void Game::move_main_char(int col_change, int row_change) {
 
 /*---------------------Enemy Helper Functions---------------------*/
 
+/*
+ * PRE: Takes an x and a y coordinate (chunk).
+ * POST: Returns whether or not the chunk is currently in the buffer.
+ */
 bool Game::in_buffer(int x, int y)
 {
     bool is_x = (x>=main_char_chunk.col-1 && x<=main_char_chunk.col+1);
     bool is_y = (y>=main_char_chunk.row-1 && y<=main_char_chunk.row+1);
     return (is_x && is_y);
 }
+
+/*
+ * PRE: Takes an IntPoint representing chunk coordinates, and an IntPoint
+ * representing coordinates within that chunk.
+ * POST: Returns whether or not that chunk is within the visible range of the
+ * character (if it is within the canvas).
+ */
 
 bool Game::in_visible(IntPoint chunk, IntPoint coords)
 {
@@ -495,12 +503,22 @@ bool Game::in_visible(IntPoint chunk, IntPoint coords)
     return (is_x && is_y);
 }
 
-
+/*
+ * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
+ * representing coordinates within that chunk.
+ * POST: Returns and IntPoint containing the absolute coordinates, i.e. the
+ * coordinates there were no chunks.
+ */
 IntPoint Game::get_abs(IntPoint chunk, IntPoint coords)
 {
     return IntPoint(chunk.row * STARTING_HEIGHT + coords.row, chunk.col * STARTING_WIDTH + coords.col);
 }
 
+/* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
+ * representing coordinates within that chunk, and a depth.
+ * POST: Returns a TilePointerMatrix containing the area (20x20) surrounding
+ * the coordinates given.
+ */
 Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, int depth)
 {
     TilePointerMatrix surroundings = TilePointerMatrix(40, std::vector<Tile*>(40)); 
@@ -536,6 +554,12 @@ Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, 
     return surroundings;
 }
 
+/* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
+ * representing coordinates within that chunk, and a tile.  Assumes that
+ * the coordinates given represent a space within the top_layer.
+ * POST: Places the tile given onto the top_layer, performing a calculation
+ * to place it at the correct place in the top_layer.
+ */
 void Game::top_layer_append(IntPoint chunk, IntPoint coords, Tile tile)
 {
     IntPoint abs = get_abs(chunk, coords);
