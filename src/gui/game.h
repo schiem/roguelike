@@ -8,11 +8,15 @@
 #include <chunk.h>
 #include <overworld.h>
 #include <bresenham.h>
+#include <enemy.h>
+#include <enemy_defs.h>
 #include "dungeonbuilder.h"
 #include "dungeon.h"
 #include "terrain_defs.h"
 #include "character.h"
 
+
+using namespace enemies;
 using namespace std;
 using namespace tiledef;
 class Game
@@ -42,10 +46,18 @@ class Game
         void update_chunk();
         void draw_visibility_lines();
         void undo_visibility();
+        bool in_buffer(int, int);
+        bool in_visible(IntPoint, IntPoint);
+        TilePointerMatrix get_surroundings(IntPoint, IntPoint, int);
+        void top_layer_append(IntPoint, IntPoint, Tile);
+        IntPoint get_abs(IntPoint, IntPoint);
+    
     public:
         Game();
         DungeonBuilder db;
         Main_Character main_char;
+        void run_spawners();
+        void run_enemies();
         void refresh();
         void resize_canvas(int, int);
         const std::vector<std::vector<Tile*> >& get_matrix();

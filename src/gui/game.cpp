@@ -430,3 +430,71 @@ void Game::move_main_char(int col_change, int row_change) {
     main_char.set_y(row);
     draw_visibility_lines();
 }
+
+/*---------------------Enemy Helper Functions---------------------*/
+
+bool Game::in_buffer(int x, int y)
+{
+    bool is_x = (x>=main_char_chunk.col-1 && x<=main_char_chunk.col+1);
+    bool is_y = (y>=main_char_chunk.row-1 && y<=main_char_chunk.row+1);
+    return (is_x && is_y);
+}
+
+bool Game::in_visible(IntPoint chunk, IntPoint coords)
+{
+    IntPoint abs = get_abs(chunk, coords);
+    IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
+    IntPoint br_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() + STARTING_HEIGHT/2, main_char.get_y() + STARTING_WIDTH/2));
+    bool is_x = (abs.col>=tl_abs.col && abs.col<=br_abs.col);
+    bool is_y = (abs.row>=tl_abs.row && abs.row<=br_abs.row);
+    return (is_x && is_y);
+}
+
+
+IntPoint Game::get_abs(IntPoint chunk, IntPoint coords)
+{
+    return IntPoint(chunk.row * STARTING_HEIGHT + coords.row, chunk.col * STARTING_WIDTH + coords.col);
+}
+
+Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, int depth)
+{
+    TilePointerMatrix surroundings = TilePointerMatrix(40, std::vector<Tile*>(40)); 
+    IntPoint chunk_change;
+    for(int row=coords.row-20;row<coords.row+20;row++)
+    {
+        for(int col=coords.col-20;col<coords.col+20;col++)
+        {
+            chunk_change = IntPoint(0, 0);
+            if(row<0)
+            {
+                chunk_change.row = -1;
+            }
+            if(row>=STARTING_HEIGHT)
+            {
+                chunk_change.row = 1;
+            }
+            if(col<0)
+            {
+                chunk_change.col = -1;
+            }
+            if(col>=STARTING_WIDTH)
+            {
+                chunk_change.col = 1;
+            }
+            //eww
+            surroundings[(row+20) - coords.row][(col+20) - coords.col] =
+                chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].get_tile(depth,
+                row + (STARTING_HEIGHT * chunk_change.row * -1), col
+                + (STARTING_WIDTH * chunk_change.col * -1));
+        }
+    }
+    return surroundings;
+}
+
+void Game::top_layer_append(IntPoint chunk, IntPoint coords, Tile tile)
+{
+    IntPoint abs = get_abs(chunk, coords);
+    IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
+    top_layer[abs.row-tl_abs.row][abs.col-tl_abs.col] = tile;
+}
+
