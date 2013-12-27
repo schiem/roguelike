@@ -6,7 +6,6 @@ Overworld::Overworld() {
     has_layer_below = false;
     down_stair = std::vector<int>(2);
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
-    srand(time(NULL));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             if (rand() % 10 == 0) {
