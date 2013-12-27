@@ -4,7 +4,6 @@
 #include <terrain_defs.h>
 #include <ASCII_Lib.h>
 #include <def.h>
-#include <chunk.h>
 class Character
 {
     protected:

@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 using namespace tiledef;
-
+using namespace enemies;
 /*
 Explanation of how the screen works: There is a chunk map, which holds all of
 the chunks.  We need a way to go from chunk->screen.  However, since we always
@@ -64,7 +64,7 @@ Game::Game() {
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
     update_chunk_map(main_char_chunk);
     update_buffer(main_char_chunk);
-
+   
     recalculate_visibility_lines(15);
     refresh();
 }
@@ -201,6 +201,47 @@ void Game::refresh() {
     draw_visibility_lines();
 }
 
+
+void Game::run_spawners()
+{
+    Spawner* spawner;
+    for(int i=main_char_chunk.row-1;i<main_char_chunk.row+1;i++)
+    {
+        for(int j=main_char_chunk.col-1;j<main_char_chunk.col+1;j++)
+        {
+            spawner = chunk_map[i][j].get_spawner(main_char.get_depth());
+            if(spawner->should_spawn())
+            {
+                enemy_list.push_back(spawner->spawn_creep(j, i));
+            }
+        }
+    }
+}
+
+
+void Game::run_enemies()
+{
+    Enemy* enemy;
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        enemy = &enemy_list[i];
+        IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
+        IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
+
+        if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y()))
+        {
+            enemy_list.erase(enemy_list.begin() + i);
+        }
+        else
+        {
+            enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()));
+            if(in_visible(enem_chunk, enem_coords))
+            {
+                top_layer_append(enem_chunk, enem_coords, enemy->get_char());
+            }
+        }
+    }
+}
 /*
  * PRE: bresenham_lines should already be set by recalculate_visibility_lines().
  * POST: Draws a field-of-vision around the player - sets tiles' visibility

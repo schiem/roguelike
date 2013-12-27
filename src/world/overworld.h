@@ -6,6 +6,7 @@
 #include <ctime>
 #include <stdlib.h>
 #include <iostream>
+#include <spawner.h>
 
 class Overworld
 {
@@ -13,7 +14,7 @@ class Overworld
 
     private:
         TileMatrix ground;
-
+        Spawner spawner;
     public:
         bool has_layer_below;
         std::vector<int> down_stair;
@@ -24,6 +25,8 @@ class Overworld
         Overworld(int, int, bool);
         Overworld();
         std::vector<std::vector<Tile> >& get_ground();
+        Spawner* get_spawner();
+
 };
 
 #endif

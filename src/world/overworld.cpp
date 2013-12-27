@@ -1,5 +1,6 @@
 #include <overworld.h>
 using namespace tiledef;
+using namespace enemies;
 Overworld::Overworld() {
     width = 10;
     height = 10;
@@ -37,6 +38,10 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
     if(has_layer_below) {
         ground[down_stair[1]][down_stair[0]] = DOWN_STAIR;
     }
+    int spawn_x = rand() % width;
+    int spawn_y = rand() % height;
+    spawner = Spawner(spawn_x, spawn_y, -1, Kobold);
+    ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 
 Tile* Overworld::get_tile(int row, int col) {
@@ -49,5 +54,11 @@ void Overworld::set_tile(int row, int col, Tile* tile) {
 
 std::vector<std::vector<Tile> >& Overworld::get_ground() {
     return ground;
+}
+
+
+Spawner* Overworld::get_spawner()
+{
+    return &spawner;
 }
 

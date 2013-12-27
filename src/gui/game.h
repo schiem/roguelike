@@ -8,17 +8,14 @@
 #include <chunk.h>
 #include <overworld.h>
 #include <bresenham.h>
-#include <enemy.h>
 #include <enemy_defs.h>
+#include <enemy.h>
 #include "dungeonbuilder.h"
 #include "dungeon.h"
 #include "terrain_defs.h"
 #include "character.h"
 
 
-using namespace enemies;
-using namespace std;
-using namespace tiledef;
 class Game
 {
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
@@ -51,7 +48,7 @@ class Game
         TilePointerMatrix get_surroundings(IntPoint, IntPoint, int);
         void top_layer_append(IntPoint, IntPoint, Tile);
         IntPoint get_abs(IntPoint, IntPoint);
-    
+        std::vector<Enemy> enemy_list; 
     public:
         Game();
         DungeonBuilder db;

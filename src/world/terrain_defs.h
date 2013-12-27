@@ -33,6 +33,7 @@ namespace tiledef {
     extern Tile DOWN_STAIR;
     extern Tile UP_STAIR;
     extern Tile KOBOLD;
+    extern Tile KOBOLD_SPAWNER;
 }
 
 #endif

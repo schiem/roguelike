@@ -2,14 +2,13 @@
 #define ENEMY_H
 #define CHUNK_WIDTH 100
 #define CHUNK_HEIGHT 50
-
-
 #include <character.h>
 #include <enemy_defs.h>
 #include <string>
+#include <vector>
 
-
-class Enemy : public Character {
+class Enemy : public Character
+{
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     protected:
         int id;
@@ -26,6 +25,8 @@ class Enemy : public Character {
         void run_ai(TilePointerMatrix);
         int get_chunk_x();
         int get_chunk_y();
+        void set_depth(int);
+        int get_id();
 };
 
 #endif

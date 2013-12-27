@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <terrain_defs.h>
 #include "room.h"
+#include <spawner.h>
 
 class Dungeon
 {
@@ -14,6 +15,7 @@ class Dungeon
     private:
         TileMatrix dungeon;
         void tile_assertions(int, int) const;
+        Spawner spawner;
 
     public:
         int width;
@@ -34,6 +36,7 @@ class Dungeon
         Dungeon(const Dungeon&);
         Dungeon();
         Dungeon& operator= (const Dungeon& d);
+        Spawner* get_spawner();
 };
 
 #endif

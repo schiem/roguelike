@@ -10,15 +10,13 @@ class Spawner
         int x;
         int y;
         int depth;
-        int chunk_x;
-        int chunk_y;
         EnemyType enemy;
 
     public:
         Spawner();
-        Spawner(int, int, int, int, int, EnemyType);
+        Spawner(int, int, int,  EnemyType);
         bool should_spawn();
-        Enemy spawn_creep();
+        Enemy spawn_creep(int, int);
         int get_x();
         int get_y();
 };

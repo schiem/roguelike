@@ -51,8 +51,8 @@ roguelike_HEADERS = \
 	src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
 	src/character_classes/character.h\
-	src/character_classes/enemy.h\
     src/character_classes/enemy_defs.h\
+    src/character_classes/enemy.h\
     src/character_classes/spawner.h\
     src/gui/virtual_event.h\
 	src/gui/gui.h\

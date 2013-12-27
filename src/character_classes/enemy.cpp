@@ -9,6 +9,7 @@ Enemy::Enemy()
 
 Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _depth, int _chunk_x, int _chunk_y, std::string _name) : Character(_max_health, _x, _y, _sprite, _depth)
 {
+    id = 1;
     chunk_x = _chunk_x;
     chunk_y = _chunk_y;
     name = _name;
@@ -20,8 +21,8 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     max_health = _enemy.max_health;
     sprite = _enemy.sprite;
     id = _enemy.id;
-    chunk_x = chunk_x;
-    chunk_y = chunk_y;
+    chunk_x = _chunk_x;
+    chunk_y = _chunk_y;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -68,9 +69,10 @@ void Enemy::run_kobold_ai(TilePointerMatrix surroundings)
     //but I'm not quite sure where to put it.  For now, I'll just code
     //one in.
     int radius = 20;
+    int will_move = rand() % 5;
     int x_change = rand() % 3 - 1;
     int y_change = rand() % 3 - 1;
-    if(surroundings[x_change + radius][y_change+radius]->can_be_moved_through)
+    if(surroundings[x_change + radius][y_change+radius]->can_be_moved_through && will_move==0)
     {
         move(x_change, y_change);
     }
@@ -85,4 +87,9 @@ int Enemy::get_chunk_x()
 int Enemy::get_chunk_y()
 {
     return chunk_y;
+}
+
+int Enemy::get_id()
+{
+    return id;
 }

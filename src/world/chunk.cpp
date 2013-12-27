@@ -79,3 +79,22 @@ int Chunk::get_depth() const {
 bool Chunk::is_initialized() const {
     return initialized;
 }
+
+/*
+ * For now, assume that there is one per floor
+ * Later, I'll change this to a vector
+ * But that will also have ramifications in how
+ * the game will handle things. 
+ */
+
+Spawner* Chunk::get_spawner(int depth)
+{
+    if(depth>=0)
+    {
+        return dungeon_floors[depth].get_spawner();
+    }
+    else
+    {
+        return overworld.get_spawner();
+    }
+}

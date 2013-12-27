@@ -158,3 +158,7 @@ const std::vector<std::vector<Tile> >&  Dungeon::get_dungeon(){
     return dungeon;
 }
 
+Spawner* Dungeon::get_spawner()
+{
+    return &spawner;
+}

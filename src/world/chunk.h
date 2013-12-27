@@ -9,6 +9,7 @@
 #include <terrain_defs.h>
 #include <ctime>
 #include <iostream>
+#include <spawner.h>
 
 using namespace tiledef;
 using namespace std;
@@ -32,6 +33,7 @@ class Chunk{
         Tile* get_tile(int, int, int) ;
         int get_depth() const;
         bool is_initialized() const;
+        Spawner* get_spawner(int);
 };
 
 #endif
