@@ -232,7 +232,7 @@ void Game::run_enemies()
         {
             enemy_list.erase(enemy_list.begin() + i);
         }
-        else
+        else if(enemy->get_depth() == main_char.get_depth())
         {
             enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()));
             if(in_visible(enem_chunk, enem_coords))
@@ -491,8 +491,8 @@ bool Game::in_visible(IntPoint chunk, IntPoint coords)
     IntPoint abs = get_abs(chunk, coords);
     IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
     IntPoint br_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() + STARTING_HEIGHT/2, main_char.get_y() + STARTING_WIDTH/2));
-    bool is_x = (abs.col>=tl_abs.col && abs.col<=br_abs.col);
-    bool is_y = (abs.row>=tl_abs.row && abs.row<=br_abs.row);
+    bool is_x = (abs.col>=tl_abs.col && abs.col<br_abs.col);
+    bool is_y = (abs.row>=tl_abs.row && abs.row<br_abs.row);
     return (is_x && is_y);
 }
 

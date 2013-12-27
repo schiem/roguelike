@@ -13,8 +13,6 @@ void GUI::OnRender()
         drawStr(0, 48, "Use the arrow keys to move the cursor.", ascii, screen, WHITE);
         drawStr(0, 49, "Press ENTER to spawn on the selected map tile.", ascii, screen, WHITE);
     } else {
-        perform_action_cont();
-        canvas.refresh();
         TilePointerMatrix tm = canvas.get_matrix();
         TileMatrix tl = canvas.get_top_layer();
         for(size_t i = 0; i < tm.size(); i++) {
