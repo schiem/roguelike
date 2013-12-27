@@ -458,14 +458,10 @@ void Game::move_main_char(int col_change, int row_change) {
     undo_visibility();
     int row = main_char.get_y();
     int col = main_char.get_x();
-    int next_col = col + col_change;
-    int next_row = row + row_change;
-    if((next_col < 0) ||  (next_col >= get_chunk()->width) ||
-            (next_row < 0) ||  (next_row >= get_chunk()->height)) {
-        col += col_change;
-        row += row_change;
-    } else if (get_chunk()->get_tile(main_char.get_depth(),
-                next_row, next_col)->can_be_moved_through) {
+    int next_col = STARTING_WIDTH/2 + col_change;
+    int next_row = STARTING_HEIGHT/2 + row_change;
+    if(canvas[next_row][next_col]->can_be_moved_through)
+    {
         col += col_change;
         row += row_change;
     }
