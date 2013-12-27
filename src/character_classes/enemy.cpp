@@ -72,7 +72,7 @@ void Enemy::run_kobold_ai(TilePointerMatrix surroundings)
     int will_move = rand() % 5;
     int x_change = rand() % 3 - 1;
     int y_change = rand() % 3 - 1;
-    if(surroundings[x_change + radius][y_change+radius]->can_be_moved_through && will_move==0)
+    if(surroundings[y_change + radius][x_change+radius]->can_be_moved_through && will_move==0)
     {
         move(x_change, y_change);
     }

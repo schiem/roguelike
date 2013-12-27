@@ -64,7 +64,6 @@ Game::Game() {
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
     update_chunk_map(main_char_chunk);
     update_buffer(main_char_chunk);
-   
     recalculate_visibility_lines(15);
     refresh();
 }
