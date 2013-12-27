@@ -67,7 +67,6 @@ Game::Game() {
 
     recalculate_visibility_lines(15);
     refresh();
-    draw_visibility_lines();
 }
 
 /**
@@ -240,14 +239,15 @@ void Game::draw_visibility_lines() {
 }
 
 void Game::undo_visibility() {
+    /*
     IntPoint m_char;
     if(main_char.get_depth() >=0) {
         m_char = IntPoint(main_char.get_y(),
                                       main_char.get_x());
     } else {
-        m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-    }
-
+    */
+    IntPoint m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    //}
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -261,6 +261,11 @@ void Game::undo_visibility() {
             if(!out_of_bounds(IntPoint(row, col))) {
                 current_chunk_tile = get_tile(row, col);
                 current_chunk_tile->visible = false;
+                current_chunk_tile->seen = true;
+                /* *current_chunk_tile = ROOM_WALL;
+                 *current_chunk_tile->visible = true;
+                 *current_chunk_tile->can_be_moved_through = true;
+                 */
                 if(current_chunk_tile->opaque) {
                     break;
                 }
@@ -428,7 +433,7 @@ void Game::move_main_char(int col_change, int row_change) {
     }
     main_char.set_x(col);
     main_char.set_y(row);
-    draw_visibility_lines();
+
 }
 
 /*---------------------Enemy Helper Functions---------------------*/

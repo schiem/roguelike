@@ -19,11 +19,19 @@ void GUI::OnRender()
         TileMatrix tl = canvas.get_top_layer();
         for(size_t i = 0; i < tm.size(); i++) {
             for(size_t j = 0; j < tm[i].size(); j++) {
+                //If the tile is visible, render it fully.
                 if(tm[i][j]->visible) {
                     drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
+                    //Draw the top layer (characters, enemies) on top.
                     if(tl[i][j].visible){
                         drawChr(j, i, tl[i][j].char_count, ascii, screen, tl[i][j].color);
                     }
+                //If the tile is not visible, but has been seen, render it in
+                //grey.
+                } else if(tm[i][j]->seen) {
+                    drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
+                    //We probably shouldn't draw the enemy layer on non-visible
+                    //tiles.
                 } else {
                     //Draw an empty tile
                     drawChr(j, i, 0, ascii, screen, 0);
