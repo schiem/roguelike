@@ -98,3 +98,9 @@ Spawner* Chunk::get_spawner(int depth)
         return overworld.get_spawner();
     }
 }
+
+void Chunk::dungeon_dump(int depth)
+{
+    dungeon_floors[depth].dungeon_dump();
+}
+

@@ -162,3 +162,39 @@ Spawner* Dungeon::get_spawner()
 {
     return &spawner;
 }
+
+
+void Dungeon::dungeon_dump()
+{
+    //dungeon dump
+    int tile;
+    for(int row=0;row<dungeon.size();row++)
+    {
+        for(int col=0;col<dungeon[row].size();col++)
+        {
+            tile = dungeon[row][col].tile_id;
+            switch(tile){
+                case 1:
+                    cout<<".";
+                    break;
+                case 2:
+                    cout<<"#";
+                    break;
+                case 7:
+                    cout<<"#";
+                    break;
+                case 8:
+                    cout<<"d";
+                    break;
+                case 9:
+                    cout<<"u";
+                    break;
+                default:
+                    cout<<" ";
+                    break;
+            }
+        }
+        cout<<endl;
+    }
+    cout<<"---------------------------------------------"<<endl;
+}

@@ -34,6 +34,7 @@ class Chunk{
         int get_depth() const;
         bool is_initialized() const;
         Spawner* get_spawner(int);
+        void dungeon_dump(int);
 };
 
 #endif
