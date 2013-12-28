@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <spawner.h>
-
+#include <int_point.h>
 class Overworld
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
@@ -17,7 +17,7 @@ class Overworld
         Spawner spawner;
     public:
         bool has_layer_below;
-        std::vector<int> down_stair;
+        IntPoint down_stair;
         int width;
         int height;
         Tile* get_tile(int, int) ;

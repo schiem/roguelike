@@ -454,17 +454,16 @@ void Game::change_main_depth(int direction) {
         if (main_char.get_depth()-1 >= -1) {
             if(*current_tile == UP_STAIR) {
                 main_char.set_depth(main_char.get_depth() - 1);
-                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth())[0]);
-                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth())[1]);
+                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth()).col);
+                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth()).row);
             }
         }
     } else {
         if (main_char.get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == DOWN_STAIR) {
                 main_char.set_depth(main_char.get_depth() + 1);
-                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
-                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
-                current_chunk->dungeon_dump(main_char.get_depth());
+                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth()).col);
+                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth()).row);
             }
         }
     }
@@ -491,6 +490,7 @@ void Game::move_main_char(int col_change, int row_change) {
     }
 
     //There has to be a better way to this...
+    //There is TODO
     refresh();
 }
 

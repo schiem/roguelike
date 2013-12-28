@@ -10,8 +10,8 @@ Dungeon::Dungeon()
     num_rooms = 0;
     width = 10;
     height= 10;
-    down_stair = std::vector<int>(2);
-    up_stair = std::vector<int>(2);
+    down_stair;
+    up_stair;
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             dungeon[i][j] = DIRT;
@@ -26,8 +26,8 @@ Dungeon::Dungeon(int _width, int _height)
     dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
-    down_stair = std::vector<int>(2);
-    up_stair = std::vector<int>(2);
+    down_stair;
+    up_stair;
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             dungeon[i][j] = BLOCK_WALL;
@@ -95,25 +95,36 @@ void Dungeon::make_stairs(bool has_layer_below){
     Room down_room = rooms[rand() % num_rooms];
 
     //Find the locations of up/down stairs.
-    up_stair[0] = 1 + up_room.tl.col + rand() % (up_room.br.col - (up_room.tl.col + 1));
-    up_stair[1] = 1 + up_room.tl.row + rand() % (up_room.br.row - (up_room.tl.row + 1));
+    up_stair.col = 1 + up_room.tl.col + rand() % ((up_room.br.col - 1) - (up_room.tl.col + 1));
+    up_stair.row = 1 + up_room.tl.row + rand() % ((up_room.br.row - 1) - (up_room.tl.row + 1));
 
     if(has_layer_below) {
-        down_stair[0] = down_room.tl.col +
+        do{
+        down_stair.col = down_room.tl.col +
             (rand() % (down_room.br.col - down_room.tl.col));
-        down_stair[1] = down_room.tl.row +
+        down_stair.row = down_room.tl.row +
             (rand() % (down_room.br.row - down_room.tl.row));
-        dungeon[down_stair[1]][down_stair[0]] = DOWN_STAIR;
+        }
+        while(down_stair == up_stair);
+        dungeon[down_stair.row][down_stair.col] = DOWN_STAIR;
     }
-    dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
+    dungeon[up_stair.row][up_stair.col] = UP_STAIR;
 }
 
 
 void Dungeon::make_spawner(int _depth)
 {
-    Room spawn_room = rooms[rand() % num_rooms];
-
-    IntPoint spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
+    Room spawn_room;
+    do
+    {
+        spawn_room = rooms[rand() % num_rooms];
+    }
+    while(spawn_room.br.row-spawn_room.tl.row<4 && spawn_room.br.col-spawn_room.tl.col<4);
+    IntPoint spawn;
+    do{
+    spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
+    }
+    while(spawn==down_stair || spawn == up_stair);
     spawner = Spawner(spawn.col, spawn.row, _depth, Kobold);
     dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
 }

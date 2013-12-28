@@ -23,8 +23,8 @@ class Chunk{
         Overworld overworld;
     public:
         Chunk(int, int);
-        std::vector<int> get_up_stair(int) const;
-        std::vector<int> get_down_stair(int) const;
+        IntPoint get_up_stair(int) const;
+        IntPoint get_down_stair(int) const;
         int height;
         int width;
         void set_tile(int, int, int, Tile*);

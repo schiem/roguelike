@@ -16,3 +16,14 @@ ostream& operator<<(ostream &out, const IntPoint &I) {
     I.print();
     return out;
 }
+
+bool IntPoint::operator==(const IntPoint& i)
+{
+    return (row == i.row && col == i.col);
+}
+
+bool IntPoint::operator!=(const IntPoint& i)
+{
+    return !(*this == i);
+}
+
