@@ -21,8 +21,8 @@ class Dungeon
         int width;
         int height;
         int num_rooms;
-        std::vector<int> down_stair;
-        std::vector<int> up_stair;
+        IntPoint down_stair;
+        IntPoint up_stair;
         std::vector<Room> rooms;
         void make_stairs(bool);
         void make_border();

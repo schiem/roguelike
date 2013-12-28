@@ -5,7 +5,6 @@ Overworld::Overworld() {
     width = 10;
     height = 10;
     has_layer_below = false;
-    down_stair = std::vector<int>(2);
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -22,9 +21,8 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
-    down_stair = std::vector<int>(2);
-    down_stair[0] = rand() % width;
-    down_stair[1] = rand() % height;
+    down_stair.col = rand() % width;
+    down_stair.row = rand() % height;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -36,7 +34,7 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
         }
     }
     if(has_layer_below) {
-        ground[down_stair[1]][down_stair[0]] = DOWN_STAIR;
+        ground[down_stair.row][down_stair.col] = DOWN_STAIR;
     }
     int spawn_x = rand() % width;
     int spawn_y = rand() % height;

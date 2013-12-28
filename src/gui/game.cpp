@@ -454,17 +454,16 @@ void Game::change_main_depth(int direction) {
         if (main_char.get_depth()-1 >= -1) {
             if(*current_tile == UP_STAIR) {
                 main_char.set_depth(main_char.get_depth() - 1);
-                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth())[0]);
-                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth())[1]);
+                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth()).col);
+                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth()).row);
             }
         }
     } else {
         if (main_char.get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == DOWN_STAIR) {
                 main_char.set_depth(main_char.get_depth() + 1);
-                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
-                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
-                //current_chunk->dungeon_dump(main_char.get_depth());
+                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth()).col);
+                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth()).row);
             }
         }
     }
@@ -491,6 +490,7 @@ void Game::move_main_char(int col_change, int row_change) {
     }
 
     //There has to be a better way to this...
+    //There is TODO
     refresh();
 }
 
@@ -537,42 +537,39 @@ IntPoint Game::get_abs(IntPoint chunk, IntPoint coords)
 
 /* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
  * representing coordinates within that chunk, and a depth.
- * POST: Returns a TilePointerMatrix containing the area (20x20) surrounding
+ * POST: Returns a TileMatrix containing the area (20x20) surrounding
  * the coordinates given.
  */
-Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, int depth)
+Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int depth)
 {
-    TilePointerMatrix surroundings = TilePointerMatrix(40, std::vector<Tile*>(40));
-    IntPoint chunk_change;
-    for(int row=coords.row-20;row<coords.row+20;row++)
+    TileMatrix surroundings = TileMatrix(40, std::vector<Tile>(40));
+    Tile new_tile;
+    IntPoint buffer_coords = get_buffer_coords(_chunk, _coords);
+    
+    for(int row=buffer_coords.row-20;row<buffer_coords.row+20;row++)
     {
-        for(int col=coords.col-20;col<coords.col+20;col++)
+        for(int col=buffer_coords.col-20;col<buffer_coords.col+20;col++)
         {
-            chunk_change = IntPoint(0, 0);
-            if(row<0) {
-                chunk_change.row = -1;
-            } else if(row>=STARTING_HEIGHT) {
-                chunk_change.row = 1;
+            if(row<0 || row>= STARTING_HEIGHT * 3 || col<0 || col>= STARTING_WIDTH * 3) {
+                new_tile = EMPTY;
             }
-
-            if(col<0){
-                chunk_change.col = -1;
-            } else if(col>=STARTING_WIDTH) {
-                chunk_change.col = 1;
+            else
+            {
+                new_tile = *buffer[row][col];
             }
-
-            if(chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].is_initialized() == false) {
-                chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
-            }
-            //TODO A segfault sometimes happens here.
-            surroundings[(row+20) - coords.row][(col+20) - coords.col] =
-                chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].get_tile(depth,
-                row + (STARTING_HEIGHT * chunk_change.row * -1), col
-                + (STARTING_WIDTH * chunk_change.col * -1));
+            surroundings[(row+20) - buffer_coords.row][(col+20) - buffer_coords.col] = new_tile;
         }
     }
     return surroundings;
 }
+
+IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords)
+{
+    IntPoint tl_buffer = get_abs(IntPoint(main_char_chunk.row-1, main_char_chunk.col-1), IntPoint(0, 0));
+    IntPoint abs = get_abs(chunk, coords);
+    return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
+}
+
 
 /* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
  * representing coordinates within that chunk, and a tile.  Assumes that

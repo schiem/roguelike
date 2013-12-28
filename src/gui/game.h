@@ -46,11 +46,13 @@ class Game
         void undo_visibility();
         bool in_buffer(int, int);
         bool in_visible(IntPoint, IntPoint);
-        TilePointerMatrix get_surroundings(IntPoint, IntPoint, int);
+        TileMatrix get_surroundings(IntPoint, IntPoint, int);
         void top_layer_append(IntPoint, IntPoint, Tile);
         IntPoint get_abs(IntPoint, IntPoint);
+        IntPoint get_buffer_coords(IntPoint, IntPoint);
         std::vector<Enemy> enemy_list; 
-    public:
+
+public:
         Game();
         DungeonBuilder db;
         Main_Character main_char;

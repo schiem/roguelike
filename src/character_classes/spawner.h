@@ -21,6 +21,7 @@ class Spawner
         Enemy spawn_creep(int, int);
         int get_x();
         int get_y();
+        int get_depth();
 };
 
 #endif

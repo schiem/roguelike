@@ -9,7 +9,6 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
     x = _x;
     y = _y;
     depth = _depth;
-    //cout<<depth<<endl;
     enemy = _enemy;
 }
 
@@ -34,3 +33,7 @@ int Spawner::get_y()
     return y;
 }
 
+int Spawner::get_depth()
+{
+    return depth;
+}
