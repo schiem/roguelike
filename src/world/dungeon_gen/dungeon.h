@@ -36,8 +36,9 @@ class Dungeon
         Dungeon(const Dungeon&);
         Dungeon();
         Dungeon& operator= (const Dungeon& d);
-        Spawner* get_spawner();
+        Spawner get_spawner();
         void dungeon_dump();
+        void make_spawner(int);
 };
 
 #endif

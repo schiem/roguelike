@@ -3,6 +3,8 @@
 #include <enemy.h>
 #include <enemy_defs.h>
 #include <ctime>
+#include <iostream>
+
 
 class Spawner
 {

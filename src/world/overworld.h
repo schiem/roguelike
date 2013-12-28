@@ -25,7 +25,7 @@ class Overworld
         Overworld(int, int, bool);
         Overworld();
         std::vector<std::vector<Tile> >& get_ground();
-        Spawner* get_spawner();
+        Spawner get_spawner();
 
 };
 

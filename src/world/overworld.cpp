@@ -57,8 +57,8 @@ std::vector<std::vector<Tile> >& Overworld::get_ground() {
 }
 
 
-Spawner* Overworld::get_spawner()
+Spawner Overworld::get_spawner()
 {
-    return &spawner;
+    return spawner;
 }
 

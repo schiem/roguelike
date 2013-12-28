@@ -45,9 +45,9 @@ bool DungeonBuilder::is_empty_space(IntPoint point) const {
 bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const {
     //TODO This is set to 1 beyond the actual edge to make room for the border.
     //Consider having a better system.
-    if((point.row < 1) or (point.row >= (main_dungeon.height - 1))) {
+    if((point.row < 0) or (point.row >= (main_dungeon.height))) {
         return true;
-    } else if((point.col < 1) or (point.col >= (main_dungeon.width - 1))) {
+    } else if((point.col < 0) or (point.col >= (main_dungeon.width))) {
         return true;
     }
 

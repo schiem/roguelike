@@ -198,16 +198,27 @@ void Game::refresh() {
 
 void Game::run_spawners()
 {
-    Spawner* spawner;
-    for(int i=main_char_chunk.row-1;i<main_char_chunk.row+1;i++)
+    Spawner spawner;
+    if(main_char.get_depth() == -1)
     {
-        for(int j=main_char_chunk.col-1;j<main_char_chunk.col+1;j++)
+        for(int i=main_char_chunk.row-1;i<main_char_chunk.row+1;i++)
         {
-            spawner = chunk_map[i][j].get_spawner(main_char.get_depth());
-            if(spawner->should_spawn())
+            for(int j=main_char_chunk.col-1;j<main_char_chunk.col+1;j++)
             {
-                enemy_list.push_back(spawner->spawn_creep(j, i));
+                spawner = chunk_map[i][j].get_spawner(main_char.get_depth());
+                if(spawner.should_spawn())
+                {
+                    enemy_list.push_back(spawner.spawn_creep(j, i));
+                }
             }
+        }
+    }
+    else
+    {
+        spawner = chunk_map[main_char_chunk.row][main_char_chunk.col].get_spawner(main_char.get_depth());
+        if(spawner.should_spawn())
+        {
+            enemy_list.push_back(spawner.spawn_creep(main_char_chunk.col, main_char_chunk.row));
         }
     }
 }
@@ -227,7 +238,6 @@ void Game::run_enemies()
         enemy = &enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y()))
         {
             enemy_list.erase(enemy_list.begin() + i);

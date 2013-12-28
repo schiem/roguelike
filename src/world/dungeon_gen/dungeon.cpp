@@ -1,6 +1,7 @@
 #include "dungeon.h"
 #include <stdlib.h>
 using namespace tiledef;
+using namespace enemies;
 
 Dungeon::Dungeon()
 {
@@ -105,6 +106,17 @@ void Dungeon::make_stairs(bool has_layer_below){
     dungeon[up_stair[1]][up_stair[0]] = UP_STAIR;
 }
 
+
+void Dungeon::make_spawner(int _depth)
+{
+    Room spawn_room = rooms[rand() % num_rooms];
+
+    IntPoint spawn = IntPoint(1 + spawn_room.tl.row + rand() % (spawn_room.br.row - (spawn_room.tl.row + 1)), 1 + spawn_room.tl.col + rand() % (spawn_room.br.col - (spawn_room.tl.col + 1)));
+    spawner = Spawner(spawn.col, spawn.row, _depth, Kobold);
+    cout<<_depth<<endl;
+    dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
+}
+
 /**
  * PRE: None
  * POST: Will replace the outer edge of the dungeon with a border.
@@ -158,9 +170,9 @@ const std::vector<std::vector<Tile> >&  Dungeon::get_dungeon(){
     return dungeon;
 }
 
-Spawner* Dungeon::get_spawner()
+Spawner Dungeon::get_spawner()
 {
-    return &spawner;
+    return spawner;
 }
 
 

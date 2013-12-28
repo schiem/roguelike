@@ -25,6 +25,7 @@ Chunk::Chunk(int _width, int _height) {
 
         //makes the staircases in a dungeon
         dungeon_floors[i].make_stairs(has_layer_below);
+        dungeon_floors[i].make_spawner(i);
     }
     //generate the overworld
     has_layer_below = (depth > 0);
@@ -92,11 +93,11 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * the game will handle things. 
  */
 
-Spawner* Chunk::get_spawner(int depth)
+Spawner Chunk::get_spawner(int _depth)
 {
-    if(depth>=0)
+    if(_depth>=0)
     {
-        return dungeon_floors[depth].get_spawner();
+        return dungeon_floors[_depth].get_spawner();
     }
     else
     {
@@ -104,8 +105,8 @@ Spawner* Chunk::get_spawner(int depth)
     }
 }
 
-void Chunk::dungeon_dump(int depth)
+void Chunk::dungeon_dump(int _depth)
 {
-    dungeon_floors[depth].dungeon_dump();
+    dungeon_floors[_depth].dungeon_dump();
 }
 
