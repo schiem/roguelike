@@ -100,10 +100,10 @@ void Dungeon::make_stairs(bool has_layer_below){
 
     if(has_layer_below) {
         do{
-        down_stair.col = down_room.tl.col +
-            (rand() % (down_room.br.col - down_room.tl.col));
-        down_stair.row = down_room.tl.row +
-            (rand() % (down_room.br.row - down_room.tl.row));
+         down_stair.col = 1 + down_room.tl.col +
+            (rand() % ((down_room.br.col - 1) - (down_room.tl.col + 1)));
+        down_stair.row = 1 + down_room.tl.row +
+            (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
         }
         while(down_stair == up_stair);
         dungeon[down_stair.row][down_stair.col] = DOWN_STAIR;
