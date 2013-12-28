@@ -1,4 +1,4 @@
-#include "gui.h"
+#include <gui.h>
 
 void GUI::OnLoop() {
     perform_action_cont();

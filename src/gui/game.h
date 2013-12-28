@@ -10,10 +10,10 @@
 #include <bresenham.h>
 #include <enemy_defs.h>
 #include <enemy.h>
-#include "dungeonbuilder.h"
-#include "dungeon.h"
-#include "terrain_defs.h"
-#include "character.h"
+#include <dungeonbuilder.h>
+#include <dungeon.h>
+#include <terrain_defs.h>
+#include <character.h>
 
 
 class Game

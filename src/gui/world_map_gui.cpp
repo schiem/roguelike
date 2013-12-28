@@ -1,4 +1,4 @@
-#include "world_map_gui.h"
+#include <world_map_gui.h>
 
 typedef std::vector<std::vector<MapTile> > MapTileMatrix;
 WorldMapGUI::WorldMapGUI(int h, int w) {

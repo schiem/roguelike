@@ -1,7 +1,7 @@
 #ifndef _CORRUPTIBLE_PBLIND_DB_H
 #define _CORRUPTIBLE_PBLIND_DB_H
 
-#include "procedurally_blind_db.h"
+#include <procedurally_blind_db.h>
 
 class CorruptiblePBlindDB : public ProcedurallyBlindDB
 {

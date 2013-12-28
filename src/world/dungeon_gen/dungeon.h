@@ -5,7 +5,7 @@
 #include <vector>
 #include <assert.h>
 #include <terrain_defs.h>
-#include "room.h"
+#include <room.h>
 #include <spawner.h>
 
 class Dungeon

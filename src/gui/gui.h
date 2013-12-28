@@ -4,12 +4,12 @@
 #include <SDL/SDL.h>
 #include <vector>
 
-#include "chunk.h"
-#include "virtual_event.h"
-#include "game.h"
-#include "terrain_defs.h"
-#include "world_map_gui.h"
-#include "def.h"
+#include <chunk.h>
+#include <virtual_event.h>
+#include <game.h>
+#include <terrain_defs.h>
+#include <world_map_gui.h>
+#include <def.h>
 
 class GUI : public VirtualEvent {
 

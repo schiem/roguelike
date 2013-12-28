@@ -2,7 +2,7 @@
 #define DUNGEONBUILDER_H
 
 #define MAX_PATH_LENGTH 75
-#define MIN_PATH_LENGTH 16 
+#define MIN_PATH_LENGTH 16
 #define STD_ROOM_WIDTH 8
 #define STD_ROOM_HEIGHT 6
 //keep these two numbers even.
@@ -15,11 +15,11 @@
 #include <math.h> //floor, ceil
 #include <assert.h>
 
-#include "int_point.h"
-#include "room.h"
-#include "terrain_defs.h"
-#include "dungeon.h"
-#include "ASCII_Lib.h"
+#include <int_point.h>
+#include <room.h>
+#include <terrain_defs.h>
+#include <dungeon.h>
+#include <ASCII_Lib.h>
 
 using namespace std;
 

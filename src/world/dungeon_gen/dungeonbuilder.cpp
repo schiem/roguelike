@@ -1,4 +1,4 @@
-#include "dungeonbuilder.h"
+#include <dungeonbuilder.h>
 
 using namespace tiledef;
 

@@ -1,4 +1,4 @@
-#include "gui.h"
+#include <gui.h>
 
 void GUI::OnEvent(SDL_Event* Event) {
     VirtualEvent::OnEvent(Event);

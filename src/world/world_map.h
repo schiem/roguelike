@@ -3,7 +3,7 @@
 #include <time.h>
 #include <iostream>
 
-#include "def.h"
+#include <def.h>
 
 struct MapTile {
     int char_count;

@@ -1,4 +1,4 @@
-#include "terrain_defs.h"
+#include <terrain_defs.h>
 
 namespace tiledef {
     Tile OVERWORLD_DIRT = {250, 1, BROWN, true, false, false, false};

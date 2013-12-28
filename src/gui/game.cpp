@@ -1,4 +1,4 @@
-#include  "game.h"
+#include  <game.h>
 #include <iostream>
 using namespace std;
 using namespace tiledef;
@@ -464,7 +464,7 @@ void Game::change_main_depth(int direction) {
                 main_char.set_depth(main_char.get_depth() + 1);
                 main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
                 main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
-                current_chunk->dungeon_dump(main_char.get_depth());
+                //current_chunk->dungeon_dump(main_char.get_depth());
             }
         }
     }

@@ -1,4 +1,4 @@
-#include "gui.h"
+#include <gui.h>
 
 GUI::GUI() : world_map_gui(50,80) {
     current_screen = MAP_SCREEN;

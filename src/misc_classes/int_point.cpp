@@ -1,4 +1,4 @@
-#include "int_point.h"
+#include <int_point.h>
 
 IntPoint::IntPoint() {
 }
