@@ -10,8 +10,8 @@ Dungeon::Dungeon()
     num_rooms = 0;
     width = 10;
     height= 10;
-    down_stair;
-    up_stair;
+    down_stair = IntPoint(0, 0);
+    up_stair = IntPoint(0, 0);
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             dungeon[i][j] = DIRT;
@@ -26,8 +26,8 @@ Dungeon::Dungeon(int _width, int _height)
     dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
-    down_stair;
-    up_stair;
+    down_stair = IntPoint(0, 0);
+    up_stair = IntPoint(0, 0);
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             dungeon[i][j] = BLOCK_WALL;
