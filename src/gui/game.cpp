@@ -443,6 +443,7 @@ void Game::change_main_depth(int direction) {
                 main_char.set_x(current_chunk->get_up_stair(main_char.get_depth())[0]);
                 main_char.set_y(current_chunk->get_up_stair(main_char.get_depth())[1]);
                 current_chunk->dungeon_dump(main_char.get_depth());
+                cout<<current_chunk->get_depth()<<endl;
             }
         }
     }
@@ -464,10 +465,12 @@ void Game::move_main_char(int col_change, int row_change) {
     {
         col += col_change;
         row += row_change;
+        main_char.set_x(col);
+        main_char.set_y(row);
     }
-    main_char.set_x(col);
-    main_char.set_y(row);
-
+    
+    //There has to be a better way to this... 
+    refresh();
 }
 
 /*---------------------Enemy Helper Functions---------------------*/

@@ -25,7 +25,6 @@ Chunk::Chunk(int _width, int _height) {
 
         //makes the staircases in a dungeon
         dungeon_floors[i].make_stairs(has_layer_below);
-        //dungeon_floors[i].make_border();
     }
     //generate the overworld
     has_layer_below = (depth > 0);
