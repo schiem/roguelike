@@ -18,5 +18,5 @@ namespace tiledef {
     Tile DOWN_STAIR = {31, 8, GRAY, true, false, false, false};
     Tile UP_STAIR = {30, 9, GRAY, true, false, false, false};
     Tile KOBOLD = {107, 10, RED, false, true, false, false};
-    Tile KOBOLD_SPAWNER = {15, 11, GREEN, false, false, true, false};
+    Tile KOBOLD_SPAWNER = {21, 11, GREEN, false, false, true, false};
 }
