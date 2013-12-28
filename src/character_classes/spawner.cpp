@@ -20,7 +20,7 @@ bool Spawner::should_spawn()
 
 Enemy Spawner::spawn_creep(int chunk_x, int chunk_y)
 {
-    return Enemy(enemy, x + 1, y + 1, chunk_x, chunk_y, depth);
+    return Enemy(enemy, x - 1, y - 1, chunk_x, chunk_y, depth);
 }
 
 int Spawner::get_x()
