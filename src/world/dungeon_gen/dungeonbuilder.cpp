@@ -16,7 +16,7 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
 /* PRE: Will be given :int given:, a number under 100.
  *
  * POST: Will perform a random number check between 1 and 100.
- * Will return true if result <= given; will return false if 
+ * Will return true if result <= given; will return false if
  * result > given.
  */
 bool DungeonBuilder::rolled_over(int given) const {
@@ -39,15 +39,15 @@ bool DungeonBuilder::is_empty_space(IntPoint point) const {
 
 /* PRE: Will be given :IntPoint point:
  *
- * POST: Will determine whether or not the given point is beyond the 
+ * POST: Will determine whether or not the given point is beyond the
  * bounds of the dungeon.
  */
 bool DungeonBuilder::point_is_beyond_bounds(IntPoint point) const {
     //TODO This is set to 1 beyond the actual edge to make room for the border.
     //Consider having a better system.
-    if((point.row < 0) or (point.row >= (main_dungeon.height))) {
+    if((point.row < 1) or (point.row >= (main_dungeon.height - 1))) {
         return true;
-    } else if((point.col < 0) or (point.col >= (main_dungeon.width))) {
+    } else if((point.col < 1) or (point.col >= (main_dungeon.width - 1))) {
         return true;
     }
 
@@ -112,7 +112,7 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
         if (main_dungeon.get_tile(point.row - 1, point.col) == DIRT) {
             direction = 2;
         }
-        
+
         else if (main_dungeon.get_tile(point.row + 1, point.col) == DIRT) {
             direction = 0;
         }
@@ -122,17 +122,17 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
         if (main_dungeon.get_tile(point.row, point.col - 1) == DIRT) {
             direction = 1;
         }
-        
+
         else if (main_dungeon.get_tile(point.row, point.col + 1) == DIRT) {
             direction = 3;
         }
     }
-    
+
     return direction;
 }
 
 /* PRE: Will be given :int a: and :int b:, representing a row and column.
- * POST: If that row and column is not currently a PATH tile, set it to a 
+ * POST: If that row and column is not currently a PATH tile, set it to a
  *       ROOM_WALL tile.
  */
 void DungeonBuilder::set_wall_if_not_path(int a, int b)  {
@@ -143,7 +143,7 @@ void DungeonBuilder::set_wall_if_not_path(int a, int b)  {
 /* PRE: Will be given :IntPoint tl:, which represents the top-left corner,
  * :IntPoint br:, which represents the bottom-right corner, and
  * :int squareness:, which denotes how square the rooms will be.
- * 
+ *
  * POST: Will draw a room on the dungeon array with the given parameters.
  */
 Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
@@ -151,7 +151,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
     set_wall_if_not_path(tl.row, br.col);
     set_wall_if_not_path(br.row, tl.col);
     set_wall_if_not_path(br.row, br.col);
-        
+
     //draw top and bottom rows
     for(int i = tl.col + 1; i <= br.col - 1; i++) {
         set_wall_if_not_path(tl.row, i);
@@ -162,7 +162,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
         set_wall_if_not_path(i, tl.col);
         set_wall_if_not_path(i, br.col);
     }
-    
+
     for(int i = tl.row + 1; i <= br.row - 1; i++) {
         for(int j = tl.col + 1; j <= br.col - 1; j++) {
             main_dungeon.set_tile(i, j, DIRT);
@@ -175,7 +175,7 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
     cout<<"ROOM "<<num_rooms - 1<<": "<<main_dungeon.rooms[num_rooms - 1].tl.row
         <<", "<<main_dungeon.rooms[num_rooms - 1].tl.col<<endl;
         */
-    
+
     return Room(tl, br);
 }
 
@@ -184,12 +184,12 @@ Room DungeonBuilder::build_room(IntPoint tl, IntPoint br) {
  * cleaning the dungeon.
  */
 void DungeonBuilder::reset() {
-    num_rooms = 0; 
+    num_rooms = 0;
     main_dungeon = Dungeon(width, height);
 }
 
 /* PRE: Will be given a Room object.
- * POST: Will return the original number of wall spaces in the room 
+ * POST: Will return the original number of wall spaces in the room
  * (corners are not included).
  */
 int DungeonBuilder::get_wall_count(const Room &R) const {
@@ -200,7 +200,7 @@ int DungeonBuilder::get_wall_count(const Room &R) const {
  * PRE: Will be given a Room object.
  * POST: Will return a random wall block that lies on the circumference of the given room.
  */
-IntPoint DungeonBuilder::rand_wall_block(const Room &current_room) { 
+IntPoint DungeonBuilder::rand_wall_block(const Room &current_room) {
     int height = (current_room.br.row - current_room.tl.row) - 1;
     int width = (current_room.br.col - current_room.tl.col) - 1;
     int path_from_side = rand() % (height + width) + 1;
@@ -212,7 +212,7 @@ IntPoint DungeonBuilder::rand_wall_block(const Room &current_room) {
         } else {
             point.row = current_room.br.row;
         }
-        point.col = rand() % width + current_room.tl.col + 1; 
+        point.col = rand() % width + current_room.tl.col + 1;
     } else {
         int a = rand() % 2;
         if (a == 0) {
@@ -226,7 +226,7 @@ IntPoint DungeonBuilder::rand_wall_block(const Room &current_room) {
     return point;
 }
 
-/* PRE: Will be given :IntPoint this_point:, which is the current point, and 
+/* PRE: Will be given :IntPoint this_point:, which is the current point, and
  *      :int direction:, which refers to the proposed direction.
  * POST: Will return the next point given the proposed direction.
  */
@@ -248,7 +248,7 @@ IntPoint DungeonBuilder::get_next_point(IntPoint this_point, int direction) cons
     }
 
     return next_point;
-}   
+}
 
 Dungeon* DungeonBuilder::get_dungeon(){
     return &main_dungeon;

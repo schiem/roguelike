@@ -564,7 +564,7 @@ Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, 
             if(chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].is_initialized() == false) {
                 chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
             }
-            //eww
+            //TODO A segfault sometimes happens here.
             surroundings[(row+20) - coords.row][(col+20) - coords.col] =
                 chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].get_tile(depth,
                 row + (STARTING_HEIGHT * chunk_change.row * -1), col
