@@ -33,6 +33,7 @@ class Chunk{
         Tile* get_tile(int, int, int) ;
         int get_depth() const;
         bool is_initialized() const;
+        bool out_of_bounds(int, int, int) const;
         Spawner* get_spawner(int);
         void dungeon_dump(int);
 };

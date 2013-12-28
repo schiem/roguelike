@@ -22,6 +22,7 @@ class Game
     typedef std::vector<std::vector<Tile> > TileMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     private:
+        Tile block_wall_tile;
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
         TilePointerMatrix canvas;

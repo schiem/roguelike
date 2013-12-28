@@ -44,7 +44,7 @@ taken from the buffer with the character at the center.
 Game::Game() {
     STARTING_WIDTH = 100;
     STARTING_HEIGHT = 50;
-    chunk_map = ChunkMatrix(10, vector<Chunk>(10)); 
+    chunk_map = ChunkMatrix(10, vector<Chunk>(10));
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
     buffer = TilePointerMatrix(150, vector<Tile*>(300));
@@ -66,6 +66,10 @@ Game::Game() {
     update_buffer(main_char_chunk);
     recalculate_visibility_lines(15);
     refresh();
+
+    //TODO THIS IS A TEMPORARY HACK THAT SHOULD BE GONE BEFORE I GO TO TANZANIA,
+    //SO HELP ME GOD.
+    block_wall_tile = BLOCK_WALL;
 }
 
 /**
@@ -397,7 +401,15 @@ void Game::update_buffer(IntPoint central_chunk) {
                     y = row - (central_chunk.row - 1);
                     int buffer_col = b + (x * STARTING_WIDTH);
                     int buffer_row = a + (y * STARTING_HEIGHT);
-                    Tile* buffer_tile = chunk_map[row][col].get_tile(main_char.get_depth(), a, b);
+
+                    Tile* buffer_tile;
+                    if(!chunk_map[row][col].out_of_bounds(main_char.get_depth(), a, b)) {
+                        buffer_tile = chunk_map[row][col].get_tile(main_char.get_depth(), a, b);
+                    } else {
+                        buffer_tile = &block_wall_tile;
+                    }
+
+
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
@@ -468,8 +480,8 @@ void Game::move_main_char(int col_change, int row_change) {
         main_char.set_x(col);
         main_char.set_y(row);
     }
-    
-    //There has to be a better way to this... 
+
+    //There has to be a better way to this...
     refresh();
 }
 
@@ -521,32 +533,26 @@ IntPoint Game::get_abs(IntPoint chunk, IntPoint coords)
  */
 Game::TilePointerMatrix Game::get_surroundings(IntPoint chunk, IntPoint coords, int depth)
 {
-    TilePointerMatrix surroundings = TilePointerMatrix(40, std::vector<Tile*>(40)); 
+    TilePointerMatrix surroundings = TilePointerMatrix(40, std::vector<Tile*>(40));
     IntPoint chunk_change;
     for(int row=coords.row-20;row<coords.row+20;row++)
     {
         for(int col=coords.col-20;col<coords.col+20;col++)
         {
             chunk_change = IntPoint(0, 0);
-            if(row<0)
-            {
+            if(row<0) {
                 chunk_change.row = -1;
-            }
-            if(row>=STARTING_HEIGHT)
-            {
+            } else if(row>=STARTING_HEIGHT) {
                 chunk_change.row = 1;
             }
-            if(col<0)
-            {
+
+            if(col<0){
                 chunk_change.col = -1;
-            }
-            if(col>=STARTING_WIDTH)
-            {
+            } else if(col>=STARTING_WIDTH) {
                 chunk_change.col = 1;
             }
-            
-            if(chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].is_initialized() == false)
-            {
+
+            if(chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col].is_initialized() == false) {
                 chunk_map[chunk.row+chunk_change.row][chunk.col+chunk_change.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
             }
             //eww
