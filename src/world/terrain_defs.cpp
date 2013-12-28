@@ -6,8 +6,8 @@ namespace tiledef {
     Tile DUNGEON_BORDER = {250, 1, DARK_RED, false, true, false, false};
     Tile ROOM_WALL = {219, 2, GRAY, false, false, true, false};
     Tile EMPTY = {0, 3, 0, true, false, false, false};
-    //Tile PATH = {250, 4, BROWN, true, false, false, false};
-    Tile PATH = DIRT;
+    Tile PATH = {250, 4, BROWN, true, false, false, false};
+    //Tile PATH = DIRT;
     Tile MAIN_CHAR = {1, 5, DARK_RED, true, true, false, false}; 
     Tile MAIN_CHAR2 = {1, 5, DARK_GREEN, true, true, false, false};
     Tile MAIN_CHAR3 = {1, 5, BROWN, true, true, false, false};
