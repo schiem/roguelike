@@ -45,6 +45,7 @@ Dungeon::Dungeon(const Dungeon& d)
     up_stair = d.up_stair;
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
+    spawner = d.spawner;
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
@@ -60,6 +61,7 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     up_stair = d.up_stair;
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
+    spawner = d.spawner;
     for(int i = 0; i < num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
@@ -111,9 +113,8 @@ void Dungeon::make_spawner(int _depth)
 {
     Room spawn_room = rooms[rand() % num_rooms];
 
-    IntPoint spawn = IntPoint(1 + spawn_room.tl.row + rand() % (spawn_room.br.row - (spawn_room.tl.row + 1)), 1 + spawn_room.tl.col + rand() % (spawn_room.br.col - (spawn_room.tl.col + 1)));
+    IntPoint spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
     spawner = Spawner(spawn.col, spawn.row, _depth, Kobold);
-    cout<<_depth<<endl;
     dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
 }
 

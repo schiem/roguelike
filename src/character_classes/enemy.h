@@ -9,20 +9,20 @@
 
 class Enemy : public Character
 {
-    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
+    typedef std::vector<std::vector<Tile> > TileMatrix;
     protected:
         int id;
         int chunk_x;
         int chunk_y;
         std::string name;
-        void run_kobold_ai(TilePointerMatrix);
+        void run_kobold_ai(TileMatrix);
         void move(int, int);
 
     public:
         Enemy();
         Enemy(int, int, int, Tile, int, int, int, std::string);
         Enemy(EnemyType, int, int, int, int, int);
-        void run_ai(TilePointerMatrix);
+        void run_ai(TileMatrix);
         int get_chunk_x();
         int get_chunk_y();
         void set_depth(int);
