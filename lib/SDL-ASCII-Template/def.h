@@ -43,7 +43,7 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 #define DARKER_GREEN 2850816
 #define DARK_GREEN 3629312
 #define BROWN 6371840
-#define VERY_DARK_GRAY 2236962
+#define VERY_DARK_GRAY 3355443
 #define DARK_GRAY 5592405
 #define LIGHT_GRAY 13158600
 #define GRAY 6579300

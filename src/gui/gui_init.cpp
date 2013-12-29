@@ -9,7 +9,7 @@ bool GUI::OnInit() {
     screen = SDL_SetVideoMode( 800, 600, 32, SDL_SWSURFACE );
 
     //Load ascii characters
-    asciiBase = SDL_LoadBMP( "resources/ascii.bmp" );
+    asciiBase = SDL_LoadBMP( DATADIR "/ascii.bmp" );
 
     //Create an optimized image
     ascii = SDL_DisplayFormat( asciiBase );
