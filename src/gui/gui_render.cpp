@@ -4,17 +4,17 @@ void GUI::OnRender()
 {
     if(current_screen == MAP_SCREEN) {
         perform_action_cont();
-        std::vector<std::vector<MapTile> > canvas = world_map_gui.get_canvas();
-        for(size_t i = 0; i < canvas.size(); i++) {
-            for(size_t j = 0; j < canvas[i].size(); j++) {
-                drawChr(j, i, canvas[i][j].char_count, ascii, screen, canvas[i][j].color);
+        std::vector<std::vector<MapTile> > map_canvas = world_map_gui.get_canvas();
+        for(size_t i = 0; i < map_canvas.size(); i++) {
+            for(size_t j = 0; j < map_canvas[i].size(); j++) {
+                drawChr(j, i, map_canvas[i][j].char_count, ascii, screen, map_canvas[i][j].color);
             }
         }
         drawStr(0, 48, "Use the arrow keys to move the cursor.", ascii, screen, WHITE);
         drawStr(0, 49, "Press ENTER to spawn on the selected map tile.", ascii, screen, WHITE);
     } else {
-        TilePointerMatrix tm = canvas.get_matrix();
-        TileMatrix tl = canvas.get_top_layer();
+        TilePointerMatrix tm = game.get_canvas();
+        TileMatrix tl = game.get_top_layer();
         for(size_t i = 0; i < tm.size(); i++) {
             for(size_t j = 0; j < tm[i].size(); j++) {
                 //If the tile is visible, render it fully.

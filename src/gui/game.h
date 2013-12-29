@@ -22,16 +22,15 @@ class Game
     typedef std::vector<std::vector<Tile> > TileMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     private:
-        Tile block_wall_tile;
+        //BASE Data/Models
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
-        TilePointerMatrix canvas;
         ChunkMatrix chunk_map;
-        TilePointerMatrix buffer;
         TileMatrix top_layer;
         IntPoint main_char_chunk;
-        std::vector<std::vector<IntPoint> > bresenham_lines;
-        void recalculate_visibility_lines(int radius);
+        Tile block_wall_tile;
+
+        //BASE model access functions
         void point_assertions(int, int);
         void set_tile(int, int, Tile*);
         void set_tile(IntPoint, Tile*);
@@ -39,32 +38,53 @@ class Game
         Tile* get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
         bool out_of_bounds(int, int);
-        void update_buffer(IntPoint);
-        void update_chunk_map(IntPoint);
-        void update_chunk();
-        void draw_visibility_lines();
-        void undo_visibility();
         bool in_buffer(int, int);
         bool in_visible(IntPoint, IntPoint);
-        TileMatrix get_surroundings(IntPoint, IntPoint, int);
         void top_layer_append(IntPoint, IntPoint, Tile);
+        void update_main_char_chunk();
         IntPoint get_abs(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
-        std::vector<Enemy> enemy_list; 
+        TileMatrix get_surroundings(IntPoint, IntPoint, int);
+
+        //RENDERING Data/Models
+        TilePointerMatrix canvas;
+        TilePointerMatrix buffer;
+        std::vector<std::vector<IntPoint> > bresenham_lines;
+
+        //RENDERING Functionality
+        void recalculate_visibility_lines(int radius);
+        void update_buffer(IntPoint);
+        void update_chunk_map(IntPoint);
+        void draw_visibility_lines();
+        void undo_visibility();
+
+        //ENEMY Data/Models
+        std::vector<Enemy> enemy_list;
+
+        //ENEMY Functionality
 
 public:
         Game();
-        DungeonBuilder db;
+
+        //BASE Data/Models
         Main_Character main_char;
+
+        //BASE Model access
+        Chunk* get_current_chunk();
+        const std::vector<std::vector<Tile> > get_top_layer();
+
+        //RENDERING Functionality
+        const std::vector<std::vector<Tile*> >& get_canvas();
+        void refresh();
+
+        //ENEMY Functionality
         void run_spawners();
         void run_enemies();
-        void refresh();
-        void resize_canvas(int, int);
-        const std::vector<std::vector<Tile*> >& get_matrix();
-        Chunk* get_chunk();
-        const std::vector<std::vector<Tile> > get_top_layer();
+
+        //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);
+
 };
 
 #endif

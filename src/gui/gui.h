@@ -24,7 +24,7 @@ class GUI : public VirtualEvent {
         int current_screen;
 
         WorldMapGUI world_map_gui;
-        Game canvas;
+        Game game;
         SDL_Event event;
         SDL_Surface* screen;
         SDL_Surface* asciiBase;

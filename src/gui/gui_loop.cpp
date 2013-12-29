@@ -2,7 +2,7 @@
 
 void GUI::OnLoop() {
     perform_action_cont();
-    canvas.refresh();
-    canvas.run_spawners();
-    canvas.run_enemies();
+    game.refresh();
+    game.run_spawners();
+    game.run_enemies();
 }

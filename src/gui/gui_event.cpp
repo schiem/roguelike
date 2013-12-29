@@ -61,10 +61,10 @@ void GUI::perform_action_press(SDLKey key) {
             }
             break;
         case SDLK_u:
-            canvas.change_main_depth(-1);
+            game.change_main_depth(-1);
             break;
         case SDLK_d:
-            canvas.change_main_depth(1);
+            game.change_main_depth(1);
             break;
         default:
             break;
@@ -78,16 +78,16 @@ void GUI::perform_action_cont() {
 
     if(current_screen == GAME_SCREEN) {
         if(keystate[SDLK_LEFT]){
-            canvas.move_main_char(-1, 0);
+            game.move_main_char(-1, 0);
         }
         if(keystate[SDLK_RIGHT]){
-            canvas.move_main_char(1, 0);
+            game.move_main_char(1, 0);
         }
         if(keystate[SDLK_UP]){
-            canvas.move_main_char(0, -1);
+            game.move_main_char(0, -1);
         }
         if(keystate[SDLK_DOWN]){
-            canvas.move_main_char(0, 1);
+            game.move_main_char(0, 1);
         }
     } else if (current_screen == MAP_SCREEN) {
         if(keystate[SDLK_LEFT]){
