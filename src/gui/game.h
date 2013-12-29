@@ -15,6 +15,10 @@
 #include <terrain_defs.h>
 #include <character.h>
 
+struct TilePoint {
+    Tile tile;
+    IntPoint loc;
+};
 
 class Game
 {
@@ -26,7 +30,7 @@ class Game
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
         ChunkMatrix chunk_map;
-        TileMatrix top_layer;
+        std::vector<TilePoint> top_layer;
         IntPoint main_char_chunk;
         Tile block_wall_tile;
 
@@ -71,7 +75,7 @@ public:
 
         //BASE Model access
         Chunk* get_current_chunk();
-        const std::vector<std::vector<Tile> > get_top_layer();
+        const std::vector<TilePoint> get_top_layer();
 
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();

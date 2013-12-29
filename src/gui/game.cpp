@@ -57,7 +57,7 @@ Game::Game() {
     chunk_map[5][8] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
 
 
-    top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
+    top_layer = std::vector<TilePoint>();
     main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
     main_char_chunk.row = 5;
     main_char_chunk.col = 8;
@@ -78,7 +78,7 @@ Chunk* Game::get_current_chunk() {
     return &chunk_map[main_char_chunk.row][main_char_chunk.col];
 }
 
-const std::vector<std::vector<Tile> > Game::get_top_layer(){
+const std::vector<TilePoint> Game::get_top_layer(){
     return top_layer;
 }
 
@@ -96,7 +96,8 @@ const std::vector<std::vector<Tile*> >& Game::get_canvas() {
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    top_layer = TileMatrix(STARTING_HEIGHT, vector<Tile>(STARTING_WIDTH, EMPTY));
+    top_layer = std::vector<TilePoint>();
+    struct TilePoint temp;
     if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
         update_main_char_chunk();
         update_chunk_map(main_char_chunk);
@@ -112,7 +113,10 @@ void Game::refresh() {
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
+        //top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
+        temp.tile = main_char.get_char();
+        temp.loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+        top_layer.push_back(temp);
     draw_visibility_lines();
 }
 
@@ -336,9 +340,13 @@ bool Game::in_visible(IntPoint chunk, IntPoint coords) {
  * to place it at the correct place in the top_layer.
  */
 void Game::top_layer_append(IntPoint chunk, IntPoint coords, Tile tile) {
+    struct TilePoint temp;
     IntPoint abs = get_abs(chunk, coords);
     IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
-    top_layer[abs.row-tl_abs.row][abs.col-tl_abs.col] = tile;
+    //top_layer[abs.row-tl_abs.row][abs.col-tl_abs.col] = tile;
+    temp.tile = tile;
+    temp.loc = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
+    top_layer.push_back(temp);
 }
 
 /*
