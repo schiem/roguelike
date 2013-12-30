@@ -9,7 +9,7 @@ AM_CPPFLAGS = -I.\
 AM_LDFLAGS =  -lSDLmain\
 			  -lSDL
 
-localdatadir=resources
+localdatadir=data
 
 DEFS = -DDATADIR=\"$(localdatadir)\"
 
@@ -69,5 +69,5 @@ roguelike_SOURCES = \
 	lib/SDL-ASCII-Template/def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
-dist_localdata_DATA = resources/ascii.bmp
-localdata_DATA = resources/ascii.bmp
+dist_localdata_DATA = data/ascii.bmp data/chunk/
+localdata_DATA = data/ascii.bmp data/chunk/
