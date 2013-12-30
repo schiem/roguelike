@@ -10,8 +10,6 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type) {
     width = _width;
     height= _height;
 
-    cout<<tile_type.char_count<<endl;
-
     if(tile_type == map_tile::MAP_DEFAULT) {
         build_land_chunk();
     } else if (tile_type == map_tile::MAP_WATER) {
@@ -23,9 +21,9 @@ void Chunk::build_land_chunk() {
     depth = rand() % 6 + 1;
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
     Dungeon* temp_d;
-    ProcedurallyBlindDB db(width, height); 
+    ProcedurallyBlindDB db(width, height);
     //CorruptiblePBlindDB db(width, height);
-    
+
     bool has_layer_below;
 
     for (int i=0; i < depth; i++) {
@@ -70,7 +68,7 @@ void Chunk::set_tile(int depth, int row, int col, Tile* tile){
     if (depth == -1) {
         overworld.set_tile(row, col, tile);
     } else {
-        dungeon_floors[depth].set_tile(row, col, *tile);   
+        dungeon_floors[depth].set_tile(row, col, *tile);
     }
 }
 
@@ -108,7 +106,7 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * For now, assume that there is one per floor
  * Later, I'll change this to a vector
  * But that will also have ramifications in how
- * the game will handle things. 
+ * the game will handle things.
  */
 
 Spawner Chunk::get_spawner(int _depth)
