@@ -45,6 +45,7 @@ taken from the buffer with the character at the center.
 /*--------------------Base Model Functions--------------------------*/
 Game::Game() {
     initialized = false;
+    enemy_list = std::vector<Enemy>();
 }
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
