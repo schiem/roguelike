@@ -13,6 +13,9 @@ void GUI::OnRender()
         drawStr(0, 48, "Use the arrow keys to move the cursor.", ascii, screen, WHITE);
         drawStr(0, 49, "Press ENTER to spawn on the selected map tile.", ascii, screen, WHITE);
     } else {
+        if(!game.is_initialized()) {
+            game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
+        }
         TilePointerMatrix tm = game.get_canvas();
         std::vector<TilePoint> tl = game.get_top_layer();
         for(size_t i = 0; i < tm.size(); i++) {

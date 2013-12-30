@@ -2,7 +2,9 @@
 
 void GUI::OnLoop() {
     perform_action_cont();
-    game.refresh();
-    game.run_spawners();
-    game.run_enemies();
+    if(game.is_initialized()) {
+        game.refresh();
+        game.run_spawners();
+        game.run_enemies();
+    }
 }

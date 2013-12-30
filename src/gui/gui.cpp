@@ -10,6 +10,7 @@ GUI::GUI() : world_map_gui(50,80) {
 }
 
 int GUI::OnExecute() {
+    cout<<"EXECUTE"<<endl;
     if(OnInit() == false) {
         return -1;
     }

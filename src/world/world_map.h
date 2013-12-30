@@ -1,23 +1,13 @@
+#ifndef _WORLD_MAP_H
+#define _WORLD_MAP_H
+
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
 
 #include <def.h>
-
-struct MapTile {
-    int char_count;
-    int color;
-    bool operator==(const MapTile& rhs) const {
-        return this->char_count == rhs.char_count;
-    }
-};
-
-namespace map_tile {
-    extern MapTile MAP_DEFAULT;
-    extern MapTile MAP_WATER;
-    extern MapTile CURSOR;
-}
+#include <terrain_defs.h>
 
 class WorldMap {
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;
@@ -37,5 +27,7 @@ class WorldMap {
     public:
         WorldMap();
         WorldMap(int height, int width);
-        const std::vector<std::vector<MapTile> >& get_map() const;
+        const std::vector<std::vector<MapTile> >& get_map();
 };
+
+#endif

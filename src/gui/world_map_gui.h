@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <world_map.h>
+#include <int_point.h>
 
 using namespace std;
 
@@ -18,6 +19,8 @@ class WorldMapGUI {
     public:
         WorldMapGUI(int, int);
         const MapTileMatrix& get_canvas();
+        const MapTileMatrix& get_map();
+        IntPoint get_selected_chunk();
         void move_cursor(int, int);
 
     private:

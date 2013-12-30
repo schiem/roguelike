@@ -22,7 +22,9 @@ class Chunk{
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
     public:
-        Chunk(int, int);
+        Chunk(int, int, MapTile);
+        void build_land_chunk();
+        void build_water_chunk();
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
         int height;

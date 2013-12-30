@@ -19,4 +19,13 @@ namespace tiledef {
     Tile UP_STAIR = {30, 9, GRAY, true, false, false, false};
     Tile KOBOLD = {107, 10, RED, false, true, false, false};
     Tile KOBOLD_SPAWNER = {21, 11, GREEN, false, false, true, false};
+    Tile WATER = {247, 12, BLUE, true, false, false, false};
+    Tile LIGHT_WATER = {126, 13, BLUE, true, false, false, false};
 }
+
+namespace map_tile {
+    MapTile MAP_DEFAULT = {146, GREEN};
+    MapTile MAP_WATER = {247, BLUE};
+    MapTile CURSOR = {88, WHITE};
+}
+

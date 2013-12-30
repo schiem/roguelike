@@ -9,7 +9,7 @@ WorldMapGUI::WorldMapGUI(int h, int w) {
     canvas = std::vector<std::vector<MapTile> >(height, 
             std::vector<MapTile>(width));
 
-    TopLayerData cursor = {0, 0, map_tile::CURSOR};
+    TopLayerData cursor = {5, 5, map_tile::CURSOR};
     top_layer.push_back(cursor);
     refresh();
 }
@@ -38,20 +38,22 @@ void WorldMapGUI::move_cursor(int col_change, int row_change) {
     new_row = cursor->row + row_change;
     new_col = cursor->col + col_change;
 
-    if(new_row >= 0 && new_row < height &&
-       new_col >= 0 && new_col < width) {
+    if(new_row >= 1 && new_row < (height - 1) &&
+       new_col >= 1 && new_col < (width - 1)) {
         cursor->row = new_row;
         cursor->col = new_col;
     }
     refresh();
 }
 
-/*
-void WorldMapGUI::select_tile() {
-    
+const MapTileMatrix& WorldMapGUI::get_map() {
+    return world_map.get_map();
 }
-*/
 
 const MapTileMatrix& WorldMapGUI::get_canvas() {
     return canvas;
+}
+
+IntPoint WorldMapGUI::get_selected_chunk() {
+    return IntPoint(top_layer[0].row, top_layer[0].col);
 }

@@ -17,13 +17,23 @@ Overworld::Overworld() {
     }
 }
 
-Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
+Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile tile_type) {
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
+
     down_stair.col = rand() % width;
     down_stair.row = rand() % height;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
+
+    if (tile_type == map_tile::MAP_DEFAULT) {
+        build_land_overworld();
+    } else if (tile_type == map_tile::MAP_WATER) {
+        build_water_overworld();
+    }
+}
+
+void Overworld::build_land_overworld() {
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             if (rand() % 20 == 0){
@@ -40,6 +50,18 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below) {
     int spawn_y = rand() % height;
     spawner = Spawner(spawn_x, spawn_y, -1, Kobold);
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
+}
+
+void Overworld::build_water_overworld() {
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
+            if (rand() % 4 == 0) {
+                ground[i][j] = LIGHT_WATER;
+            } else {
+                ground[i][j] = WATER;
+            }
+        }
+    }
 }
 
 Tile* Overworld::get_tile(int row, int col) {

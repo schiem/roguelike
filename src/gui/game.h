@@ -1,10 +1,10 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
-#include <SDL/SDL.h>
 #include <stdlib.h>
 #include <vector>
 #include <assert.h>
+
 #include <chunk.h>
 #include <overworld.h>
 #include <bresenham.h>
@@ -14,6 +14,7 @@
 #include <dungeon.h>
 #include <terrain_defs.h>
 #include <character.h>
+#include <world_map.h>
 
 struct TilePoint {
     Tile tile;
@@ -25,10 +26,14 @@ class Game
     typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
+    typedef std::vector<std::vector<MapTile> > MapTileMatrix;
+
     private:
         //BASE Data/Models
+        bool initialized;
         int STARTING_WIDTH;
         int STARTING_HEIGHT;
+        MapTileMatrix world_map;
         ChunkMatrix chunk_map;
         std::vector<TilePoint> top_layer;
         IntPoint main_char_chunk;
@@ -69,6 +74,7 @@ class Game
 
 public:
         Game();
+        void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models
         Main_Character main_char;
@@ -76,6 +82,7 @@ public:
         //BASE Model access
         Chunk* get_current_chunk();
         const std::vector<TilePoint> get_top_layer();
+        bool is_initialized();
 
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();

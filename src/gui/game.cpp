@@ -44,23 +44,29 @@ taken from the buffer with the character at the center.
 
 /*--------------------Base Model Functions--------------------------*/
 Game::Game() {
+    initialized = false;
+}
+
+void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
+    world_map = _world_map;
     STARTING_WIDTH = 100;
     STARTING_HEIGHT = 50;
-    chunk_map = ChunkMatrix(10, vector<Chunk>(10));
+    chunk_map = ChunkMatrix(world_map.size(), vector<Chunk>(world_map[0].size()));
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
     buffer = TilePointerMatrix(150, vector<Tile*>(300));
 
+
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    chunk_map[5][8] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
-
+    chunk_map[selected_chunk.row][selected_chunk.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, 
+                           world_map[selected_chunk.row][selected_chunk.col]);
 
     top_layer = std::vector<TilePoint>();
     main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
-    main_char_chunk.row = 5;
-    main_char_chunk.col = 8;
+    main_char_chunk.row = selected_chunk.row;
+    main_char_chunk.col = selected_chunk.col;
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
@@ -72,6 +78,8 @@ Game::Game() {
     //TODO THIS IS A TEMPORARY HACK THAT SHOULD BE GONE BEFORE I GO TO TANZANIA,
     //SO HELP ME GOD.
     block_wall_tile = BLOCK_WALL;
+
+    initialized = true;
 }
 
 Chunk* Game::get_current_chunk() {
@@ -80,6 +88,10 @@ Chunk* Game::get_current_chunk() {
 
 const std::vector<TilePoint> Game::get_top_layer(){
     return top_layer;
+}
+
+bool Game::is_initialized() {
+    return initialized;
 }
 
 /*---------------------Rendering Functions--------------------------*/
@@ -504,7 +516,7 @@ void Game::update_chunk_map(IntPoint central_chunk) {
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
-                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT);
+                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, world_map[row][col]);
             }
         }
     }

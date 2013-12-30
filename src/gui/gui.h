@@ -8,12 +8,13 @@
 #include <virtual_event.h>
 #include <game.h>
 #include <terrain_defs.h>
+#include <world_map.h>
 #include <world_map_gui.h>
 #include <def.h>
 
 class GUI : public VirtualEvent {
 
-    typedef std::vector< std::vector<Tile*> > TilePointerMatrix;
+    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         //This is by no means a good system. Just temporary.

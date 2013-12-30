@@ -5,10 +5,21 @@ Chunk::Chunk() {
     initialized = false;
 }
 
-Chunk::Chunk(int _width, int _height) {
+Chunk::Chunk(int _width, int _height, MapTile tile_type) {
     initialized = true;
     width = _width;
     height= _height;
+
+    cout<<tile_type.char_count<<endl;
+
+    if(tile_type == map_tile::MAP_DEFAULT) {
+        build_land_chunk();
+    } else if (tile_type == map_tile::MAP_WATER) {
+        build_water_chunk();
+    }
+}
+
+void Chunk::build_land_chunk() {
     depth = rand() % 6 + 1;
     dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
     Dungeon* temp_d;
@@ -16,6 +27,7 @@ Chunk::Chunk(int _width, int _height) {
     //CorruptiblePBlindDB db(width, height);
     
     bool has_layer_below;
+
     for (int i=0; i < depth; i++) {
         has_layer_below = (i < depth - 1);
         db.build_dungeon(5, 5);
@@ -29,7 +41,13 @@ Chunk::Chunk(int _width, int _height) {
     }
     //generate the overworld
     has_layer_below = (depth > 0);
-    overworld = Overworld(width, height, has_layer_below);
+    overworld = Overworld(width, height, has_layer_below, map_tile::MAP_DEFAULT);
+}
+
+void Chunk::build_water_chunk() {
+    depth = 0;
+    bool has_layer_below = false;
+    overworld = Overworld(width, height, has_layer_below, map_tile::MAP_WATER);
 }
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {

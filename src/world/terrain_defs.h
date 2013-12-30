@@ -34,6 +34,22 @@ namespace tiledef {
     extern Tile UP_STAIR;
     extern Tile KOBOLD;
     extern Tile KOBOLD_SPAWNER;
+    extern Tile WATER;
+    extern Tile LIGHT_WATER;
+}
+
+struct MapTile {
+    int char_count;
+    int color;
+    bool operator==(const MapTile& rhs) const {
+        return this->char_count == rhs.char_count;
+    }
+};
+
+namespace map_tile {
+    extern MapTile MAP_DEFAULT;
+    extern MapTile MAP_WATER;
+    extern MapTile CURSOR;
 }
 
 #endif

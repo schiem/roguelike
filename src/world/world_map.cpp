@@ -1,11 +1,5 @@
 #include <world_map.h>
 
-namespace map_tile {
-    MapTile MAP_DEFAULT = {146, GREEN};
-    MapTile MAP_WATER = {247, BLUE};
-    MapTile CURSOR = {88, WHITE};
-}
-
 using namespace std;
 
 WorldMap::WorldMap() {
@@ -23,7 +17,7 @@ WorldMap::WorldMap(int h, int w) {
 
 }
 
-const std::vector<std::vector<MapTile> >& WorldMap::get_map() const {
+const std::vector<std::vector<MapTile> >& WorldMap::get_map() {
     return map;
 }
 

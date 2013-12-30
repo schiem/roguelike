@@ -22,8 +22,10 @@ class Overworld
         int height;
         Tile* get_tile(int, int) ;
         void set_tile(int, int, Tile*);
-        Overworld(int, int, bool);
+        Overworld(int, int, bool, MapTile);
         Overworld();
+        void build_land_overworld();
+        void build_water_overworld();
         std::vector<std::vector<Tile> >& get_ground();
         Spawner get_spawner();
 
