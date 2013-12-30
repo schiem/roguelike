@@ -437,6 +437,12 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
 void Game::recalculate_visibility_lines(int size) {
     IntPoint true_center = IntPoint(0, 0);
     std::vector<IntPoint> circle_points = bresenham_circle(true_center, size);
+    std::vector<IntPoint> smaller_circle = bresenham_circle(true_center, size - 1);
+
+    for(int i = 0; i < smaller_circle.size(); i++) {
+        circle_points.push_back(smaller_circle[i]);
+    }
+
     std::vector<IntPoint> line_points;
 
     for(size_t i = 0; i < circle_points.size(); i++) {
