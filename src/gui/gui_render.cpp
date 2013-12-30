@@ -3,7 +3,6 @@
 void GUI::OnRender()
 {
     if(current_screen == MAP_SCREEN) {
-        perform_action_cont();
         std::vector<std::vector<MapTile> > map_canvas = world_map_gui.get_canvas();
         for(size_t i = 0; i < map_canvas.size(); i++) {
             for(size_t j = 0; j < map_canvas[i].size(); j++) {
