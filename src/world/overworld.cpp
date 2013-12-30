@@ -30,6 +30,9 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
         build_land_overworld();
     } else if (tile_type == map_tile::MAP_WATER) {
         build_water_overworld();
+    } else if (tile_type == map_tile::MAP_BEACH)
+    {
+        build_beach_overworld();
     }
 }
 
@@ -63,6 +66,21 @@ void Overworld::build_water_overworld() {
         }
     }
 }
+
+void Overworld::build_beach_overworld() {
+    for(int i = 0; i<height; i++) {
+        for(int j = 0; j<width; j++)
+        {
+            if( rand() % 2 == 0) {
+                ground[i][j] = SAND1;
+            }
+            else{
+                ground[i][j] = SAND2;
+            }
+        }
+    }
+}
+
 
 Tile* Overworld::get_tile(int row, int col) {
     return &ground[row][col];

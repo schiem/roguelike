@@ -25,6 +25,7 @@ class Chunk{
         Chunk(int, int, MapTile);
         void build_land_chunk();
         void build_water_chunk();
+        void build_beach_chunk();
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
         int height;

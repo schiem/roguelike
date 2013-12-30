@@ -14,6 +14,8 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type) {
         build_land_chunk();
     } else if (tile_type == map_tile::MAP_WATER) {
         build_water_chunk();
+    } else if (tile_type == map_tile::MAP_BEACH) {
+        build_beach_chunk();
     }
 }
 
@@ -46,6 +48,12 @@ void Chunk::build_water_chunk() {
     depth = 0;
     bool has_layer_below = false;
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_WATER);
+}
+
+void Chunk::build_beach_chunk() {
+    depth = 0;
+    bool has_layer_below = false;
+    overworld = Overworld(width, height, has_layer_below, map_tile::MAP_BEACH);
 }
 
 const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {

@@ -48,5 +48,7 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 #define LIGHT_GRAY 13158600
 #define GRAY 6579300
 #define PERSIAN_BLUE 5243032
+#define TAN 13808780
+
 
 #endif

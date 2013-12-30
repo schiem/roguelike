@@ -21,11 +21,14 @@ namespace tiledef {
     Tile KOBOLD_SPAWNER = {21, 11, GREEN, false, false, true, false};
     Tile WATER = {247, 12, BLUE, true, false, false, false};
     Tile LIGHT_WATER = {126, 13, BLUE, true, false, false, false};
+    Tile SAND1 = {176, 14, TAN, true, false, false, false};
+    Tile SAND2 = {178, 15, TAN, true, false, false, false};
 }
 
 namespace map_tile {
-    MapTile MAP_DEFAULT = {146, GREEN};
-    MapTile MAP_WATER = {247, BLUE};
-    MapTile CURSOR = {88, WHITE};
+    MapTile MAP_DEFAULT = {146, GREEN, 1};
+    MapTile MAP_WATER = {247, BLUE, 2};
+    MapTile MAP_BEACH = {146, TAN, 3};
+    MapTile CURSOR = {88, WHITE, 4};
 }
 

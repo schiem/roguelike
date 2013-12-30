@@ -26,6 +26,7 @@ class Overworld
         Overworld();
         void build_land_overworld();
         void build_water_overworld();
+        void build_beach_overworld();
         std::vector<std::vector<Tile> >& get_ground();
         Spawner get_spawner();
 

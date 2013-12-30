@@ -23,7 +23,7 @@ class WorldMap {
         void set_land_or_water(int, int, int, bool);
         void ocean_borders(int);
         void smoothing_pass(MapTile, int);
-
+        void generate_beaches();
     public:
         WorldMap();
         WorldMap(int height, int width);

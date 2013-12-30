@@ -14,7 +14,7 @@ WorldMap::WorldMap(int h, int w) {
             std::vector<MapTile>(width));
 
     generate_land_mass();
-
+    generate_beaches();
 }
 
 const std::vector<std::vector<MapTile> >& WorldMap::get_map() {
@@ -191,5 +191,18 @@ void WorldMap::generate_land_mass() {
     smoothing_pass(map_tile::MAP_DEFAULT, 2);
     for(int i = 0; i < 4; i++) {
         smoothing_pass(map_tile::MAP_DEFAULT, 3);
+    }
+}
+
+void WorldMap::generate_beaches() {
+    for(int i=0;i<height;i++)
+    {
+        for(int j=0;j<width;j++)
+        {
+            if(map[i][j] == map_tile::MAP_DEFAULT && count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)
+            {
+                map[i][j] = map_tile::MAP_BEACH;
+            }
+        }
     }
 }
