@@ -5,6 +5,10 @@ AC_PROG_CXX
 AC_CHECK_LIB([SDL],[SDL_DisplayFormat], ,[AC_MSG_ERROR(Could not find the SDL\
  library on your system. Make sure that it is installed properly!)])
 
+AX_BOOST_BASE
+AX_BOOST_SYSTEM
+AX_BOOST_FILESYSTEM
+
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])

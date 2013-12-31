@@ -24,9 +24,11 @@
 
 #include <vector>
 #include <stdlib.h>
+#include <map>
 #include <string.h>
 #include <sstream>
 #include <fstream>
+#include <boost/filesystem.hpp>
 
 #include <procedurally_blind_db.h>
 #include <corruptible_pblind_db.h>
@@ -36,10 +38,14 @@
 #include <ctime>
 #include <iostream>
 #include <spawner.h>
+#include <int_point.h>
 
 using namespace tiledef;
 using namespace std;
+namespace fs=boost::filesystem;
+
 class Chunk{
+    typedef std::multimap<std::time_t, fs::path> result_set_t;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         bool initialized;
@@ -48,17 +54,22 @@ class Chunk{
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
 
+        string find_serialized_chunk(int, int);
+        IntPoint parse_file_name(string);
+
+
     public:
-        Chunk(int, int, MapTile);
+        int height;
+        int width;
+
+        Chunk();
+        Chunk(int, int, MapTile, int, int);
         void build_land_chunk();
         void build_water_chunk();
         void build_beach_chunk();
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
-        int height;
-        int width;
         void set_tile(int, int, int, Tile*);
-        Chunk();
         const std::vector<std::vector<Tile> >& get_floor(int);
         Tile* get_tile(int, int, int) ;
         int get_depth() const;

@@ -81,7 +81,8 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     chunk_map[selected_chunk.row][selected_chunk.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, 
-                           world_map[selected_chunk.row][selected_chunk.col]);
+                           world_map[selected_chunk.row][selected_chunk.col],
+                           selected_chunk.row, selected_chunk.col);
 
     top_layer = std::vector<TilePoint>();
     main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
@@ -542,7 +543,8 @@ void Game::update_chunk_map(IntPoint central_chunk) {
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
-                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, world_map[row][col]);
+                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, 
+                                             world_map[row][col], row, col);
                 chunk_map[row][col].serialize(row, col);
             }
         }

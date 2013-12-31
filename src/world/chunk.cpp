@@ -24,7 +24,11 @@ Chunk::Chunk() {
     initialized = false;
 }
 
-Chunk::Chunk(int _width, int _height, MapTile tile_type) {
+Chunk::Chunk(int _width, int _height, MapTile tile_type, 
+        int world_row, int world_col) {
+
+    string exists = find_serialized_chunk(world_row, world_col);
+
     initialized = true;
     width = _width;
     height= _height;
@@ -36,6 +40,63 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type) {
     } else if (tile_type == map_tile::MAP_BEACH) {
         build_beach_chunk();
     }
+}
+
+/**
+ * PRE: Will be given a file name of a chunk data file.
+ * POST: Will determine the chunk's row and column.
+ */
+IntPoint Chunk::parse_file_name(string _file_name) {
+    //The word "chunk" is the prefix of the file name.
+    string file_name = _file_name.substr(5);
+
+    string row_str = "";
+    string col_str = "";
+    int first_underscore = file_name.find("_");
+    for(int i = 0; i < first_underscore; i++) {
+        row_str.push_back(file_name[i]);
+    }
+    col_str = file_name.substr(first_underscore+1);
+
+    return IntPoint(atoi(row_str.c_str()), atoi(col_str.c_str()));
+}
+
+/**
+ * PRE: Will be given a row and column on the world map.
+ * POST: Will search for the given chunk in CHUNK_DIR, and if it exists, return
+ * the name of the file in a string. If it does not exist, return an empty
+ * string.
+ */
+string Chunk::find_serialized_chunk(int world_row, int world_col) {
+    fs::path chunk_dir(CHUNK_DIR);
+    fs::directory_iterator end_iter;
+
+    result_set_t result_set;
+
+    if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
+        for(fs::directory_iterator dir_iter(chunk_dir);
+                dir_iter != end_iter; dir_iter++) {
+
+            if(fs::is_regular_file(dir_iter->status())) {
+                result_set.insert(
+                        result_set_t::value_type( fs::last_write_time(
+                                dir_iter->path()), *dir_iter));
+            }
+        }
+
+        for(result_set_t::iterator it = result_set.begin();
+                it != result_set.end(); it++) {
+            string file_name = (*it).second.filename().string();
+            IntPoint ip = parse_file_name(file_name);
+            cout<<ip.row<<" "<<ip.col<<" "<<endl;
+        }
+
+    } else {
+        cout<<"Chunk directory is missing. Aborting."<<endl;
+        exit(EXIT_FAILURE);
+    }
+
+    return "";
 }
 
 void Chunk::build_land_chunk() {
@@ -178,10 +239,12 @@ void Chunk::serialize(int world_row, int world_col) {
     unsigned int tile_id, seen;
     Tile current_tile;
 
+    /*
     cout<<"height: "<<height<<endl;
     cout<<"width: "<<width<<endl;
     cout<<"chunk_depth: "<<chunk_depth<<endl;
     cout<<"serializing with file size: "<<file_size<<endl;
+    */
     for(int i = 0; i < (chunk_depth + 1); i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
@@ -216,7 +279,7 @@ void Chunk::serialize(int world_row, int world_col) {
 }
 
 /**
- *
+ * PRE: Will be given the world_row and world_col of a chunk.
  */
 void Chunk::deserialize(int world_row, int world_col) {
 
