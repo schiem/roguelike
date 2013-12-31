@@ -5,6 +5,8 @@
 *.deps/
 *.dirstamp
 
+data/chunk/*
+
 roguelike
 aclocal.m4
 autom4te.cache/*

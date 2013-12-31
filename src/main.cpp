@@ -18,7 +18,6 @@
  */
 
 #include <gui.h>
-#define CHUNK_DIR DATADIR "/chunk"
 //#include <boost/filesystem.hpp>
 
 using namespace std;

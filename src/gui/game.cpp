@@ -543,6 +543,7 @@ void Game::update_chunk_map(IntPoint central_chunk) {
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
                 chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, world_map[row][col]);
+                chunk_map[row][col].serialize(row, col);
             }
         }
     }

@@ -105,12 +105,9 @@ IntPoint Chunk::get_up_stair(int depth) const{
 }
 
 IntPoint Chunk::get_down_stair(int depth) const{
-    if(depth==-1)
-    {
+    if(depth==-1) {
         return overworld.down_stair;
-    }
-    else
-    {
+    } else {
         return dungeon_floors[depth].down_stair;
     }
 }
@@ -136,20 +133,72 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * the game will handle things.
  */
 
-Spawner Chunk::get_spawner(int _depth)
-{
-    if(_depth>=0)
-    {
+Spawner Chunk::get_spawner(int _depth) {
+    if(_depth>=0) {
         return dungeon_floors[_depth].get_spawner();
-    }
-    else
-    {
+    } else {
         return overworld.get_spawner();
     }
 }
 
-void Chunk::dungeon_dump(int _depth)
-{
+void Chunk::dungeon_dump(int _depth) {
     dungeon_floors[_depth].dungeon_dump();
 }
 
+/**
+ * Serialized file looks like this:
+ * HEADER:
+ * 3 bytes: Width, Height, and Depth.
+ * BODY:
+ * 2 bytes per tile: tile_id; seen
+ *
+ * So the end file size is 3 + (2*w*h*d) bytes.
+ */
+void Chunk::serialize(int world_row, int world_col) {
+    int chunk_depth = depth;
+    stringstream ss;
+    ss<<"chunk"<<world_row<<"_"<<world_col;
+    string file_name = std::string(CHUNK_DIR) + std::string("/") + ss.str();
+
+    ofstream chunk_data_file(file_name.c_str(),
+            std::ofstream::out | std::ofstream::binary);
+
+    int num_header_bytes = 3;
+    int bytes_per_tile = 2;
+
+    int file_size = 3 + (bytes_per_tile*width*height*(chunk_depth+1));
+
+    char file[file_size];
+
+    file[0] = width;
+    file[1] = height;
+    file[2] = chunk_depth;
+    int current_byte = 3;
+
+    int tile_id, seen;
+    Tile current_tile;
+
+    cout<<"height: "<<height<<endl;
+    cout<<"width: "<<width<<endl;
+    cout<<"chunk_depth: "<<chunk_depth<<endl;
+    cout<<"serializing with file size: "<<file_size<<endl;
+    for(int i = 0; i < (chunk_depth + 1); i++) {
+        for(int j = 0; j < height; j++) {
+            for(int k = 0; k < width; k++) {
+                current_tile = *get_tile(i - 1, j, k);
+                tile_id = current_tile.tile_id;
+                seen = current_tile.seen;
+                file[current_byte] = tile_id;
+                file[current_byte+1] = seen;
+
+                current_byte += bytes_per_tile;
+            }
+        }
+    }
+
+    for(int i = 0; i < file_size; i++) {
+        chunk_data_file<<file[i];
+    }
+
+    chunk_data_file.close();
+}

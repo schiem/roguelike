@@ -19,8 +19,15 @@
 
 #ifndef _CHUNK_H
 #define _CHUNK_H
+
+#define CHUNK_DIR DATADIR "/chunk"
+
 #include <vector>
 #include <stdlib.h>
+#include <string.h>
+#include <sstream>
+#include <fstream>
+
 #include <procedurally_blind_db.h>
 #include <corruptible_pblind_db.h>
 #include <dungeon.h>
@@ -40,6 +47,7 @@ class Chunk{
         //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
+
     public:
         Chunk(int, int, MapTile);
         void build_land_chunk();
@@ -58,6 +66,7 @@ class Chunk{
         bool out_of_bounds(int, int, int) const;
         Spawner get_spawner(int);
         void dungeon_dump(int);
+        void serialize(int, int);
 };
 
 #endif
