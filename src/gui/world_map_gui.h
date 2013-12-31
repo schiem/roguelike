@@ -22,6 +22,7 @@ class WorldMapGUI {
         const MapTileMatrix& get_map();
         IntPoint get_selected_chunk();
         void move_cursor(int, int);
+        void refresh();
 
     private:
         std::vector<TopLayerData> top_layer;
@@ -30,6 +31,5 @@ class WorldMapGUI {
         int width;
         int height;
 
-        void refresh();
         void add_layers();
 };

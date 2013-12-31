@@ -21,7 +21,6 @@ void WorldMapGUI::refresh() {
             canvas[i][j] = raw_map[i][j];
         }
     }
-
     add_layers();
 }
 

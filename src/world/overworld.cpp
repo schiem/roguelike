@@ -39,7 +39,7 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
 void Overworld::build_land_overworld() {
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            if (rand() % 20 == 0){
+            if (rand() % 8 == 0){
                 ground[i][j] = TREE;
             } else {
                 ground[i][j] = OVERWORLD_DIRT;
