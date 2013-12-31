@@ -67,6 +67,7 @@ class Chunk{
         Spawner get_spawner(int);
         void dungeon_dump(int);
         void serialize(int, int);
+        void deserialize(int, int);
 };
 
 #endif

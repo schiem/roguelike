@@ -164,7 +164,7 @@ void Chunk::serialize(int world_row, int world_col) {
             std::ofstream::out | std::ofstream::binary);
 
     int num_header_bytes = 3;
-    int bytes_per_tile = 2;
+    int bytes_per_tile = 1;
 
     int file_size = 3 + (bytes_per_tile*width*height*(chunk_depth+1));
 
@@ -175,7 +175,7 @@ void Chunk::serialize(int world_row, int world_col) {
     file[2] = chunk_depth;
     int current_byte = 3;
 
-    int tile_id, seen;
+    unsigned int tile_id, seen;
     Tile current_tile;
 
     cout<<"height: "<<height<<endl;
@@ -188,8 +188,20 @@ void Chunk::serialize(int world_row, int world_col) {
                 current_tile = *get_tile(i - 1, j, k);
                 tile_id = current_tile.tile_id;
                 seen = current_tile.seen;
+                
+                //Fewer than 128 different tile ids, so we can shift it to make
+                //room in that byte for the boolean value! Thanks for ruining my
+                //brain, x86 assembly. If the tile id is 12 and has been seen, 
+                //here's what it will look like:
+                //
+                //BEFORE: 00001100
+                //AFTER: 00011001
+                
+                //cout<<"tile_id before: "<<tile_id<<endl;
+                tile_id = tile_id << 1;
+                tile_id = tile_id | seen;
                 file[current_byte] = tile_id;
-                file[current_byte+1] = seen;
+                //cout<<"tile_id after: "<<file[current_byte]<<endl;
 
                 current_byte += bytes_per_tile;
             }
@@ -201,4 +213,11 @@ void Chunk::serialize(int world_row, int world_col) {
     }
 
     chunk_data_file.close();
+}
+
+/**
+ *
+ */
+void Chunk::deserialize(int world_row, int world_col) {
+
 }
