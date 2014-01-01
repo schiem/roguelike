@@ -24,7 +24,11 @@ Chunk::Chunk() {
     initialized = false;
 }
 
-Chunk::Chunk(int _width, int _height, MapTile tile_type) {
+Chunk::Chunk(int _width, int _height, MapTile tile_type, 
+        int world_row, int world_col) {
+
+    string exists = find_serialized_chunk(world_row, world_col);
+
     initialized = true;
     width = _width;
     height= _height;
@@ -36,6 +40,51 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type) {
     } else if (tile_type == map_tile::MAP_BEACH) {
         build_beach_chunk();
     }
+}
+
+/**
+ * PRE: Will be given a file name of a chunk data file.
+ * POST: Will determine the chunk's row and column. Files are saved in the form
+ * 'chunk_<row>_<col>'.
+ */
+IntPoint Chunk::parse_file_name(string _file_name) {
+    //The word "chunk" is the prefix of the file name.
+    string file_name = _file_name.substr(5);
+
+    string row_str = "";
+    string col_str = "";
+    int first_underscore = file_name.find("_");
+    for(int i = 0; i < first_underscore; i++) {
+        row_str.push_back(file_name[i]);
+    }
+    col_str = file_name.substr(first_underscore+1);
+
+    return IntPoint(atoi(row_str.c_str()), atoi(col_str.c_str()));
+}
+
+/**
+ * PRE: Will be given a row and column on the world map.
+ * POST: Will search for the given chunk in CHUNK_DIR, and if it exists, return
+ * the name of the file in a string. If it does not exist, return an empty
+ * string.
+ */
+string Chunk::find_serialized_chunk(int world_row, int world_col) {
+    fs::path chunk_dir(CHUNK_DIR);
+
+    stringstream ss;
+    ss << CHUNK_DIR << "/chunk" << world_row << "_" <<world_col;
+    string filename = ss.str();
+
+    if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
+        if(fs::exists(filename)) {
+            deserialize(filename, world_row, world_col);
+        }
+    } else {
+        cout<<"Chunk directory is missing. Aborting."<<endl;
+        exit(EXIT_FAILURE);
+    }
+
+    return "";
 }
 
 void Chunk::build_land_chunk() {
@@ -178,10 +227,12 @@ void Chunk::serialize(int world_row, int world_col) {
     unsigned int tile_id, seen;
     Tile current_tile;
 
+    /*
     cout<<"height: "<<height<<endl;
     cout<<"width: "<<width<<endl;
     cout<<"chunk_depth: "<<chunk_depth<<endl;
     cout<<"serializing with file size: "<<file_size<<endl;
+    */
     for(int i = 0; i < (chunk_depth + 1); i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
@@ -216,8 +267,48 @@ void Chunk::serialize(int world_row, int world_col) {
 }
 
 /**
- *
+ * PRE: Will be given the world_row and world_col of a chunk.
  */
-void Chunk::deserialize(int world_row, int world_col) {
+void Chunk::deserialize(string file_name, int world_row, int world_col) {
+    cout<<file_name<<endl;
 
+    ifstream chunk_data_file(file_name.c_str(), 
+            std::ifstream::in | std::ifstream::binary);
+    
+    int file_size = fs::file_size(file_name);
+    char * file_data = new char[file_size];
+    chunk_data_file.read(file_data, file_size);
+
+    int width = file_data[0];
+    int height = file_data[1];
+    int depth = file_data[2];
+
+    unsigned int tile_id;
+    bool seen;
+
+    int current_byte = 3;
+    for(int i = 0; i < (depth + 1); i++) {
+        for(int j = 0; j < height; j++) {
+            for(int k = 0; k < width; k++) {
+                seen = (file_data[current_byte] & 1);
+                tile_id = (file_data[current_byte] >> 1);
+
+                /**
+                 * We will need to have a table to look up tile ID values
+                 * and match to their corresponding Tile definition. Actually,
+                 * that could just be an array. But it would have to match
+                 * perfectly with the tile IDs.
+                 *
+                 * Then, make a set_tile method in Chunk and do
+                 * set_tile(i, j, k) and set height,width, and depth to their
+                 * appropriate values.
+                 */
+
+                current_byte++;
+            }
+        }
+    }
+
+    delete [] file_data;
+    chunk_data_file.close();
 }
