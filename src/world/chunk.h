@@ -24,7 +24,6 @@
 
 #include <vector>
 #include <stdlib.h>
-#include <map>
 #include <string.h>
 #include <sstream>
 #include <fstream>
@@ -45,7 +44,6 @@ using namespace std;
 namespace fs=boost::filesystem;
 
 class Chunk{
-    typedef std::multimap<std::time_t, fs::path> result_set_t;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         bool initialized;
@@ -78,7 +76,7 @@ class Chunk{
         Spawner get_spawner(int);
         void dungeon_dump(int);
         void serialize(int, int);
-        void deserialize(int, int);
+        void deserialize(string, int, int);
 };
 
 #endif

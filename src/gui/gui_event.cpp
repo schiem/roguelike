@@ -96,17 +96,20 @@ void GUI::perform_action_cont() {
     Uint8* keystate = SDL_GetKeyState(NULL);
 
     if(current_screen == GAME_SCREEN) {
-        if(keystate[SDLK_LEFT]){
-            game.move_main_char(-1, 0);
-        }
-        if(keystate[SDLK_RIGHT]){
-            game.move_main_char(1, 0);
-        }
-        if(keystate[SDLK_UP]){
-            game.move_main_char(0, -1);
-        }
-        if(keystate[SDLK_DOWN]){
-            game.move_main_char(0, 1);
+        //THIS IS IMPORTANT, as it it turns out.
+        if(game.is_initialized()) {
+            if(keystate[SDLK_LEFT]){
+                game.move_main_char(-1, 0);
+            }
+            if(keystate[SDLK_RIGHT]){
+                game.move_main_char(1, 0);
+            }
+            if(keystate[SDLK_UP]){
+                game.move_main_char(0, -1);
+            }
+            if(keystate[SDLK_DOWN]){
+                game.move_main_char(0, 1);
+            }
         }
     } else if (current_screen == MAP_SCREEN) {
         if(keystate[SDLK_LEFT]){

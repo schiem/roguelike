@@ -44,7 +44,8 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type,
 
 /**
  * PRE: Will be given a file name of a chunk data file.
- * POST: Will determine the chunk's row and column.
+ * POST: Will determine the chunk's row and column. Files are saved in the form
+ * 'chunk_<row>_<col>'.
  */
 IntPoint Chunk::parse_file_name(string _file_name) {
     //The word "chunk" is the prefix of the file name.
@@ -69,28 +70,15 @@ IntPoint Chunk::parse_file_name(string _file_name) {
  */
 string Chunk::find_serialized_chunk(int world_row, int world_col) {
     fs::path chunk_dir(CHUNK_DIR);
-    fs::directory_iterator end_iter;
 
-    result_set_t result_set;
+    stringstream ss;
+    ss << CHUNK_DIR << "/chunk" << world_row << "_" <<world_col;
+    string filename = ss.str();
 
     if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
-        for(fs::directory_iterator dir_iter(chunk_dir);
-                dir_iter != end_iter; dir_iter++) {
-
-            if(fs::is_regular_file(dir_iter->status())) {
-                result_set.insert(
-                        result_set_t::value_type( fs::last_write_time(
-                                dir_iter->path()), *dir_iter));
-            }
+        if(fs::exists(filename)) {
+            deserialize(filename, world_row, world_col);
         }
-
-        for(result_set_t::iterator it = result_set.begin();
-                it != result_set.end(); it++) {
-            string file_name = (*it).second.filename().string();
-            IntPoint ip = parse_file_name(file_name);
-            cout<<ip.row<<" "<<ip.col<<" "<<endl;
-        }
-
     } else {
         cout<<"Chunk directory is missing. Aborting."<<endl;
         exit(EXIT_FAILURE);
@@ -281,6 +269,46 @@ void Chunk::serialize(int world_row, int world_col) {
 /**
  * PRE: Will be given the world_row and world_col of a chunk.
  */
-void Chunk::deserialize(int world_row, int world_col) {
+void Chunk::deserialize(string file_name, int world_row, int world_col) {
+    cout<<file_name<<endl;
 
+    ifstream chunk_data_file(file_name.c_str(), 
+            std::ifstream::in | std::ifstream::binary);
+    
+    int file_size = fs::file_size(file_name);
+    char * file_data = new char[file_size];
+    chunk_data_file.read(file_data, file_size);
+
+    int width = file_data[0];
+    int height = file_data[1];
+    int depth = file_data[2];
+
+    unsigned int tile_id;
+    bool seen;
+
+    int current_byte = 3;
+    for(int i = 0; i < (depth + 1); i++) {
+        for(int j = 0; j < height; j++) {
+            for(int k = 0; k < width; k++) {
+                seen = (file_data[current_byte] & 1);
+                tile_id = (file_data[current_byte] >> 1);
+
+                /**
+                 * We will need to have a table to look up tile ID values
+                 * and match to their corresponding Tile definition. Actually,
+                 * that could just be an array. But it would have to match
+                 * perfectly with the tile IDs.
+                 *
+                 * Then, make a set_tile method in Chunk and do
+                 * set_tile(i, j, k) and set height,width, and depth to their
+                 * appropriate values.
+                 */
+
+                current_byte++;
+            }
+        }
+    }
+
+    delete [] file_data;
+    chunk_data_file.close();
 }
