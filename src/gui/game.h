@@ -20,6 +20,9 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
+#define STARTING_WIDTH 100
+#define STARTING_HEIGHT 50
+
 #include <stdlib.h>
 #include <vector>
 #include <assert.h>
@@ -50,11 +53,8 @@ class Game
     private:
         //BASE Data/Models
         bool initialized;
-        int STARTING_WIDTH;
-        int STARTING_HEIGHT;
         MapTileMatrix world_map;
         ChunkMatrix chunk_map;
-        std::vector<TilePoint> top_layer;
         IntPoint main_char_chunk;
         Tile block_wall_tile;
 
@@ -67,8 +67,7 @@ class Game
         bool out_of_bounds(IntPoint);
         bool out_of_bounds(int, int);
         bool in_buffer(int, int);
-        bool in_visible(IntPoint, IntPoint);
-        void top_layer_append(IntPoint, IntPoint, Tile);
+        bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);
         void update_main_char_chunk();
         IntPoint get_abs(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
@@ -100,11 +99,12 @@ public:
 
         //BASE Model access
         Chunk* get_current_chunk();
-        const std::vector<TilePoint> get_top_layer();
         bool is_initialized();
 
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
+        IntPoint get_vis_coords(IntPoint, IntPoint);
+        std::vector<Enemy> get_vis_enemies();
         void refresh();
 
         //ENEMY Functionality

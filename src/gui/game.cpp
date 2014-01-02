@@ -69,8 +69,6 @@ Game::Game() {
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     world_map = _world_map;
-    STARTING_WIDTH = 100;
-    STARTING_HEIGHT = 50;
     chunk_map = ChunkMatrix(world_map.size(), vector<Chunk>(world_map[0].size()));
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
@@ -84,7 +82,6 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    top_layer = std::vector<TilePoint>();
     main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
     main_char_chunk.row = selected_chunk.row;
     main_char_chunk.col = selected_chunk.col;
@@ -107,9 +104,6 @@ Chunk* Game::get_current_chunk() {
     return &chunk_map[main_char_chunk.row][main_char_chunk.col];
 }
 
-const std::vector<TilePoint> Game::get_top_layer(){
-    return top_layer;
-}
 
 bool Game::is_initialized() {
     return initialized;
@@ -120,16 +114,45 @@ const std::vector<std::vector<Tile*> >& Game::get_canvas() {
     return canvas;
 }
 
+/* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
+ * representing coordinates within that chunk.  Assumes that
+ * the coordinates given represent a space within the screen.
+ * POST: Returns an IntPoint containing the coordinates on the screen.
+ */
+IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
+    IntPoint temp;
+    IntPoint abs = get_abs(chunk, coords);
+    IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
+    temp = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
+    return temp;
+}
+
+std::vector<Enemy> Game::get_vis_enemies()
+{
+    std::vector<Enemy> temp = std::vector<Enemy>();
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        IntPoint chunk = IntPoint(enemy_list[i].get_chunk_y(), enemy_list[i].get_chunk_x());
+        IntPoint coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x());
+        IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
+        IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+        if(in_range(chunk, coords, main_char_chunk, main_char_coords, radius))
+        {
+            temp.push_back(enemy_list[i]);
+        }
+    }
+    return temp;
+}
+
+
 /*
  * Resets the top layer.
  * Checks to see if the character is out of the chunk.  If so, update the chunk/chunk_map
  * Updates the canvas with the area around the character in terms of buffer coordinates.
- * Adds the player to the top_layer.
  * Draws visibility lines.
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    top_layer = std::vector<TilePoint>();
     struct TilePoint temp;
     if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
         update_main_char_chunk();
@@ -146,10 +169,8 @@ void Game::refresh() {
                 set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
             }
         }
-        //top_layer[STARTING_HEIGHT/2][STARTING_WIDTH/2] = main_char.get_char();
         temp.tile = main_char.get_char();
         temp.loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-        top_layer.push_back(temp);
     draw_visibility_lines();
 }
 
@@ -184,9 +205,7 @@ void Game::run_spawners() {
 /* PRE: None
  * POST: Iterates through the enemy list.  For each enemy, it checks to see if
  * it is in the current buffer.  If not, it deletes it.  It then checks to see if
- * it is at the current depth.  If not, it does nothing.  If it is, then it runs the
- * AI and places checks to see if it is in the visible range (the canvas).  If so,
- * it appends it to the top_layer.
+ * it is at the current depth.  If not, it does nothing.
  */
 void Game::run_enemies() {
     Enemy* enemy;
@@ -199,10 +218,6 @@ void Game::run_enemies() {
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
             enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()));
-
-            if(in_visible(enem_chunk, enem_coords)) {
-                top_layer_append(enem_chunk, enem_coords, enemy->get_char());
-            }
         }
     }
 }
@@ -351,35 +366,19 @@ bool Game::in_buffer(int x, int y) {
  * POST: Returns whether or not that chunk is within the visible range of the
  * character (if it is within the canvas).
  */
-bool Game::in_visible(IntPoint chunk, IntPoint coords) {
+bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius) {
     IntPoint abs = get_abs(chunk, coords);
-    IntPoint tl_abs = get_abs(main_char_chunk, 
-            IntPoint(main_char.get_y() - STARTING_HEIGHT/2, 
-                main_char.get_x() - STARTING_WIDTH/2));
+    IntPoint tl_abs = get_abs(range_chunk, 
+            IntPoint(center.row - radius.row, 
+                center.col - radius.col));
 
-    IntPoint br_abs = get_abs(main_char_chunk, 
-            IntPoint(main_char.get_y() + STARTING_HEIGHT/2, 
-                main_char.get_x() + STARTING_WIDTH/2));
+    IntPoint br_abs = get_abs(range_chunk, 
+            IntPoint(center.row + radius.row, 
+                center.col + radius.col));
 
     bool is_x = (abs.col>=tl_abs.col && abs.col<br_abs.col);
     bool is_y = (abs.row>=tl_abs.row && abs.row<br_abs.row);
     return (is_x && is_y);
-}
-
-/* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
- * representing coordinates within that chunk, and a tile.  Assumes that
- * the coordinates given represent a space within the top_layer.
- * POST: Places the tile given onto the top_layer, performing a calculation
- * to place it at the correct place in the top_layer.
- */
-void Game::top_layer_append(IntPoint chunk, IntPoint coords, Tile tile) {
-    struct TilePoint temp;
-    IntPoint abs = get_abs(chunk, coords);
-    IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
-    //top_layer[abs.row-tl_abs.row][abs.col-tl_abs.col] = tile;
-    temp.tile = tile;
-    temp.loc = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
-    top_layer.push_back(temp);
 }
 
 /*
@@ -455,6 +454,7 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
  * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
  * points for raytraced lines.
  */
+
 void Game::recalculate_visibility_lines(int size) {
     IntPoint true_center = IntPoint(0, 0);
     std::vector<IntPoint> circle_points = bresenham_circle(true_center, size);

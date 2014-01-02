@@ -35,7 +35,7 @@ void GUI::OnRender()
             game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
         }
         TilePointerMatrix tm = game.get_canvas();
-        std::vector<TilePoint> tl = game.get_top_layer();
+        std::vector<Enemy> tl = game.get_vis_enemies();
         for(size_t i = 0; i < tm.size(); i++) {
             for(size_t j = 0; j < tm[i].size(); j++) {
                 //If the tile is visible, render it fully.
@@ -54,17 +54,21 @@ void GUI::OnRender()
             }
         }
 
-        //Draw enemies, etc.
+        //Draw enemies
         Tile current_tile;
         IntPoint current_point;
         for(size_t i = 0; i < tl.size(); i++) {
-            current_tile = tl[i].tile;
-            current_point = tl[i].loc;
+            IntPoint temp_chunk = IntPoint(tl[i].get_chunk_y(),tl[i].get_chunk_x());
+            IntPoint temp_coords = IntPoint(tl[i].get_y(), tl[i].get_x());
+            current_tile = tl[i].get_char();
+            current_point = game.get_vis_coords(temp_chunk, temp_coords);
             if(tm[current_point.row][current_point.col]->visible) {
                 drawChr(current_point.col, current_point.row,
                         current_tile.char_count, ascii, screen, current_tile.color);
             }
         }
+        //Draw Main Character.  Assume that it's always visible and always at the middle
+        drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
     }
 
     SDL_Flip(screen);
