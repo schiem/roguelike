@@ -82,14 +82,12 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    main_char = Main_Character(101, 50, 25, MAIN_CHAR, -1);
-    main_char_chunk.row = selected_chunk.row;
-    main_char_chunk.col = selected_chunk.col;
+    main_char = Main_Character(101, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1);
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
-    update_chunk_map(main_char_chunk);
-    update_buffer(main_char_chunk);
+    update_chunk_map(main_char.get_chunk());
+    update_buffer(main_char.get_chunk());
     recalculate_visibility_lines(15);
     refresh();
 
@@ -101,7 +99,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 }
 
 Chunk* Game::get_current_chunk() {
-    return &chunk_map[main_char_chunk.row][main_char_chunk.col];
+    return &chunk_map[main_char.get_chunk().row][main_char.get_chunk().col];
 }
 
 
@@ -122,7 +120,7 @@ const std::vector<std::vector<Tile*> >& Game::get_canvas() {
 IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     IntPoint temp;
     IntPoint abs = get_abs(chunk, coords);
-    IntPoint tl_abs = get_abs(main_char_chunk, IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
+    IntPoint tl_abs = get_abs(main_char.get_chunk(), IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
     temp = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
     return temp;
 }
@@ -136,7 +134,7 @@ std::vector<Enemy> Game::get_vis_enemies()
         IntPoint coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
         IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-        if(in_range(chunk, coords, main_char_chunk, main_char_coords, radius))
+        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
         {
             temp.push_back(enemy_list[i]);
         }
@@ -153,24 +151,15 @@ std::vector<Enemy> Game::get_vis_enemies()
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    struct TilePoint temp;
-    if(out_of_bounds(main_char.get_y(), main_char.get_x())) {
-        update_main_char_chunk();
-        update_chunk_map(main_char_chunk);
-        cout<<main_char_chunk<<endl;
-        update_buffer(main_char_chunk);
-    }
-        for(int i = 0; i < STARTING_HEIGHT; i++) {
-            for (int j = 0; j < STARTING_WIDTH; j++) {
-                int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
-                    (STARTING_HEIGHT/2) + i;
-                int buffer_tile_col = (STARTING_WIDTH + main_char.get_x()) -
-                    (STARTING_WIDTH/2) + j;
-                set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
-            }
+    for(int i = 0; i < STARTING_HEIGHT; i++) {
+        for (int j = 0; j < STARTING_WIDTH; j++) {
+            int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
+                (STARTING_HEIGHT/2) + i;
+            int buffer_tile_col = (STARTING_WIDTH + main_char.get_x()) -
+                (STARTING_WIDTH/2) + j;
+            set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
-        temp.tile = main_char.get_char();
-        temp.loc = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+    }
     draw_visibility_lines();
 }
 
@@ -185,8 +174,8 @@ void Game::run_spawners() {
     Spawner spawner;
 
     if(main_char.get_depth() == -1) {
-        for(int i=main_char_chunk.row-1;i<main_char_chunk.row+1;i++) {
-            for(int j=main_char_chunk.col-1;j<main_char_chunk.col+1;j++) {
+        for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
+            for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
 
                 spawner = chunk_map[i][j].get_spawner(main_char.get_depth());
                 if(spawner.should_spawn()) {
@@ -195,9 +184,9 @@ void Game::run_spawners() {
             }
         }
     } else {
-        spawner = chunk_map[main_char_chunk.row][main_char_chunk.col].get_spawner(main_char.get_depth());
+        spawner = chunk_map[main_char.get_chunk().row][main_char.get_chunk().col].get_spawner(main_char.get_depth());
         if(spawner.should_spawn()) {
-            enemy_list.push_back(spawner.spawn_creep(main_char_chunk.col, main_char_chunk.row));
+            enemy_list.push_back(spawner.spawn_creep(main_char.get_chunk().col, main_char.get_chunk().row));
         }
     }
 }
@@ -217,7 +206,14 @@ void Game::run_enemies() {
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
-            enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()));
+            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), IntPoint(20, 20)))
+            {
+                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()), &main_char);
+            }
+            else
+            {
+                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()), NULL);
+            }
         }
     }
 }
@@ -249,7 +245,7 @@ void Game::change_main_depth(int direction) {
     }
 
     //Dungeon FOV is shorter than overworld FOV
-    update_buffer(main_char_chunk);
+    update_buffer(main_char.get_chunk());
     if(main_char.get_depth() >= 0) {
         recalculate_visibility_lines(10);
     }
@@ -257,21 +253,35 @@ void Game::change_main_depth(int direction) {
 
 void Game::move_main_char(int col_change, int row_change) {
     undo_visibility();
+    
     int row = main_char.get_y();
     int col = main_char.get_x();
-    int next_col = STARTING_WIDTH/2 + col_change;
-    int next_row = STARTING_HEIGHT/2 + row_change;
-    if(canvas[next_row][next_col]->can_be_moved_through)
+    int next_col = main_char.get_x() + col_change;
+    int next_row = main_char.get_y() + row_change;
+
+
+    IntPoint new_chunk = IntPoint(main_char.get_chunk_y() + (next_row>=STARTING_HEIGHT) - (next_row<0), main_char.get_chunk_x() + (next_col>=STARTING_WIDTH) - (next_col<0));
+    
+    next_col = next_col +  (STARTING_WIDTH * (next_col<0)) - (STARTING_WIDTH * (next_col>=STARTING_WIDTH));
+    next_row = next_row +  (STARTING_HEIGHT * (next_row<0)) - (STARTING_HEIGHT * (next_row>=STARTING_HEIGHT));
+    
+    if(chunk_map[new_chunk.row][new_chunk.col].get_tile(main_char.get_depth(), next_row, next_col)->can_be_moved_through)
     {
-        col += col_change;
-        row += row_change;
+        col = next_col;
+        row = next_row;
         main_char.set_x(col);
         main_char.set_y(row);
+        if(main_char.get_chunk() != new_chunk)
+        {
+            main_char.set_chunk(new_chunk);
+            update_chunk_map(main_char.get_chunk());
+            cout<<main_char.get_chunk()<<endl;
+            update_buffer(main_char.get_chunk());
+
+        }
     }
 
-    //There has to be a better way to this...
-    //There is TODO
-    refresh();
+    
 }
 
 
@@ -355,8 +365,8 @@ bool Game::out_of_bounds(int row, int col) {
  * POST: Returns whether or not the chunk is currently in the buffer.
  */
 bool Game::in_buffer(int x, int y) {
-    bool is_x = (x>=main_char_chunk.col-1 && x<=main_char_chunk.col+1);
-    bool is_y = (y>=main_char_chunk.row-1 && y<=main_char_chunk.row+1);
+    bool is_x = (x>=main_char.get_chunk().col-1 && x<=main_char.get_chunk().col+1);
+    bool is_y = (y>=main_char.get_chunk().row-1 && y<=main_char.get_chunk().row+1);
     return (is_x && is_y);
 }
 
@@ -384,26 +394,26 @@ bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPo
 /*
  * PRE: TODO
  * POST: TODO
- */
 void Game::update_main_char_chunk() {
     int mc_row = main_char.get_y();
     int mc_col = main_char.get_x();
     if (mc_col < 0 ) {
-        main_char_chunk.col -= 1;
+        main_char.get_chunk().col -= 1;
         main_char.set_x(STARTING_WIDTH-1);
     } else if (mc_col >= STARTING_WIDTH) {
-        main_char_chunk.col += 1;
+        main_char.get_chunk().col += 1;
         main_char.set_x(0);
     }
 
     if(mc_row < 0) {
-        main_char_chunk.row -= 1;
+        main_char.get_chunk().row -= 1;
         main_char.set_y(STARTING_HEIGHT-1);
     } else if (mc_row >= STARTING_HEIGHT) {
-        main_char_chunk.row += 1;
+        main_char.get_chunk().row += 1;
         main_char.set_y(0);
     }
 }
+*/
 
 /*
  * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
@@ -417,7 +427,7 @@ IntPoint Game::get_abs(IntPoint chunk, IntPoint coords) {
 }
 
 IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
-    IntPoint tl_buffer = get_abs(IntPoint(main_char_chunk.row-1, main_char_chunk.col-1), IntPoint(0, 0));
+    IntPoint tl_buffer = get_abs(IntPoint(main_char.get_chunk().row-1, main_char.get_chunk().col-1), IntPoint(0, 0));
     IntPoint abs = get_abs(chunk, coords);
     return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
 }

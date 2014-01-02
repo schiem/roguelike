@@ -23,6 +23,8 @@
 #include <terrain_defs.h>
 #include <ASCII_Lib.h>
 #include <def.h>
+#include <iostream>
+#include <int_point.h>
 class Character
 {
     protected:
@@ -36,23 +38,32 @@ class Character
         Tile sprite;
         int armor;
         int depth;
+        IntPoint chunk;
         Tile underfoot;
+        
         //methods
 
     public:
         Character();
-        Character(int, int, int, Tile, int);
-        Character(int, int, int);
+        Character(int, int, int, Tile, int, int, int);
+        Character(int, int, int, int, int);
         bool is_alive() const;
         void take_damage(int);
         void attack(int x_direction, int y_direction);
         int get_x();
         int get_y();
+        IntPoint get_chunk();
+        int get_chunk_x();
+        int get_chunk_y();
         Tile get_char();
         int get_depth();
         void set_x(int);
         void set_y(int);
+        void set_chunk(IntPoint);
+        void set_chunk_x(int);
+        void set_chunk_y(int);
         void set_depth(int);
+        
         Tile* get_underfoot();
         //terrain get_surroundings
 
@@ -65,7 +76,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, Tile, int);
+        Main_Character(int, int, int, Tile, int, int, int);
 };
 
 #endif

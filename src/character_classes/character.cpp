@@ -18,7 +18,6 @@
  */
 
 #include <character.h>
-#include <iostream>
 
 Character::Character() {
 
@@ -28,22 +27,25 @@ Character::Character() {
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _depth) {
+Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y,  int _depth) {
     current_health = _max_health;
     max_health = _max_health;
     x = _x;
     y = _y;
     sprite = _sprite;
+    cout<<_chunk_y<<", "<<_chunk_x<<endl;
+    chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
 }
 
 /*
  * Constructor for the enemy class
  */
-Character::Character(int _x, int _y, int _depth)
+Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
 {
     x = _x;
     y = _y;
+    chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
 }
 
@@ -91,6 +93,37 @@ int Character::get_x() {
 int Character::get_y() {
     return y;
 }
+
+int Character::get_chunk_x()
+{
+    return chunk.col;
+}
+
+int Character::get_chunk_y()
+{
+    return chunk.row;
+}
+
+IntPoint Character::get_chunk()
+{
+    return chunk;
+}
+
+void Character::set_chunk(IntPoint _chunk)
+{
+    chunk = _chunk;
+}
+
+void Character::set_chunk_x(int _chunk_x)
+{
+    chunk.col = _chunk_x;
+}
+
+void Character::set_chunk_y(int _chunk_y)
+{
+    chunk.row = _chunk_y;
+}
+
 
 Tile Character::get_char() {
     return sprite;

@@ -25,6 +25,6 @@ Main_Character::Main_Character() {
 }
 
 Main_Character::Main_Character(int _max_health, int _x, int _y,
-                               Tile _sprite,  int _depth) :
-    Character(_max_health, _x, _y,  _sprite, _depth){
+                               Tile _sprite,  int _chunk_x, int _chunk_y , int _depth) :
+    Character(_max_health, _x, _y,  _sprite, _chunk_x, _chunk_y, _depth){
 }
