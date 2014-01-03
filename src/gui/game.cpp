@@ -22,6 +22,7 @@
 using namespace std;
 using namespace tiledef;
 using namespace enemies;
+using namespace map_tile;
 /*
 Explanation of how the screen works: There is a chunk map, which holds all of
 the chunks.  We need a way to go from chunk->screen.  However, since we always
@@ -174,25 +175,28 @@ void Game::refresh() {
  */
 void Game::run_spawners() {
     Spawner spawner;
-
+    Chunk* chunk;
+    IntPoint chunk_coords;
     if(main_char.get_depth() == -1) {
         for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
             for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
-
-                spawner = chunk_map[i][j].get_spawner(main_char.get_depth());
-                if(spawner.should_spawn()) {
-                    enemy_list.push_back(spawner.spawn_creep(j, i));
+                chunk = &chunk_map[i][j];
+                chunk_coords = IntPoint(j, i);
+                if(chunk->get_depth()>=main_char.get_depth())
+                {
+                    if(chunk->get_type() == MAP_DEFAULT)
+                     {
+                        spawner = chunk->get_spawner(main_char.get_depth());
+                        if(spawner.should_spawn()) {
+                            enemy_list.push_back(spawner.spawn_creep(chunk_coords.row, chunk_coords.col));
+                        }
+                     }
                 }
             }
         }
-    } else {
-        spawner = chunk_map[main_char.get_chunk().row][main_char.get_chunk().col].get_spawner(main_char.get_depth());
-        if(spawner.should_spawn()) {
-            enemy_list.push_back(spawner.spawn_creep(main_char.get_chunk().col, main_char.get_chunk().row));
-        }
     }
 }
-
+//holy braces
 /* PRE: None
  * POST: Iterates through the enemy list.  For each enemy, it checks to see if
  * it is in the current buffer.  If not, it deletes it.  It then checks to see if

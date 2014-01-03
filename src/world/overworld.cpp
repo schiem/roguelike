@@ -40,7 +40,7 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
-
+    
     down_stair.col = rand() % width;
     down_stair.row = rand() % height;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));

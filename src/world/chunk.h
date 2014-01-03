@@ -48,6 +48,7 @@ class Chunk{
     private:
         bool initialized;
         int depth;
+        MapTile type;
         //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
@@ -77,6 +78,7 @@ class Chunk{
         void dungeon_dump(int);
         void serialize(int, int);
         void deserialize(string, int, int);
+        MapTile get_type();
 };
 
 #endif

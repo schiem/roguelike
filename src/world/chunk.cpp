@@ -28,7 +28,7 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type,
         int world_row, int world_col) {
 
     //string exists = find_serialized_chunk(world_row, world_col);
-
+    type = tile_type;
     initialized = true;
     width = _width;
     height= _height;
@@ -167,6 +167,11 @@ int Chunk::get_depth() const {
 
 bool Chunk::is_initialized() const {
     return initialized;
+}
+
+MapTile Chunk::get_type()
+{
+    return type;
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
