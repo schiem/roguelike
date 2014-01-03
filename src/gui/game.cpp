@@ -177,26 +177,19 @@ void Game::run_spawners() {
     Spawner spawner;
     Chunk* chunk;
     IntPoint chunk_coords;
-    if(main_char.get_depth() == -1) {
-        for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
-            for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
-                chunk = &chunk_map[i][j];
-                chunk_coords = IntPoint(j, i);
-                if(chunk->get_depth()>=main_char.get_depth())
-                {
-                    if(chunk->get_type() == MAP_DEFAULT)
-                     {
-                        spawner = chunk->get_spawner(main_char.get_depth());
-                        if(spawner.should_spawn()) {
-                            enemy_list.push_back(spawner.spawn_creep(chunk_coords.row, chunk_coords.col));
-                        }
-                     }
+    for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
+        for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
+            chunk = &chunk_map[i][j];
+            if(chunk->get_depth()>=main_char.get_depth() && chunk->get_type() == MAP_DEFAULT)
+            {
+                spawner = chunk->get_spawner(main_char.get_depth());
+                if(spawner.should_spawn()) {
+                    enemy_list.push_back(spawner.spawn_creep(j, i));
                 }
             }
         }
     }
 }
-//holy braces
 /* PRE: None
  * POST: Iterates through the enemy list.  For each enemy, it checks to see if
  * it is in the current buffer.  If not, it deletes it.  It then checks to see if
@@ -208,7 +201,6 @@ void Game::run_enemies() {
         enemy = &enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-        cout<<enem_chunk<<":::"<<enem_coords<<endl;
         
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);

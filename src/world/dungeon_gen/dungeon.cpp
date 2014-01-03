@@ -217,20 +217,23 @@ void Dungeon::dungeon_dump()
         {
             tile = dungeon[row][col].tile_id;
             switch(tile){
-                case 1:
+                case 2:
                     cout<<".";
                     break;
-                case 2:
+                case 4:
                     cout<<"#";
                     break;
-                case 7:
+                case 12:
                     cout<<"#";
                     break;
-                case 8:
+                case 13:
                     cout<<"d";
                     break;
-                case 9:
+                case 30:
                     cout<<"u";
+                    break;
+                case 16:
+                    cout<<"S";
                     break;
                 default:
                     cout<<" ";
