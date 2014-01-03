@@ -26,6 +26,7 @@
 #include <chunk.h>
 #include <virtual_event.h>
 #include <game.h>
+#include <main_menu.h>
 #include <terrain_defs.h>
 #include <world_map.h>
 #include <world_map_gui.h>
@@ -36,15 +37,22 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        //This is by no means a good system. Just temporary.
-        static int const MAP_SCREEN = 0;
-        static int const GAME_SCREEN = 1;
+        enum Screen {
+            MENU_SCREEN,
+            MAP_SCREEN,
+            GAME_SCREEN
+        };
+
+        static const int STARTING_WIDTH = 100;
+        static const int STARTING_HEIGHT = 50;
 
         bool running;
-        int current_screen;
+        Screen current_screen;
 
         WorldMapGUI world_map_gui;
+        MainMenu main_menu;
         Game game;
+
         SDL_Event event;
         SDL_Surface* screen;
         SDL_Surface* asciiBase;

@@ -19,17 +19,26 @@
 
 #include <gui.h>
 
-void GUI::OnRender()
-{
-    if(current_screen == MAP_SCREEN) {
+void GUI::OnRender() {
+    if(current_screen == MENU_SCREEN) {
+        main_menu.render(ascii, screen);
+        if(main_menu.is_done_selecting()) {
+            int selection = main_menu.get_selection();
+            //Here, compare the selection to NEW_GAME or LOAD_GAME.
+            current_screen = MAP_SCREEN;
+        }
+
+    } else if(current_screen == MAP_SCREEN) {
         std::vector<std::vector<MapTile> > map_canvas = world_map_gui.get_canvas();
         for(size_t i = 0; i < map_canvas.size(); i++) {
             for(size_t j = 0; j < map_canvas[i].size(); j++) {
                 drawChr(j, i, map_canvas[i][j].char_count, ascii, screen, map_canvas[i][j].color);
             }
         }
-        drawStr(0, 48, "Use the arrow keys to move the cursor.", ascii, screen, WHITE);
-        drawStr(0, 49, "Press ENTER to spawn on the selected map tile.", ascii, screen, WHITE);
+        drawStr(0, 48, std::string("Use the arrow keys to move the cursor.").c_str(),
+                ascii, screen, WHITE);
+        drawStr(0, 49, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
+                ascii, screen, WHITE);
     } else {
         if(!game.is_initialized()) {
             game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());

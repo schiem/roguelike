@@ -27,7 +27,7 @@ void drawChr(int x, int y, int smiley, SDL_Surface* source, SDL_Surface* destina
 
 
 
-void drawStr(int x, int y, char s[], SDL_Surface* source, SDL_Surface* destination, Uint32 color) {
+void drawStr(int x, int y, const char s[], SDL_Surface* source, SDL_Surface* destination, Uint32 color) {
     size_t i;
     for ( i = 0; i < strlen(s); i++) {
         drawChr( x+i, y, s[i], source, destination, color);

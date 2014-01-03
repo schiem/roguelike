@@ -19,8 +19,11 @@
 
 #include <gui.h>
 
-GUI::GUI() : world_map_gui(50,80) {
-    current_screen = MAP_SCREEN;
+GUI::GUI() : world_map_gui(100, 50),
+             main_menu(100, 50),
+             game(100, 50) {
+
+    current_screen = MENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;

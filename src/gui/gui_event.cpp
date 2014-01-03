@@ -75,7 +75,9 @@ void GUI::perform_action_press(SDLKey key) {
     //remember that 'const' is left-binding.
     switch (key) {
         case SDLK_RETURN:
-            if(current_screen == MAP_SCREEN) {
+            if(current_screen == MENU_SCREEN) {
+                main_menu.make_selection();
+            } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
             }
             break;
@@ -95,7 +97,27 @@ void GUI::perform_action_cont() {
     SDL_PumpEvents();
     Uint8* keystate = SDL_GetKeyState(NULL);
 
-    if(current_screen == GAME_SCREEN) {
+    if (current_screen == MENU_SCREEN) {
+        if(keystate[SDLK_UP]) {
+            main_menu.move_selection(-1);
+        }
+        if(keystate[SDLK_DOWN]) {
+            main_menu.move_selection(1);
+        }
+    } else if (current_screen == MAP_SCREEN) {
+        if(keystate[SDLK_LEFT]){
+            world_map_gui.move_cursor(-1, 0);
+        }
+        if(keystate[SDLK_RIGHT]){
+            world_map_gui.move_cursor(1, 0);
+        }
+        if(keystate[SDLK_UP]){
+            world_map_gui.move_cursor(0, -1);
+        }
+        if(keystate[SDLK_DOWN]){
+            world_map_gui.move_cursor(0, 1);
+        }
+    } else if(current_screen == GAME_SCREEN) {
         //THIS IS IMPORTANT, as it it turns out.
         if(game.is_initialized()) {
             if(keystate[SDLK_LEFT]){
@@ -110,19 +132,6 @@ void GUI::perform_action_cont() {
             if(keystate[SDLK_DOWN]){
                 game.move_main_char(0, 1);
             }
-        }
-    } else if (current_screen == MAP_SCREEN) {
-        if(keystate[SDLK_LEFT]){
-            world_map_gui.move_cursor(-1, 0);
-        }
-        if(keystate[SDLK_RIGHT]){
-            world_map_gui.move_cursor(1, 0);
-        }
-        if(keystate[SDLK_UP]){
-            world_map_gui.move_cursor(0, -1);
-        }
-        if(keystate[SDLK_DOWN]){
-            world_map_gui.move_cursor(0, 1);
         }
     }
 }

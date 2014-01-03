@@ -20,9 +20,6 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
-#define STARTING_WIDTH 100
-#define STARTING_HEIGHT 50
-
 #include <stdlib.h>
 #include <vector>
 #include <assert.h>
@@ -52,6 +49,8 @@ class Game
 
     private:
         //BASE Data/Models
+        int STARTING_WIDTH;
+        int STARTING_HEIGHT;
         bool initialized;
         MapTileMatrix world_map;
         ChunkMatrix chunk_map;
@@ -91,7 +90,7 @@ class Game
         //ENEMY Functionality
 
 public:
-        Game();
+        Game(int, int);
         void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models

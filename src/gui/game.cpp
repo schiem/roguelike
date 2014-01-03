@@ -62,7 +62,9 @@ taken from the buffer with the character at the center.
 /* ========= PUBLIC METHODS ==========*/
 
 /*--------------------Base Model Functions--------------------------*/
-Game::Game() {
+Game::Game(int w, int h) {
+    STARTING_WIDTH = w;
+    STARTING_HEIGHT = h;
     initialized = false;
     enemy_list = std::vector<Enemy>();
 }
