@@ -204,7 +204,8 @@ void Game::run_enemies() {
         enemy = &enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-
+        cout<<enem_chunk<<":::"<<enem_coords<<endl;
+        
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
@@ -393,29 +394,6 @@ bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPo
     return (is_x && is_y);
 }
 
-/*
- * PRE: TODO
- * POST: TODO
-void Game::update_main_char_chunk() {
-    int mc_row = main_char.get_y();
-    int mc_col = main_char.get_x();
-    if (mc_col < 0 ) {
-        main_char.get_chunk().col -= 1;
-        main_char.set_x(STARTING_WIDTH-1);
-    } else if (mc_col >= STARTING_WIDTH) {
-        main_char.get_chunk().col += 1;
-        main_char.set_x(0);
-    }
-
-    if(mc_row < 0) {
-        main_char.get_chunk().row -= 1;
-        main_char.set_y(STARTING_HEIGHT-1);
-    } else if (mc_row >= STARTING_HEIGHT) {
-        main_char.get_chunk().row += 1;
-        main_char.set_y(0);
-    }
-}
-*/
 
 /*
  * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint

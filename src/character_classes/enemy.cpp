@@ -51,7 +51,7 @@ void Enemy::move(int x_change, int y_change)
     }
     if(x>=CHUNK_WIDTH)
     {
-        x-=CHUNK_WIDTH;
+        x-=CHUNK_WIDTH - 1;
         chunk.col++;
     }
     if(y<0)
@@ -61,7 +61,7 @@ void Enemy::move(int x_change, int y_change)
     }
     if(y>=CHUNK_HEIGHT)
     {
-        y -= CHUNK_HEIGHT;
+        y -= CHUNK_HEIGHT-1;
         chunk.row++;
     }
 }
