@@ -137,7 +137,7 @@ std::vector<Enemy> Game::get_vis_enemies()
         IntPoint coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
         IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
+        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) && enemy_list[i].get_depth() == main_char.get_depth())
         {
             temp.push_back(enemy_list[i]);
         }
