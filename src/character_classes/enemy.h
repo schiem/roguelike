@@ -30,7 +30,8 @@
 
 struct ATile
 {
-    //ATile parent;
+    //my own jenky-ass linked list
+    int parent;
     IntPoint coords;
     int f;
     int g;
@@ -40,9 +41,9 @@ struct ATile
         g = -1;
         h = -1;
         }
-    ATile(IntPoint _coords)
+    ATile(int _parent, IntPoint _coords)
     {
-        //parent = _parent;
+        parent = _parent;
         coords = _coords;
         f = 0;
         g = 0;
