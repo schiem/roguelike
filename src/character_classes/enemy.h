@@ -30,7 +30,7 @@
 
 struct ATile
 {
-    ATile* parent;
+    //ATile parent;
     IntPoint coords;
     int f;
     int g;
@@ -40,9 +40,9 @@ struct ATile
         g = -1;
         h = -1;
         }
-    ATile(ATile *_parent, IntPoint _coords)
+    ATile(IntPoint _coords)
     {
-        parent = _parent;
+        //parent = _parent;
         coords = _coords;
         f = 0;
         g = 0;
@@ -72,6 +72,7 @@ class Enemy : public Character
         void run_ai(TileMatrix, Character*);
         void set_depth(int);
         int get_id();
+        void dump_matrix(TileMatrix&);
 };
 
 #endif
