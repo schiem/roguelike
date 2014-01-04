@@ -29,7 +29,7 @@ WorldMap::WorldMap(int h, int w) {
     srand(time(NULL));
     height = h;
     width = w;
-    map = std::vector<std::vector<MapTile> >(height, 
+    map = std::vector<std::vector<MapTile> >(height,
             std::vector<MapTile>(width));
 
     generate_land_mass();
@@ -60,7 +60,7 @@ bool WorldMap::out_of_bounds(int row, int col) {
  * into water, and vice versa. :int mod: is used to decide how likely it is that
  * the tile will change.
  */
-void WorldMap::set_land_or_water(int row, int col, 
+void WorldMap::set_land_or_water(int row, int col,
                                  int mod, bool more_water) {
     if(more_water) {
         if(rand() % mod == 0) {
@@ -111,7 +111,7 @@ void WorldMap::ocean_borders(int border) {
  * POST: Will return the number of occurences of tiles of type :tile_type: in
  * the tiles surrounding the given point.
  */
-int WorldMap::count_in_surrounding_tiles(int row, int col, 
+int WorldMap::count_in_surrounding_tiles(int row, int col,
                                         MapTile tile_type) {
     int num = 0;
     int newrow, newcol;
@@ -208,8 +208,8 @@ void WorldMap::generate_land_mass() {
         smoothing_pass(map_tile::MAP_WATER, 2);
     }
     smoothing_pass(map_tile::MAP_DEFAULT, 2);
-    for(int i = 0; i < 9; i++) {
-        smoothing_pass(map_tile::MAP_DEFAULT, 4);
+    for(int i = 0; i < 12; i++) {
+        smoothing_pass(map_tile::MAP_DEFAULT, 3);
     }
 }
 
