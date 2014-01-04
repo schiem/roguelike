@@ -45,9 +45,9 @@ namespace tiledef {
 }
 
 namespace map_tile {
-    MapTile MAP_DEFAULT = {146, GREEN, 1};
-    MapTile MAP_WATER = {247, BLUE, 2};
-    MapTile MAP_BEACH = {146, TAN, 3};
+    MapTile MAP_DEFAULT = {240, DARK_GREEN, 1};
+    MapTile MAP_WATER = {247, DARK_BLUE, 2};
+    MapTile MAP_BEACH = {178, TAN, 3};
     MapTile CURSOR = {88, WHITE, 4};
 }
 

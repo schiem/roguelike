@@ -35,6 +35,7 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 
 #define YELLOW 16776960
 #define BLUE 255
+#define DARK_BLUE 128
 #define RED 16711680
 #define GREEN 65280
 #define WHITE 16777215
