@@ -198,18 +198,18 @@ void WorldMap::generate_land_mass() {
     cout<<height<<" "<<width<<endl;
 
     //Tweaking any values here can give vastly different results.
-    for(int i = 0; i < 19; i++) {
+    for(int i = 0; i < 15; i++) {
         smoothing_pass(map_tile::MAP_WATER, 4);
     }
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < 17; i++) {
         smoothing_pass(map_tile::MAP_DEFAULT, 3);
     }
-    for(int i = 0; i < 7; i++) {
-        smoothing_pass(map_tile::MAP_WATER, 4);
+    for(int i = 0; i < 17; i++) {
+        smoothing_pass(map_tile::MAP_WATER, 2);
     }
     smoothing_pass(map_tile::MAP_DEFAULT, 2);
-    for(int i = 0; i < 4; i++) {
-        smoothing_pass(map_tile::MAP_DEFAULT, 3);
+    for(int i = 0; i < 9; i++) {
+        smoothing_pass(map_tile::MAP_DEFAULT, 4);
     }
 }
 
