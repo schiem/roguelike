@@ -81,7 +81,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    chunk_map[selected_chunk.row][selected_chunk.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, 
+    chunk_map[selected_chunk.row][selected_chunk.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT,
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
@@ -201,7 +201,7 @@ void Game::run_enemies() {
         enemy = &enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-        
+
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
@@ -252,7 +252,7 @@ void Game::change_main_depth(int direction) {
 
 void Game::move_main_char(int col_change, int row_change) {
     undo_visibility();
-    
+
     int row = main_char.get_y();
     int col = main_char.get_x();
     int next_col = main_char.get_x() + col_change;
@@ -260,10 +260,10 @@ void Game::move_main_char(int col_change, int row_change) {
 
 
     IntPoint new_chunk = IntPoint(main_char.get_chunk_y() + (next_row>=STARTING_HEIGHT) - (next_row<0), main_char.get_chunk_x() + (next_col>=STARTING_WIDTH) - (next_col<0));
-    
+
     next_col = next_col +  (STARTING_WIDTH * (next_col<0)) - (STARTING_WIDTH * (next_col>=STARTING_WIDTH));
     next_row = next_row +  (STARTING_HEIGHT * (next_row<0)) - (STARTING_HEIGHT * (next_row>=STARTING_HEIGHT));
-    
+
     if(chunk_map[new_chunk.row][new_chunk.col].get_tile(main_char.get_depth(), next_row, next_col)->can_be_moved_through)
     {
         col = next_col;
@@ -280,7 +280,7 @@ void Game::move_main_char(int col_change, int row_change) {
         }
     }
 
-    
+
 }
 
 
@@ -377,12 +377,12 @@ bool Game::in_buffer(int x, int y) {
  */
 bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius) {
     IntPoint abs = get_abs(chunk, coords);
-    IntPoint tl_abs = get_abs(range_chunk, 
-            IntPoint(center.row - radius.row, 
+    IntPoint tl_abs = get_abs(range_chunk,
+            IntPoint(center.row - radius.row,
                 center.col - radius.col));
 
-    IntPoint br_abs = get_abs(range_chunk, 
-            IntPoint(center.row + radius.row, 
+    IntPoint br_abs = get_abs(range_chunk,
+            IntPoint(center.row + radius.row,
                 center.col + radius.col));
 
     bool is_x = (abs.col>=tl_abs.col && abs.col<br_abs.col);
@@ -406,7 +406,7 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
     TileMatrix surroundings = TileMatrix(40, std::vector<Tile>(40));
     Tile new_tile;
     IntPoint buffer_coords = get_buffer_coords(_chunk, _coords);
-    
+
     for(int row=buffer_coords.row-20;row<buffer_coords.row+20;row++) {
         for(int col=buffer_coords.col-20;col<buffer_coords.col+20;col++) {
 
@@ -518,7 +518,7 @@ void Game::update_chunk_map(IntPoint central_chunk) {
             //check to ensure that the chunk we're about to operate on is
             //initialized.  If not, initialize it.
             if (chunk_map[row][col].is_initialized() == false) {
-                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT, 
+                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT,
                                              world_map[row][col], row, col);
                 chunk_map[row][col].serialize(row, col);
             }

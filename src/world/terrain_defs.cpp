@@ -26,13 +26,11 @@ namespace tiledef {
     Tile ROOM_WALL = {219, 4, GRAY, false, false, true, false};
     Tile EMPTY = {0, 5, 0, true, false, false, false};
     Tile PATH = {250, 6, BROWN, true, false, false, false};
-    //Tile PATH = DIRT;
     Tile MAIN_CHAR = {1, 7, DARK_RED, true, true, false, false};
     Tile MAIN_CHAR2 = {1, 8, DARK_GREEN, true, true, false, false};
     Tile MAIN_CHAR3 = {1, 9, BROWN, true, true, false, false};
     Tile MAIN_CHAR4 = {1, 10, GRAY, true, true, false, false};
     Tile TREE = {84, 11, DARK_GREEN, false, false, true, false};
-    //Tile BLOCK_WALL = {177, 7, GRAY, false, false, true, false};
     Tile BLOCK_WALL = {219, 12, GRAY, false, false, true, false};
     Tile DOWN_STAIR = {31, 13, GRAY, true, false, false, false};
     Tile UP_STAIR = {30, 14, GRAY, true, false, false, false};

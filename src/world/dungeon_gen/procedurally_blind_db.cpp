@@ -71,19 +71,19 @@ ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height, int seed) {
  * POST: Will build a good starting room in the dungeon space
  */
 void ProcedurallyBlindDB::build_start_room() {
-    int room_width = rand() % ROOM_WIDTH_DEV + 
+    int room_width = rand() % ROOM_WIDTH_DEV +
                              (STD_ROOM_WIDTH - (int)(ROOM_WIDTH_DEV/2));
     int room_height = rand() % ROOM_WIDTH_DEV +
                              (STD_ROOM_HEIGHT - (int)(ROOM_HEIGHT_DEV/2));
-    IntPoint starting_point = find_viable_starting_point(STD_ROOM_WIDTH, 
+    IntPoint starting_point = find_viable_starting_point(STD_ROOM_WIDTH,
                                                         STD_ROOM_HEIGHT);
-    IntPoint br = IntPoint(starting_point.row + (room_height + 1), 
+    IntPoint br = IntPoint(starting_point.row + (room_height + 1),
                            starting_point.col + (room_width + 1));
     build_room(starting_point, br);
 }
 
 /* PRE: Will be given :IntPoint the_point:
- * POST: Will find and return a viable room space, or a room with 
+ * POST: Will find and return a viable room space, or a room with
  *       tl.row, tl.col, br.row, br.col = '-1' if there is no viable space.
  */
 Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
@@ -117,7 +117,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     int min_room_height = STD_ROOM_HEIGHT - (ROOM_HEIGHT_DEV / 2);
 
     //create a room centered around the end of the path. floor() and ceil() derived from math.h.
-    Room test_room = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)), 
+    Room test_room = Room(IntPoint((the_point.row - (int) ceil(min_room_height / 2.0)),
                            (the_point.col - (int) ceil(min_room_width / 2.0) + 1)),
                   IntPoint((the_point.row + (int) floor(min_room_height / 2.0) + 1),
                            (the_point.col + (int) floor(min_room_width / 2.0))));
@@ -136,7 +136,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     int lower_bound = 1;
     int left_bound = 1;
     int right_bound = 1;
-    
+
     //Here, we should have a test_room that doesn't collide with things.
     int max_room_width = STD_ROOM_WIDTH + (ROOM_WIDTH_DEV / 2);
     int max_room_height = STD_ROOM_HEIGHT + (ROOM_HEIGHT_DEV / 2);
@@ -144,7 +144,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     //until each rectangle edge is unable to grow any more:
     while ((test_room.br.col - test_room.tl.col < max_room_width) &&
            (test_room.br.row - test_room.tl.row < max_room_height) &&
-           (upper_bound + lower_bound + left_bound + right_bound > 0)) { 
+           (upper_bound + lower_bound + left_bound + right_bound > 0)) {
         //move the edges out
         test_room.tl.row -= upper_bound;
         test_room.tl.col -= left_bound;
@@ -187,15 +187,15 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
      *          -get a right column somewhere between (the larger value of:
      *          (left room column + MIN_ROOM_WIDTH), the path column) and the
      *          right wall
-     *            
+     *
      *          -get a top row somewhere between the top wall and (the lesser
      *          value of: (the bottom wall row - MIN_ROOM_HEIGHT),the path row)
      *
      *          -get a bottom row somewhere between (the larger value of: (top
-     *          room row + MIN_ROOM_HEIGHT), the path row) and the bottom wall 
-     * 
+     *          room row + MIN_ROOM_HEIGHT), the path row) and the bottom wall
+     *
      */
-    
+
     //I am using the same variables, but for an entirely different purpose...
     //call the cops.
     int left_column_right_bound = min((test_room.br.col - min_room_width), the_point.col);
@@ -226,7 +226,7 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
 
 }
 
-/* PRE: 
+/* PRE:
  * POST: Will find a good starting point for a procedurally-blind dungeon
  */
 IntPoint ProcedurallyBlindDB::find_viable_starting_point(int std_width, int std_height) const {
@@ -288,7 +288,7 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
             }
             tries++;
         } while((bad_direction) && tries < 4);
-        
+
         current_point = potential_point;
     }
     return current_point;
@@ -302,7 +302,7 @@ IntPoint ProcedurallyBlindDB::build_path(IntPoint start, int direction)
  * POST: Builds a procedurally-blind dungeon in the dungeon floor (in which a
  * room is built near the center, and rooms and hallways crawl off of that room.
  */
-void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {   
+void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
     reset();
     bool dungeon_is_awesome;
     build_start_room();
@@ -330,7 +330,7 @@ void ProcedurallyBlindDB::build_dungeon(int target, int deviation) {
  * POST: Builds the dungeon by finding 0 to 2 viable wall blocks in the given
  * room, building paths outward from those wall blocks, and (often) building
  * rooms at the end of those paths. Every time a new room is built, the function
- * is called again with that room's index passed as :int current_room_num:. 
+ * is called again with that room's index passed as :int current_room_num:.
  *
  */
 void ProcedurallyBlindDB::build_dungeon_recursive(int target, int deviation)
