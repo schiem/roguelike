@@ -25,6 +25,30 @@
 #include <enemy_defs.h>
 #include <string>
 #include <vector>
+#include <helper.h>
+
+
+struct ATile
+{
+    ATile* parent;
+    IntPoint coords;
+    int f;
+    int g;
+    int h;
+    ATile(){
+        f = -1;
+        g = -1;
+        h = -1;
+        }
+    ATile(ATile *_parent, IntPoint _coords)
+    {
+        parent = _parent;
+        coords = _coords;
+        f = 0;
+        g = 0;
+        h = 0;
+    }
+};
 
 class Enemy : public Character
 {
@@ -34,7 +58,13 @@ class Enemy : public Character
         std::string name;
         void run_kobold_ai(TileMatrix&, Character*);
         void move(int, int);
-
+        IntPoint get_cur_coords(IntPoint, IntPoint);
+        IntPoint get_next_step(IntPoint, TileMatrix&);
+        int is_in(IntPoint, std::vector<ATile>);
+        std::vector<IntPoint> a_star(IntPoint, IntPoint, TileMatrix&);
+        int manhattan(IntPoint, IntPoint);
+        int get_smallest_f(std::vector<ATile>&);
+        IntPoint get_sur_coords(IntPoint, IntPoint);
     public:
         Enemy();
         Enemy(int, int, int, Tile, int, int, int, std::string);

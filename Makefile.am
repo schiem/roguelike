@@ -27,7 +27,8 @@ roguelike_SOURCES = \
 	src/main.cpp\
 	src/misc_classes/int_point.cpp\
 	src/misc_classes/bresenham.cpp\
-	src/character_classes/main_character.cpp\
+	src/misc_classes/helper.cpp\
+    src/character_classes/main_character.cpp\
 	src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
     src/character_classes/enemy_defs.cpp\
@@ -55,7 +56,8 @@ roguelike_SOURCES = \
 	\
 	src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
-	src/character_classes/character.h\
+	src/misc_classes/helper.h\
+    src/character_classes/character.h\
     src/character_classes/enemy_defs.h\
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\

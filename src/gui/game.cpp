@@ -391,17 +391,6 @@ bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPo
 }
 
 
-/*
- * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
- * representing coordinates within that chunk.
- * POST: Returns and IntPoint containing the absolute coordinates, i.e. the
- * coordinates there were no chunks.
- */
-IntPoint Game::get_abs(IntPoint chunk, IntPoint coords) {
-    return IntPoint(chunk.row * STARTING_HEIGHT + coords.row, 
-            chunk.col * STARTING_WIDTH + coords.col);
-}
-
 IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
     IntPoint tl_buffer = get_abs(IntPoint(main_char.get_chunk().row-1, main_char.get_chunk().col-1), IntPoint(0, 0));
     IntPoint abs = get_abs(chunk, coords);

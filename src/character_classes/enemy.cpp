@@ -80,17 +80,16 @@ void Enemy::run_ai(TileMatrix surroundings, Character* main_char)
 
 void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 {
-    //I need a radius variable for how big the surroundings should be
-    //but I'm not quite sure where to put it.  For now, I'll just code
-    //one in.
+    int radius = 20;
+    //if the main_char is in the visible region 
     if(main_char != NULL)
     {
-        //IntPoint main_coords = get_sur_coords(main_char->
-        //IntPoint next_step = get_next_step(
+        //IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
+        //IntPoint next_step = get_next_step(main_coords, surroundings);
+        //move(next_step.col-radius, next_step.row-radius);
     }
     else
     {
-        int radius = 20;
         int will_move = rand() % 5;
         int x_change = rand() % 3 - 1;
         int y_change = rand() % 3 - 1;
@@ -104,4 +103,128 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 int Enemy::get_id()
 {
     return id;
+}
+
+IntPoint Enemy::get_sur_coords(IntPoint _chunk, IntPoint _coords)
+{
+    IntPoint tl = get_abs(chunk, IntPoint(y-20, x-20));
+    IntPoint new_coords = get_abs(_chunk, _coords);
+    return IntPoint(new_coords.row-tl.row, new_coords.col-tl.col);
+}
+
+IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
+{
+    std::vector<IntPoint> path = a_star(IntPoint(20, 20), goal, surroundings);
+    if(path.size()>0)
+    {
+        return path[path.size()-1];
+    }
+    else
+    {
+        return IntPoint(0, 0);
+    }
+}
+
+std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
+{
+    std::vector<ATile> open;
+    std::vector<ATile> closed;
+    ATile *current;
+    open.push_back(ATile(NULL, start));
+    while(is_in(goal, open) == -1)
+    {
+        if(open.size()<=0)
+        {
+            break;
+        }
+        int current_i = get_smallest_f(open);
+        current = &open[current_i];
+        cout<<"f: "<<current->f<<", g: "<<current->g<<", h: "<<current->h<<endl;
+        open.erase(open.begin() + current_i);
+        closed.push_back(*current);
+        for(int i=current->coords.row-1;i<=current->coords.row+1;i++)
+        {
+            for(int j=current->coords.col-1;j<=current->coords.col+1;j++)
+            {
+                if(i!=current->coords.row && j!=current->coords.col)
+                {
+                    int open_index = is_in(IntPoint(i, j), open);
+                    if(surroundings[i][j].can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
+                    {
+                        ATile temp = ATile(current, IntPoint(i, j));
+                        temp.g = current->g + (14 * ((i - current->coords.row != 0) &&
+                            (j - current->coords.col != 0))) + (10 * ((i -
+                            current->coords.col == 0) || (j - current->coords.col == 0)));
+                        
+                        temp.h = manhattan(IntPoint(i, j), goal);
+                        temp.f = temp.h + temp.g;
+                        open.push_back(temp);
+                    }
+                    else if(surroundings[i][j].can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
+                    {
+                        int new_g = current->g + (14 * ((i - current->coords.row != 0)
+                            && (j - current->coords.col != 0))) + (10 * ((i -
+                            current->coords.col == 0) || (j - current->coords.col == 0)));
+                        if(new_g<open[open_index].g)
+                        {
+                            open[open_index].g = new_g;
+                            open[open_index].parent = current;
+                            open[open_index].f = open[open_index].g + open[open_index].h;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    std::vector<IntPoint> path;
+    int index = is_in(goal, open);
+    if(index != -1)
+    {
+        ATile current = open[index];
+        while(current.coords.row != start.row && current.coords.col != start.col)
+        {
+            path.push_back(current.coords);
+            current = *current.parent;
+        }
+    }
+    return path;
+}
+
+
+int Enemy::is_in(IntPoint point, std::vector<ATile> list)
+{
+    for(int i=0;i<list.size();i++)
+    { 
+        if(list[i].coords.row == point.row && list[i].coords.col == point.col)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int Enemy::manhattan(IntPoint current, IntPoint goal)
+{
+    int dy = (current.row - goal.row) * 10;
+    int dx = (current.col - goal.col) * 10;
+    dx = (dx > 0) ? dx : -dx;
+    dy = (dy > 0) ? dy : -dy;
+    return dx + dy;
+}
+
+int Enemy::get_smallest_f(std::vector<ATile>& list)
+{   
+    int smallest = list[0].f;
+    int index = 0;
+    ATile smallest_a = list[0];
+    for(int i=1;i<list.size();i++)
+    {
+        if(list[i].f<smallest)
+        {
+            index = i;
+            smallest = list[i].f;
+        }
+    }
+    return index;
 }

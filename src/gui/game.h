@@ -34,6 +34,8 @@
 #include <terrain_defs.h>
 #include <character.h>
 #include <world_map.h>
+#include <helper.h>
+
 
 struct TilePoint {
     Tile tile;
@@ -68,7 +70,6 @@ class Game
         bool in_buffer(int, int);
         bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);
         void update_main_char_chunk();
-        IntPoint get_abs(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
         TileMatrix get_surroundings(IntPoint, IntPoint, int);
 
