@@ -85,9 +85,12 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
     //if the main_char is in the visible region
     if(main_char != NULL)
     {
-        IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
-        IntPoint next_step = get_next_step(main_coords, surroundings);
-        move(next_step.col-radius, next_step.row-radius);
+        if(rand() % 5 == 0)
+        {
+            IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
+            IntPoint next_step = get_next_step(main_coords, surroundings);
+            move(next_step.col-radius, next_step.row-radius);
+        }
     }
     else
     {
@@ -144,10 +147,6 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
         current_list.push_back(open[current_i]);
         open.erase(open.begin() + current_i);
         closed.push_back(current_list[cur_index]);
-        if(PATH_DEBUG == 1)
-        {
-            dump_matrix(surroundings);
-        }
         for(int i=current_list[cur_index].coords.row-1;i<=current_list[cur_index].coords.row+1;i++)
         {
             for(int j=current_list[cur_index].coords.col-1;j<=current_list[cur_index].coords.col+1;j++)
@@ -165,10 +164,6 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                         temp.h = manhattan(IntPoint(i, j), goal);
                         temp.f = temp.h + temp.g;
                         open.push_back(temp);
-                        if(PATH_DEBUG == 1)
-                        {
-                            surroundings[temp.coords.row][temp.coords.col] = EMPTY;
-                        }
                     }
                     else if(surroundings[i][j].can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
@@ -194,9 +189,18 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
         ATile current = open[index];
         while(current.parent != -1)
         {
+            if(PATH_DEBUG == 1)
+            {
+                surroundings[current.coords.row][current.coords.col] = EMPTY;
+            }
             path.push_back(current.coords);
             current = current_list[current.parent];
+
         }
+    }
+    if(PATH_DEBUG == 1)
+    {
+        dump_matrix(surroundings);
     }
     return path;
 }
