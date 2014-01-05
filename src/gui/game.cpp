@@ -205,7 +205,7 @@ void Game::run_enemies() {
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
-            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), IntPoint(20, 20)))
+            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), IntPoint(18, 18)))
             {
                 enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()), &main_char);
             }

@@ -130,8 +130,9 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
 {
     std::vector<ATile> open;
     std::vector<ATile> closed;
-    ATile current;
-    open.push_back(ATile(start));
+    std::vector<ATile> current_list;
+    open.push_back(ATile(-1, start));
+    int cur_index;
     while(is_in(goal, open) == -1)
     {
         if(open.size()<=0)
@@ -139,26 +140,27 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
             break;
         }
         int current_i = get_smallest_f(open);
-        current = open[current_i];
+        cur_index = current_list.size();
+        current_list.push_back(open[current_i]);
         open.erase(open.begin() + current_i);
-        closed.push_back(current);
+        closed.push_back(current_list[cur_index]);
         if(PATH_DEBUG == 1)
         {
             dump_matrix(surroundings);
         }
-        for(int i=current.coords.row-1;i<=current.coords.row+1;i++)
+        for(int i=current_list[cur_index].coords.row-1;i<=current_list[cur_index].coords.row+1;i++)
         {
-            for(int j=current.coords.col-1;j<=current.coords.col+1;j++)
+            for(int j=current_list[cur_index].coords.col-1;j<=current_list[cur_index].coords.col+1;j++)
             {
-                if(i!=current.coords.row || j!=current.coords.col)
+                if(i!=current_list[cur_index].coords.row || j!=current_list[cur_index].coords.col)
                 {
                     int open_index = is_in(IntPoint(i, j), open);
                     if(surroundings[i][j].can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
-                        ATile temp = ATile(IntPoint(i, j));
-                        temp.g = current.g + (14 * ((i - current.coords.row != 0) &&
-                            (j - current.coords.col != 0))) + (10 * ((i -
-                            current.coords.col == 0) || (j - current.coords.col == 0)));
+                        ATile temp = ATile(cur_index, IntPoint(i, j));
+                        temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) &&
+                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
+                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
 
                         temp.h = manhattan(IntPoint(i, j), goal);
                         temp.f = temp.h + temp.g;
@@ -170,13 +172,13 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                     }
                     else if(surroundings[i][j].can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
-                        int new_g = current.g + (14 * ((i - current.coords.row != 0)
-                            && (j - current.coords.col != 0))) + (10 * ((i -
-                            current.coords.col == 0) || (j - current.coords.col == 0)));
+                        int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0)
+                            && (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
+                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
                         if(new_g<open[open_index].g)
                         {
                             open[open_index].g = new_g;
-                            //open[open_index].parent = current;
+                            open[open_index].parent = cur_index;
                             open[open_index].f = open[open_index].g + open[open_index].h;
                         }
                     }
@@ -187,17 +189,15 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
 
     std::vector<IntPoint> path;
     int index = is_in(goal, open);
-    /*
     if(index != -1)
     {
         ATile current = open[index];
-        while(current.coords.row != start.row && current.coords.col != start.col)
+        while(current.parent != -1)
         {
             path.push_back(current.coords);
-            current = *current.parent;
+            current = current_list[current.parent];
         }
     }
-    */
     return path;
 }
 
