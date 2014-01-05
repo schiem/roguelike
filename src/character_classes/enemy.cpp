@@ -89,7 +89,14 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
         {
             IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
             IntPoint next_step = get_next_step(main_coords, surroundings);
-            move(next_step.col-radius, next_step.row-radius);
+            if(next_step == main_coords)
+            {
+                
+            }
+            else
+            {
+                move(next_step.col-radius, next_step.row-radius);
+            }
         }
     }
     else
