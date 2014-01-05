@@ -18,7 +18,7 @@
  */
 
 #include <enemy.h>
-#define PATH_DEBUG 1
+#define PATH_DEBUG 0
 
 using namespace tiledef;
 using namespace enemies;
@@ -85,7 +85,7 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
     //if the main_char is in the visible region
     if(main_char != NULL)
     {
-        if(rand() % 5 == 0)
+        if(rand() % 2 == 0)
         {
             IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
             IntPoint next_step = get_next_step(main_coords, surroundings);
@@ -128,7 +128,7 @@ IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
     }
     else
     {
-        return IntPoint(0, 0);
+        return IntPoint(20, 20);
     }
 }
 
