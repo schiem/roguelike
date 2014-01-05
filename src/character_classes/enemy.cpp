@@ -27,10 +27,11 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y, int _depth, std::string _name) : Character(_max_health, _x, _y, _sprite, _chunk_x, _chunk_y, _depth)
+Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight) : Character(_max_health, _x, _y, _sprite, _chunk_x, _chunk_y, _depth)
 {
     id = 1;
     name = _name;
+    sight = _sight;
 }
 
 Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
@@ -39,6 +40,7 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     max_health = _enemy.max_health;
     sprite = _enemy.sprite;
     id = _enemy.id;
+    sight = _enemy.sight;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -81,7 +83,6 @@ void Enemy::run_ai(TileMatrix surroundings, Character* main_char)
 
 void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 {
-    int radius = 20;
     //if the main_char is in the visible region
     if(main_char != NULL)
     {
@@ -95,7 +96,7 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
             }
             else
             {
-                move(next_step.col-radius, next_step.row-radius);
+                move(next_step.col-(sight+1), next_step.row-(sight+1));
             }
         }
     }
@@ -104,7 +105,7 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
         int will_move = rand() % 5;
         int x_change = rand() % 3 - 1;
         int y_change = rand() % 3 - 1;
-        if(surroundings[y_change + radius][x_change+radius].can_be_moved_through && will_move==0)
+        if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
         {
             move(x_change, y_change);
         }
@@ -116,26 +117,30 @@ int Enemy::get_id()
     return id;
 }
 
+int Enemy::get_sight()
+{
+    return sight;
+}
 
 /* Converts the chunk/x-y coordinates to coordinates in the enemies surroundings
  */
 IntPoint Enemy::get_sur_coords(IntPoint _chunk, IntPoint _coords)
 {
-    IntPoint tl = get_abs(chunk, IntPoint(y-20, x-20));
+    IntPoint tl = get_abs(chunk, IntPoint(y-(sight+1), x-(sight+1)));
     IntPoint new_coords = get_abs(_chunk, _coords);
     return IntPoint(new_coords.row-tl.row, new_coords.col-tl.col);
 }
 
 IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
 {
-    std::vector<IntPoint> path = a_star(IntPoint(20, 20), goal, surroundings);
+    std::vector<IntPoint> path = a_star(IntPoint(sight+1, sight+1), goal, surroundings);
     if(path.size()>0)
     {
         return path[path.size()-1];
     }
     else
     {
-        return IntPoint(20, 20);
+        return IntPoint(sight+1, sight+1);
     }
 }
 

@@ -57,6 +57,7 @@ class Enemy : public Character
     protected:
         int id;
         std::string name;
+        int sight;
         void run_kobold_ai(TileMatrix&, Character*);
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
@@ -68,11 +69,12 @@ class Enemy : public Character
         IntPoint get_sur_coords(IntPoint, IntPoint);
     public:
         Enemy();
-        Enemy(int, int, int, Tile, int, int, int, std::string);
+        Enemy(int, int, int, Tile, int, int, int, std::string, int);
         Enemy(EnemyType, int, int, int, int, int);
         void run_ai(TileMatrix, Character*);
         void set_depth(int);
         int get_id();
+        int get_sight();
         void dump_matrix(TileMatrix&);
 };
 

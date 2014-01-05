@@ -71,7 +71,7 @@ class Game
         bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);
         void update_main_char_chunk();
         IntPoint get_buffer_coords(IntPoint, IntPoint);
-        TileMatrix get_surroundings(IntPoint, IntPoint, int);
+        TileMatrix get_surroundings(IntPoint, IntPoint, int, IntPoint);
 
         //RENDERING Data/Models
         TilePointerMatrix canvas;

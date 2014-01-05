@@ -29,6 +29,7 @@ struct EnemyType
     std::string name;
     int max_health;
     Tile sprite;
+    int sight;
     bool operator==(const EnemyType& rhs) const 
     {
         return this->id==rhs.id;

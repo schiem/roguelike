@@ -207,11 +207,11 @@ void Game::run_enemies() {
         } else if(enemy->get_depth() == main_char.get_depth()) {
             if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), IntPoint(18, 18)))
             {
-                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()), &main_char);
+                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth(), IntPoint(enemy->get_sight(), enemy->get_sight())), &main_char);
             }
             else
             {
-                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth()), NULL);
+                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth(), IntPoint(enemy->get_sight(), enemy->get_sight())), NULL);
             }
         }
     }
@@ -402,20 +402,26 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
  * POST: Returns a TileMatrix containing the area (20x20) surrounding
  * the coordinates given.
  */
-Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int depth) {
-    TileMatrix surroundings = TileMatrix(40, std::vector<Tile>(40));
+Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int depth, IntPoint radius) {
+    radius = IntPoint(radius.row+1, radius.col+1);
+    TileMatrix surroundings = TileMatrix(radius.row * 2, std::vector<Tile>(radius.col * 2));
     Tile new_tile;
     IntPoint buffer_coords = get_buffer_coords(_chunk, _coords);
-
-    for(int row=buffer_coords.row-20;row<buffer_coords.row+20;row++) {
-        for(int col=buffer_coords.col-20;col<buffer_coords.col+20;col++) {
-
+    IntPoint sur_coords;
+    for(int row=(buffer_coords.row-radius.row);row<(buffer_coords.row+radius.row);row++) {
+        for(int col=(buffer_coords.col-radius.col);col<(buffer_coords.col+radius.col);col++) {
+            sur_coords = IntPoint(row+radius.row - buffer_coords.row, col+radius.col - buffer_coords.col);
             if(row<0 || row>= STARTING_HEIGHT * 3 || col<0 || col>= STARTING_WIDTH * 3) {
                 new_tile = EMPTY;
-            } else {
+            } else if (sur_coords.row == 0 || sur_coords.col == 0 || sur_coords.row == (radius.row*2-1) || sur_coords.col == radius.col*2 - 1)
+            {
+                new_tile = BLOCK_WALL;
+            }
+            else
+            {
                 new_tile = *buffer[row][col];
             }
-            surroundings[(row+20) - buffer_coords.row][(col+20) - buffer_coords.col] = new_tile;
+            surroundings[sur_coords.row][sur_coords.col] = new_tile;
         }
     }
 
