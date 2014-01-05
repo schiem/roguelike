@@ -109,6 +109,9 @@ int Enemy::get_id()
     return id;
 }
 
+
+/* Converts the chunk/x-y coordinates to coordinates in the enemies surroundings
+ */
 IntPoint Enemy::get_sur_coords(IntPoint _chunk, IntPoint _coords)
 {
     IntPoint tl = get_abs(chunk, IntPoint(y-20, x-20));
@@ -129,31 +132,75 @@ IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
     }
 }
 
+/* PRE: Assumes that the start and goal are within surroundings
+ * POST: Returns a vector of IntPoints containing the appropriate path
+ * 
+ * This calculates the best path between two coordinates on a given array of tiles
+ * using the a* algorithm.  This is done by keeping track of an "open" and a "closed"
+ * list of tiles.  The open list represents tiles that could potentially be looked at,
+ * and the closed list is a list of tiles that have already been looked at.
+ *
+ * The current tile is the tile that is currently being considered, and every tile around
+ * it is added to the open list, assuming that those tiles can be moved through and are
+ * not on the closed list.  Each tile added to the open list is given a g, h, and f score,
+ * and the curren tile becomes the parent.
+ * G represents the distance from the start point to the tile, h (standing for heuristic)
+ * is a measure from the tile to the goal, and f = h + g.  If a tile is on the open list,
+ * then f is recalculated for the current tile.  If it is lower, then the current tile becomes
+ * the new parent.
+ *
+ * Each loop, the current tile is the one on the open list with the shortest f score.  If the
+ * goal is on the open list, or the open list is empty, then the algorithm is stopped.
+ */
+
 std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
 {
     std::vector<ATile> open;
     std::vector<ATile> closed;
+
+    /* This is used so there is a consistant place for tiles
+     * on the open list to point to.  Each tile's parent is
+     * an int which corresponds to an index value for any tile
+     * which has at some point been the "current tile"
+     */
     std::vector<ATile> current_list;
+    
+    //The first tile is added to the open list
     open.push_back(ATile(-1, start));
     int cur_index;
+    
+    //while the goal hasn't been found
     while(is_in(goal, open) == -1)
     {
         if(open.size()<=0)
         {
+            //if the open list is empty, stop
             break;
         }
+
+        //set the current to the smallest f value
         int current_i = get_smallest_f(open);
+
+        //set the "parent" index to the index of the current on the current_lsit
         cur_index = current_list.size();
         current_list.push_back(open[current_i]);
+
+        //move the current from the open list to the closed list
         open.erase(open.begin() + current_i);
         closed.push_back(current_list[cur_index]);
+
+        //loop through the surrounding tiles
         for(int i=current_list[cur_index].coords.row-1;i<=current_list[cur_index].coords.row+1;i++)
         {
             for(int j=current_list[cur_index].coords.col-1;j<=current_list[cur_index].coords.col+1;j++)
             {
+                //make sure we're not about to operate on the current tile
                 if(i!=current_list[cur_index].coords.row || j!=current_list[cur_index].coords.col)
                 {
+                    //check if this point is on the open list
                     int open_index = is_in(IntPoint(i, j), open);
+                    
+                    //check if this point can be moved through, isn't on the open list, and isn't on the closed list
                     if(surroundings[i][j].can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         ATile temp = ATile(cur_index, IntPoint(i, j));
@@ -165,11 +212,15 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                         temp.f = temp.h + temp.g;
                         open.push_back(temp);
                     }
+                    //check if it can be moved through, is on the open list, and isn't on the closed list
                     else if(surroundings[i][j].can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
+                        //recalculate g to give a new f
                         int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0)
                             && (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
                             current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
+                        
+                        //if the new g is lower, replace the old parent
                         if(new_g<open[open_index].g)
                         {
                             open[open_index].g = new_g;
@@ -182,6 +233,10 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
         }
     }
 
+    //get the path by starting at the goal
+    //and iterating through parents until
+    //we're back at the start.  The one before
+    //start is the best move.
     std::vector<IntPoint> path;
     int index = is_in(goal, open);
     if(index != -1)
@@ -205,6 +260,9 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
     return path;
 }
 
+/*
+ * Little debugging thing to dump a tilematrix to cout
+ */
 
 void Enemy::dump_matrix(TileMatrix& map)
 {
@@ -218,17 +276,32 @@ void Enemy::dump_matrix(TileMatrix& map)
                 case 1:
                     cout<<".";
                     break;
+                case 2:
+                    cout<<".";
+                    break;
+                case 4:
+                    cout<<"#";
+                    break;
+                case 5:
+                    cout<<"P";
+                    break;
+                case 6:
+                    cout<<".";
+                    break;
                 case 11:
                     cout<<"T";
+                    break;
+                case 12:
+                    cout<<"#";
                     break;
                 case 13:
                     cout<<"d";
                     break;
+                case 14:
+                    cout<<"u";
+                    break;
                 case 16:
                     cout<<"S";
-                    break;
-                case 0:
-                    cout<<"O";
                     break;
                 default:
                     cout<<"0";
@@ -239,6 +312,11 @@ void Enemy::dump_matrix(TileMatrix& map)
     }
     cout<<"-----------------------------------------------------"<<endl;
 }
+
+/* PRE: I hate pre/post conditions.
+ * POST: Returns an int containing the index if the element is present,
+ * or -1 if it isn't.
+ */
 
 int Enemy::is_in(IntPoint point, std::vector<ATile> list)
 {
@@ -252,6 +330,9 @@ int Enemy::is_in(IntPoint point, std::vector<ATile> list)
     return -1;
 }
 
+/* The manhattan heuristic.
+ */
+
 int Enemy::manhattan(IntPoint current, IntPoint goal)
 {
     int dy = (current.row - goal.row) * 10;
@@ -260,6 +341,10 @@ int Enemy::manhattan(IntPoint current, IntPoint goal)
     dy = (dy > 0) ? dy : -dy;
     return dx + dy;
 }
+
+/*  PRE: It's a simple function.
+ *  POST: Returns the smallest f value from a list.
+ */
 
 int Enemy::get_smallest_f(std::vector<ATile>& list)
 {
