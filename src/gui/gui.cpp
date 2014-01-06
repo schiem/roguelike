@@ -32,6 +32,7 @@ GUI::GUI() : world_map_gui(100, 50),
 }
 
 int GUI::OnExecute() {
+
     if(OnInit() == false) {
         return -1;
     }
@@ -39,15 +40,37 @@ int GUI::OnExecute() {
     SDL_Event e;
 
     while(running) {
+        game_clock = pt::microsec_clock::local_time();
         while(SDL_PollEvent(&e)) {
             OnEvent(&e);
         }
 
         OnLoop();
         OnRender();
+
+        SDL_Delay(handle_framerate());
+
     }
 
     OnCleanup();
 
+
     return 0;
+}
+
+//TODO IN CASE THE USER'S COMPUTER IS SLOW, game.act should receive the actual
+//frame time instead of the intended frame time. Then it will be true frame
+//slowing. As of right now (1/6/2014) this is very unlikely to be an issue, as
+//my 10 year old laptop can handle the game twice as fast. However, we don't
+//know what it will be like in the future.
+int GUI::handle_framerate() {
+    pt::ptime clock2 = pt::microsec_clock::local_time();
+    long this_frame_time = (clock2 - game_clock).total_milliseconds();
+    //cout<<STD_MS_PER_FRAME - this_frame_time<<endl;
+    if(this_frame_time < STD_MS_PER_FRAME) {
+        return STD_MS_PER_FRAME - this_frame_time;
+    } else {
+        //No matter what, we want to delay at least a little bit.
+        return 10;
+    }
 }

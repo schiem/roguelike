@@ -81,5 +81,4 @@ void GUI::OnRender() {
     }
 
     SDL_Flip(screen);
-    SDL_Delay(50);
 }

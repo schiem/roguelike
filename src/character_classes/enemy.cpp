@@ -32,6 +32,7 @@ Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _c
     id = 1;
     name = _name;
     sight = _sight;
+    timer = 0;
 }
 
 Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
@@ -42,6 +43,7 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     id = _enemy.id;
     sight = _enemy.sight;
     speed = _enemy.speed;
+    timer = 0;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -95,7 +97,7 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
             IntPoint next_step = get_next_step(main_coords, surroundings);
             if(next_step != main_coords)
             {
-                if(rand() % 6 != 0) {
+                if(rand() % 3 != 0) {
                     move(next_step.col-(sight+1), next_step.row-(sight+1));
                 }
             }

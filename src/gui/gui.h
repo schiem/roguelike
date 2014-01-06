@@ -49,6 +49,7 @@ class GUI : public VirtualEvent {
 
         static const int STARTING_WIDTH = 100;
         static const int STARTING_HEIGHT = 50;
+        static const long STD_MS_PER_FRAME = 60;
 
         pt::ptime game_clock;
 
@@ -63,6 +64,8 @@ class GUI : public VirtualEvent {
         SDL_Surface* screen;
         SDL_Surface* asciiBase;
         SDL_Surface* ascii;
+
+        int handle_framerate();
 
     public:
         GUI();
