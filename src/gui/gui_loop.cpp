@@ -19,11 +19,18 @@
 
 #include <gui.h>
 
+
 void GUI::OnLoop() {
+    pt::ptime clock2;
+
     perform_action_cont();
     if(game.is_initialized()) {
+        clock2 = pt::microsec_clock::local_time();
+        game.act((clock2 - game_clock).total_milliseconds());
         game.refresh();
         game.run_spawners();
-        game.run_enemies();
+        //game.run_enemies();
     }
+
+    game_clock = clock2;
 }

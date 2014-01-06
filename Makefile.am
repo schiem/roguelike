@@ -11,6 +11,7 @@ AM_LDFLAGS =  -lSDLmain\
 			  -lSDL\
 			  -lboost_system\
 			  -lboost_filesystem\
+			  -lboost_date_time\
 			  $(BOOST_LDFLAGS)
 
 

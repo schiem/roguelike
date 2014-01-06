@@ -30,6 +30,7 @@ struct EnemyType
     int max_health;
     Tile sprite;
     int sight;
+    int speed;
     bool operator==(const EnemyType& rhs) const 
     {
         return this->id==rhs.id;

@@ -22,6 +22,8 @@
 
 #include <SDL/SDL.h>
 #include <vector>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <chunk.h>
 #include <virtual_event.h>
@@ -32,7 +34,9 @@
 #include <world_map_gui.h>
 #include <def.h>
 
+namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {
+
 
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
@@ -45,6 +49,8 @@ class GUI : public VirtualEvent {
 
         static const int STARTING_WIDTH = 100;
         static const int STARTING_HEIGHT = 50;
+
+        pt::ptime game_clock;
 
         bool running;
         Screen current_screen;

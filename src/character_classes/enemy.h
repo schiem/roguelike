@@ -36,11 +36,12 @@ struct ATile
     int f;
     int g;
     int h;
-    ATile(){
+    ATile()
+    {
         f = -1;
         g = -1;
         h = -1;
-        }
+    }
     ATile(int _parent, IntPoint _coords)
     {
         parent = _parent;
@@ -55,9 +56,12 @@ class Enemy : public Character
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
     protected:
+        long timer;
+
         int id;
-        std::string name;
         int sight;
+        int speed;
+        std::string name;
         void run_kobold_ai(TileMatrix&, Character*);
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
@@ -71,7 +75,7 @@ class Enemy : public Character
         Enemy();
         Enemy(int, int, int, Tile, int, int, int, std::string, int);
         Enemy(EnemyType, int, int, int, int, int);
-        void run_ai(TileMatrix, Character*);
+        void run_ai(TileMatrix, Character*, long);
         void set_depth(int);
         int get_id();
         int get_sight();

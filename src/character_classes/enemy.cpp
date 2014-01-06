@@ -41,6 +41,7 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     sprite = _enemy.sprite;
     id = _enemy.id;
     sight = _enemy.sight;
+    speed = _enemy.speed;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -69,8 +70,9 @@ void Enemy::move(int x_change, int y_change)
     }
 }
 
-void Enemy::run_ai(TileMatrix surroundings, Character* main_char)
+void Enemy::run_ai(TileMatrix surroundings, Character* main_char, long delta_ms)
 {
+    timer += delta_ms;
     switch(id)
     {
         case 1:
@@ -83,10 +85,11 @@ void Enemy::run_ai(TileMatrix surroundings, Character* main_char)
 
 void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 {
-    //if the main_char is in the visible region
-    if(main_char != NULL)
-    {
-        if(rand() % 2 == 0)
+    //If the timer > speed, then it is okay to act.
+    if(timer > speed) {
+        timer -= speed;        
+        //if the main_char is in the visible region
+        if(main_char != NULL)
         {
             IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
             IntPoint next_step = get_next_step(main_coords, surroundings);
@@ -99,15 +102,15 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
                 move(next_step.col-(sight+1), next_step.row-(sight+1));
             }
         }
-    }
-    else
-    {
-        int will_move = rand() % 5;
-        int x_change = rand() % 3 - 1;
-        int y_change = rand() % 3 - 1;
-        if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+        else
         {
-            move(x_change, y_change);
+            int will_move = rand() % 5;
+            int x_change = rand() % 3 - 1;
+            int y_change = rand() % 3 - 1;
+            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+            {
+                move(x_change, y_change);
+            }
         }
     }
 }

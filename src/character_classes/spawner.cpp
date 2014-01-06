@@ -34,7 +34,7 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
 bool Spawner::should_spawn()
 {
     //TODO: put in a switch{case} for this
-    return (rand() % 100 == 0);
+    return (rand() % 40 == 0);
 }
 
 Enemy Spawner::spawn_creep(int chunk_x, int chunk_y)

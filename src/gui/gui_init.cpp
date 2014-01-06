@@ -18,9 +18,12 @@
  */
 
 #include <gui.h>
-#include <stdlib.h>
-#include <ctime>
+
+namespace pt = boost::posix_time;
+namespace gregorian = boost::gregorian;
+
 bool GUI::OnInit() {
+
     //initialize stuff
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO );
 
@@ -42,5 +45,8 @@ bool GUI::OnInit() {
     //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
+
+    game_clock = pt::microsec_clock::local_time();
+
     return true;
 }

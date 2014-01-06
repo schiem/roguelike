@@ -110,6 +110,10 @@ bool Game::is_initialized() {
     return initialized;
 }
 
+void Game::act(long delta_ms) {
+    run_enemies(delta_ms);
+}
+
 /*---------------------Rendering Functions--------------------------*/
 const std::vector<std::vector<Tile*> >& Game::get_canvas() {
     return canvas;
@@ -128,8 +132,7 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     return temp;
 }
 
-std::vector<Enemy> Game::get_vis_enemies()
-{
+std::vector<Enemy> Game::get_vis_enemies() {
     std::vector<Enemy> temp = std::vector<Enemy>();
     for(int i=0;i<enemy_list.size();i++)
     {
@@ -195,7 +198,7 @@ void Game::run_spawners() {
  * it is in the current buffer.  If not, it deletes it.  It then checks to see if
  * it is at the current depth.  If not, it does nothing.
  */
-void Game::run_enemies() {
+void Game::run_enemies(long delta_ms) {
     Enemy* enemy;
     for(int i=0;i<enemy_list.size();i++) {
         enemy = &enemy_list[i];
@@ -204,14 +207,19 @@ void Game::run_enemies() {
 
         if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
+
         } else if(enemy->get_depth() == main_char.get_depth()) {
-            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), IntPoint(18, 18)))
-            {
-                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth(), IntPoint(enemy->get_sight(), enemy->get_sight())), &main_char);
-            }
-            else
-            {
-                enemy->run_ai(get_surroundings(enem_chunk, enem_coords, enemy->get_depth(), IntPoint(enemy->get_sight(), enemy->get_sight())), NULL);
+            TileMatrix surroundings = get_surroundings(enem_chunk, enem_coords, enemy->get_depth(),
+                    IntPoint(enemy->get_sight(), enemy->get_sight()));
+
+            IntPoint main_char_point(main_char.get_y(), main_char.get_x());
+
+            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), 
+                        main_char_point, IntPoint(18, 18))) {
+
+                enemy->run_ai(surroundings, &main_char, delta_ms);
+            } else {
+                enemy->run_ai(surroundings, NULL, delta_ms);
             }
         }
     }

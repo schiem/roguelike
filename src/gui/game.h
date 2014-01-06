@@ -100,6 +100,7 @@ public:
         //BASE Model access
         Chunk* get_current_chunk();
         bool is_initialized();
+        void act(long);
 
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
@@ -109,7 +110,7 @@ public:
 
         //ENEMY Functionality
         void run_spawners();
-        void run_enemies();
+        void run_enemies(long);
 
         //MAIN CHAR Functionality
         void change_main_depth(int);
