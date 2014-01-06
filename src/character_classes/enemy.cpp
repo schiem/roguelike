@@ -87,19 +87,17 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 {
     //If the timer > speed, then it is okay to act.
     if(timer > speed) {
-        timer -= speed;        
+        timer -= speed;
         //if the main_char is in the visible region
         if(main_char != NULL)
         {
             IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
             IntPoint next_step = get_next_step(main_coords, surroundings);
-            if(next_step == main_coords)
+            if(next_step != main_coords)
             {
-                
-            }
-            else
-            {
-                move(next_step.col-(sight+1), next_step.row-(sight+1));
+                if(rand() % 6 != 0) {
+                    move(next_step.col-(sight+1), next_step.row-(sight+1));
+                }
             }
         }
         else
@@ -149,7 +147,7 @@ IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
 
 /* PRE: Assumes that the start and goal are within surroundings
  * POST: Returns a vector of IntPoints containing the appropriate path
- * 
+ *
  * This calculates the best path between two coordinates on a given array of tiles
  * using the a* algorithm.  This is done by keeping track of an "open" and a "closed"
  * list of tiles.  The open list represents tiles that could potentially be looked at,
@@ -179,11 +177,11 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
      * which has at some point been the "current tile"
      */
     std::vector<ATile> current_list;
-    
+
     //The first tile is added to the open list
     open.push_back(ATile(-1, start));
     int cur_index;
-    
+
     //while the goal hasn't been found
     while(is_in(goal, open) == -1)
     {
@@ -214,7 +212,7 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                 {
                     //check if this point is on the open list
                     int open_index = is_in(IntPoint(i, j), open);
-                    
+
                     //check if this point can be moved through, isn't on the open list, and isn't on the closed list
                     if(surroundings[i][j].can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
@@ -234,7 +232,7 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                         int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0)
                             && (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
                             current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
-                        
+
                         //if the new g is lower, replace the old parent
                         if(new_g<open[open_index].g)
                         {
