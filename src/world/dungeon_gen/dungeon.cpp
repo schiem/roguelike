@@ -138,7 +138,7 @@ void Dungeon::make_spawner(int _depth)
     {
         spawn_room = rooms[rand() % num_rooms];
     }
-    while(spawn_room.br.row-spawn_room.tl.row<4 && spawn_room.br.col-spawn_room.tl.col<4);
+    while(spawn_room.br.row-spawn_room.tl.row<4 || spawn_room.br.col-spawn_room.tl.col<4);
     IntPoint spawn;
     do{
     spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
