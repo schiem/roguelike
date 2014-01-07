@@ -183,7 +183,7 @@ void Game::run_spawners() {
     for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
             chunk = &chunk_map[i][j];
-            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type() == MAP_DEFAULT)
+            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn)
             {
                 spawner = chunk->get_spawner(main_char.get_depth());
                 if(spawner.should_spawn()) {

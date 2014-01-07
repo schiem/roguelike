@@ -64,7 +64,7 @@ void WorldMap::set_land_or_water(int row, int col,
                                  int mod, bool more_water) {
     if(more_water) {
         if(rand() % mod == 0) {
-            map[row][col] = map_tile::MAP_DEFAULT;
+            map[row][col] = map_tile::MAP_FOREST;
         } else {
             map[row][col] = map_tile::MAP_WATER;
         }
@@ -72,7 +72,7 @@ void WorldMap::set_land_or_water(int row, int col,
         if(rand() % mod == 0) {
             map[row][col] = map_tile::MAP_WATER;
         } else {
-            map[row][col] = map_tile::MAP_DEFAULT;
+            map[row][col] = map_tile::MAP_FOREST;
         }
     }
 }
@@ -202,14 +202,14 @@ void WorldMap::generate_land_mass() {
         smoothing_pass(map_tile::MAP_WATER, 4);
     }
     for(int i = 0; i < 17; i++) {
-        smoothing_pass(map_tile::MAP_DEFAULT, 3);
+        smoothing_pass(map_tile::MAP_FOREST, 3);
     }
     for(int i = 0; i < 17; i++) {
         smoothing_pass(map_tile::MAP_WATER, 2);
     }
-    smoothing_pass(map_tile::MAP_DEFAULT, 2);
+    smoothing_pass(map_tile::MAP_FOREST, 2);
     for(int i = 0; i < 12; i++) {
-        smoothing_pass(map_tile::MAP_DEFAULT, 3);
+        smoothing_pass(map_tile::MAP_FOREST, 3);
     }
 }
 
@@ -218,7 +218,7 @@ void WorldMap::generate_beaches() {
     {
         for(int j=0;j<width;j++)
         {
-            if(map[i][j] == map_tile::MAP_DEFAULT && count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)
+            if(map[i][j] != map_tile::MAP_WATER && count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)
             {
                 map[i][j] = map_tile::MAP_BEACH;
             }

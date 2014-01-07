@@ -41,17 +41,16 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
     height = _height;
     has_layer_below = _has_layer_below;
     
-    down_stair.col = rand() % width;
-    down_stair.row = rand() % height;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
 
     if (tile_type == map_tile::MAP_DEFAULT) {
         build_land_overworld();
     } else if (tile_type == map_tile::MAP_WATER) {
         build_water_overworld();
-    } else if (tile_type == map_tile::MAP_BEACH)
-    {
+    } else if (tile_type == map_tile::MAP_BEACH) {
         build_beach_overworld();
+    } else if (tile_type == map_tile::MAP_FOREST) {
+        build_forest_overworld();
     }
 }
 
@@ -65,6 +64,8 @@ void Overworld::build_land_overworld() {
             }
         }
     }
+    down_stair.col = rand() % width;
+    down_stair.row = rand() % height;
     if(has_layer_below) {
         ground[down_stair.row][down_stair.col] = DOWN_STAIR;
     }
@@ -98,6 +99,74 @@ void Overworld::build_beach_overworld() {
             }
         }
     }
+}
+
+void Overworld::build_forest_overworld() {
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
+            ground[i][j] = GRASS_DIRT;
+        }
+    }
+    
+    int num_trees = (rand() % 30) + 70;
+    for(int i=0;i<num_trees;i++)
+    {
+        int x_coord = rand() % (width-1);
+        int y_coord = rand() % (height-1);
+        for(int row=y_coord;row<y_coord+2;row++)
+        {
+            for(int col=x_coord;col<x_coord+2;col++)
+            {
+                ground[row][col] = BIG_TREE;
+            }
+        }
+    }
+
+    if(rand() % 10 == 0)
+    {
+       //spawn a grove!
+       int radius = (rand() % 5) + 10;
+       int start_x = (rand() % (width - 2 * (radius+1)) + radius);
+       int start_y = (rand() % (height - 2 * (radius+1)) + radius);
+       IntPoint start = IntPoint(start_y, start_x);
+       for(int i=start_y-radius;i<start_y+radius;i++)
+       {
+           for(int j=start_x-radius;j<start_x+radius;j++)
+           {
+               ground[i][j] = GRASS_DIRT;
+           }
+       }
+       std::vector<IntPoint> out_circle = bresenham_circle(start, radius);
+       for(int i=0;i<out_circle.size();i+=3)
+       {
+            for(int row=out_circle[i].row;row<out_circle[i].row+2;row++)
+            {
+                for(int col=out_circle[i].col;col<out_circle[i].col+2;col++)
+                {
+                    ground[row][col] = BIG_TREE;
+                }
+            }
+        }
+        std::vector<IntPoint> in_circle = bresenham_circle(start, radius - ((rand() % 3) + 5));
+        for(int i=0;i<in_circle.size();i++)
+        {
+            std::vector<IntPoint> line = bresenham_line(start, in_circle[i]);
+            for(int j=0;j<line.size();j++)
+            {
+                ground[line[j].row][line[j].col] = WATER;
+            }
+        }
+    }
+
+    down_stair.col = rand() % width;
+    down_stair.row = rand() % height;
+    if(has_layer_below) {
+        ground[down_stair.row][down_stair.col] = DOWN_STAIR;
+    }
+    int spawn_x = rand() % width;
+    int spawn_y = rand() % height;
+    spawner = Spawner(spawn_x, spawn_y, -1, Kobold);
+    ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 
 

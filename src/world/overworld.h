@@ -27,6 +27,7 @@
 #include <iostream>
 #include <spawner.h>
 #include <int_point.h>
+#include <bresenham.h>
 class Overworld
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
@@ -46,6 +47,7 @@ class Overworld
         void build_land_overworld();
         void build_water_overworld();
         void build_beach_overworld();
+        void build_forest_overworld();
         std::vector<std::vector<Tile> >& get_ground();
         Spawner get_spawner();
 

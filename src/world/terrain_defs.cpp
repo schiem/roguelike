@@ -40,12 +40,15 @@ namespace tiledef {
     Tile LIGHT_WATER = {126, 18, BLUE, true, false, false, false};
     Tile SAND1 = {176, 19, TAN, true, false, false, false};
     Tile SAND2 = {178, 20, TAN, true, false, false, false};
+    Tile BIG_TREE = {116, 21, DARK_GREEN, false, false, true, false};
+    Tile GRASS_DIRT = {250, 22, DARKER_GREEN, true, false, false, false};
 }
 
 namespace map_tile {
-    MapTile MAP_DEFAULT = {240, DARK_GREEN, 1};
-    MapTile MAP_WATER = {247, DARK_BLUE, 2};
-    MapTile MAP_BEACH = {178, TAN, 3};
-    MapTile CURSOR = {88, WHITE, 4};
+    MapTile MAP_DEFAULT = {240, DARK_GREEN, 1, true};
+    MapTile MAP_WATER = {247, DARK_BLUE, 2, false};
+    MapTile MAP_BEACH = {178, TAN, 3, false};
+    MapTile MAP_FOREST = {116, DARK_GREEN, 4, true};
+    MapTile CURSOR = {88, WHITE, 5, false};
 }
 

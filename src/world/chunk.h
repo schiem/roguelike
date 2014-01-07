@@ -66,6 +66,7 @@ class Chunk{
         void build_land_chunk();
         void build_water_chunk();
         void build_beach_chunk();
+        void build_forest_chunk();
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
         void set_tile(int, int, int, Tile*);

@@ -39,6 +39,8 @@ Chunk::Chunk(int _width, int _height, MapTile tile_type,
         build_water_chunk();
     } else if (tile_type == map_tile::MAP_BEACH) {
         build_beach_chunk();
+    } else if (tile_type == map_tile::MAP_FOREST) {
+        build_forest_chunk();
     }
 }
 
@@ -111,6 +113,32 @@ void Chunk::build_land_chunk() {
     has_layer_below = (depth > 0);
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_DEFAULT);
 }
+
+void Chunk::build_forest_chunk() {
+    depth = rand() % 6 + 1;
+    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    Dungeon* temp_d;
+    ProcedurallyBlindDB db(width, height);
+    //CorruptiblePBlindDB db(width, height);
+
+    bool has_layer_below;
+
+    for (int i=0; i < depth; i++) {
+        has_layer_below = (i < depth - 1);
+        db.build_dungeon(5, 5);
+        temp_d = db.get_dungeon();
+
+        dungeon_floors[i] = *temp_d;
+
+        //makes the staircases in a dungeon
+        dungeon_floors[i].make_stairs(has_layer_below);
+        dungeon_floors[i].make_spawner(i);
+    }
+    //generate the overworld
+    has_layer_below = (depth > 0);
+    overworld = Overworld(width, height, has_layer_below, map_tile::MAP_FOREST);
+}
+
 
 void Chunk::build_water_chunk() {
     depth = 0;

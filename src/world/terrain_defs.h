@@ -57,14 +57,20 @@ namespace tiledef {
     extern Tile LIGHT_WATER;
     extern Tile SAND1;
     extern Tile SAND2;
+    extern Tile BIG_TREE;
+    extern Tile GRASS_DIRT;
 }
 
 struct MapTile {
     int char_count;
     int color;
     int id;
+    bool does_spawn;
     bool operator==(const MapTile& rhs) const {
         return this->id == rhs.id;
+    }
+    bool operator!=(const MapTile& rhs) const {
+        return !(this->id == rhs.id);
     }
 };
 
@@ -72,6 +78,7 @@ namespace map_tile {
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
     extern MapTile CURSOR;
+    extern MapTile MAP_FOREST;
     extern MapTile MAP_BEACH;
 }
 
