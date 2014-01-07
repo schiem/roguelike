@@ -7,13 +7,11 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/gui\
 			  $(BOOST_CPPFLAGS)
 
-AM_LDFLAGS =  -lSDLmain\
-			  -lSDL\
-			  -lboost_system\
-			  -lboost_filesystem\
-			  -lboost_date_time\
-			  $(BOOST_LDFLAGS)
-
+AM_LDFLAGS = $(BOOST_LDFLAGS)\
+			 $(BOOST_SYSTEM_LDFLAGS)\
+			 $(BOOST_FILESYSTEM_LDFLAGS)\
+			 $(BOOST_DATE_TIME_LDFLAGS)\
+			 $(SDL_LDFLAGS)
 
 localdatadir=data
 

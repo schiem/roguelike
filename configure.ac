@@ -4,6 +4,15 @@ AC_PROG_CXX
 
 AC_CHECK_LIB([SDL],[SDL_DisplayFormat], ,[AC_MSG_ERROR(Could not find the SDL\
  library on your system. Make sure that it is installed properly!)])
+AC_CHECK_LIB([boost_system], [system], , [AC_MSG_ERROR(Could not find the \
+ boost_system library on your system. Make sure that it is installed \
+properly!)])
+AC_CHECK_LIB([boost_filesystem], [main], , [AC_MSG_ERROR(Could not find the \
+ boost_filesystem library on your system. Make sure that it is installed \
+properly!)])
+AC_CHECK_LIB([boost_date_time], [main], , [AC_MSG_ERROR(Could not find the \
+ boost_date_time library on your system. Make sure that it is installed \
+ properly!)])
 
 AX_BOOST_BASE
 AX_BOOST_SYSTEM
