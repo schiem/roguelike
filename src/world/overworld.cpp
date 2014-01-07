@@ -102,13 +102,21 @@ void Overworld::build_beach_overworld() {
 }
 
 void Overworld::build_forest_overworld() {
+    /*
+     *TODO:
+     * -Put in a smaller bresenham circle to fill the gaps for water in groves
+     * -Probably make it so that stairs and spawners don't spawn where they shouldn't
+     * -Play around with numbers for a prettier effect
+     * -Bresenham ellipses?
+     */
+    
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             ground[i][j] = GRASS_DIRT;
         }
     }
     
-    int num_trees = (rand() % 30) + 70;
+    int num_trees = (rand() % 30) + 100;
     for(int i=0;i<num_trees;i++)
     {
         int x_coord = rand() % (width-1);
@@ -122,7 +130,7 @@ void Overworld::build_forest_overworld() {
         }
     }
 
-    if(rand() % 10 == 0)
+    if(rand() % 1 == 0)
     {
        //spawn a grove!
        int radius = (rand() % 5) + 10;
@@ -147,7 +155,8 @@ void Overworld::build_forest_overworld() {
                 }
             }
         }
-        std::vector<IntPoint> in_circle = bresenham_circle(start, radius - ((rand() % 3) + 5));
+        int new_rad = radius - ((rand() % 3) + 5);
+        std::vector<IntPoint> in_circle = bresenham_circle(start, new_rad);
         for(int i=0;i<in_circle.size();i++)
         {
             std::vector<IntPoint> line = bresenham_line(start, in_circle[i]);
