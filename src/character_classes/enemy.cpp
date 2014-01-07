@@ -88,7 +88,7 @@ void Enemy::run_ai(TileMatrix surroundings, Character* main_char, long delta_ms)
 void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
 {
     //If the timer > speed, then it is okay to act.
-    if(timer > speed) {
+    while(timer > speed) {
         timer -= speed;
         //if the main_char is in the visible region
         if(main_char != NULL)
