@@ -183,7 +183,7 @@ void Game::run_spawners() {
     for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
             chunk = &chunk_map[i][j];
-            if(chunk->get_depth()>=main_char.get_depth() && chunk->get_type() == MAP_DEFAULT)
+            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type() == MAP_DEFAULT)
             {
                 spawner = chunk->get_spawner(main_char.get_depth());
                 if(spawner.should_spawn()) {
@@ -215,7 +215,7 @@ void Game::run_enemies(long delta_ms) {
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
 
             if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), 
-                        main_char_point, IntPoint(18, 18))) {
+                        main_char_point, IntPoint(enemy->get_sight(), enemy->get_sight()))) {
 
                 enemy->run_ai(surroundings, &main_char, delta_ms);
             } else {
