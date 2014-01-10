@@ -165,6 +165,23 @@ void Overworld::build_forest_overworld() {
                 ground[line[j].row][line[j].col] = WATER;
             }
         }
+        for(int i=start_y-new_rad-1;i<start_y+new_rad+1;i++)
+        {
+            for(int j=start_x-new_rad-1;j<start_x+new_rad+1;j++)
+            {
+                int num = 0;
+                num += (ground[i-1][j-1] == WATER) + (ground[i-1][j] == WATER) + (ground[i-1][j+1] == WATER) +
+                    (ground[i][j-1] == WATER) + (ground[i][j+1] == WATER) + (ground[i+1][j-1] == WATER) + 
+                    (ground[i+1][j] == WATER) + (ground[i+1][j+1] == WATER);
+                //a threshold of 4 or above gives normal circular pools
+                //a threshold of 2 gives slightly odd pools
+                //a threshold of 1 gives very oddly shaped pools
+                if(smoothing_pass(1, WATER, num))
+                {
+                    ground[i][j] = WATER;
+                }
+            }
+        }
     }
 
     down_stair.col = rand() % width;
@@ -178,6 +195,15 @@ void Overworld::build_forest_overworld() {
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 
+bool Overworld::smoothing_pass(int threshold, Tile tile_type, int num)
+{
+    if(num >= threshold) {
+        if (rand() % (8 - (num -1)) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
 
 Tile* Overworld::get_tile(int row, int col) {
     return &ground[row][col];

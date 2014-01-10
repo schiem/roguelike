@@ -35,6 +35,7 @@ class Overworld
     private:
         TileMatrix ground;
         Spawner spawner;
+        bool smoothing_pass(int, Tile, int);
     public:
         bool has_layer_below;
         IntPoint down_stair;
