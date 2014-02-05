@@ -96,6 +96,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 
     //TODO THIS IS A TEMPORARY HACK THAT SHOULD BE GONE BEFORE I GO TO TANZANIA,
     //SO HELP ME GOD.
+    //lol -m, 2/5/2014
     block_wall_tile = BLOCK_WALL;
 
     initialized = true;
