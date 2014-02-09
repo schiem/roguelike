@@ -85,7 +85,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    main_char = Main_Character(101, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1);
+    main_char = Main_Character(100, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1);
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));

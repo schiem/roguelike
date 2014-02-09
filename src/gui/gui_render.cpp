@@ -78,6 +78,24 @@ void GUI::OnRender() {
         }
         //Draw Main Character.  Assume that it's always visible and always at the middle
         drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
+        
+        //Draw the health of the main_Character and it's target, if the target exists.
+        Character* target = game.main_char.get_target();
+        if(target != NULL)
+        {
+            stringstream ss;
+            ss << "Target health: " << target->get_cur_hp() << "/" << target->get_max_hp();
+            drawStr(0, 0, ss.str().c_str(), ascii, screen, WHITE);
+        }
+        else
+        {
+            drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
+        }
+        
+        stringstream ss;
+        ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
+        drawStr(30, 0, ss.str().c_str(), ascii, screen, WHITE);
+    
     }
 
     SDL_Flip(screen);

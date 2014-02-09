@@ -176,7 +176,7 @@ void Overworld::build_forest_overworld() {
                 //a threshold of 4 or above gives normal circular pools
                 //a threshold of 2 gives slightly odd pools
                 //a threshold of 1 gives very oddly shaped pools
-                if(smoothing_pass(1, WATER, num))
+                if(smoothing_pass(6, WATER, num))
                 {
                     ground[i][j] = WATER;
                 }

@@ -40,7 +40,7 @@ class Character
         int depth;
         IntPoint chunk;
         Tile underfoot;
-        
+        Character* target; 
         //methods
 
     public:
@@ -57,13 +57,16 @@ class Character
         int get_chunk_y();
         Tile get_char();
         int get_depth();
+        Character* get_target();
+        int get_max_hp();
+        int get_cur_hp();
         void set_x(int);
         void set_y(int);
         void set_chunk(IntPoint);
         void set_chunk_x(int);
         void set_chunk_y(int);
         void set_depth(int);
-        
+        void set_target(Character *target);
         Tile* get_underfoot();
         //terrain get_surroundings
 

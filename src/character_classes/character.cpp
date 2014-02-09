@@ -132,3 +132,23 @@ Tile Character::get_char() {
 int Character::get_depth() {
     return depth;
 }
+
+void Character::set_target(Character* _target)
+{
+    target = _target;
+}
+
+Character* Character::get_target()
+{
+    return target;
+}
+
+int Character::get_max_hp()
+{
+    return max_health;
+}
+
+int Character::get_cur_hp()
+{
+    return current_health;
+}
