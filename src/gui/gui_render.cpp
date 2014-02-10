@@ -39,7 +39,7 @@ void GUI::OnRender() {
                 ascii, screen, WHITE);
         drawStr(0, 49, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
                 ascii, screen, WHITE);
-    } else {
+    } else if (current_screen == GAME_SCREEN) {
         if(!game.is_initialized()) {
             game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
         }
@@ -96,7 +96,21 @@ void GUI::OnRender() {
         ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
         drawStr(30, 0, ss.str().c_str(), ascii, screen, WHITE);
     
-    }
-
+    } else if (current_screen == DEATH_SCREEN) 
+    {
+        clear_screen();
+        drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
+    } 
     SDL_Flip(screen);
+}
+
+void GUI::clear_screen()
+{
+    for(int i =0;i<STARTING_WIDTH;i++)
+    {
+        for(int j=0;j<STARTING_HEIGHT;j++)
+        {
+            drawStr(i, j, std::string(" ").c_str(), ascii, screen, WHITE);
+        }
+    }
 }

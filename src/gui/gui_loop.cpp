@@ -26,6 +26,9 @@ void GUI::OnLoop() {
         game.act(STD_MS_PER_FRAME);
         game.refresh();
         game.run_spawners();
-        //game.run_enemies();
+        if(!game.main_char.is_alive())
+        {
+           current_screen = DEATH_SCREEN;
+        }
     }
 }

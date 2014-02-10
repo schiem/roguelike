@@ -79,7 +79,7 @@ void GUI::perform_action_press(SDLKey key) {
                 main_menu.make_selection();
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
-            }
+            } 
             break;
         case SDLK_u:
             game.change_main_depth(-1);

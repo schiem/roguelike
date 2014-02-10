@@ -44,7 +44,8 @@ class GUI : public VirtualEvent {
         enum Screen {
             MENU_SCREEN,
             MAP_SCREEN,
-            GAME_SCREEN
+            GAME_SCREEN,
+            DEATH_SCREEN
         };
 
         static const int STARTING_WIDTH = 100;
@@ -66,7 +67,7 @@ class GUI : public VirtualEvent {
         SDL_Surface* ascii;
 
         int handle_framerate();
-
+        void clear_screen();
     public:
         GUI();
         int OnExecute();
