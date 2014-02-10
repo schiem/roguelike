@@ -205,8 +205,12 @@ void Game::run_enemies(long delta_ms) {
         enemy = &enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-
-        if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
+        if(!enemy->is_alive())
+        {
+           enemy_list.erase(enemy_list.begin() + i);
+           cout<<"Killed enemy."<<endl;
+        }
+        else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
 
         } else if(enemy->get_depth() == main_char.get_depth()) {
@@ -289,8 +293,6 @@ void Game::move_main_char(int col_change, int row_change) {
     }
     else if(enem != NULL)
     {
-        main_char.set_target(enem);
-        cout<<"target: "<<main_char.get_target()<<endl;
         main_char.attack(enem);
     }
 }

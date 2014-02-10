@@ -39,6 +39,7 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
 {
     name = _enemy.name;
     max_health = _enemy.max_health;
+    current_health = max_health;
     sprite = _enemy.sprite;
     id = _enemy.id;
     sight = _enemy.sight;
