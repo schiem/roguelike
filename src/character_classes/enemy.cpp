@@ -27,7 +27,7 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight) : Character(_max_health, _x, _y, _sprite, _chunk_x, _chunk_y, _depth)
+Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : Character(_max_health, _x, _y, _sprite, _chunk_x, _chunk_y, _depth, _morality, _attack)
 {
     id = 1;
     name = _name;
@@ -44,6 +44,8 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     sight = _enemy.sight;
     speed = _enemy.speed;
     timer = 0;
+    moral = _enemy.moral;
+    attack_dam = _enemy.attack;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -72,34 +74,40 @@ void Enemy::move(int x_change, int y_change)
     }
 }
 
-void Enemy::run_ai(TileMatrix surroundings, Character* main_char, long delta_ms)
+void Enemy::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
 {
     timer += delta_ms;
     switch(id)
     {
         case 1:
-            run_kobold_ai(surroundings, main_char);
+            run_kobold_ai(surroundings, char_list);
             break;
         default:
             break;
     }
 }
 
-void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
+void Enemy::run_kobold_ai(TileMatrix& surroundings, std::vector<Character*> enemy_list)
 {
     //If the timer > speed, then it is okay to act.
     while(timer > speed) {
         timer -= speed;
-        //if the main_char is in the visible region
-        if(main_char != NULL)
+        //get a target
+        target = find_best_target(0, 1, enemy_list);
+
+        if(target != NULL)
         {
-            IntPoint main_coords = get_sur_coords(main_char->get_chunk(), IntPoint(main_char->get_y(), main_char->get_x()));
-            IntPoint next_step = get_next_step(main_coords, surroundings);
-            if(next_step != main_coords)
+            IntPoint target_coords = get_sur_coords(target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
+            IntPoint next_step = get_next_step(target_coords, surroundings);
+            if(next_step != target_coords)
             {
                 if(rand() % 3 != 0) {
                     move(next_step.col-(sight+1), next_step.row-(sight+1));
                 }
+            }
+            else
+            {
+                attack(target);
             }
         }
         else
@@ -114,6 +122,31 @@ void Enemy::run_kobold_ai(TileMatrix& surroundings, Character* main_char)
         }
     }
 }
+
+Character* Enemy::find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list)
+{
+    Character* best = NULL;
+    for(int i=0; i<enemy_list.size(); i++)
+    {
+        if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
+        {
+            if(best == NULL)
+            {
+                best = enemy_list[i];
+            }
+            else
+            {
+                if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                {
+                    best = enemy_list[i];
+                }
+            }
+        }
+    }
+    return best;
+}
+
+            
 
 int Enemy::get_id()
 {

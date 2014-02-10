@@ -31,6 +31,8 @@ struct EnemyType
     Tile sprite;
     int sight;
     int speed;
+    int moral;
+    int attack;
     bool operator==(const EnemyType& rhs) const 
     {
         return this->id==rhs.id;

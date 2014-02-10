@@ -27,15 +27,20 @@ Character::Character() {
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y,  int _depth) {
+Character::Character(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y,  int _depth, int _morality, int _attack) {
     current_health = _max_health;
     max_health = _max_health;
     x = _x;
     y = _y;
+    moral = _morality;
+    
+    //somewhat temporary
+    attack_dam= _attack;
     sprite = _sprite;
     cout<<_chunk_y<<", "<<_chunk_x<<endl;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
+    target = NULL;
 }
 
 /*
@@ -47,6 +52,7 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     y = _y;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
+    target = NULL;
 }
 
 /* PRE: None
@@ -72,6 +78,11 @@ void Character::take_damage(int damage){
     if (is_alive() == false) {
         //delete the character
     }
+}
+
+void Character::attack(Character* _chara)
+{
+    _chara->take_damage(attack_dam);
 }
 
 void Character::set_x(int _x) {
@@ -152,3 +163,9 @@ int Character::get_cur_hp()
 {
     return current_health;
 }
+
+int Character::get_moral()
+{
+    return moral;
+}
+

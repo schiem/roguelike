@@ -85,7 +85,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    main_char = Main_Character(100, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1);
+    main_char = Main_Character(100, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1, 0, 10);
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
@@ -214,14 +214,11 @@ void Game::run_enemies(long delta_ms) {
                     IntPoint(enemy->get_sight(), enemy->get_sight()));
 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
+            
+            std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(20, 20));
 
-            if(in_range(enem_chunk, enem_coords, main_char.get_chunk(), 
-                        main_char_point, IntPoint(enemy->get_sight(), enemy->get_sight()))) {
 
-                enemy->run_ai(surroundings, &main_char, delta_ms);
-            } else {
-                enemy->run_ai(surroundings, NULL, delta_ms);
-            }
+            enemy->run_ai(surroundings, nearby_enem, delta_ms);
         }
     }
 }
@@ -435,6 +432,23 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
     }
 
     return surroundings;
+}
+
+std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, IntPoint threshold)
+{
+    std::vector<Character*> nearby_enem;
+    for(int i=0; i<enemy_list.size(); i++)
+    {
+        if(in_range(enemy_list[i].get_chunk(), IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x()), _chunk, _coords, threshold))
+        {
+            nearby_enem.push_back(&enemy_list[i]);
+        }
+    }
+    if(in_range(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), _chunk, _coords, threshold))
+    {
+        nearby_enem.push_back(&main_char);
+    }
+    return nearby_enem;
 }
 
 /*----------------Rendering Functions----------------*/

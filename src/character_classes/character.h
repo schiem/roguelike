@@ -29,11 +29,16 @@ class Character
 {
     protected:
         //variables
+        //Moral is a spectrum from 0-5, and represents
+        //...morality? Basically, it's a good/evil thing
+        //so you can see if something should attack/be attacked
+        int moral;
         int current_health;
         int max_health;
         //current coordinates within dungeon
         int x;
         int y;
+        int attack_dam;
         //Skills skill[];
         Tile sprite;
         int armor;
@@ -45,11 +50,11 @@ class Character
 
     public:
         Character();
-        Character(int, int, int, Tile, int, int, int);
+        Character(int, int, int, Tile, int, int, int, int, int);
         Character(int, int, int, int, int);
         bool is_alive() const;
         void take_damage(int);
-        void attack(int x_direction, int y_direction);
+        void attack(Character*);
         int get_x();
         int get_y();
         IntPoint get_chunk();
@@ -60,13 +65,14 @@ class Character
         Character* get_target();
         int get_max_hp();
         int get_cur_hp();
+        int get_moral();
         void set_x(int);
         void set_y(int);
         void set_chunk(IntPoint);
         void set_chunk_x(int);
         void set_chunk_y(int);
         void set_depth(int);
-        void set_target(Character *target);
+        void set_target(Character*);
         Tile* get_underfoot();
         //terrain get_surroundings
 
@@ -79,7 +85,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, Tile, int, int, int);
+        Main_Character(int, int, int, Tile, int, int, int, int, int);
 };
 
 #endif

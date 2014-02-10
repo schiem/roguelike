@@ -62,7 +62,7 @@ class Enemy : public Character
         int sight;
         int speed;
         std::string name;
-        void run_kobold_ai(TileMatrix&, Character*);
+        void run_kobold_ai(TileMatrix&, std::vector<Character*>);
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
         IntPoint get_next_step(IntPoint, TileMatrix&);
@@ -71,11 +71,12 @@ class Enemy : public Character
         int manhattan(IntPoint, IntPoint);
         int get_smallest_f(std::vector<ATile>&);
         IntPoint get_sur_coords(IntPoint, IntPoint);
+        Character* find_best_target(int, int, std::vector<Character*>);
     public:
         Enemy();
-        Enemy(int, int, int, Tile, int, int, int, std::string, int);
+        Enemy(int, int, int, Tile, int, int, int, std::string, int, int, int);
         Enemy(EnemyType, int, int, int, int, int);
-        void run_ai(TileMatrix, Character*, long);
+        void run_ai(TileMatrix, std::vector<Character*>, long);
         void set_depth(int);
         int get_id();
         int get_sight();
