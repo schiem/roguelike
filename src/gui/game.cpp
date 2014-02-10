@@ -269,8 +269,10 @@ void Game::move_main_char(int col_change, int row_change) {
 
     next_col = next_col +  (STARTING_WIDTH * (next_col<0)) - (STARTING_WIDTH * (next_col>=STARTING_WIDTH));
     next_row = next_row +  (STARTING_HEIGHT * (next_row<0)) - (STARTING_HEIGHT * (next_row>=STARTING_HEIGHT));
+    IntPoint coords = IntPoint(next_row, next_col);
+    Character* enem = enemy_at_loc(new_chunk, coords);
 
-    if(chunk_map[new_chunk.row][new_chunk.col].get_tile(main_char.get_depth(), next_row, next_col)->can_be_moved_through)
+    if(chunk_map[new_chunk.row][new_chunk.col].get_tile(main_char.get_depth(), next_row, next_col)->can_be_moved_through && enem == NULL)
     {
         col = next_col;
         row = next_row;
@@ -285,8 +287,12 @@ void Game::move_main_char(int col_change, int row_change) {
 
         }
     }
-
-
+    else if(enem != NULL)
+    {
+        main_char.set_target(enem);
+        cout<<"target: "<<main_char.get_target()<<endl;
+        main_char.attack(enem);
+    }
 }
 
 
@@ -449,6 +455,20 @@ std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, 
         nearby_enem.push_back(&main_char);
     }
     return nearby_enem;
+}
+
+Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords)
+{
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        IntPoint enem_chunk = enemy_list[i].get_chunk();
+        IntPoint enem_coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x()); 
+        if(get_abs(enem_chunk, enem_coords) == get_abs(_chunk, _coords))
+        {
+            return &enemy_list[i];
+        }
+    }
+    return NULL;
 }
 
 /*----------------Rendering Functions----------------*/

@@ -73,6 +73,7 @@ class Game
         IntPoint get_buffer_coords(IntPoint, IntPoint);
         TileMatrix get_surroundings(IntPoint, IntPoint, int, IntPoint);
         std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint); 
+        Character* enemy_at_loc(IntPoint, IntPoint);
 
         //RENDERING Data/Models
         TilePointerMatrix canvas;

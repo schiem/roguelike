@@ -21,6 +21,6 @@
 using namespace tiledef;
 namespace enemies
 {
-    EnemyType Kobold = {1, "Kobold", 20, KOBOLD, 20, 100, 5, 10};
+    EnemyType Kobold = {1, "Kobold", 20, KOBOLD, 20, 100, 5, 2};
 }
 
