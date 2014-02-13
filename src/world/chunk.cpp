@@ -168,11 +168,12 @@ Tile* Chunk::get_tile(int depth, int row, int col) {
     }
 }
 
-void Chunk::set_tile(int depth, int row, int col, Tile* tile){
+
+void Chunk::set_tile(int depth, int row, int col, Tile tile){
     if (depth == -1) {
         overworld.set_tile(row, col, tile);
     } else {
-        dungeon_floors[depth].set_tile(row, col, *tile);
+        dungeon_floors[depth].set_tile(row, col, tile);
     }
 }
 

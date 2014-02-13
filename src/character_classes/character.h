@@ -41,6 +41,7 @@ class Character
         int attack_dam;
         //Skills skill[];
         Tile sprite;
+        Tile corpse;
         int armor;
         int depth;
         IntPoint chunk;
@@ -50,7 +51,7 @@ class Character
 
     public:
         Character();
-        Character(int, int, int, Tile, int, int, int, int, int);
+        Character(int, int, int, Tile, Tile, int, int, int, int, int);
         Character(int, int, int, int, int);
         bool is_alive() const;
         void take_damage(int);
@@ -61,6 +62,7 @@ class Character
         int get_chunk_x();
         int get_chunk_y();
         Tile get_char();
+        Tile get_corpse();
         int get_depth();
         Character* get_target();
         int get_max_hp();
@@ -85,7 +87,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, Tile, int, int, int, int, int);
+        Main_Character(int, int, int, Tile, Tile, int, int, int, int, int);
 };
 
 #endif

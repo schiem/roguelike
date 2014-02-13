@@ -57,7 +57,7 @@ class Enemy : public Character
     typedef std::vector<std::vector<Tile> > TileMatrix;
     protected:
         long timer;
-
+        
         int id;
         int sight;
         int speed;
@@ -74,7 +74,7 @@ class Enemy : public Character
         Character* find_best_target(int, int, std::vector<Character*>);
     public:
         Enemy();
-        Enemy(int, int, int, Tile, int, int, int, std::string, int, int, int);
+        Enemy(int, int, int, Tile, Tile, int, int, int, std::string, int, int, int);
         Enemy(EnemyType, int, int, int, int, int);
         void run_ai(TileMatrix, std::vector<Character*>, long);
         void set_depth(int);

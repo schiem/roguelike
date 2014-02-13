@@ -69,7 +69,7 @@ class Chunk{
         void build_forest_chunk();
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
-        void set_tile(int, int, int, Tile*);
+        void set_tile(int, int, int, Tile);
         const std::vector<std::vector<Tile> >& get_floor(int);
         Tile* get_tile(int, int, int) ;
         int get_depth() const;

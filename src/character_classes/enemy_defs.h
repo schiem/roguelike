@@ -29,6 +29,7 @@ struct EnemyType
     std::string name;
     int max_health;
     Tile sprite;
+    Tile corpse;
     int sight;
     int speed;
     int moral;

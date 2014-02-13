@@ -59,6 +59,7 @@ namespace tiledef {
     extern Tile SAND2;
     extern Tile BIG_TREE;
     extern Tile GRASS_DIRT;
+    extern Tile KOBOLD_CORPSE;
 }
 
 struct MapTile {

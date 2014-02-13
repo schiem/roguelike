@@ -85,7 +85,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    main_char = Main_Character(100, 50, 25, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1, 0, 10);
+    main_char = Main_Character(100, 50, 25, MAIN_CHAR, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1, 0, 10);
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
@@ -207,8 +207,8 @@ void Game::run_enemies(long delta_ms) {
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
         if(!enemy->is_alive())
         {
-           enemy_list.erase(enemy_list.begin() + i);
-           cout<<"Killed enemy."<<endl;
+            chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
+            enemy_list.erase(enemy_list.begin() + i);
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             enemy_list.erase(enemy_list.begin() + i);
@@ -402,6 +402,12 @@ bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPo
     bool is_x = (abs.col>=tl_abs.col && abs.col<br_abs.col);
     bool is_y = (abs.row>=tl_abs.row && abs.row<br_abs.row);
     return (is_x && is_y);
+}
+
+IntPoint Game::get_canvas_coords(IntPoint chunk, IntPoint coords){
+    IntPoint tl_canvas = get_abs(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()));
+    IntPoint abs = get_abs(chunk, coords);
+    return IntPoint(abs.row - tl_canvas.row, abs.col - tl_canvas.col);
 }
 
 

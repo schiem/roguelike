@@ -209,8 +209,9 @@ Tile* Overworld::get_tile(int row, int col) {
     return &ground[row][col];
 }
 
-void Overworld::set_tile(int row, int col, Tile* tile) {
-    ground[row][col] = *tile;
+//why is this a pointer?!
+void Overworld::set_tile(int row, int col, Tile tile) {
+    ground[row][col] = tile;
 }
 
 std::vector<std::vector<Tile> >& Overworld::get_ground() {

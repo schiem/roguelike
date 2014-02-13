@@ -42,7 +42,7 @@ class Overworld
         int width;
         int height;
         Tile* get_tile(int, int) ;
-        void set_tile(int, int, Tile*);
+        void set_tile(int, int, Tile);
         Overworld(int, int, bool, MapTile);
         Overworld();
         void build_land_overworld();

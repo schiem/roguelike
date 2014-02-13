@@ -56,7 +56,6 @@ class Game
         bool initialized;
         MapTileMatrix world_map;
         ChunkMatrix chunk_map;
-        IntPoint main_char_chunk;
         Tile block_wall_tile;
 
         //BASE model access functions
@@ -70,6 +69,7 @@ class Game
         bool in_buffer(int, int);
         bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);
         void update_main_char_chunk();
+        IntPoint get_canvas_coords(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
         TileMatrix get_surroundings(IntPoint, IntPoint, int, IntPoint);
         std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint); 

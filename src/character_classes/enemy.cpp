@@ -27,7 +27,7 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : Character(_max_health, _x, _y, _sprite, _chunk_x, _chunk_y, _depth, _morality, _attack)
+Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : Character(_max_health, _x, _y, _sprite, _corpse,  _chunk_x, _chunk_y, _depth, _morality, _attack)
 {
     id = 1;
     name = _name;
@@ -47,6 +47,7 @@ Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _
     timer = 0;
     moral = _enemy.moral;
     attack_dam = _enemy.attack;
+    corpse = _enemy.corpse;
 }
 
 void Enemy::move(int x_change, int y_change)
