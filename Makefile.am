@@ -5,7 +5,8 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/world\
 			  -Ilib/SDL-ASCII-Template\
 			  -Isrc/gui\
-			  $(BOOST_CPPFLAGS)
+			  -Isrc/items\
+              $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
 			 $(BOOST_SYSTEM_LDFLAGS)\
@@ -51,8 +52,9 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/room.cpp\
 	src/world/dungeon_gen/corruptible_pblind_db.cpp\
 	src/world/dungeon_gen/dungeonbuilder.cpp\
-	lib/SDL-ASCII-Template/ASCII_Lib.cpp\
-	\
+	src/items/item.cpp\
+    lib/SDL-ASCII-Template/ASCII_Lib.cpp\
+    \
 	src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
 	src/misc_classes/helper.h\
@@ -74,6 +76,7 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/corruptible_pblind_db.h\
 	src/world/overworld.h\
 	src/world/world_map.h\
+    src/items/item.h\
 	lib/SDL-ASCII-Template/def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
