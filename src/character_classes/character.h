@@ -25,6 +25,8 @@
 #include <def.h>
 #include <iostream>
 #include <int_point.h>
+#include <item.h>
+#include <vector>
 class Character
 {
     protected:
@@ -39,10 +41,13 @@ class Character
         int x;
         int y;
         int attack_dam;
+        int armor;    
+        std::vector<Item*> inventory;
+        std::vector<Item*> equipment;
+
         //Skills skill[];
         Tile sprite;
         Tile corpse;
-        int armor;
         int depth;
         IntPoint chunk;
         Tile underfoot;
@@ -68,6 +73,7 @@ class Character
         int get_max_hp();
         int get_cur_hp();
         int get_moral();
+        int get_armor();
         void set_x(int);
         void set_y(int);
         void set_chunk(IntPoint);
@@ -75,6 +81,7 @@ class Character
         void set_chunk_y(int);
         void set_depth(int);
         void set_target(Character*);
+        void set_armor(int);
         Tile* get_underfoot();
         //terrain get_surroundings
 

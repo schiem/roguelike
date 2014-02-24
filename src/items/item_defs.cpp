@@ -1,5 +1,5 @@
 /**
- *  ITEM.CPP
+ *  ITEM_DEFS.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,28 +17,20 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <item.h>
+/*****
+     1
+   65256
+     2
+    3 3
+    4 4
+ Body index diagram.
+******/
 
-Item::Item()
-{
-    }
 
-Item::Item(int _weight, Tile _sprite, std::string _name)
+#include <item_defs.h>
+using namespace tiledef;
+namespace equipment
 {
-    weight = _weight;
-    sprite = _sprite;
-    name = _name;
+    EquipType boots = {3, BOOTS, "Boots", 4, 0, 5};
 }
-
-int Item::get_weight()
-{
-    return weight;
-}
-
-Tile Item::get_sprite()
-{
-    return sprite;
-}
-
-
 

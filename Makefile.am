@@ -53,6 +53,8 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/corruptible_pblind_db.cpp\
 	src/world/dungeon_gen/dungeonbuilder.cpp\
 	src/items/item.cpp\
+    src/items/equipment.cpp\
+    src/items/item_defs.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/misc_classes/bresenham.h\
@@ -77,6 +79,7 @@ roguelike_SOURCES = \
 	src/world/overworld.h\
 	src/world/world_map.h\
     src/items/item.h\
+    src/items/item_defs.h\
 	lib/SDL-ASCII-Template/def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 

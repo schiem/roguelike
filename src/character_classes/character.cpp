@@ -36,6 +36,8 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     corpse = _corpse;
     //somewhat temporary
     attack_dam= _attack;
+    armor = 0;
+    
     sprite = _sprite;
     cout<<_chunk_y<<", "<<_chunk_x<<endl;
     chunk = IntPoint(_chunk_y, _chunk_x);
@@ -95,6 +97,11 @@ void Character::set_y(int _y) {
 
 void Character::set_depth(int d) {
     depth = d;
+}
+
+void Character::set_armor(int a)
+{
+    armor = a;
 }
 
 int Character::get_x() {
@@ -171,5 +178,10 @@ int Character::get_cur_hp()
 int Character::get_moral()
 {
     return moral;
+}
+
+int Character::get_armor()
+{
+    return armor;
 }
 

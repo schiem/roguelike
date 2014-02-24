@@ -1,5 +1,5 @@
 /**
- *  ITEM.CPP
+ *  ITEM_DEFS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,28 +17,29 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <item.h>
+#ifndef ITEM_DEFS_H
+#define ITEM_DEFS_H
 
-Item::Item()
+#include <terrain_defs.h>
+#include <string>
+
+struct EquipType
 {
+    int weight;
+    Tile sprite;
+    std::string name;
+    int body_part;
+    int type;
+    int armor_class;
+    bool operator==(const EquipType& rhs) const 
+    {
+        return this->name==rhs.name;
     }
+};
 
-Item::Item(int _weight, Tile _sprite, std::string _name)
+namespace equipment
 {
-    weight = _weight;
-    sprite = _sprite;
-    name = _name;
+    extern EquipType boots;
 }
 
-int Item::get_weight()
-{
-    return weight;
-}
-
-Tile Item::get_sprite()
-{
-    return sprite;
-}
-
-
-
+#endif
