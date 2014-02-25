@@ -22,6 +22,7 @@
 #include <terrain_defs.h>
 #include <string>
 #include <item_defs.h>
+#include <int_point.h>
 
 class Character;
 
@@ -30,15 +31,18 @@ class Item
     protected:
         std::string name;
         int weight;
+        IntPoint coords;
         Tile sprite;
 
 
     public:
-        Item();
-        Item(int, Tile, std::string);
+        Item(IntPoint);
+        Item(int, Tile, std::string, IntPoint);
         int get_weight();
         Tile get_sprite();
         virtual void perform_action(int, Character*)=0;
+        IntPoint get_coords();
+        void set_coords(IntPoint);
 };
 
 
@@ -46,6 +50,13 @@ class Equipment : public Item
 {
     protected:
         //corresponds to the index in the Characters equipment
+        /*****
+           1
+         65256
+           2
+          3 3
+          4 4
+        *****/ 
         int body_part;
 
         //0 = light, 1 = medium, 2 = heavy
@@ -56,8 +67,8 @@ class Equipment : public Item
         //special effects (not sure how to do this yet)
     
     public:
-        Equipment(int, Tile, std::string, int, int, int);
-        Equipment(EquipType);
+        Equipment(int, Tile, std::string, IntPoint, int, int, int);
+        Equipment(IntPoint, EquipType);
         void perform_action(int, Character*);
         void equip(Character*);
         void remove(Character*);

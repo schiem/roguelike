@@ -56,6 +56,7 @@ class Character
 
     public:
         Character();
+        // what the heck are these parameters you guys??
         Character(int, int, int, Tile, Tile, int, int, int, int, int);
         Character(int, int, int, int, int);
         bool is_alive() const;

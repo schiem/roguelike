@@ -19,15 +19,17 @@
 
 #include <item.h>
 
-Item::Item()
+Item::Item(IntPoint _coords)
 {
-    }
+    coords = _coords;
+}
 
-Item::Item(int _weight, Tile _sprite, std::string _name)
+Item::Item(int _weight, Tile _sprite, std::string _name, IntPoint _coords)
 {
     weight = _weight;
     sprite = _sprite;
     name = _name;
+    coords = _coords;
 }
 
 int Item::get_weight()
@@ -40,5 +42,13 @@ Tile Item::get_sprite()
     return sprite;
 }
 
+IntPoint Item::get_coords()
+{
+    return coords;
+}
 
+void Item::set_coords(IntPoint _c)
+{
+    coords = _c;
+}
 

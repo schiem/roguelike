@@ -359,8 +359,7 @@ Tile* Game::get_tile(IntPoint point) {
  * false otherwise.
  */
 bool Game::out_of_bounds(IntPoint point) {
-    return (point.col < 0 || point.col >= STARTING_WIDTH ||
-            point.row < 0 || point.row >= STARTING_HEIGHT);
+    return Game::out_of_bounds(point.row, point.col);
 }
 
 /**

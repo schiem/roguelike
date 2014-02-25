@@ -22,14 +22,14 @@
 using namespace tiledef;
 using namespace equipment;
 
-Equipment::Equipment(int _weight, Tile _sprite, std::string _name, int bp, int t, int ac) : Item(_weight, _sprite, _name)
+Equipment::Equipment(int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t, int ac) : Item(_weight, _sprite, _name, _coords)
 {
     body_part = bp;
     type = t;
     armor_class = ac;
 }
 
-Equipment::Equipment(EquipType eqp)
+Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
 {
     weight = eqp.weight;
     sprite = eqp.sprite;

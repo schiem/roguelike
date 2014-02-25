@@ -28,6 +28,9 @@
 #include <spawner.h>
 #include <int_point.h>
 #include <bresenham.h>
+#include <item.h>
+#include <item_defs.h>
+
 class Overworld
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
@@ -36,6 +39,7 @@ class Overworld
         TileMatrix ground;
         Spawner spawner;
         bool smoothing_pass(int, Tile, int);
+        std::vector<Item*> items;
     public:
         bool has_layer_below;
         IntPoint down_stair;

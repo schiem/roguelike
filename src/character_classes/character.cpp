@@ -46,7 +46,7 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
 }
 
 /*
- * Constructor for the enemy class
+ * Constructor for the character class
  */
 Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
 {
@@ -77,9 +77,6 @@ bool Character::is_alive() const {
 */
 void Character::take_damage(int damage){
     current_health -= damage;
-    if (is_alive() == false) {
-        //delete the character
-    }
 }
 
 void Character::attack(Character* _chara)

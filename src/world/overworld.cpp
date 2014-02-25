@@ -40,8 +40,10 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
-    
+    int attack;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
+    
+
 
     if (tile_type == map_tile::MAP_DEFAULT) {
         build_land_overworld();
@@ -52,6 +54,14 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
     } else if (tile_type == map_tile::MAP_FOREST) {
         build_forest_overworld();
     }
+
+    /*TESTING ITEMS*/
+    IntPoint coords;
+    do{
+        coords = IntPoint(rand() % height, rand() % width);
+    }
+    while (ground[coords.row][coords.col].can_be_moved_through == false);
+    items.push_back(new Equipment(coords, equipment::boots));
 }
 
 void Overworld::build_land_overworld() {
