@@ -54,7 +54,9 @@ class Overworld
         void build_beach_overworld();
         void build_forest_overworld();
         std::vector<std::vector<Tile> >& get_ground();
+        std::vector<Item*>* get_items();
         Spawner get_spawner();
+
 
 };
 

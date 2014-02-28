@@ -26,6 +26,7 @@
 #include <terrain_defs.h>
 #include <room.h>
 #include <spawner.h>
+#include <item.h>
 
 class Dungeon
 {
@@ -35,6 +36,7 @@ class Dungeon
         TileMatrix dungeon;
         void tile_assertions(int, int) const;
         Spawner spawner;
+        std::vector<Item*> items;
 
     public:
         int width;
@@ -58,6 +60,7 @@ class Dungeon
         Spawner get_spawner();
         void dungeon_dump();
         void make_spawner(int);
+        std::vector<Item*>* get_items();
 };
 
 #endif

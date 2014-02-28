@@ -169,6 +169,18 @@ Tile* Chunk::get_tile(int depth, int row, int col) {
 }
 
 
+vector<Item*>* Chunk::get_items(int depth)
+{
+    if(depth == -1)
+    {
+        return overworld.get_items();
+    }
+    else
+    {
+        return dungeon_floors[depth].get_items();
+    }
+}
+
 void Chunk::set_tile(int depth, int row, int col, Tile tile){
     if (depth == -1) {
         overworld.set_tile(row, col, tile);

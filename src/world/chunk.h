@@ -70,6 +70,7 @@ class Chunk{
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
         void set_tile(int, int, int, Tile);
+        std::vector<Item*>* get_items(int);
         const std::vector<std::vector<Tile> >& get_floor(int);
         Tile* get_tile(int, int, int) ;
         int get_depth() const;

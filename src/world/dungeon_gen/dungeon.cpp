@@ -207,6 +207,11 @@ Spawner Dungeon::get_spawner()
 }
 
 
+vector<Item*>* Dungeon::get_items()
+{
+    return &items;
+}
+
 void Dungeon::dungeon_dump()
 {
     //dungeon dump

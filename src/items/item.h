@@ -39,7 +39,7 @@ class Item
         Item(IntPoint);
         Item(int, Tile, std::string, IntPoint);
         int get_weight();
-        Tile get_sprite();
+        Tile* get_sprite();
         virtual void perform_action(int, Character*)=0;
         IntPoint get_coords();
         void set_coords(IntPoint);

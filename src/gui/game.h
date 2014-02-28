@@ -35,7 +35,7 @@
 #include <character.h>
 #include <world_map.h>
 #include <helper.h>
-
+#include <item.h>
 
 struct TilePoint {
     Tile tile;
@@ -107,9 +107,10 @@ public:
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);
+        void show_vis_items();
         std::vector<Enemy> get_vis_enemies();
         void refresh();
-
+        
         //ENEMY Functionality
         void run_spawners();
         void run_enemies(long);

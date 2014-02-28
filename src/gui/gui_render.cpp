@@ -76,7 +76,8 @@ void GUI::OnRender() {
                         current_tile.char_count, ascii, screen, current_tile.color);
             }
         }
-        //Draw Main Character.  Assume that it's always visible and always at the middle
+       
+       //Draw Main Character.  Assume that it's always visible and always at the middle
         drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
         
         //Draw the health of the main_Character and it's target, if the target exists.

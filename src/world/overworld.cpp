@@ -55,14 +55,7 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
         build_forest_overworld();
     }
 
-    /*TESTING ITEMS*/
-    IntPoint coords;
-    do{
-        coords = IntPoint(rand() % height, rand() % width);
     }
-    while (ground[coords.row][coords.col].can_be_moved_through == false);
-    items.push_back(new Equipment(coords, equipment::boots));
-}
 
 void Overworld::build_land_overworld() {
     for(int i = 0; i < height; i++) {
@@ -120,6 +113,15 @@ void Overworld::build_forest_overworld() {
      * -Bresenham ellipses?
      */
     
+    /*TESTING ITEMS*/
+    IntPoint coords;
+    do{
+        coords = IntPoint(rand() % height, rand() % width);
+    }
+    while (ground[coords.row][coords.col].can_be_moved_through == false);
+    items.push_back(new Equipment(coords, equipment::boots));
+
+
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             ground[i][j] = GRASS_DIRT;
@@ -219,7 +221,12 @@ Tile* Overworld::get_tile(int row, int col) {
     return &ground[row][col];
 }
 
-//why is this a pointer?!
+vector<Item*>* Overworld::get_items()
+{
+    return &items;
+}
+
+
 void Overworld::set_tile(int row, int col, Tile tile) {
     ground[row][col] = tile;
 }

@@ -167,6 +167,7 @@ void Game::refresh() {
             set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
     }
+    show_vis_items();
     draw_visibility_lines();
 }
 
@@ -359,7 +360,7 @@ Tile* Game::get_tile(IntPoint point) {
  * false otherwise.
  */
 bool Game::out_of_bounds(IntPoint point) {
-    return Game::out_of_bounds(point.row, point.col);
+    return out_of_bounds(point.row, point.col);
 }
 
 /**
@@ -485,6 +486,32 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords)
  * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
  * points for raytraced lines.
  */
+
+void Game::show_vis_items()
+{
+    for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++)
+    {
+        for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++)
+        {
+           vector<Item*> *item_list = chunk_map[i][j].get_items(main_char.get_depth());
+           for(int index=0;index<item_list->size();index++)
+           {
+               IntPoint chunk = IntPoint(i, j); 
+               IntPoint coords = item_list->at(index)->get_coords(); 
+               IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
+               IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+               if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
+               {
+                   IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
+                   cout<<vis_coords<<endl;
+                    canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
+                    // canvas[vis_coords.row][vis_coords.col]->visible = true;
+                   
+               }
+           }
+        }
+    }
+}
 
 void Game::recalculate_visibility_lines(int size) {
     IntPoint true_center = IntPoint(0, 0);

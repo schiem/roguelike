@@ -37,9 +37,9 @@ int Item::get_weight()
     return weight;
 }
 
-Tile Item::get_sprite()
+Tile* Item::get_sprite()
 {
-    return sprite;
+    return &sprite;
 }
 
 IntPoint Item::get_coords()
