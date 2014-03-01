@@ -493,19 +493,21 @@ void Game::show_vis_items()
     {
         for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++)
         {
-           vector<Item*> *item_list = chunk_map[i][j].get_items(main_char.get_depth());
-           for(int index=0;index<item_list->size();index++)
-           {
-               IntPoint chunk = IntPoint(i, j); 
-               IntPoint coords = item_list->at(index)->get_coords(); 
-               IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-               IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-               if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
+            if(main_char.get_depth() < chunk_map[i][j].get_depth()){
+               vector<Item*>* item_list = chunk_map[i][j].get_items(main_char.get_depth());
+               for(int index=0;index<item_list->size();index++)
                {
-                   IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
-                   canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
+                   IntPoint chunk = IntPoint(i, j); 
+                   IntPoint coords = item_list->at(index)->get_coords(); 
+                   IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
+                   IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
+                   if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
+                   {
+                       IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
+                       canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
+                   }
                }
-           }
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ Dungeon::Dungeon()
     height= 10;
     down_stair = IntPoint(0, 0);
     up_stair = IntPoint(0, 0);
+    items = std::vector<Item*>();
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             dungeon[i][j] = DIRT;
@@ -47,6 +48,7 @@ Dungeon::Dungeon(int _width, int _height)
     num_rooms = 0;
     down_stair = IntPoint(0, 0);
     up_stair = IntPoint(0, 0);
+    items = std::vector<Item*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             dungeon[i][j] = BLOCK_WALL;
@@ -65,6 +67,7 @@ Dungeon::Dungeon(const Dungeon& d)
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
     spawner = d.spawner;
+    items = d.items;
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
@@ -81,6 +84,7 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = d.num_rooms;
     spawner = d.spawner;
+    items = d.items;
     for(int i = 0; i < num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
