@@ -22,7 +22,7 @@
 
 void GUI::OnLoop() {
     perform_action_cont();
-    if(game.is_initialized()) {
+    if(game.is_initialized() && game.is_paused() == false) {
         game.act(STD_MS_PER_FRAME);
         game.refresh();
         game.run_spawners();

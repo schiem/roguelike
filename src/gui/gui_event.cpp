@@ -82,11 +82,19 @@ void GUI::perform_action_press(SDLKey key) {
             } 
             break;
         case SDLK_u:
-            game.change_main_depth(-1);
+            if(!game.is_paused())
+            {
+                game.change_main_depth(-1);
+            }
             break;
         case SDLK_d:
-            game.change_main_depth(1);
+            if(!game.is_paused())
+            {
+                game.change_main_depth(1);
+            }
             break;
+        case SDLK_SPACE:
+            game.pause();
         default:
             break;
     }
@@ -119,7 +127,7 @@ void GUI::perform_action_cont() {
         }
     } else if(current_screen == GAME_SCREEN) {
         //THIS IS IMPORTANT, as it it turns out.
-        if(game.is_initialized()) {
+        if(game.is_initialized() && game.is_paused() == false) {
             if(keystate[SDLK_LEFT]){
                 game.move_main_char(-1, 0);
             }

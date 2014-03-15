@@ -57,11 +57,12 @@ class Game
         MapTileMatrix world_map;
         ChunkMatrix chunk_map;
         Tile block_wall_tile;
-
+        bool paused;
         //BASE model access functions
         void point_assertions(int, int);
         void set_tile(int, int, Tile*);
         void set_tile(IntPoint, Tile*);
+        
         Tile* get_tile(int, int);
         Tile* get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
@@ -103,7 +104,8 @@ public:
         Chunk* get_current_chunk();
         bool is_initialized();
         void act(long);
-
+        bool is_paused();
+        void pause();
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);

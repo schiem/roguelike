@@ -102,6 +102,10 @@ void GUI::OnRender() {
         clear_screen();
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
     } 
+    if(game.is_paused())
+    {
+        drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
+    }
     SDL_Flip(screen);
 }
 

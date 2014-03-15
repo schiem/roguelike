@@ -67,6 +67,7 @@ Game::Game(int w, int h) {
     STARTING_WIDTH = w;
     STARTING_HEIGHT = h;
     initialized = false;
+    paused = false;
     enemy_list = std::vector<Enemy>();
 }
 
@@ -361,6 +362,16 @@ Tile* Game::get_tile(IntPoint point) {
  */
 bool Game::out_of_bounds(IntPoint point) {
     return out_of_bounds(point.row, point.col);
+}
+
+bool Game::is_paused()
+{
+    return paused;
+}
+
+void Game::pause()
+{
+    paused = !paused;
 }
 
 /**
