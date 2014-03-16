@@ -68,6 +68,10 @@ class GUI : public VirtualEvent {
 
         int handle_framerate();
         void clear_screen();
+        void render_canvas();
+        void render_enemies();
+        void render_character();
+        void render_interface();
     public:
         GUI();
         int OnExecute();

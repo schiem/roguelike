@@ -43,60 +43,11 @@ void GUI::OnRender() {
         if(!game.is_initialized()) {
             game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
         }
-        TilePointerMatrix tm = game.get_canvas();
-        std::vector<Enemy> tl = game.get_vis_enemies();
-        for(size_t i = 0; i < tm.size(); i++) {
-            for(size_t j = 0; j < tm[i].size(); j++) {
-                //If the tile is visible, render it fully.
-                if(tm[i][j]->visible) {
-                    drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
-                //If the tile is not visible, but has been seen, render it in
-                //grey.
-                } else if(tm[i][j]->seen) {
-                    drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
-                    //We probably shouldn't draw the enemy layer on non-visible
-                    //tiles.
-                } else {
-                    //Draw an empty tile
-                    drawChr(j, i, 0, ascii, screen, 0);
-                }
-            }
-        }
-
-        //Draw enemies
-        Tile current_tile;
-        IntPoint current_point;
-        for(size_t i = 0; i < tl.size(); i++) {
-            IntPoint temp_chunk = IntPoint(tl[i].get_chunk_y(),tl[i].get_chunk_x());
-            IntPoint temp_coords = IntPoint(tl[i].get_y(), tl[i].get_x());
-            current_tile = tl[i].get_char();
-            current_point = game.get_vis_coords(temp_chunk, temp_coords);
-            if(tm[current_point.row][current_point.col]->visible) {
-                drawChr(current_point.col, current_point.row,
-                        current_tile.char_count, ascii, screen, current_tile.color);
-            }
-        }
-       
-       //Draw Main Character.  Assume that it's always visible and always at the middle
-        drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
-        
-        //Draw the health of the main_Character and it's target, if the target exists.
-        Character* target = game.main_char.get_target();
-        if(target != NULL)
-        {
-            stringstream ss;
-            ss << "Target health: " << target->get_cur_hp() << "/" << target->get_max_hp();
-            drawStr(0, 0, ss.str().c_str(), ascii, screen, WHITE);
-        }
-        else
-        {
-            drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
-        }
-        
-        stringstream ss;
-        ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
-        drawStr(30, 0, ss.str().c_str(), ascii, screen, WHITE);
-    
+        render_canvas();
+        render_enemies();
+        render_character();
+        render_interface();
+           
     } else if (current_screen == DEATH_SCREEN) 
     {
         clear_screen();
@@ -118,4 +69,69 @@ void GUI::clear_screen()
             drawStr(i, j, std::string(" ").c_str(), ascii, screen, WHITE);
         }
     }
+}
+
+void GUI::render_canvas()
+{
+    TilePointerMatrix tm = game.get_canvas();
+    for(size_t i = 0; i < tm.size(); i++) {
+        for(size_t j = 0; j < tm[i].size(); j++) {
+            //If the tile is visible, render it fully.
+            if(tm[i][j]->visible) {
+                drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
+            //If the tile is not visible, but has been seen, render it in
+            //grey.
+            } else if(tm[i][j]->seen) {
+                drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
+                //We probably shouldn't draw the enemy layer on non-visible
+                //tiles.
+            } else {
+                //Draw an empty tile
+                drawChr(j, i, 0, ascii, screen, 0);
+            }
+        }
+    }
+}
+
+void GUI::render_enemies()
+{
+    Tile current_tile;
+    IntPoint current_point;
+    TilePointerMatrix tm = game.get_canvas();
+    std::vector<Enemy> tl = game.get_vis_enemies();
+    for(size_t i = 0; i < tl.size(); i++) {
+        IntPoint temp_chunk = IntPoint(tl[i].get_chunk_y(),tl[i].get_chunk_x());
+        IntPoint temp_coords = IntPoint(tl[i].get_y(), tl[i].get_x());
+        current_tile = tl[i].get_char();
+        current_point = game.get_vis_coords(temp_chunk, temp_coords);
+        if(tm[current_point.row][current_point.col]->visible) {
+            drawChr(current_point.col, current_point.row,
+                    current_tile.char_count, ascii, screen, current_tile.color);
+        }
+    }
+}
+
+void GUI::render_character()
+{
+
+    drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
+}
+
+void GUI::render_interface()
+{
+    Character* target = game.main_char.get_target();
+    if(target != NULL)
+    {
+        stringstream ss;
+        ss << "Target health: " << target->get_cur_hp() << "/" << target->get_max_hp();
+        drawStr(0, 0, ss.str().c_str(), ascii, screen, WHITE);
+    }
+    else
+    {
+        drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
+    }
+    
+    stringstream ss;
+    ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
+    drawStr(STARTING_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
 }
