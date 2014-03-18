@@ -28,11 +28,11 @@
 #include <chunk.h>
 #include <virtual_event.h>
 #include <game.h>
-#include <main_menu.h>
 #include <terrain_defs.h>
 #include <world_map.h>
 #include <world_map_gui.h>
 #include <def.h>
+#include <menu.h>
 
 namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {
@@ -42,10 +42,11 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         enum Screen {
-            MENU_SCREEN,
+            MAINMENU_SCREEN,
             MAP_SCREEN,
             GAME_SCREEN,
-            DEATH_SCREEN
+            DEATH_SCREEN,
+            MENU_SCREEN
         };
 
         static const int STARTING_WIDTH = 100;
@@ -58,7 +59,7 @@ class GUI : public VirtualEvent {
         Screen current_screen;
 
         WorldMapGUI world_map_gui;
-        MainMenu main_menu;
+        Menu menu;
         Game game;
 
         SDL_Event event;
@@ -72,6 +73,7 @@ class GUI : public VirtualEvent {
         void render_enemies();
         void render_character();
         void render_interface();
+        void render_menu(Menu* menu);
     public:
         GUI();
         int OnExecute();

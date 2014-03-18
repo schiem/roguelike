@@ -17,35 +17,33 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MAIN_MENU_H
-#define _MAIN_MENU_H
+#ifndef _MENU_H
+#define _MENU_H
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <ASCII_Lib.h>
+#include <terrain_defs.h>
 
+using namespace tiledef;
 using namespace std;
 
-enum Choice {
-    NONE = -1,
-    NEW_GAME = 0,
-    LOAD_GAME = 1
-};
+//Okay dude, come on.  I know this was temporary, but come on...
 
-class MainMenu {
-    private:
+class Menu {
+    public:
         int selection;
-        int STARTING_WIDTH;
-        int STARTING_HEIGHT;
+        int width;
+        int height;
+        Tile border;
         bool done_selecting;
-        static const string title;
-        std::vector<std::string> options;
-
+        string title;
+        vector<string> options;
+        
         bool out_of_bounds(int);
 
-    public:
-        MainMenu(int, int);
+        Menu(int, Tile, vector<string>, string);
         void move_selection(int);
         void make_selection();
         bool is_done_selecting();
@@ -53,8 +51,9 @@ class MainMenu {
         //rendering and knows about SDL. I will likely
         //regret this very soon.
         void render(SDL_Surface*, SDL_Surface*);
-
+        void add_item(string);
         int get_selection();
+        int get_max_width(vector<string>);
 };
 
 #endif

@@ -20,10 +20,10 @@
 #include <gui.h>
 
 void GUI::OnRender() {
-    if(current_screen == MENU_SCREEN) {
-        main_menu.render(ascii, screen);
-        if(main_menu.is_done_selecting()) {
-            int selection = main_menu.get_selection();
+    if(current_screen == MAINMENU_SCREEN) {
+        render_menu(&menu);
+        if(menu.is_done_selecting()) {
+            int selection = menu.get_selection();
             //Here, compare the selection to NEW_GAME or LOAD_GAME.
             current_screen = MAP_SCREEN;
         }
@@ -52,7 +52,10 @@ void GUI::OnRender() {
     {
         clear_screen();
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
-    } 
+    } else if (current_screen == MENU_SCREEN)
+    {
+        render_menu(&menu);
+    }
     if(game.is_paused())
     {
         drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
@@ -135,3 +138,46 @@ void GUI::render_interface()
     ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
     drawStr(STARTING_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
 }
+
+
+void GUI::render_menu(Menu* menu)
+{
+    
+    //menu's will always be rendered in the middle of the screen, fyi
+    //clear the background in the specified height/width
+    //width is automatically 20
+    int start_row = (STARTING_HEIGHT - menu->height) / 2;
+    int start_col = (STARTING_WIDTH - menu->width) / 2;
+    int end_row = (STARTING_HEIGHT + menu->height) / 2;
+    int end_col = (STARTING_WIDTH + menu->width) / 2;
+    for(int row = start_row; row <= end_row; row++)
+    {
+        for(int col = start_col; col <= end_col; col++)
+        {
+            drawChr(col, row, menu->border.char_count, ascii, screen, BLACK);
+        }
+    }
+
+    int starting_col;
+    starting_col = (STARTING_WIDTH - menu->title.size()) / 2;
+    drawStr(starting_col, (STARTING_HEIGHT/4), menu->title.c_str(),
+            ascii, screen, RED);
+
+    int color, string_size;
+    //Render selections
+    for(int i = 0; i < menu->options.size(); i++) {
+        string_size = menu->options[i].size();
+        starting_col = (STARTING_WIDTH - string_size) / 2;
+        
+        if(menu->selection == i) {
+            color = WHITE;
+        } else {
+            color = DARK_GRAY;
+        }
+
+        drawStr(starting_col, ((STARTING_HEIGHT - menu->options.size())/2) + i,
+                menu->options[i].c_str(), ascii, screen, color);
+    }
+
+}
+

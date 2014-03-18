@@ -19,11 +19,15 @@
 
 #include <gui.h>
 
+//this is for backward compatibility with c98 standard
+std::string temp_array[2] = {"Start a New Game", "Continue"};
+std::vector<std::string> menu_selection (&temp_array[0], &temp_array[0]+2); 
+
 GUI::GUI() : world_map_gui(100, 50),
-             main_menu(100, 50),
+             menu(1, BLOCK_WALL, menu_selection, "Some Name"),
              game(100, 50) {
 
-    current_screen = MENU_SCREEN;
+    current_screen = MAINMENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;

@@ -39,7 +39,7 @@ roguelike_SOURCES = \
 	src/gui/gui_event.cpp\
 	src/gui/gui_init.cpp\
 	src/gui/game.cpp\
-	src/gui/main_menu.cpp\
+	src/gui/menu.cpp\
 	src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
@@ -67,7 +67,7 @@ roguelike_SOURCES = \
     src/gui/virtual_event.h\
 	src/gui/gui.h\
 	src/gui/game.h\
-	src/gui/main_menu.h\
+	src/gui/menu.h\
 	src/gui/world_map_gui.h\
 	src/world/terrain_defs.h\
 	src/world/chunk.h\
