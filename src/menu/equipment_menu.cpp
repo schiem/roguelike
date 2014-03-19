@@ -1,5 +1,5 @@
 /**
- *  MAIN_MENU.CPP
+ *  EQUIPMENT_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,39 +19,23 @@
 
 #include "menu.h"
 
-MainMenu::MainMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
+EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
 {
     next_screen = GAME_SCREEN;
     title = _title;
-    options.push_back("Equipment");
-    options.push_back("Stats");
-    options.push_back("Other Option");
-    options.push_back("Return");
+    options.push_back("head");
+    options.push_back("torso");
+    options.push_back("arms");
+    options.push_back("back");
     height = options.size() + padding;
     width = get_max_width(options) + padding;
 }
 
-Menu* MainMenu::make_selection()
+Menu* EquipmentMenu::make_selection()
 {
-    switch (selection)
+    if(selection == options.size() - 1)
     {
-        case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, "Equipment Menu");
-            break;
-        case 1:
-            return this;
-            break;
-        case 2:
-            return this;
-            break;
-        case 3:
-            toggle_exit();
-            return this;
-            break;
-        default:
-            toggle_exit();
-            return this;
-            break;
+        return new MainMenu(1, BLOCK_WALL, "Main Menu");
     }
+    return this;
 }
-

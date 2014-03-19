@@ -84,6 +84,16 @@ void Character::attack(Character* _chara)
     _chara->take_damage(attack_dam);
 }
 
+vector<Item*> Character::get_inventory()
+{
+    return inventory;
+}
+
+vector<Item*> Character::get_equipment()
+{
+    return equipment;
+}
+
 void Character::set_x(int _x) {
     x = _x;
 }

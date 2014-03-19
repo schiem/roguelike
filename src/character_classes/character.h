@@ -57,11 +57,14 @@ class Character
     public:
         Character();
         // what the heck are these parameters you guys??
+        //lol who cares alan?
         Character(int, int, int, Tile, Tile, int, int, int, int, int);
         Character(int, int, int, int, int);
         bool is_alive() const;
         void take_damage(int);
         void attack(Character*);
+        std::vector<Item*> get_inventory();
+        std::vector<Item*> get_equipment();
         int get_x();
         int get_y();
         IntPoint get_chunk();

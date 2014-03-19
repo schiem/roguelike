@@ -91,4 +91,12 @@ class MainMenu: public Menu
         Menu* make_selection();
 };
 
+class EquipmentMenu: public Menu
+{
+    public: 
+        EquipmentMenu(int, Tile, string);
+        Menu* make_selection();
+};
+
+
 #endif
