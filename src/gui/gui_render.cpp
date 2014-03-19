@@ -22,14 +22,6 @@
 void GUI::OnRender() {
     if(current_screen == MENU_SCREEN) {
         render_menu(menu);
-        if(menu->should_exit()) {
-            //REMEMBER TO FIGURE OUT HOW THIS IS GOING TO WORK!
-            
-            int selection = menu->get_selection();
-            //Here, compare the selection to NEW_GAME or LOAD_GAME.
-            current_screen = MAP_SCREEN;
-        }
-
     } else if(current_screen == MAP_SCREEN) {
         std::vector<std::vector<MapTile> > map_canvas = world_map_gui.get_canvas();
         for(size_t i = 0; i < map_canvas.size(); i++) {

@@ -74,3 +74,9 @@ int GUI::handle_framerate() {
         return 10;
     }
 }
+
+GUI::~GUI()
+{
+    delete menu;
+}
+

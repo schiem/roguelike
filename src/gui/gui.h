@@ -33,6 +33,8 @@
 #include <world_map_gui.h>
 #include <def.h>
 #include <menu.h>
+#include <game_states.h>
+
 
 namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {
@@ -41,13 +43,6 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        enum Screen {
-            MAP_SCREEN,
-            GAME_SCREEN,
-            DEATH_SCREEN,
-            MENU_SCREEN
-        };
-
         static const int STARTING_WIDTH = 100;
         static const int STARTING_HEIGHT = 50;
         static const long STD_MS_PER_FRAME = 90;
@@ -75,6 +70,7 @@ class GUI : public VirtualEvent {
         void render_menu(Menu* menu);
     public:
         GUI();
+        ~GUI();
         int OnExecute();
         void OnRender();
         void OnLoop();

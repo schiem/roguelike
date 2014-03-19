@@ -25,12 +25,19 @@
 #include <vector>
 #include <ASCII_Lib.h>
 #include <terrain_defs.h>
+#include <game_states.h>
 
 using namespace tiledef;
 using namespace std;
 
+/*
+Each different type of menu is going to be a subclass that overloads the make_selection() function 
+to provide different functionality.  See the documentation for make_selection for more detail.
+*/
+
 class Menu {
     public:
+        Screen next_screen;
         int selection;
         string title;
         int width;
@@ -42,7 +49,20 @@ class Menu {
 
         Menu(int, Tile);
         void move_selection(int);
-        virtual void make_selection() = 0;
+        
+        /*
+        This is the most important function.  There are three possibilities:
+        1.  The selection just transitions to a new menu.  The menu returned will
+            be the new menu.
+        2.  The selection just performs a function and then returns to the same menu.
+            In this case, "this" will be returned and nothing else will happen.
+        3.  The selection causes an exit of the menu screen.  When this happens, 
+            "this" will be returned and should_exit will be toggled. On the next pass,
+            the game_state will then transition to the next_screen.
+
+        There's no reason that 2 & 3 can't be combined.
+        */
+        virtual Menu* make_selection() = 0;
         //For now, this takes care of its own
         //rendering and knows about SDL. I will likely
         //regret this very soon.
@@ -53,6 +73,7 @@ class Menu {
         int get_selection();
         int get_max_width(vector<string>);
         void toggle_exit();
+        Screen get_screen();
 };
 
 class StartMenu : public Menu
@@ -60,6 +81,6 @@ class StartMenu : public Menu
     public:
 
         StartMenu(int, Tile, string);
-        void make_selection();
+        Menu* make_selection();
 };
 #endif

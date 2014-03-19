@@ -74,3 +74,8 @@ void Menu::toggle_exit()
     exit = !exit;
 }
 
+Screen Menu::get_screen()
+{
+    return next_screen;
+}
+

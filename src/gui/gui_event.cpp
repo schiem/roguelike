@@ -76,7 +76,10 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
-                menu->make_selection();
+                menu = menu->make_selection();
+                if(menu->should_exit()) {
+                    current_screen = menu->get_screen();
+                    }
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
             } 

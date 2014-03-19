@@ -1,5 +1,5 @@
 /**
- *  MAIN_MENU.CPP
+ *  GAME_STATES.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,20 +17,16 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "menu.h"
+#ifndef _GAME_STATES_H
+#define _GAME_STATES_H
 
-StartMenu::StartMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
-{
-    next_screen = MAP_SCREEN;
-    title = _title;
-    options.push_back("New Game");
-    options.push_back("Continue");
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
-}
+enum Screen {
+            MAP_SCREEN,
+            GAME_SCREEN,
+            DEATH_SCREEN,
+            MENU_SCREEN
+        };
 
-Menu* StartMenu::make_selection()
-{
-   toggle_exit();
-   return this;
-}
+#endif
+
+
