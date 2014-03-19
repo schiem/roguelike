@@ -42,7 +42,6 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         enum Screen {
-            MAINMENU_SCREEN,
             MAP_SCREEN,
             GAME_SCREEN,
             DEATH_SCREEN,

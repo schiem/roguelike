@@ -20,7 +20,7 @@
 #include <gui.h>
 
 void GUI::OnRender() {
-    if(current_screen == MAINMENU_SCREEN) {
+    if(current_screen == MENU_SCREEN) {
         render_menu(&menu);
         if(menu.is_done_selecting()) {
             int selection = menu.get_selection();

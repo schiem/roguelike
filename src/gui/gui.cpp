@@ -27,7 +27,7 @@ GUI::GUI() : world_map_gui(100, 50),
              menu(1, BLOCK_WALL, menu_selection, "Some Name"),
              game(100, 50) {
 
-    current_screen = MAINMENU_SCREEN;
+    current_screen = MENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;

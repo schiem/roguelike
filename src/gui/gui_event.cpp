@@ -75,7 +75,7 @@ void GUI::perform_action_press(SDLKey key) {
     //remember that 'const' is left-binding.
     switch (key) {
         case SDLK_RETURN:
-            if(current_screen == MAINMENU_SCREEN) {
+            if(current_screen == MENU_SCREEN) {
                 menu.make_selection();
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
@@ -105,7 +105,7 @@ void GUI::perform_action_cont() {
     SDL_PumpEvents();
     Uint8* keystate = SDL_GetKeyState(NULL);
 
-    if (current_screen == MAINMENU_SCREEN) {
+    if (current_screen == MENU_SCREEN) {
         if(keystate[SDLK_UP]) {
             menu.move_selection(-1);
         }
