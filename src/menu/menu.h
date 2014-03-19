@@ -83,4 +83,12 @@ class StartMenu : public Menu
         StartMenu(int, Tile, string);
         Menu* make_selection();
 };
+
+class MainMenu: public Menu
+{
+    public:
+        MainMenu(int, Tile, string);
+        Menu* make_selection();
+};
+
 #endif

@@ -42,6 +42,7 @@ roguelike_SOURCES = \
 	src/gui/game.cpp\
     src/menu/menu.cpp\
 	src/menu/start_menu.cpp\
+    src/menu/main_menu.cpp\
     src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\

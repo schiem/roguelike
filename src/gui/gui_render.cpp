@@ -19,6 +19,7 @@
 
 #include <gui.h>
 
+
 void GUI::OnRender() {
     if(current_screen == MENU_SCREEN) {
         render_menu(menu);
@@ -46,10 +47,7 @@ void GUI::OnRender() {
     {
         clear_screen();
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
-    } else if (current_screen == MENU_SCREEN)
-    {
-        render_menu(menu);
-    }
+    } 
     if(game.is_paused())
     {
         drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);

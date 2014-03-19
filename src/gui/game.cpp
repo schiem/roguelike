@@ -371,8 +371,20 @@ bool Game::is_paused()
 
 void Game::pause()
 {
+    paused = true;
+}
+
+void Game::toggle_pause()
+{
     paused = !paused;
 }
+
+
+void Game::unpause()
+{
+    paused = false;
+}
+
 
 /**
  * PRE: Will be given two ints representing a row and column.

@@ -106,6 +106,8 @@ public:
         void act(long);
         bool is_paused();
         void pause();
+        void unpause();
+        void toggle_pause();
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);

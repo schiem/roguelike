@@ -77,9 +77,11 @@ void GUI::perform_action_press(SDLKey key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
                 menu = menu->make_selection();
-                if(menu->should_exit()) {
+                if(menu->should_exit()) 
+                {
                     current_screen = menu->get_screen();
-                    }
+                    game.unpause();
+                }
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
             } 
@@ -96,8 +98,21 @@ void GUI::perform_action_press(SDLKey key) {
                 game.change_main_depth(1);
             }
             break;
+        case SDLK_m:
+            if(current_screen == GAME_SCREEN)
+            {
+                current_screen = MENU_SCREEN;
+                delete menu;
+                menu = new MainMenu(1, BLOCK_WALL, "Main Menu");
+                game.pause();
+            }
+            break;
         case SDLK_SPACE:
-            game.pause();
+            if(current_screen == GAME_SCREEN)
+            {
+                game.toggle_pause();
+            }
+            break;
         default:
             break;
     }
