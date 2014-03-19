@@ -18,17 +18,12 @@
  */
 
 #include "menu.h"
-using namespace std;
 
 
-Menu::Menu(int padding, Tile _border, std::vector<string> _options, string _title) {
-    height = _options.size() + padding;
-    width = get_max_width(_options) + padding;
+Menu::Menu(int padding, Tile _border) {
     border = _border;
     selection = 0;
-    done_selecting = false;
-    options = _options;
-    title = _title;
+    exit=false;
 }
 
 bool Menu::out_of_bounds(int row) {
@@ -44,14 +39,6 @@ void Menu::move_selection(int direction) {
     if(!out_of_bounds(new_selection)) {
         selection = new_selection;
     }
-}
-
-void Menu::make_selection() {
-    done_selecting = true;
-}
-
-bool Menu::is_done_selecting() {
-    return done_selecting;
 }
 
 
@@ -76,3 +63,14 @@ int Menu::get_max_width(vector<string> string_list)
     }
     return length;
 }
+
+bool Menu::should_exit()
+{
+    return exit;
+}
+
+void Menu::toggle_exit()
+{
+    exit = !exit;
+}
+

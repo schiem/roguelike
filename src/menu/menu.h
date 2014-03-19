@@ -29,31 +29,37 @@
 using namespace tiledef;
 using namespace std;
 
-//Okay dude, come on.  I know this was temporary, but come on...
-
 class Menu {
     public:
         int selection;
+        string title;
         int width;
         int height;
         Tile border;
-        bool done_selecting;
-        string title;
         vector<string> options;
-        
+        bool exit; 
         bool out_of_bounds(int);
 
-        Menu(int, Tile, vector<string>, string);
+        Menu(int, Tile);
         void move_selection(int);
-        void make_selection();
-        bool is_done_selecting();
+        virtual void make_selection() = 0;
         //For now, this takes care of its own
         //rendering and knows about SDL. I will likely
         //regret this very soon.
-        void render(SDL_Surface*, SDL_Surface*);
+        
+        //Don't worry, I got it bro -M
         void add_item(string);
+        bool should_exit();
         int get_selection();
         int get_max_width(vector<string>);
+        void toggle_exit();
 };
 
+class StartMenu : public Menu
+{
+    public:
+
+        StartMenu(int, Tile, string);
+        void make_selection();
+};
 #endif

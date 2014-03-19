@@ -6,6 +6,7 @@ AM_CPPFLAGS = -I.\
 			  -Ilib/SDL-ASCII-Template\
 			  -Isrc/gui\
 			  -Isrc/items\
+              -Isrc/menu\
               $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
@@ -39,8 +40,9 @@ roguelike_SOURCES = \
 	src/gui/gui_event.cpp\
 	src/gui/gui_init.cpp\
 	src/gui/game.cpp\
-	src/gui/menu.cpp\
-	src/gui/gui_cleanup.cpp\
+	src/menu/menu.cpp\
+	src/menu/start_menu.cpp\
+    src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
 	src/world/overworld.cpp\
@@ -67,7 +69,7 @@ roguelike_SOURCES = \
     src/gui/virtual_event.h\
 	src/gui/gui.h\
 	src/gui/game.h\
-	src/gui/menu.h\
+	src/menu/menu.h\
 	src/gui/world_map_gui.h\
 	src/world/terrain_defs.h\
 	src/world/chunk.h\

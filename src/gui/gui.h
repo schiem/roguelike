@@ -58,7 +58,7 @@ class GUI : public VirtualEvent {
         Screen current_screen;
 
         WorldMapGUI world_map_gui;
-        Menu menu;
+        Menu* menu;
         Game game;
 
         SDL_Event event;

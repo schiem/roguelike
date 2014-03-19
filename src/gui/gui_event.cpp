@@ -76,7 +76,7 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
-                menu.make_selection();
+                menu->make_selection();
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
             } 
@@ -107,10 +107,10 @@ void GUI::perform_action_cont() {
 
     if (current_screen == MENU_SCREEN) {
         if(keystate[SDLK_UP]) {
-            menu.move_selection(-1);
+            menu->move_selection(-1);
         }
         if(keystate[SDLK_DOWN]) {
-            menu.move_selection(1);
+            menu->move_selection(1);
         }
     } else if (current_screen == MAP_SCREEN) {
         if(keystate[SDLK_LEFT]){

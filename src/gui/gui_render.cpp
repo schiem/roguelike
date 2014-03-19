@@ -21,9 +21,11 @@
 
 void GUI::OnRender() {
     if(current_screen == MENU_SCREEN) {
-        render_menu(&menu);
-        if(menu.is_done_selecting()) {
-            int selection = menu.get_selection();
+        render_menu(menu);
+        if(menu->should_exit()) {
+            //REMEMBER TO FIGURE OUT HOW THIS IS GOING TO WORK!
+            
+            int selection = menu->get_selection();
             //Here, compare the selection to NEW_GAME or LOAD_GAME.
             current_screen = MAP_SCREEN;
         }
@@ -54,7 +56,7 @@ void GUI::OnRender() {
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
     } else if (current_screen == MENU_SCREEN)
     {
-        render_menu(&menu);
+        render_menu(menu);
     }
     if(game.is_paused())
     {
