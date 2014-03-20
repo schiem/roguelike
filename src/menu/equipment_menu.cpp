@@ -22,13 +22,11 @@
 EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
 {
     next_screen = GAME_SCREEN;
-    title = _title;
-    options.push_back("head");
-    options.push_back("torso");
-    options.push_back("arms");
-    options.push_back("back");
+    construct_menu();
+    normalize_options();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
+    title = _title;
 }
 
 Menu* EquipmentMenu::make_selection()
@@ -39,3 +37,11 @@ Menu* EquipmentMenu::make_selection()
     }
     return this;
 }
+
+void EquipmentMenu::construct_menu()
+{
+    options.push_back("head");
+    options.push_back("torso");
+    options.push_back("arms");
+    options.push_back("back");
+} 

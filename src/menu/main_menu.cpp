@@ -22,13 +22,11 @@
 MainMenu::MainMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
 {
     next_screen = GAME_SCREEN;
-    title = _title;
-    options.push_back("Equipment");
-    options.push_back("Stats");
-    options.push_back("Other Option");
-    options.push_back("Return");
+    construct_menu();
+    normalize_options();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
+    title = _title;
 }
 
 Menu* MainMenu::make_selection()
@@ -55,3 +53,10 @@ Menu* MainMenu::make_selection()
     }
 }
 
+void MainMenu::construct_menu()
+{
+    options.push_back("Equipment");
+    options.push_back("Stats");
+    options.push_back("Other Option");
+    options.push_back("Return");
+} 

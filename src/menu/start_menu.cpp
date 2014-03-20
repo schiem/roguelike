@@ -22,15 +22,21 @@
 StartMenu::StartMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
 {
     next_screen = MAP_SCREEN;
-    title = _title;
-    options.push_back("New Game");
-    options.push_back("Continue");
+    construct_menu();
+    normalize_options();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
+    title = _title;
 }
 
 Menu* StartMenu::make_selection()
 {
    toggle_exit();
    return this;
+}
+
+void StartMenu::construct_menu()
+{
+    options.push_back("New Game");
+    options.push_back("Continue");
 }

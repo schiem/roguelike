@@ -76,6 +76,9 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
+                //this is a temporary hack to get it to display
+                //this correctly when transitioning menus
+                render_canvas();
                 menu = menu->make_selection();
                 if(menu->should_exit()) 
                 {

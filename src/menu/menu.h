@@ -63,6 +63,8 @@ class Menu {
         There's no reason that 2 & 3 can't be combined.
         */
         virtual Menu* make_selection() = 0;
+        virtual void construct_menu() = 0;
+        void normalize_options();
         //For now, this takes care of its own
         //rendering and knows about SDL. I will likely
         //regret this very soon.
@@ -82,6 +84,7 @@ class StartMenu : public Menu
 
         StartMenu(int, Tile, string);
         Menu* make_selection();
+        void construct_menu();
 };
 
 class MainMenu: public Menu
@@ -89,6 +92,8 @@ class MainMenu: public Menu
     public:
         MainMenu(int, Tile, string);
         Menu* make_selection();
+        void construct_menu();
+
 };
 
 class EquipmentMenu: public Menu
@@ -96,6 +101,8 @@ class EquipmentMenu: public Menu
     public: 
         EquipmentMenu(int, Tile, string);
         Menu* make_selection();
+        void construct_menu();
+
 };
 
 
