@@ -94,6 +94,11 @@ vector<Item*> Character::get_equipment()
     return equipment;
 }
 
+void Character::add_item(Item* new_item)
+{
+    inventory.push_back(new_item);
+}
+
 void Character::set_x(int _x) {
     x = _x;
 }

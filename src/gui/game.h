@@ -62,7 +62,8 @@ class Game
         void point_assertions(int, int);
         void set_tile(int, int, Tile*);
         void set_tile(IntPoint, Tile*);
-        
+        Item* item_at_coords(IntPoint, IntPoint, int);
+
         Tile* get_tile(int, int);
         Tile* get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
@@ -122,7 +123,7 @@ public:
         //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);
-
+        void get_item(); 
 };
 
 #endif

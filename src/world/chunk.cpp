@@ -181,6 +181,18 @@ vector<Item*>* Chunk::get_items(int depth)
     }
 }
 
+void Chunk::remove_item(Item* item, int depth)
+{
+    vector<Item*>* items = get_items(depth);
+    for(int i = 0; i<items->size();i++)
+    {
+        if(items->at(i) == item)
+        {
+            items->erase(items->begin() + i);
+        }
+    }
+}
+
 void Chunk::set_tile(int depth, int row, int col, Tile tile){
     if (depth == -1) {
         overworld.set_tile(row, col, tile);

@@ -65,6 +65,7 @@ class Character
         void attack(Character*);
         std::vector<Item*> get_inventory();
         std::vector<Item*> get_equipment();
+        void add_item(Item*);
         int get_x();
         int get_y();
         IntPoint get_chunk();

@@ -220,7 +220,6 @@ void Game::run_enemies(long delta_ms) {
                     IntPoint(enemy->get_sight(), enemy->get_sight()));
 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
-            
             std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(20, 20));
 
 
@@ -300,6 +299,18 @@ void Game::move_main_char(int col_change, int row_change) {
 }
 
 
+void Game::get_item()
+{
+    //make this take in a character so that other characters can call it?
+    Item* temp_item = item_at_coords(IntPoint(main_char.get_y(), main_char.get_x()), main_char.get_chunk(), main_char.get_depth());
+    if(temp_item != NULL)
+    {
+        //add a check if the inventory is full
+        main_char.add_item(temp_item);
+        chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].remove_item(temp_item, main_char.get_depth());
+    }
+}
+
 /*========= PRIVATE METHODS ============*/
 
 /*--------------------Base Model Functions-----------------*/
@@ -340,6 +351,20 @@ void Game::set_tile(IntPoint point, Tile* tile) {
  * POST: Returns a pointer to the tile on the canvas at that row and column,
  * using assertions in point_assertions.
  */
+
+Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth)
+{
+    vector<Item*>* item_list = chunk_map[chunk.row][chunk.col].get_items(depth);
+    for(int i=0;i<item_list->size();i++)
+    {
+        if(item_list->at(i)->get_coords() == coords)
+        {
+            return item_list->at(i);
+        }
+    }
+    return NULL;
+}
+
 Tile* Game::get_tile(int row, int col) {
     point_assertions(row, col);
     return canvas[row][col];

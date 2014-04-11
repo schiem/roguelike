@@ -90,13 +90,13 @@ void GUI::perform_action_press(SDLKey key) {
             } 
             break;
         case SDLK_u:
-            if(!game.is_paused())
+            if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
                 game.change_main_depth(-1);
             }
             break;
         case SDLK_d:
-            if(!game.is_paused())
+            if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
                 game.change_main_depth(1);
             }
@@ -108,6 +108,12 @@ void GUI::perform_action_press(SDLKey key) {
                 delete menu;
                 menu = new MainMenu(1, BLOCK_WALL, "Main Menu");
                 game.pause();
+            }
+            break;
+        case SDLK_g:
+            if(!game.is_paused() && current_screen == GAME_SCREEN)
+            {
+                game.get_item();
             }
             break;
         case SDLK_SPACE:
