@@ -45,7 +45,7 @@ class GUI : public VirtualEvent {
     private:
         static const int STARTING_WIDTH = 100;
         static const int STARTING_HEIGHT = 50;
-        static const long STD_MS_PER_FRAME = 90;
+        static const long STD_MS_PER_FRAME = 70;
 
         pt::ptime game_clock;
 

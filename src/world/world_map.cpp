@@ -214,12 +214,9 @@ void WorldMap::generate_land_mass() {
 }
 
 void WorldMap::generate_beaches() {
-    for(int i=0;i<height;i++)
-    {
-        for(int j=0;j<width;j++)
-        {
-            if(map[i][j] != map_tile::MAP_WATER && count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)
-            {
+    for(int i=0;i<height;i++) {
+        for(int j=0;j<width;j++) {
+            if((map[i][j] != map_tile::MAP_WATER) && (count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)) {
                 map[i][j] = map_tile::MAP_BEACH;
             }
         }
