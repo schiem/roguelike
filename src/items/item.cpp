@@ -47,6 +47,11 @@ IntPoint Item::get_coords()
     return coords;
 }
 
+std::string Item::get_name()
+{
+    return name;
+}
+
 void Item::set_coords(IntPoint _c)
 {
     coords = _c;

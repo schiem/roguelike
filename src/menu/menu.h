@@ -26,6 +26,8 @@
 #include <ASCII_Lib.h>
 #include <terrain_defs.h>
 #include <game_states.h>
+#include <item.h>
+#include <character.h>
 
 using namespace tiledef;
 using namespace std;
@@ -37,6 +39,7 @@ to provide different functionality.  See the documentation for make_selection fo
 
 class Menu {
     public:
+        Character* character;
         Screen next_screen;
         int selection;
         string title;
@@ -90,7 +93,7 @@ class StartMenu : public Menu
 class MainMenu: public Menu
 {
     public:
-        MainMenu(int, Tile, string);
+        MainMenu(int, Tile, string, Character*);
         Menu* make_selection();
         void construct_menu();
 
@@ -99,11 +102,17 @@ class MainMenu: public Menu
 class EquipmentMenu: public Menu
 {
     public: 
-        EquipmentMenu(int, Tile, string);
+        EquipmentMenu(int, Tile, string, Character*);
         Menu* make_selection();
         void construct_menu();
 
 };
 
-
+class InventoryMenu: public Menu
+{
+    public:
+        InventoryMenu(int, Tile, string, Character*);
+        Menu* make_selection();
+        void construct_menu();
+};
 #endif

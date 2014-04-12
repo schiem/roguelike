@@ -43,6 +43,7 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
+    
 }
 
 /*
@@ -97,6 +98,7 @@ vector<Item*> Character::get_equipment()
 void Character::add_item(Item* new_item)
 {
     inventory.push_back(new_item);
+    cout<<inventory.size()<<endl;
 }
 
 void Character::set_x(int _x) {

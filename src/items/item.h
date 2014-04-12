@@ -43,6 +43,7 @@ class Item
         virtual void perform_action(int, Character*)=0;
         IntPoint get_coords();
         void set_coords(IntPoint);
+        std::string get_name();
 };
 
 

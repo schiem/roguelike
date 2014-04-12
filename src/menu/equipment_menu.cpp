@@ -19,8 +19,9 @@
 
 #include "menu.h"
 
-EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
+EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Character* new_char) : Menu(padding, _border)
 {
+    character = new_char;
     next_screen = GAME_SCREEN;
     construct_menu();
     normalize_options();
@@ -33,7 +34,7 @@ Menu* EquipmentMenu::make_selection()
 {
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, BLOCK_WALL, "Main Menu");
+        return new MainMenu(1, BLOCK_WALL, "Main Menu", character);
     }
     return this;
 }
