@@ -19,9 +19,9 @@
 
 #include "menu.h"
 
-EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Character* new_char) : Menu(padding, _border)
+EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
 {
-    character = new_char;
+    game = _game;
     next_screen = GAME_SCREEN;
     construct_menu();
     normalize_options();
@@ -34,15 +34,24 @@ Menu* EquipmentMenu::make_selection()
 {
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, BLOCK_WALL, "Main Menu", character);
+        return new MainMenu(1, BLOCK_WALL, "Main Menu", game);
     }
     return this;
 }
 
 void EquipmentMenu::construct_menu()
 {
-    options.push_back("head");
-    options.push_back("torso");
-    options.push_back("arms");
-    options.push_back("back");
+    vector<Item*> items = game->main_char.get_equipment();
+    for(int i=0;i<items.size();i++)
+    {
+        if(items[i] != NULL)
+        {
+            options.push_back(items[i]->get_name());
+        }
+        else
+        {
+            options.push_back("Not equipped");
+        }
+    }
+    options.push_back("Back");
 } 

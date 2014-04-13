@@ -31,6 +31,7 @@ struct EquipType
     int body_part;
     int type;
     int armor_class;
+    bool use;
     bool operator==(const EquipType& rhs) const 
     {
         return this->name==rhs.name;

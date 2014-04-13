@@ -106,7 +106,7 @@ void GUI::perform_action_press(SDLKey key) {
             {
                 current_screen = MENU_SCREEN;
                 delete menu;
-                menu = new MainMenu(1, BLOCK_WALL, "Main Menu", &game.main_char);
+                menu = new MainMenu(1, BLOCK_WALL, "Main Menu", &game);
                 game.pause();
             }
             break;

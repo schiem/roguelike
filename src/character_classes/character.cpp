@@ -43,7 +43,7 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
-    
+    equipment = vector<Item*>(6);    
 }
 
 /*
@@ -56,6 +56,7 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
+    equipment = vector<Item*>(6);    
 }
 
 /* PRE: None
@@ -98,8 +99,44 @@ vector<Item*> Character::get_equipment()
 void Character::add_item(Item* new_item)
 {
     inventory.push_back(new_item);
-    cout<<inventory.size()<<endl;
 }
+
+void Character::drop_item(Item* item)
+{
+    for(int i=0;i<inventory.size();i++)
+    {
+        if(inventory[i] = item)
+        {
+            inventory.erase(inventory.begin() + i);
+        }
+    }
+}
+
+void Character::drop_item(int item)
+{
+    if(item < inventory.size())
+    {
+        inventory.erase(inventory.begin() + item);
+    }
+}
+
+
+void Character::equip_item(Equipment* item)
+{
+    if(item->can_equip)
+    {
+        drop_item(item);
+        remove_item(item->get_body_part());
+        equipment[item->get_body_part()] = item;
+    }
+}
+
+void Character::remove_item(int item)
+{
+    add_item(equipment[item]);
+    equipment[item] = NULL;
+}
+
 
 void Character::set_x(int _x) {
     x = _x;

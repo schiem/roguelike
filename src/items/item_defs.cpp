@@ -18,11 +18,11 @@
  */
 
 /*****
+     0
+   54145
      1
-   65256
-     2
+    2 2
     3 3
-    4 4
  Body index diagram.
 ******/
 
@@ -31,6 +31,6 @@
 using namespace tiledef;
 namespace equipment
 {
-    EquipType boots = {3, BOOTS, "Boots", 4, 0, 5};
+    EquipType boots = {3, BOOTS, "Boots", 3, 0, 5, false};
 }
 

@@ -33,14 +33,17 @@ class Item
         int weight;
         IntPoint coords;
         Tile sprite;
-
+    
 
     public:
+        bool can_equip;
+        bool can_use;
+        
         Item(IntPoint);
         Item(int, Tile, std::string, IntPoint);
         int get_weight();
         Tile* get_sprite();
-        virtual void perform_action(int, Character*)=0;
+        virtual void perform_action()=0;
         IntPoint get_coords();
         void set_coords(IntPoint);
         std::string get_name();
@@ -70,9 +73,8 @@ class Equipment : public Item
     public:
         Equipment(int, Tile, std::string, IntPoint, int, int, int);
         Equipment(IntPoint, EquipType);
-        void perform_action(int, Character*);
-        void equip(Character*);
-        void remove(Character*);
+        void perform_action();
+        int get_body_part();
 };
 
 

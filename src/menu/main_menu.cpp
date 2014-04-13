@@ -19,16 +19,15 @@
 
 #include "menu.h"
 
-MainMenu::MainMenu(int padding, Tile _border, string _title, Character* new_char) : Menu(padding, _border)
+MainMenu::MainMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
 {
     next_screen = GAME_SCREEN;
-    character = new_char;
+    game = _game;
     construct_menu();
     normalize_options();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
     title = _title;
-    cout<<character<<endl;
 }
 
 Menu* MainMenu::make_selection()
@@ -36,10 +35,10 @@ Menu* MainMenu::make_selection()
     switch (selection)
     {
         case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, "Equipment Menu", character);
+            return new EquipmentMenu(1, BLOCK_WALL, "Equipment Menu", game);
             break;
         case 1:
-            return new InventoryMenu(1, BLOCK_WALL, "Inventory Menu", character);
+            return new InventoryMenu(1, BLOCK_WALL, "Inventory Menu", game);
             break;
         case 2:
             return this;

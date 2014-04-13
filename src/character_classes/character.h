@@ -44,7 +44,7 @@ class Character
         int armor;    
         std::vector<Item*> inventory;
         std::vector<Item*> equipment;
-
+        int inventory_size;
         //Skills skill[];
         Tile sprite;
         Tile corpse;
@@ -66,6 +66,12 @@ class Character
         std::vector<Item*> get_inventory();
         std::vector<Item*> get_equipment();
         void add_item(Item*);
+        void drop_item(Item*);
+        void drop_item(int);
+
+        void equip_item(Equipment*);
+        void remove_item(int);
+        
         int get_x();
         int get_y();
         IntPoint get_chunk();

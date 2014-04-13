@@ -27,6 +27,8 @@ Equipment::Equipment(int _weight, Tile _sprite, std::string _name, IntPoint _coo
     body_part = bp;
     type = t;
     armor_class = ac;
+    can_equip = true;   
+    can_use = false;
 }
 
 Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
@@ -37,32 +39,20 @@ Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
     body_part = eqp.body_part;
     type = eqp.type;
     armor_class = eqp.armor_class;
+    can_use = eqp.use;
+    can_equip = true;
+
 }
 
 
-void Equipment::perform_action(int act_num, Character* character)
+void Equipment::perform_action()
 {
-    switch(act_num)
+    if(can_use)
     {
-        case 0:
-            equip(character);
-            break;
-        case 1:
-            remove(character);
-            break;
-        default:
-            break;
     }
 }
 
-void Equipment::equip(Character* character)
+int Equipment::get_body_part()
 {
-    character->set_armor(character->get_armor() + armor_class);
+    return body_part;
 }
-
-void Equipment::remove(Character* character)
-{
-    character->set_armor(character->get_armor() - armor_class);
-}
-
-
