@@ -139,6 +139,7 @@ void Character::equip_item(Item* item)
         drop_item(item);
         remove_item(((Equipment*)item)->get_body_part());
         equipment[((Equipment*)item)->get_body_part()] = item;
+        armor += ((Equipment*)item)->get_armor();
     }
 }
 
@@ -146,6 +147,7 @@ void Character::remove_item(int item)
 {
     if(equipment[item] != NULL)
     {
+        armor -= ((Equipment*)equipment[item])->get_armor();
         add_item(equipment[item]);
         equipment[item] = NULL;
     }

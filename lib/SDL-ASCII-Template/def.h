@@ -50,6 +50,7 @@ which can be obtained from https://github.com/schiem/RGBtoSDL
 #define GRAY 6579300
 #define PERSIAN_BLUE 5243032
 #define TAN 13808780
+#define DARK_TAN 10910555
 #define GRASS_GREEN 8190976
 
 #endif

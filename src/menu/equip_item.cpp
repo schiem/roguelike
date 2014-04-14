@@ -1,5 +1,5 @@
 /**
- *  EQUIPMENT_MENU.CPP
+ *  EQUIP_ITEM.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,9 +19,10 @@
 
 #include "menu.h"
 
-EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
+EquipMenu::EquipMenu(int padding, Tile _border, string _title, Game* _game, int _item) : Menu(padding, _border)
 {
     game = _game;
+    item = _item;
     next_screen = GAME_SCREEN;
     construct_menu();
     height = options.size() + padding;
@@ -29,32 +30,18 @@ EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Game* _ga
     title = _title;
 }
 
-Menu* EquipmentMenu::make_selection()
+Menu* EquipMenu::make_selection()
 {
-    if(selection == options.size() - 1)
+    if(options[selection] == "Remove")
     {
-        return new MainMenu(1, BLOCK_WALL, "Main Menu", game);
+        game->main_char.remove_item(item);
     }
-    else if (options[selection] != "Not equipped")
-    {
-        return new EquipMenu(1, BLOCK_WALL, "Equipment", game, selection);
-    }
-    return this;
+    return new EquipmentMenu(1, BLOCK_WALL, "Equipment", game);
 }
 
-void EquipmentMenu::construct_menu()
+void EquipMenu::construct_menu()
 {
-    vector<Item*>* items = game->main_char.get_equipment();
-    for(int i=0;i<items->size();i++)
-    {
-        if(items->at(i) != NULL)
-        {
-            options.push_back(items->at(i)->get_name());
-        }
-        else
-        {
-            options.push_back("Not equipped");
-        }
-    }
+    options.push_back("Remove");
     options.push_back("Back");
-} 
+}
+

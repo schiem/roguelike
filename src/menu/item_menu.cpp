@@ -1,5 +1,5 @@
 /**
- *  INVENTORY_MENU.CPP
+ *  ITEM_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -32,14 +32,12 @@ ItemMenu::ItemMenu(int padding, Tile _border, string _title, Game* _game, Item* 
 
 Menu* ItemMenu::make_selection()
 {
-    cout<<options[selection]<<endl;
     if(options[selection] == "Use")
     {
         //use the item...not entirely sure what this will look like.
     }
     else if(options[selection] == "Equip")
     { 
-        cout<<"Equipping"<<endl;
         game->main_char.equip_item(item);
     }
     else if(options[selection] == "Drop")

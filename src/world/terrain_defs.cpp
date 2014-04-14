@@ -38,8 +38,8 @@ namespace tiledef {
     Tile KOBOLD_SPAWNER = {21, 16, GREEN, false, false, true, false};
     Tile WATER = {247, 17, BLUE, false, false, false, false};
     Tile LIGHT_WATER = {126, 18, BLUE, false, false, false, false};
-    Tile SAND1 = {176, 19, TAN, true, false, false, false};
-    Tile SAND2 = {178, 20, TAN, true, false, false, false};
+    Tile SAND1 = {250, 19, TAN, true, false, false, false};
+    Tile SAND2 = {250, 20, DARK_TAN, true, false, false, false};
     Tile BIG_TREE = {116, 21, DARK_GREEN, false, false, true, false};
     Tile GRASS_DIRT = {250, 22, DARKER_GREEN, true, false, false, false};
     Tile KOBOLD_CORPSE = {107, 23, GRAY, true, false, false, false};

@@ -55,11 +55,11 @@ class Equipment : public Item
     protected:
         //corresponds to the index in the Characters equipment
         /*****
+           0
+         54145
            1
-         65256
-           2
+          2 2
           3 3
-          4 4
         *****/ 
         int body_part;
 
@@ -75,6 +75,7 @@ class Equipment : public Item
         Equipment(IntPoint, EquipType);
         void perform_action();
         int get_body_part();
+        int get_armor();
 };
 
 

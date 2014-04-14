@@ -128,4 +128,14 @@ class ItemMenu: public Menu
         void construct_menu();
 };
 
+class EquipMenu: public Menu
+{
+    protected:
+        int item;
+    public:
+        EquipMenu(int, Tile, string, Game*, int);
+        Menu* make_selection();
+        void construct_menu();
+};
+
 #endif

@@ -56,3 +56,8 @@ int Equipment::get_body_part()
 {
     return body_part;
 }
+
+int Equipment::get_armor()
+{
+    return armor_class;
+}
