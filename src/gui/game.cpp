@@ -311,6 +311,13 @@ void Game::get_item()
     }
 }
 
+void Game::drop_item(Item* item)
+{
+    main_char.drop_item(item);
+    item->set_coords(IntPoint(main_char.get_y(), main_char.get_x()));
+    chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].add_item(item, main_char.get_depth());
+}
+
 /*========= PRIVATE METHODS ============*/
 
 /*--------------------Base Model Functions-----------------*/

@@ -79,13 +79,3 @@ Screen Menu::get_screen()
     return next_screen;
 }
 
-void Menu::normalize_options()
-{
-    for(int i=0;i<options.size();i++)
-    {
-        if(options[i].size() % 2 != 0)
-        {
-            options[i] = " "  + options[i];
-        }
-    }
-}

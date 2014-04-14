@@ -226,6 +226,11 @@ vector<Item*>* Overworld::get_items()
     return &items;
 }
 
+void Overworld::add_item(Item* item)
+{
+    items.push_back(item);
+}
+
 
 void Overworld::set_tile(int row, int col, Tile tile) {
     ground[row][col] = tile;

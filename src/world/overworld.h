@@ -55,6 +55,8 @@ class Overworld
         void build_forest_overworld();
         std::vector<std::vector<Tile> >& get_ground();
         std::vector<Item*>* get_items();
+        void add_item(Item*);
+        
         Spawner get_spawner();
 
 

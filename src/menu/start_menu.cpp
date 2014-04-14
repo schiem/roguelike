@@ -23,7 +23,6 @@ StartMenu::StartMenu(int padding, Tile _border, string _title) : Menu(padding, _
 {
     next_screen = MAP_SCREEN;
     construct_menu();
-    normalize_options();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
     title = _title;

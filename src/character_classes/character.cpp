@@ -86,14 +86,14 @@ void Character::attack(Character* _chara)
     _chara->take_damage(attack_dam);
 }
 
-vector<Item*> Character::get_inventory()
+vector<Item*>* Character::get_inventory()
 {
-    return inventory;
+    return &inventory;
 }
 
-vector<Item*> Character::get_equipment()
+vector<Item*>* Character::get_equipment()
 {
-    return equipment;
+    return &equipment;
 }
 
 void Character::add_item(Item* new_item)
@@ -120,21 +120,35 @@ void Character::drop_item(int item)
     }
 }
 
+void Character::destroy_item(Item* item)
+{
+    for (int i=0; i<inventory.size();i++)
+    {
+        if(inventory[i] == item)
+        {
+            delete inventory[i];
+            inventory.erase(inventory.begin() + i);
+        }
+    }
+}
 
-void Character::equip_item(Equipment* item)
+void Character::equip_item(Item* item)
 {
     if(item->can_equip)
     {
         drop_item(item);
-        remove_item(item->get_body_part());
-        equipment[item->get_body_part()] = item;
+        remove_item(((Equipment*)item)->get_body_part());
+        equipment[((Equipment*)item)->get_body_part()] = item;
     }
 }
 
 void Character::remove_item(int item)
 {
-    add_item(equipment[item]);
-    equipment[item] = NULL;
+    if(equipment[item] != NULL)
+    {
+        add_item(equipment[item]);
+        equipment[item] = NULL;
+    }
 }
 
 

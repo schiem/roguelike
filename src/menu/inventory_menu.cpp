@@ -1,5 +1,5 @@
 /**
- *  MAIN_MENU.CPP
+ *  INVENTORY_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,44 +19,36 @@
 
 #include "menu.h"
 
-MainMenu::MainMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
+InventoryMenu::InventoryMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
 {
-    next_screen = GAME_SCREEN;
     game = _game;
+    next_screen = GAME_SCREEN;
+    items = game->main_char.get_inventory();
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
     title = _title;
 }
 
-Menu* MainMenu::make_selection()
+Menu* InventoryMenu::make_selection()
 {
-    switch (selection)
+    if(selection == options.size() - 1)
     {
-        case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, "Equipment Menu", game);
-            break;
-        case 1:
-            return new InventoryMenu(1, BLOCK_WALL, "Inventory Menu", game);
-            break;
-        case 2:
-            return this;
-            break;
-        case 3:
-            toggle_exit();
-            return this;
-            break;
-        default:
-            toggle_exit();
-            return this;
-            break;
+        return new MainMenu(1, BLOCK_WALL, "Main Menu", game);
     }
+    else
+    {
+        return new ItemMenu(1, BLOCK_WALL, options[selection], game, items->at(selection)); 
+    }
+    return this;
 }
 
-void MainMenu::construct_menu()
+void InventoryMenu::construct_menu()
 {
-    options.push_back("Equipment");
-    options.push_back("Inventory");
-    options.push_back("Stats");
-    options.push_back("Return");
-} 
+    for(int i=0; i<items->size();i++)
+    {
+        options.push_back(items->at(i)->get_name());
+    }
+    options.push_back("Back");
+}
+

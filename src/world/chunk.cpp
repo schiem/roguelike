@@ -193,6 +193,17 @@ void Chunk::remove_item(Item* item, int depth)
     }
 }
 
+void Chunk::add_item(Item* item,  int depth)
+{
+   if(depth == -1)
+   {
+       overworld.add_item(item);
+   }
+   else{
+       dungeon_floors[depth].add_item(item);
+   }
+}
+
 void Chunk::set_tile(int depth, int row, int col, Tile tile){
     if (depth == -1) {
         overworld.set_tile(row, col, tile);

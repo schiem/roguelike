@@ -216,6 +216,11 @@ vector<Item*>* Dungeon::get_items()
     return &items;
 }
 
+void Dungeon::add_item(Item* item)
+{
+    items.push_back(item);
+}
+
 void Dungeon::dungeon_dump()
 {
     //dungeon dump

@@ -72,6 +72,7 @@ class Chunk{
         void set_tile(int, int, int, Tile);
         std::vector<Item*>* get_items(int);
         void remove_item(Item*, int);
+        void add_item(Item*, int);
         const std::vector<std::vector<Tile> >& get_floor(int);
         Tile* get_tile(int, int, int) ;
         int get_depth() const;

@@ -63,13 +63,13 @@ class Character
         bool is_alive() const;
         void take_damage(int);
         void attack(Character*);
-        std::vector<Item*> get_inventory();
-        std::vector<Item*> get_equipment();
+        std::vector<Item*>* get_inventory();
+        std::vector<Item*>* get_equipment();
         void add_item(Item*);
         void drop_item(Item*);
         void drop_item(int);
-
-        void equip_item(Equipment*);
+        void destroy_item(Item*);
+        void equip_item(Item*);
         void remove_item(int);
         
         int get_x();

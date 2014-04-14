@@ -68,7 +68,6 @@ class Menu {
         */
         virtual Menu* make_selection() = 0;
         virtual void construct_menu() = 0;
-        void normalize_options();
         //For now, this takes care of its own
         //rendering and knows about SDL. I will likely
         //regret this very soon.
@@ -111,9 +110,22 @@ class EquipmentMenu: public Menu
 
 class InventoryMenu: public Menu
 {
+    protected:
+        vector<Item*>* items;
     public:
         InventoryMenu(int, Tile, string, Game*);
         Menu* make_selection();
         void construct_menu();
 };
+
+class ItemMenu: public Menu
+{
+    protected:
+        Item* item;
+    public:
+        ItemMenu(int, Tile, string, Game*, Item*);
+        Menu* make_selection();
+        void construct_menu();
+};
+
 #endif

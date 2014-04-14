@@ -124,6 +124,7 @@ public:
         void change_main_depth(int);
         void move_main_char(int, int);
         void get_item(); 
+        void drop_item(Item*);
 };
 
 #endif

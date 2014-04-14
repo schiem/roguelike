@@ -158,7 +158,13 @@ void GUI::render_menu(Menu* menu)
     int color, string_size;
     //Render selections
     for(int i = 0; i < menu->options.size(); i++) {
-        string_size = menu->options[i].size();
+        string option = menu->options[i];
+        if(option.size() % 2 != 0)
+        {
+            option = " " + option;
+        }
+        
+        string_size = option.size();
         starting_col = (STARTING_WIDTH - string_size) / 2;
         
         if(menu->selection == i) {
@@ -168,7 +174,7 @@ void GUI::render_menu(Menu* menu)
         }
 
         drawStr(starting_col, ((STARTING_HEIGHT - menu->options.size())/2) + i,
-                menu->options[i].c_str(), ascii, screen, color);
+                option.c_str(), ascii, screen, color);
     }
 
 }

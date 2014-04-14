@@ -61,6 +61,7 @@ class Dungeon
         void dungeon_dump();
         void make_spawner(int);
         std::vector<Item*>* get_items();
+        void add_item(Item*);
 };
 
 #endif

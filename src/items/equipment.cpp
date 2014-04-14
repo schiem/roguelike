@@ -41,7 +41,7 @@ Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
     armor_class = eqp.armor_class;
     can_use = eqp.use;
     can_equip = true;
-
+    cout<<can_use<<endl;
 }
 
 
