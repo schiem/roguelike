@@ -69,7 +69,7 @@ class Enemy : public Character
         int manhattan(IntPoint, IntPoint);
         int get_smallest_f(std::vector<ATile>&);
         IntPoint get_sur_coords(IntPoint, IntPoint);
-        Character* find_best_target(int, int, std::vector<Character*>);
+        virtual Character* find_best_target(int, int, std::vector<Character*>)=0;
     public:
         Enemy();
         Enemy(int, int, int, int, int);
@@ -83,6 +83,8 @@ class Enemy : public Character
 class Kobold : public Enemy
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
+    protected:
+        Character* find_best_target(int, int, std::vector<Character*>);
     public:
         Kobold();
         Kobold(int, int, int, int, int);
@@ -92,6 +94,11 @@ class Kobold : public Enemy
 class Rabbit: public Enemy
 {
     typedef std::vector<std::vector<Tile> > TileMatrix;
+    protected:
+        Character* find_best_target(int, int, std::vector<Character*>);
+        bool spooked; 
+        IntPoint direction_spooked;
+        int time_spooked;
     public:
         Rabbit();
         Rabbit(int, int, int, int, int);

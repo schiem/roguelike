@@ -33,6 +33,7 @@ roguelike_SOURCES = \
 	src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
     src/character_classes/kobold.cpp\
+    src/character_classes/rabbit.cpp\
     src/character_classes/spawner.cpp\
     src/gui/gui_loop.cpp\
 	src/gui/gui.cpp\

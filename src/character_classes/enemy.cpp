@@ -57,31 +57,6 @@ void Enemy::move(int x_change, int y_change)
 }
 
 
-Character* Enemy::find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list)
-{
-    Character* best = NULL;
-    for(int i=0; i<enemy_list.size(); i++)
-    {
-        if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
-        {
-            if(best == NULL)
-            {
-                best = enemy_list[i];
-            }
-            else
-            {
-                if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
-                {
-                    best = enemy_list[i];
-                }
-            }
-        }
-    }
-    return best;
-}
-
-            
-
 int Enemy::get_id()
 {
     return id;
