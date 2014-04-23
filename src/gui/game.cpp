@@ -211,6 +211,11 @@ void Game::run_enemies(long delta_ms) {
     Enemy* enemy;
     for(int i=0;i<enemy_list.size();i++) {
         enemy = enemy_list[i];
+        
+        /* DEBUGGING */
+        cout<<"Enemy " <<i<<": "<<enemy_list[i]<<endl;
+
+
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
         if(!enemy->is_alive())
@@ -218,11 +223,13 @@ void Game::run_enemies(long delta_ms) {
             chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
+            cout<<"Monster "<<i<<" is dead and being deleted!"<<endl;
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
-
+            cout<<"Monster "<<i<<" is out of scope and being deleted!"<<endl;
+            cout<<"Becuase it's in chunk ("<<enemy->get_chunk_x()<<", "<<enemy->get_chunk_y()<<")"<<endl;
         } else if(enemy->get_depth() == main_char.get_depth()) {
             TileMatrix surroundings = get_surroundings(enem_chunk, enem_coords, enemy->get_depth(),
                     IntPoint(enemy->get_sight(), enemy->get_sight()));
