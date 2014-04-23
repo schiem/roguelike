@@ -39,7 +39,6 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     armor = 0;
     
     sprite = _sprite;
-    cout<<_chunk_y<<", "<<_chunk_x<<endl;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
