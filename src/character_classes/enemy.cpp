@@ -21,33 +21,13 @@
 #define PATH_DEBUG 0
 
 using namespace tiledef;
-using namespace enemies;
 using namespace std;
 Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : Character(_max_health, _x, _y, _sprite, _corpse,  _chunk_x, _chunk_y, _depth, _morality, _attack)
+Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
 {
-    id = 1;
-    name = _name;
-    sight = _sight;
-    timer = 0;
-}
-
-Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
-{
-    name = _enemy.name;
-    max_health = _enemy.max_health;
-    current_health = max_health;
-    sprite = _enemy.sprite;
-    id = _enemy.id;
-    sight = _enemy.sight;
-    speed = _enemy.speed;
-    timer = 0;
-    moral = _enemy.moral;
-    attack_dam = _enemy.attack;
-    corpse = _enemy.corpse;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -76,54 +56,6 @@ void Enemy::move(int x_change, int y_change)
     }
 }
 
-void Enemy::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
-{
-    timer += delta_ms;
-    switch(id)
-    {
-        case 1:
-            run_kobold_ai(surroundings, char_list);
-            break;
-        default:
-            break;
-    }
-}
-
-void Enemy::run_kobold_ai(TileMatrix& surroundings, std::vector<Character*> enemy_list)
-{
-    //If the timer > speed, then it is okay to act.
-    while(timer > speed) {
-        timer -= speed;
-        //get a target
-        target = find_best_target(0, 1, enemy_list);
-
-        if(target != NULL)
-        {
-            IntPoint target_coords = get_sur_coords(target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
-            IntPoint next_step = get_next_step(target_coords, surroundings);
-            if(next_step != target_coords)
-            {
-                if(rand() % 3 != 0) {
-                    move(next_step.col-(sight+1), next_step.row-(sight+1));
-                }
-            }
-            else
-            {
-                attack(target);
-            }
-        }
-        else
-        {
-            int will_move = rand() % 5;
-            int x_change = rand() % 3 - 1;
-            int y_change = rand() % 3 - 1;
-            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
-            {
-                move(x_change, y_change);
-            }
-        }
-    }
-}
 
 Character* Enemy::find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list)
 {

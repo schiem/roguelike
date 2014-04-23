@@ -23,7 +23,7 @@ Spawner::Spawner()
 {
     }
 
-Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
+Spawner::Spawner(int _x, int _y, int _depth,  string _enemy)
 {
     x = _x;
     y = _y;
@@ -37,9 +37,12 @@ bool Spawner::should_spawn()
     return (rand() % 100 == 0);
 }
 
-Enemy Spawner::spawn_creep(int chunk_x, int chunk_y)
+Enemy* Spawner::spawn_creep(int chunk_x, int chunk_y)
 {
-    return Enemy(enemy, x - 1, y - 1, chunk_x, chunk_y, depth);
+    if(enemy == "Kobold")
+    {
+        return new Kobold(x - 1, y - 1, chunk_x, chunk_y, depth);
+    }
 }
 
 int Spawner::get_x()

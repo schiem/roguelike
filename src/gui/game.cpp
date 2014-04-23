@@ -21,7 +21,6 @@
 #include <iostream>
 using namespace std;
 using namespace tiledef;
-using namespace enemies;
 using namespace map_tile;
 /*
 Explanation of how the screen works: There is a chunk map, which holds all of
@@ -68,7 +67,14 @@ Game::Game(int w, int h) {
     STARTING_HEIGHT = h;
     initialized = false;
     paused = false;
-    enemy_list = std::vector<Enemy>();
+}
+
+Game::~Game()
+{
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        delete enemy_list[i];
+    }
 }
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
@@ -134,15 +140,15 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     return temp;
 }
 
-std::vector<Enemy> Game::get_vis_enemies() {
-    std::vector<Enemy> temp = std::vector<Enemy>();
+std::vector<Enemy*> Game::get_vis_enemies() {
+    std::vector<Enemy*> temp;
     for(int i=0;i<enemy_list.size();i++)
     {
-        IntPoint chunk = IntPoint(enemy_list[i].get_chunk_y(), enemy_list[i].get_chunk_x());
-        IntPoint coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x());
+        IntPoint chunk = IntPoint(enemy_list[i]->get_chunk_y(), enemy_list[i]->get_chunk_x());
+        IntPoint coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
         IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) && enemy_list[i].get_depth() == main_char.get_depth())
+        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) && enemy_list[i]->get_depth() == main_char.get_depth())
         {
             temp.push_back(enemy_list[i]);
         }
@@ -204,15 +210,17 @@ void Game::run_spawners() {
 void Game::run_enemies(long delta_ms) {
     Enemy* enemy;
     for(int i=0;i<enemy_list.size();i++) {
-        enemy = &enemy_list[i];
+        enemy = enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
         if(!enemy->is_alive())
         {
             chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
+            delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
+            delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
 
         } else if(enemy->get_depth() == main_char.get_depth()) {
@@ -220,7 +228,7 @@ void Game::run_enemies(long delta_ms) {
                     IntPoint(enemy->get_sight(), enemy->get_sight()));
 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
-            std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(20, 20));
+            std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(enemy->get_sight(), enemy->get_sight()));
 
 
             enemy->run_ai(surroundings, nearby_enem, delta_ms);
@@ -508,9 +516,9 @@ std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, 
     std::vector<Character*> nearby_enem;
     for(int i=0; i<enemy_list.size(); i++)
     {
-        if(in_range(enemy_list[i].get_chunk(), IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x()), _chunk, _coords, threshold))
+        if(in_range(enemy_list[i]->get_chunk(), IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()), _chunk, _coords, threshold))
         {
-            nearby_enem.push_back(&enemy_list[i]);
+            nearby_enem.push_back(enemy_list[i]);
         }
     }
     if(in_range(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), _chunk, _coords, threshold))
@@ -524,11 +532,11 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords)
 {
     for(int i=0;i<enemy_list.size();i++)
     {
-        IntPoint enem_chunk = enemy_list[i].get_chunk();
-        IntPoint enem_coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x()); 
+        IntPoint enem_chunk = enemy_list[i]->get_chunk();
+        IntPoint enem_coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()); 
         if(get_abs(enem_chunk, enem_coords) == get_abs(_chunk, _coords))
         {
-            return &enemy_list[i];
+            return enemy_list[i];
         }
     }
     return NULL;

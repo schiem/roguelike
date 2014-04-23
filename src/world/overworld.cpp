@@ -19,7 +19,6 @@
 
 #include <overworld.h>
 using namespace tiledef;
-using namespace enemies;
 Overworld::Overworld() {
     width = 10;
     height = 10;
@@ -74,7 +73,7 @@ void Overworld::build_land_overworld() {
     }
     int spawn_x = rand() % width;
     int spawn_y = rand() % height;
-    spawner = Spawner(spawn_x, spawn_y, -1, Kobold);
+    spawner = Spawner(spawn_x, spawn_y, -1, "Kobold");
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 
@@ -203,7 +202,7 @@ void Overworld::build_forest_overworld() {
     }
     int spawn_x = rand() % width;
     int spawn_y = rand() % height;
-    spawner = Spawner(spawn_x, spawn_y, -1, Kobold);
+    spawner = Spawner(spawn_x, spawn_y, -1, "Kobold");
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 

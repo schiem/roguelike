@@ -44,6 +44,8 @@ namespace tiledef {
     Tile GRASS_DIRT = {250, 22, DARKER_GREEN, true, false, false, false};
     Tile KOBOLD_CORPSE = {107, 23, GRAY, true, false, false, false};
     Tile BOOTS = {28, 24, BROWN, true, false, false, false};
+    Tile RABBIT = {114, 25, BROWN, false, true, false, false};
+    Tile RABBIT_CORPSE = {114, 26, GRAY, true, false, false, false};
 }
 
 namespace map_tile {

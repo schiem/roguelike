@@ -93,11 +93,11 @@ void GUI::render_enemies()
     Tile current_tile;
     IntPoint current_point;
     TilePointerMatrix tm = game.get_canvas();
-    std::vector<Enemy> tl = game.get_vis_enemies();
+    std::vector<Enemy*> tl = game.get_vis_enemies();
     for(size_t i = 0; i < tl.size(); i++) {
-        IntPoint temp_chunk = IntPoint(tl[i].get_chunk_y(),tl[i].get_chunk_x());
-        IntPoint temp_coords = IntPoint(tl[i].get_y(), tl[i].get_x());
-        current_tile = tl[i].get_char();
+        IntPoint temp_chunk = IntPoint(tl[i]->get_chunk_y(),tl[i]->get_chunk_x());
+        IntPoint temp_coords = IntPoint(tl[i]->get_y(), tl[i]->get_x());
+        current_tile = tl[i]->get_char();
         current_point = game.get_vis_coords(temp_chunk, temp_coords);
         if(tm[current_point.row][current_point.col]->visible) {
             drawChr(current_point.col, current_point.row,

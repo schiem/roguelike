@@ -22,7 +22,6 @@
 #define CHUNK_WIDTH 100
 #define CHUNK_HEIGHT 50
 #include <character.h>
-#include <enemy_defs.h>
 #include <string>
 #include <vector>
 #include <helper.h>
@@ -62,7 +61,6 @@ class Enemy : public Character
         int sight;
         int speed;
         std::string name;
-        void run_kobold_ai(TileMatrix&, std::vector<Character*>);
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
         IntPoint get_next_step(IntPoint, TileMatrix&);
@@ -74,13 +72,30 @@ class Enemy : public Character
         Character* find_best_target(int, int, std::vector<Character*>);
     public:
         Enemy();
-        Enemy(int, int, int, Tile, Tile, int, int, int, std::string, int, int, int);
-        Enemy(EnemyType, int, int, int, int, int);
-        void run_ai(TileMatrix, std::vector<Character*>, long);
+        Enemy(int, int, int, int, int);
+        virtual void run_ai(TileMatrix, std::vector<Character*>, long) = 0;
         void set_depth(int);
         int get_id();
         int get_sight();
         void dump_matrix(TileMatrix&);
+};
+
+class Kobold : public Enemy
+{
+    typedef std::vector<std::vector<Tile> > TileMatrix;
+    public:
+        Kobold();
+        Kobold(int, int, int, int, int);
+        void run_ai(TileMatrix, std::vector<Character*>, long);
+};
+
+class Rabbit: public Enemy
+{
+    typedef std::vector<std::vector<Tile> > TileMatrix;
+    public:
+        Rabbit();
+        Rabbit(int, int, int, int, int);
+        void run_ai(TileMatrix, std::vector<Character*>, long);
 };
 
 #endif

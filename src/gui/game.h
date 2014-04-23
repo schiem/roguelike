@@ -27,7 +27,6 @@
 #include <chunk.h>
 #include <overworld.h>
 #include <bresenham.h>
-#include <enemy_defs.h>
 #include <enemy.h>
 #include <dungeonbuilder.h>
 #include <dungeon.h>
@@ -90,12 +89,13 @@ class Game
         void undo_visibility();
 
         //ENEMY Data/Models
-        std::vector<Enemy> enemy_list;
+        std::vector<Enemy*> enemy_list;
 
         //ENEMY Functionality
 
 public:
         Game(int, int);
+        ~Game();
         void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models
@@ -113,7 +113,7 @@ public:
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);
         void show_vis_items();
-        std::vector<Enemy> get_vis_enemies();
+        std::vector<Enemy*> get_vis_enemies();
         void refresh();
         
         //ENEMY Functionality
