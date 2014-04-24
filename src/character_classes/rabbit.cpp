@@ -35,7 +35,7 @@ Rabbit::Rabbit(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
     armor = 0;
     id = 2;
     sight = 15;
-    speed = 100;
+    speed = 70;
     sprite = RABBIT;
     corpse = RABBIT_CORPSE;
     timer = 0;
@@ -60,16 +60,27 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
        //look for a nearby scary thing
         //if one is noticed, spook for the next turn
         target = find_best_target(0, 1, char_list);
-        if(target != NULL && rand() % 2 == 0)
+        if(target != NULL && rand() % 2 == 0 && spooked == false)
         {
             spooked = true;
             time_spooked = 0;
             IntPoint abs_coords = get_abs(chunk, IntPoint(x, y));
             IntPoint target_abs = get_abs(target->get_chunk(),  IntPoint(target->get_y(), target->get_x()));
-             int y_change = 0 - ((abs_coords.row - target_abs.row) < 0) + ((abs_coords.row - target_abs.row) > 0);
-             int x_change = 0 - ((abs_coords.col - target_abs.col) < 0) + ((abs_coords.col - target_abs.col) > 0);
-             cout<<"rabbit coords: "<<abs_coords<<"target coords: "<<target_abs<<endl;
-             cout<<"X change: "<<x_change<<", y change: "<<y_change<<endl;
+            float rise = abs_coords.row-target_abs.row;
+            float run = abs_coords.col- target_abs.col;
+            float slope = rise/run;
+            float unsigned_slope = slope * (-1 * (slope < 0));
+            int x_change = 0;
+            int y_change = 0;
+            if(unsigned_slope < 1)
+            {
+                x_change = 0 - (run < 0) + (run > 0);
+            }
+            else if(unsigned_slope > 1)
+            {
+                y_change = 0 - (rise < 0) + (rise > 0);
+            }
+
             direction_spooked = IntPoint(y_change, x_change);
         }
 
@@ -77,6 +88,14 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
         {
             //try to move in the direction that it's spooked
             time_spooked += 1;
+            
+            /* 
+            if(rand() % 5 == 0)
+            {
+                direction_spooked.row = direction_spooked.row + (((rand() % 3) - 1) * direction_spooked.row == 0); 
+                direction_spooked.col = direction_spooked.col + (((rand() % 3) - 1) * direction_spooked.col == 0);
+            }
+            */   
             if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1].can_be_moved_through)
             {
                 move(direction_spooked.col, direction_spooked.row);
