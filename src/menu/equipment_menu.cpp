@@ -49,11 +49,11 @@ void EquipmentMenu::construct_menu()
     {
         if(items->at(i) != NULL)
         {
-            options.push_back(items->at(i)->get_name());
+            options.push_back(BODY_PARTS[i] + std::string(": ")+items->at(i)->get_name());
         }
         else
         {
-            options.push_back("Not equipped");
+            options.push_back(BODY_PARTS[i] + std::string(": None"));
         }
     }
     options.push_back("Back");

@@ -26,6 +26,9 @@
 #include <vector>
 #include <helper.h>
 
+static std::string ENEMY_LIST[] = {"Kobold", "Rabbit"};
+static int NUM_ENEMIES = 2;
+
 struct ATile
 {
     //my own jenky-ass linked list

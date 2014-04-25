@@ -26,6 +26,8 @@
 
 class Character;
 
+static std::string BODY_PARTS[] = {"Head", "Torso", "Legs", "Feet", "Arms", "Hands"}; 
+
 class Item
 {
     protected:

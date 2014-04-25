@@ -202,7 +202,8 @@ void Overworld::build_forest_overworld() {
     }
     int spawn_x = rand() % width;
     int spawn_y = rand() % height;
-    spawner = Spawner(spawn_x, spawn_y, -1, "Rabbit");
+    int to_spawn = rand() % NUM_ENEMIES;  
+    spawner = Spawner(spawn_x, spawn_y, -1, ENEMY_LIST[to_spawn]);
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 

@@ -35,7 +35,7 @@ Rabbit::Rabbit(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
     armor = 0;
     id = 2;
     sight = 15;
-    speed = 70;
+    speed = (rand() % 20) + 50;
     sprite = RABBIT;
     corpse = RABBIT_CORPSE;
     timer = 0;
