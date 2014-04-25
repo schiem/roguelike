@@ -60,7 +60,7 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
        //look for a nearby scary thing
         //if one is noticed, spook for the next turn
         target = find_best_target(0, 1, char_list);
-        if(target != NULL && rand() % 2 == 0 && spooked == false)
+        if(target != NULL && rand() % 2 == 0)
         {
             spooked = true;
             time_spooked = 0;
@@ -72,6 +72,10 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
             float unsigned_slope = slope * (-1 * (slope < 0));
             int x_change = 0;
             int y_change = 0;
+            if(run == 0)
+            {
+                unsigned_slope = 2;
+            }
             if(unsigned_slope < 1)
             {
                 x_change = 0 - (run < 0) + (run > 0);
