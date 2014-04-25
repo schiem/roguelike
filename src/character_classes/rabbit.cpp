@@ -64,7 +64,7 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
         {
             spooked = true;
             time_spooked = 0;
-            IntPoint abs_coords = get_abs(chunk, IntPoint(x, y));
+            IntPoint abs_coords = get_abs(chunk, IntPoint(y, x));
             IntPoint target_abs = get_abs(target->get_chunk(),  IntPoint(target->get_y(), target->get_x()));
             float rise = abs_coords.row-target_abs.row;
             float run = abs_coords.col- target_abs.col;
