@@ -84,6 +84,11 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
             {
                 y_change = 0 - (rise < 0) + (rise > 0);
             }
+            else if(unsigned_slope == 1)
+            {
+                x_change = 0 - (run < 0) + (run > 0);
+                y_change = 0 - (rise < 0) + (rise > 0);
+            }
 
             direction_spooked = IntPoint(y_change, x_change);
         }
@@ -92,16 +97,14 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
         {
             //try to move in the direction that it's spooked
             time_spooked += 1;
-            
-            /* 
             if(rand() % 5 == 0)
             {
-                direction_spooked.row = direction_spooked.row + (((rand() % 3) - 1) * direction_spooked.row == 0); 
-                direction_spooked.col = direction_spooked.col + (((rand() % 3) - 1) * direction_spooked.col == 0);
+                direction_spooked.row = direction_spooked.row + (((rand() % 3) - 1) * (direction_spooked.row == 0)); 
+                direction_spooked.col = direction_spooked.col + (((rand() % 3) - 1) * (direction_spooked.col == 0));
             }
-            */   
             if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1].can_be_moved_through)
             {
+                cout<<"Direction: "<<IntPoint(direction_spooked.row, direction_spooked.col)<<endl;
                 move(direction_spooked.col, direction_spooked.row);
             }
 

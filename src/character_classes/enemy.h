@@ -26,7 +26,6 @@
 #include <vector>
 #include <helper.h>
 
-
 struct ATile
 {
     //my own jenky-ass linked list
