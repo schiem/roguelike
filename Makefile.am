@@ -49,6 +49,7 @@ roguelike_SOURCES = \
 	src/gui/world_map_gui.cpp\
 	src/world/overworld.cpp\
 	src/world/chunk.cpp\
+	src/world/chunk_matrix.cpp\
 	src/world/terrain_defs.cpp\
 	src/world/world_map.cpp\
 	src/world/dungeon_gen/dungeon.cpp\
@@ -76,6 +77,7 @@ roguelike_SOURCES = \
 	src/gui/world_map_gui.h\
 	src/world/terrain_defs.h\
 	src/world/chunk.h\
+	src/world/chunk_matrix.h\
 	src/world/dungeon_gen/dungeonbuilder.h\
 	src/world/dungeon_gen/room.h\
 	src/world/dungeon_gen/dungeon.h\

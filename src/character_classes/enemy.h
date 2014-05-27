@@ -19,13 +19,13 @@
 
 #ifndef ENEMY_H
 #define ENEMY_H
-#define CHUNK_WIDTH 100
-#define CHUNK_HEIGHT 50
 #include <character.h>
+#include <constants.h>
 #include <enemy_defs.h>
 #include <string>
 #include <vector>
 #include <helper.h>
+#include <constants.h>
 
 
 struct ATile
@@ -57,7 +57,7 @@ class Enemy : public Character
     typedef std::vector<std::vector<Tile> > TileMatrix;
     protected:
         long timer;
-        
+
         int id;
         int sight;
         int speed;

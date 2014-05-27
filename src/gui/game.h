@@ -25,6 +25,8 @@
 #include <assert.h>
 
 #include <chunk.h>
+#include <chunk_matrix.h>
+#include <constants.h>
 #include <overworld.h>
 #include <bresenham.h>
 #include <enemy_defs.h>
@@ -44,25 +46,25 @@ struct TilePoint {
 
 class Game
 {
-    typedef std::vector<std::vector<Chunk> > ChunkMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;
 
     private:
+
         //BASE Data/Models
-        int STARTING_WIDTH;
-        int STARTING_HEIGHT;
         bool initialized;
+        bool paused;
+
         MapTileMatrix world_map;
         ChunkMatrix chunk_map;
         Tile block_wall_tile;
-        bool paused;
+
         //BASE model access functions
         void point_assertions(int, int);
         void set_tile(int, int, Tile*);
         void set_tile(IntPoint, Tile*);
-        
+
         Tile* get_tile(int, int);
         Tile* get_tile(IntPoint);
         bool out_of_bounds(IntPoint);
@@ -94,7 +96,7 @@ class Game
         //ENEMY Functionality
 
 public:
-        Game(int, int);
+        Game();
         void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models
@@ -114,7 +116,7 @@ public:
         void show_vis_items();
         std::vector<Enemy> get_vis_enemies();
         void refresh();
-        
+
         //ENEMY Functionality
         void run_spawners();
         void run_enemies(long);

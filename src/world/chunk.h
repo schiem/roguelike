@@ -29,6 +29,7 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 
+#include <constants.h>
 #include <procedurally_blind_db.h>
 #include <corruptible_pblind_db.h>
 #include <dungeon.h>
@@ -48,13 +49,17 @@ class Chunk{
     private:
         bool initialized;
         int depth;
+        int world_row;
+        int world_col;
         MapTile type;
         //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
         Overworld overworld;
 
-        string find_serialized_chunk(int, int);
         IntPoint parse_file_name(string);
+
+        bool find_serialized_chunk(int, int);
+        void deserialize(string, int, int);
 
 
     public:
@@ -62,11 +67,14 @@ class Chunk{
         int width;
 
         Chunk();
-        Chunk(int, int, MapTile, int, int);
+        Chunk(MapTile, int, int);
+
+        void init(MapTile, int, int);
         void build_land_chunk();
         void build_water_chunk();
         void build_beach_chunk();
         void build_forest_chunk();
+        IntPoint get_world_loc() const;
         IntPoint get_up_stair(int) const;
         IntPoint get_down_stair(int) const;
         void set_tile(int, int, int, Tile);
@@ -78,8 +86,7 @@ class Chunk{
         bool out_of_bounds(int, int, int) const;
         Spawner get_spawner(int);
         void dungeon_dump(int);
-        void serialize(int, int);
-        void deserialize(string, int, int);
+        void serialize();
         MapTile get_type();
 };
 

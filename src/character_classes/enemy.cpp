@@ -27,7 +27,8 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : Character(_max_health, _x, _y, _sprite, _corpse,  _chunk_x, _chunk_y, _depth, _morality, _attack)
+Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y, int _depth, std::string _name, int _sight, int _morality, int _attack) : 
+    Character(_max_health, _x, _y, _sprite, _corpse,  _chunk_x, _chunk_y, _depth, _morality, _attack)
 {
     id = 1;
     name = _name;
@@ -35,7 +36,8 @@ Enemy::Enemy(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _c
     timer = 0;
 }
 
-Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
+Enemy::Enemy(EnemyType _enemy, int _x, int _y, int _chunk_x, int _chunk_y, int _depth) :
+    Character(_x, _y, _chunk_x, _chunk_y, _depth)
 {
     name = _enemy.name;
     max_health = _enemy.max_health;
@@ -148,7 +150,7 @@ Character* Enemy::find_best_target(int target_id, int selectability, std::vector
     return best;
 }
 
-            
+
 
 int Enemy::get_id()
 {
@@ -395,7 +397,6 @@ int Enemy::manhattan(IntPoint current, IntPoint goal)
 /*  PRE: It's a simple function.
  *  POST: Returns the smallest f value from a list.
  */
-
 int Enemy::get_smallest_f(std::vector<ATile>& list)
 {
     int smallest = list[0].f;

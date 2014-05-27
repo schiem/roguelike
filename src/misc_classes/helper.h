@@ -1,5 +1,5 @@
 /**
- *  HELPLER.H
+ *  HELPER.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -21,9 +21,7 @@
 #ifndef HELPER_H
 #define HELPER_H
 #include <int_point.h>
-
-const static int STARTING_WIDTH = 100;
-const static int STARTING_HEIGHT = 50;
+#include <constants.h>
 
 IntPoint get_abs(IntPoint, IntPoint);
 

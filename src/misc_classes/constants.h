@@ -1,5 +1,5 @@
 /**
- *  HELPER.CPP
+ *  CONSTANTS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -15,19 +15,18 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
-#include <helper.h>
-
-/*
- * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
- * representing coordinates within that chunk.
- * POST: Returns an IntPoint containing the absolute coordinates, i.e. the
- * coordinates if there were no chunks.
  */
 
-IntPoint get_abs(IntPoint chunk, IntPoint coords) {
-    return IntPoint(chunk.row * CHUNK_HEIGHT + coords.row,
-            chunk.col * CHUNK_WIDTH + coords.col);
-}
+#ifndef _CONSTANTS_H
+#define _CONSTANTS_H
+
+static const int CHUNK_WIDTH = 100;
+static const int CHUNK_HEIGHT = 50;
+
+static const int SCREEN_WIDTH = 100;
+static const int SCREEN_HEIGHT = 50;
+
+static const int WORLD_WIDTH = 100;
+static const int WORLD_HEIGHT = 50;
+
+#endif

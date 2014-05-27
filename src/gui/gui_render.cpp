@@ -42,14 +42,13 @@ void GUI::OnRender() {
         render_enemies();
         render_character();
         render_interface();
-           
-    } else if (current_screen == DEATH_SCREEN) 
-    {
+
+    } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
-    } 
-    if(game.is_paused())
-    {
+    }
+
+    if(game.is_paused()) {
         drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
     SDL_Flip(screen);
@@ -57,9 +56,9 @@ void GUI::OnRender() {
 
 void GUI::clear_screen()
 {
-    for(int i =0;i<STARTING_WIDTH;i++)
+    for(int i =0;i<SCREEN_WIDTH;i++)
     {
-        for(int j=0;j<STARTING_HEIGHT;j++)
+        for(int j=0;j<SCREEN_HEIGHT;j++)
         {
             drawStr(i, j, std::string(" ").c_str(), ascii, screen, WHITE);
         }
@@ -88,8 +87,7 @@ void GUI::render_canvas()
     }
 }
 
-void GUI::render_enemies()
-{
+void GUI::render_enemies() {
     Tile current_tile;
     IntPoint current_point;
     TilePointerMatrix tm = game.get_canvas();
@@ -106,14 +104,11 @@ void GUI::render_enemies()
     }
 }
 
-void GUI::render_character()
-{
-
-    drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
+void GUI::render_character() {
+    drawChr(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
 }
 
-void GUI::render_interface()
-{
+void GUI::render_interface() {
     Character* target = game.main_char.get_target();
     if(target != NULL)
     {
@@ -125,23 +120,23 @@ void GUI::render_interface()
     {
         drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
     }
-    
+
     stringstream ss;
     ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
-    drawStr(STARTING_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
+    drawStr(SCREEN_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
 }
 
 
 void GUI::render_menu(Menu* menu)
 {
-    
+
     //menu's will always be rendered in the middle of the screen, fyi
     //clear the background in the specified height/width
     //width is automatically 20
-    int start_row = (STARTING_HEIGHT - menu->height) / 2;
-    int start_col = (STARTING_WIDTH - menu->width) / 2;
-    int end_row = (STARTING_HEIGHT + menu->height) / 2;
-    int end_col = (STARTING_WIDTH + menu->width) / 2;
+    int start_row = (SCREEN_HEIGHT - menu->height) / 2;
+    int start_col = (SCREEN_WIDTH - menu->width) / 2;
+    int end_row = (SCREEN_HEIGHT + menu->height) / 2;
+    int end_col = (SCREEN_WIDTH + menu->width) / 2;
     for(int row = start_row; row <= end_row; row++)
     {
         for(int col = start_col; col <= end_col; col++)
@@ -151,23 +146,23 @@ void GUI::render_menu(Menu* menu)
     }
 
     int starting_col;
-    starting_col = (STARTING_WIDTH - menu->title.size()) / 2;
-    drawStr(starting_col, (STARTING_HEIGHT/4), menu->title.c_str(),
+    starting_col = (SCREEN_WIDTH - menu->title.size()) / 2;
+    drawStr(starting_col, (SCREEN_HEIGHT/4), menu->title.c_str(),
             ascii, screen, RED);
 
     int color, string_size;
     //Render selections
     for(int i = 0; i < menu->options.size(); i++) {
         string_size = menu->options[i].size();
-        starting_col = (STARTING_WIDTH - string_size) / 2;
-        
+        starting_col = (SCREEN_WIDTH - string_size) / 2;
+
         if(menu->selection == i) {
             color = WHITE;
         } else {
             color = DARK_GRAY;
         }
 
-        drawStr(starting_col, ((STARTING_HEIGHT - menu->options.size())/2) + i,
+        drawStr(starting_col, ((SCREEN_HEIGHT - menu->options.size())/2) + i,
                 menu->options[i].c_str(), ascii, screen, color);
     }
 

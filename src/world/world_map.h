@@ -25,6 +25,7 @@
 #include <time.h>
 #include <iostream>
 
+#include <constants.h>
 #include <def.h>
 #include <terrain_defs.h>
 

@@ -20,6 +20,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include <SDL/SDL.h>
+#include <constants.h>
 #include <terrain_defs.h>
 #include <ASCII_Lib.h>
 #include <def.h>

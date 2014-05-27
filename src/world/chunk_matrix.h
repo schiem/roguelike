@@ -1,5 +1,5 @@
 /**
- *  WORLD_MAP_GUI.H
+ *  CHUNK_MATRIX.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,39 +17,44 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <vector>
-#include <stdlib.h>
-#include <iostream>
+#ifndef _CHUNK_MATRIX_H
+#define _CHUNK_MATRIX_H
 
+#include <stdlib.h>
+#include <vector>
+
+#include <chunk.h>
 #include <constants.h>
-#include <world_map.h>
 #include <int_point.h>
+#include <world_map.h>
 
 using namespace std;
 
-struct TopLayerData {
-    int row;
-    int col;
-    MapTile tile;
-};
-
-
-class WorldMapGUI {
+class ChunkMatrix
+{
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;
-    public:
-        WorldMapGUI();
-        const MapTileMatrix& get_canvas();
-        const MapTileMatrix& get_map();
-        IntPoint get_selected_chunk();
-        void move_cursor(int, int);
-        void refresh();
-
     private:
-        std::vector<TopLayerData> top_layer;
-        WorldMap world_map;
-        MapTileMatrix canvas;
-        int width;
-        int height;
+        int diameter;
+        vector<vector<Chunk> > model;
+        IntPoint offset;
+        IntPoint center;
+        void populate_initial(IntPoint, MapTileMatrix&);
 
-        void add_layers();
+    public:
+        ChunkMatrix();
+        ChunkMatrix(int, IntPoint, MapTileMatrix&);
+        bool out_of_bounds(IntPoint);
+        vector<vector<Chunk> >& get_matrix();
+        IntPoint get_offset();
+        void set_offset(IntPoint);
+        void set_chunk_abs(IntPoint, Chunk);
+        Chunk* get_chunk_abs(IntPoint);
+        Chunk* get_chunk_abs(int, int);
+        void set_chunk(IntPoint, Chunk);
+        Chunk* get_chunk(IntPoint);
+        Chunk* get_center_chunk();
+        void shift_matrix(IntPoint, MapTileMatrix&);
+
 };
+
+#endif

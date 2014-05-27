@@ -22,25 +22,33 @@ using namespace std;
 
 Chunk::Chunk() {
     initialized = false;
+    height = CHUNK_HEIGHT;
+    width = CHUNK_WIDTH;
 }
 
-Chunk::Chunk(int _width, int _height, MapTile tile_type, 
-        int world_row, int world_col) {
+Chunk::Chunk(MapTile tile_type, int _world_row, int _world_col) {
+    height = CHUNK_HEIGHT;
+    width = CHUNK_WIDTH;
+    init(tile_type, _world_row, _world_col);
+}
 
-    //string exists = find_serialized_chunk(world_row, world_col);
+void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
     type = tile_type;
     initialized = true;
-    width = _width;
-    height= _height;
+    world_row = _world_row;
+    world_col = _world_col;
 
-    if(tile_type == map_tile::MAP_DEFAULT) {
-        build_land_chunk();
-    } else if (tile_type == map_tile::MAP_WATER) {
-        build_water_chunk();
-    } else if (tile_type == map_tile::MAP_BEACH) {
-        build_beach_chunk();
-    } else if (tile_type == map_tile::MAP_FOREST) {
-        build_forest_chunk();
+    bool found_chunk = find_serialized_chunk(world_row, world_col);
+    if(!found_chunk) {
+        if(tile_type == map_tile::MAP_DEFAULT) {
+            build_land_chunk();
+        } else if (tile_type == map_tile::MAP_WATER) {
+            build_water_chunk();
+        } else if (tile_type == map_tile::MAP_BEACH) {
+            build_beach_chunk();
+        } else if (tile_type == map_tile::MAP_FOREST) {
+            build_forest_chunk();
+        }
     }
 }
 
@@ -70,7 +78,7 @@ IntPoint Chunk::parse_file_name(string _file_name) {
  * the name of the file in a string. If it does not exist, return an empty
  * string.
  */
-string Chunk::find_serialized_chunk(int world_row, int world_col) {
+bool Chunk::find_serialized_chunk(int world_row, int world_col) {
     fs::path chunk_dir(CHUNK_DIR);
 
     stringstream ss;
@@ -80,13 +88,14 @@ string Chunk::find_serialized_chunk(int world_row, int world_col) {
     if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
         if(fs::exists(filename)) {
             deserialize(filename, world_row, world_col);
+            return true;
         }
     } else {
         cout<<"Chunk directory is missing. Aborting."<<endl;
         exit(EXIT_FAILURE);
     }
 
-    return "";
+    return false;
 }
 
 void Chunk::build_land_chunk() {
@@ -189,6 +198,10 @@ void Chunk::set_tile(int depth, int row, int col, Tile tile){
     }
 }
 
+IntPoint Chunk::get_world_loc() const{
+    return IntPoint(world_row, world_col);
+}
+
 IntPoint Chunk::get_up_stair(int depth) const{
     assert(depth>=0);
     return dungeon_floors[depth].up_stair;
@@ -249,7 +262,7 @@ void Chunk::dungeon_dump(int _depth) {
  *
  * So the end file size is 3 + (2*w*h*d) bytes.
  */
-void Chunk::serialize(int world_row, int world_col) {
+void Chunk::serialize() {
     int chunk_depth = depth;
     stringstream ss;
     ss<<"chunk"<<world_row<<"_"<<world_col;
@@ -262,6 +275,7 @@ void Chunk::serialize(int world_row, int world_col) {
     int bytes_per_tile = 1;
 
     int file_size = 3 + (bytes_per_tile*width*height*(chunk_depth+1));
+    cout<<"FILE SIZE: "<<file_size<<endl;
 
     char file[file_size];
 
@@ -273,27 +287,21 @@ void Chunk::serialize(int world_row, int world_col) {
     unsigned int tile_id, seen;
     Tile current_tile;
 
-    /*
-    cout<<"height: "<<height<<endl;
-    cout<<"width: "<<width<<endl;
-    cout<<"chunk_depth: "<<chunk_depth<<endl;
-    cout<<"serializing with file size: "<<file_size<<endl;
-    */
     for(int i = 0; i < (chunk_depth + 1); i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
                 current_tile = *get_tile(i - 1, j, k);
                 tile_id = current_tile.tile_id;
                 seen = current_tile.seen;
-                
+
                 //Fewer than 128 different tile ids, so we can shift it to make
                 //room in that byte for the boolean value! Thanks for ruining my
-                //brain, x86 assembly. If the tile id is 12 and has been seen, 
+                //brain, x86 assembly. If the tile id is 12 and has been seen,
                 //here's what it will look like:
                 //
                 //BEFORE: 00001100
                 //AFTER: 00011001
-                
+
                 //cout<<"tile_id before: "<<tile_id<<endl;
                 tile_id = tile_id << 1;
                 tile_id = tile_id | seen;
@@ -318,16 +326,17 @@ void Chunk::serialize(int world_row, int world_col) {
 void Chunk::deserialize(string file_name, int world_row, int world_col) {
     cout<<file_name<<endl;
 
-    ifstream chunk_data_file(file_name.c_str(), 
+    ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);
-    
+
     int file_size = fs::file_size(file_name);
     char * file_data = new char[file_size];
     chunk_data_file.read(file_data, file_size);
 
-    int width = file_data[0];
-    int height = file_data[1];
-    int depth = file_data[2];
+    width = file_data[0];
+    height = file_data[1];
+    depth = file_data[2];
+
 
     unsigned int tile_id;
     bool seen;
