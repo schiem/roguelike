@@ -32,7 +32,12 @@ bool GUI::OnInit() {
 
     //Load ascii characters
     asciiBase = SDL_LoadBMP( DATADIR "/ascii.bmp" );
-
+    
+    if(asciiBase == 0)
+    {
+        cout<<"No font file found.  Please place ascii.bmp in the data directory."<<endl;
+        return false;
+    }
     //Create an optimized image
     ascii = SDL_DisplayFormat( asciiBase );
 

@@ -104,7 +104,6 @@ void Rabbit::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, 
             }
             if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1].can_be_moved_through)
             {
-                cout<<"Direction: "<<IntPoint(direction_spooked.row, direction_spooked.col)<<endl;
                 move(direction_spooked.col, direction_spooked.row);
             }
 
