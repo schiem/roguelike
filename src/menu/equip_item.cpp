@@ -21,6 +21,7 @@
 
 EquipMenu::EquipMenu(int padding, Tile _border, Game* _game, int _item) : Menu(padding, _border)
 {
+    id = 2;
     game = _game;
     item = _item;
     next_screen = GAME_SCREEN;

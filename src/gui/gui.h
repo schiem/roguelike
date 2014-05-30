@@ -20,6 +20,8 @@
 #ifndef _GUI_H
 #define _GUI_H
 
+#define FONTDIR DATADIR "/font/"
+
 #include <SDL/SDL.h>
 #include <vector>
 #include <boost/date_time/gregorian/gregorian.hpp>
@@ -43,6 +45,8 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
+        void load_font(string);
+        
         static const int STARTING_WIDTH = 100;
         static const int STARTING_HEIGHT = 50;
         static const long STD_MS_PER_FRAME = 70;

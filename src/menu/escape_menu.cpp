@@ -21,6 +21,7 @@
 
 EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
+    id = 4;
     game = _game;
     next_screen = GAME_SCREEN;
     construct_menu();

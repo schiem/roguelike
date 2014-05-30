@@ -21,6 +21,7 @@
 
 ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
+    id = 7;
     game = _game;
     item = _item;
     next_screen = GAME_SCREEN;

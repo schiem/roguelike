@@ -18,9 +18,12 @@
  */
 
 #include "menu.h"
+#define FONTDIR DATADIR "/font/"
 
 FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
+    font = "";
+    id = 5;
     game = _game;
     next_screen = GAME_SCREEN;
     construct_menu();
@@ -31,11 +34,23 @@ FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
 
 Menu* FontMenu::make_selection()
 {
+    if(selection != options.size() - 1)
+    {
+        font = options[selection];
+        cout<<typeid(font).name()<<endl;
+        return this;
+    }
     return new EscapeMenu(1, BLOCK_WALL, game);
 }
 
 void FontMenu::construct_menu()
 {
+    options = all_files_of_type(FONTDIR, ".bmp");
     options.push_back("Back");
 }
 
+
+string FontMenu::get_font()
+{
+    return font;
+}

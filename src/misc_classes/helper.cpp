@@ -31,3 +31,40 @@ IntPoint get_abs(IntPoint chunk, IntPoint coords) {
     return IntPoint(chunk.row * STARTING_HEIGHT + coords.row, 
             chunk.col * STARTING_WIDTH + coords.col);
 }
+
+/* Returns all the files in a directory
+*/
+std::vector<std::string> all_files(const string & dir_string)
+{
+    path dir_path(dir_string);
+    std::vector<std::string> files;
+    if(exists(dir_path))
+    {
+        directory_iterator end_path;
+        for(directory_iterator iter(dir_path); iter!=end_path; iter++)
+        {
+            files.push_back(iter->path().leaf().string());
+        }
+    return files;
+    }
+}
+
+/* Returns all the files in a directory of a given type
+*/
+std::vector<std::string> all_files_of_type(const string & dir_string, const string & extension)
+{
+    path dir_path(dir_string);
+    std::vector<std::string> files;
+    if(exists(dir_path))
+    {
+        directory_iterator end_path;
+        for(directory_iterator iter(dir_path); iter!=end_path; iter++)
+        {
+            if(iter->path().extension() == extension)
+            {
+                files.push_back(iter->path().leaf().stem().string());
+            }
+        }
+    return files;
+    }
+}

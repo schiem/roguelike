@@ -21,6 +21,7 @@
 
 StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
 {
+    id = 9;
     next_screen = MAP_SCREEN;
     construct_menu();
     height = options.size() + padding;

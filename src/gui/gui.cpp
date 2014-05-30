@@ -80,3 +80,19 @@ GUI::~GUI()
     delete menu;
 }
 
+void GUI::load_font(string font)
+{
+    stringstream ss;
+    ss << FONTDIR << font << string(".bmp").c_str();
+    asciiBase = SDL_LoadBMP(ss.str().c_str());
+    //Create an optimized image
+    ascii = SDL_DisplayFormat( asciiBase );
+    //Free the old image
+    SDL_FreeSurface( asciiBase );
+    //Map the color key
+    Uint32 colorkey = SDL_MapRGB( ascii->format, 0xFF, 0, 0xFF );
+
+    //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
+    SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
+    SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
+}

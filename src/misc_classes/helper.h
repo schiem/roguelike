@@ -21,10 +21,16 @@
 #ifndef HELPER_H
 #define HELPER_H
 #include <int_point.h>
+#include <vector>
+#include "boost/filesystem.hpp"
+#include <string.h>
+
+using namespace boost::filesystem;
 
 const static int STARTING_WIDTH = 100;
 const static int STARTING_HEIGHT = 50;
 
 IntPoint get_abs(IntPoint, IntPoint);
-
+std::vector<std::string> all_files(const string &);
+std::vector<std::string> all_files_of_type(const string &, const string & extension);
 #endif

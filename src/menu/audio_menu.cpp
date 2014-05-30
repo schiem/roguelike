@@ -21,6 +21,7 @@
 
 AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
+    id = 1;
     game = _game;
     next_screen = GAME_SCREEN;
     construct_menu();

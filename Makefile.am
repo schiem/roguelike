@@ -94,5 +94,5 @@ roguelike_SOURCES = \
 	lib/SDL-ASCII-Template/def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
-dist_localdata_DATA = data/ascii.bmp data/chunk/
-localdata_DATA = data/ascii.bmp data/chunk/
+dist_localdata_DATA = data/ data/chunk/
+localdata_DATA = data/ data/chunk/

@@ -78,8 +78,14 @@ void GUI::perform_action_press(SDLKey key) {
             if(current_screen == MENU_SCREEN) {
                 //this is a temporary hack to get it to display
                 //this correctly when transitioning menus
-                render_canvas();
                 menu = menu->make_selection();
+                if(menu->get_id() == 5)
+                {
+                    if(((FontMenu*)menu)->get_font() != "")
+                    {
+                        load_font(((FontMenu*)menu)->get_font());
+                    }
+                }
                 if(menu->should_exit()) 
                 {
                     current_screen = menu->get_screen();
@@ -88,6 +94,7 @@ void GUI::perform_action_press(SDLKey key) {
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
             } 
+            render_canvas();
             break;
         case SDLK_ESCAPE:
             if(current_screen == GAME_SCREEN) 

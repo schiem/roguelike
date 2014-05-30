@@ -21,6 +21,7 @@
 
 MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
+    id = 8;
     next_screen = GAME_SCREEN;
     game = _game;
     construct_menu();

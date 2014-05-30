@@ -29,6 +29,7 @@
 #include <item.h>
 #include <game.h>
 #include <character.h>
+#include <helper.h>
 
 using namespace tiledef;
 using namespace std;
@@ -50,7 +51,7 @@ class Menu {
         vector<string> options;
         bool exit; 
         bool out_of_bounds(int);
-
+        int id;
         Menu(int, Tile);
         void move_selection(int);
         
@@ -79,6 +80,7 @@ class Menu {
         int get_max_width(vector<string>);
         void toggle_exit();
         Screen get_screen();
+        int get_id();
 };
 
 class StartMenu : public Menu
@@ -156,10 +158,13 @@ class AudioMenu: public Menu
 
 class FontMenu: public Menu
 {
+    private:
+        string font;
     public:
         FontMenu(int, Tile, Game*);
         Menu* make_selection();
         void construct_menu();
+        string get_font();
 };
 
 #endif

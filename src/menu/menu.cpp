@@ -79,3 +79,8 @@ Screen Menu::get_screen()
     return next_screen;
 }
 
+int Menu::get_id()
+{
+    return id;
+}
+

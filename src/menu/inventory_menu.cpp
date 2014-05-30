@@ -21,6 +21,7 @@
 
 InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
+    id = 6;
     game = _game;
     next_screen = GAME_SCREEN;
     items = game->main_char.get_inventory();
