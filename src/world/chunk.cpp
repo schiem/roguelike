@@ -263,6 +263,7 @@ void Chunk::dungeon_dump(int _depth) {
  * So the end file size is 3 + (2*w*h*d) bytes.
  */
 void Chunk::serialize() {
+    cout<<"Serializing chunk "<<world_row<<", "<<world_col<<endl;
     int chunk_depth = depth;
     stringstream ss;
     ss<<"chunk"<<world_row<<"_"<<world_col;
@@ -275,8 +276,6 @@ void Chunk::serialize() {
     int bytes_per_tile = 1;
 
     int file_size = 3 + (bytes_per_tile*width*height*(chunk_depth+1));
-    cout<<"FILE SIZE: "<<file_size<<endl;
-
     char file[file_size];
 
     file[0] = width;
@@ -324,7 +323,6 @@ void Chunk::serialize() {
  * PRE: Will be given the world_row and world_col of a chunk.
  */
 void Chunk::deserialize(string file_name, int world_row, int world_col) {
-    cout<<file_name<<endl;
 
     ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);

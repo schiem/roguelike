@@ -71,6 +71,8 @@ Game::Game() {
 }
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
+    cout<<"Spawning at: "<<selected_chunk.row<<", "<<selected_chunk.col<<endl;
+
     world_map = _world_map;
 
     //Eventually, this should be based on screen size.

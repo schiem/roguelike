@@ -136,7 +136,7 @@ Chunk* ChunkMatrix::get_chunk(IntPoint chunk_loc) {
 
 Chunk* ChunkMatrix::get_center_chunk() {
     int rowcol = (diameter - 1) / 2;
-    cout<<"Center chunk = "<<rowcol<<endl;
+    //cout<<"Center chunk = "<<rowcol<<endl;
     return &model[rowcol][rowcol];
 }
 
@@ -164,7 +164,7 @@ Chunk* ChunkMatrix::get_center_chunk() {
 void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     int world_row, world_col;
 
-    if(directions.row == 1) {
+    if(directions.row == -1) {
         //For everything but the last row, we will just copy the next row into the
         //current row.
         for(int row = 0; row < (diameter - 1); row++) {
@@ -189,7 +189,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
                                  world_row, world_col);
         }
 
-    } else if (directions.row == -1) {
+    } else if (directions.row == 1) {
         //For everything but the first row, copy the previous row into the
         //current row.
         for(int row = 1; row < diameter; row++) {
@@ -215,7 +215,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         }
     }
 
-    if(directions.col == 1) {
+    if(directions.col == -1) {
         //For everything but the rightmost column, copy the right neighbor into
         //the current column.
         for(int row = 0; row < diameter; row++) {
@@ -239,7 +239,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
             model[row][col].init(world_map[world_row][world_col],
                                  world_row, world_col);
         }
-    } else if (directions.col == -1) {
+    } else if (directions.col == 1) {
         //For everything but the leftmost column, copy the left neighbor into
         //the current column.
         for(int row = 0; row < diameter; row++) {

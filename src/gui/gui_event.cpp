@@ -80,14 +80,14 @@ void GUI::perform_action_press(SDLKey key) {
                 //this correctly when transitioning menus
                 render_canvas();
                 menu = menu->make_selection();
-                if(menu->should_exit()) 
+                if(menu->should_exit())
                 {
                     current_screen = menu->get_screen();
                     game.unpause();
                 }
             } else if(current_screen == MAP_SCREEN) {
                 current_screen = GAME_SCREEN;
-            } 
+            }
             break;
         case SDLK_u:
             if(!game.is_paused())
