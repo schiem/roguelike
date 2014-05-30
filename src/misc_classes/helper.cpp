@@ -68,3 +68,22 @@ std::vector<std::string> all_files_of_type(const string & dir_string, const stri
     return files;
     }
 }
+
+/*
+Takes in a line from the settings .conf, and places the name of the setting
+in the original variable passed.  It returns the value of the settings.
+*/
+std::string parse_settings(string &setting)
+{
+    unsigned int position = setting.find("=");
+    if(position == setting.npos)
+    {
+        return "";
+    }
+    else
+    {
+        string value = setting.substr(position+1);
+        setting = setting.substr(0, position);
+        return value;
+    }
+}

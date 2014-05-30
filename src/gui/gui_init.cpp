@@ -23,6 +23,29 @@ namespace pt = boost::posix_time;
 namespace gregorian = boost::gregorian;
 
 bool GUI::OnInit() {
+    string font_pref = "default";
+    ifstream pref_file;
+    pref_file.open(DATADIR "/settings.conf");
+    if(pref_file.good())
+    {
+        string pref;
+        string value;
+        while(getline(pref_file, pref))
+        {
+            value = parse_settings(pref);
+            if(pref == "font")
+            {
+                font_pref = value;
+            }
+        }
+        pref_file.close();
+    }
+    else
+    {
+        cout<<"No preference file found. Please settings.conf in /data.\
+        Don't worry if you don't know what to put it in, we have defaults :)"<<endl;
+        return false;
+    }
 
     //initialize stuff
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO );
@@ -31,11 +54,12 @@ bool GUI::OnInit() {
     screen = SDL_SetVideoMode( 800, 600, 32, SDL_SWSURFACE );
 
     //Load ascii characters
-    load_font("default");
+    load_font(font_pref);
     
     if(asciiBase == 0)
     {
-        cout<<"No font file found.  Please place default.bmp in the data directory."<<endl;
+        cout<<"No font file found.  Please place default.bmp in the data directory \
+        or edit settings.conf accordingly."<<endl;
         return false;
     }
 

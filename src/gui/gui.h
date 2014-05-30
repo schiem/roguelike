@@ -36,7 +36,8 @@
 #include <def.h>
 #include <menu.h>
 #include <game_states.h>
-
+#include <stdio.h>
+#include <fstream>
 
 namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {
