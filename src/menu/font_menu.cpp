@@ -1,5 +1,5 @@
 /**
- *  MAIN_MENU.CPP
+ *  FONT_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,44 +19,23 @@
 
 #include "menu.h"
 
-MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
+FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    next_screen = GAME_SCREEN;
     game = _game;
+    next_screen = GAME_SCREEN;
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = "Main Menu";
+    title = "Font Menu";
 }
 
-Menu* MainMenu::make_selection()
+Menu* FontMenu::make_selection()
 {
-    switch (selection)
-    {
-        case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, game);
-            break;
-        case 1:
-            return new InventoryMenu(1, BLOCK_WALL, game);
-            break;
-        case 2:
-            return this;
-            break;
-        case 3:
-            toggle_exit();
-            return this;
-            break;
-        default:
-            toggle_exit();
-            return this;
-            break;
-    }
+    return new EscapeMenu(1, BLOCK_WALL, game);
 }
 
-void MainMenu::construct_menu()
+void FontMenu::construct_menu()
 {
-    options.push_back("Equipment");
-    options.push_back("Inventory");
-    options.push_back("Stats");
-    options.push_back("Return");
-} 
+    options.push_back("Back");
+}
+

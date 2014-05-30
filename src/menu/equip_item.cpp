@@ -19,7 +19,7 @@
 
 #include "menu.h"
 
-EquipMenu::EquipMenu(int padding, Tile _border, string _title, Game* _game, int _item) : Menu(padding, _border)
+EquipMenu::EquipMenu(int padding, Tile _border, Game* _game, int _item) : Menu(padding, _border)
 {
     game = _game;
     item = _item;
@@ -27,7 +27,7 @@ EquipMenu::EquipMenu(int padding, Tile _border, string _title, Game* _game, int 
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = _title;
+    title = "Equip Menu";
 }
 
 Menu* EquipMenu::make_selection()
@@ -36,7 +36,7 @@ Menu* EquipMenu::make_selection()
     {
         game->main_char.remove_item(item);
     }
-    return new EquipmentMenu(1, BLOCK_WALL, "Equipment", game);
+    return new EquipmentMenu(1, BLOCK_WALL, game);
 }
 
 void EquipMenu::construct_menu()

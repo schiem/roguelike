@@ -22,7 +22,7 @@
 //this is for backward compatibility with c98 standard
 GUI::GUI() : world_map_gui(100, 50),
              game(100, 50) {
-    menu = new StartMenu(1, BLOCK_WALL, "Some Name");
+    menu = new StartMenu(1, BLOCK_WALL);
     current_screen = MENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;

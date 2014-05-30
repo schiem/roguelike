@@ -1,5 +1,5 @@
 /**
- *  MAIN_MENU.CPP
+ *  ESCAPE_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,44 +19,43 @@
 
 #include "menu.h"
 
-MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
+EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    next_screen = GAME_SCREEN;
     game = _game;
+    next_screen = GAME_SCREEN;
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = "Main Menu";
+    title = "Escape Menu";
 }
 
-Menu* MainMenu::make_selection()
+Menu* EscapeMenu::make_selection()
 {
-    switch (selection)
+    if(options[selection] == "Resume")
     {
-        case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, game);
-            break;
-        case 1:
-            return new InventoryMenu(1, BLOCK_WALL, game);
-            break;
-        case 2:
-            return this;
-            break;
-        case 3:
-            toggle_exit();
-            return this;
-            break;
-        default:
-            toggle_exit();
-            return this;
-            break;
+        exit = true;
+        return this;
+    }
+    else if(options[selection] == "Audio")
+    {
+        return new AudioMenu(1, BLOCK_WALL, game);
+    }
+    else if(options[selection] == "Font")
+    {
+        return new FontMenu(1, BLOCK_WALL, game);
+    }
+    else if(options[selection] == "Quit")
+    {
+        //Not entirely sure what to do with this
+        return this;
     }
 }
 
-void MainMenu::construct_menu()
+void EscapeMenu::construct_menu()
 {
-    options.push_back("Equipment");
-    options.push_back("Inventory");
-    options.push_back("Stats");
-    options.push_back("Return");
-} 
+    options.push_back("Resume");
+    options.push_back("Audio");
+    options.push_back("Font");
+    options.push_back("Quit");
+}
+

@@ -19,7 +19,7 @@
 
 #include "menu.h"
 
-ItemMenu::ItemMenu(int padding, Tile _border, string _title, Game* _game, Item* _item) : Menu(padding, _border)
+ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
     game = _game;
     item = _item;
@@ -27,7 +27,7 @@ ItemMenu::ItemMenu(int padding, Tile _border, string _title, Game* _game, Item* 
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = _title;
+    title = "Item Menu";
 }
 
 Menu* ItemMenu::make_selection()
@@ -48,7 +48,7 @@ Menu* ItemMenu::make_selection()
     {
         game->main_char.destroy_item(item);
     }
-    return new InventoryMenu(1, BLOCK_WALL, "Inventory", game);
+    return new InventoryMenu(1, BLOCK_WALL,  game);
 }
 
 void ItemMenu::construct_menu()

@@ -19,13 +19,13 @@
 
 #include "menu.h"
 
-StartMenu::StartMenu(int padding, Tile _border, string _title) : Menu(padding, _border)
+StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
 {
     next_screen = MAP_SCREEN;
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = _title;
+    title = "POOPBUTTS: THE RECKONING";
 }
 
 Menu* StartMenu::make_selection()

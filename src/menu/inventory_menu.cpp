@@ -19,7 +19,7 @@
 
 #include "menu.h"
 
-InventoryMenu::InventoryMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
+InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     game = _game;
     next_screen = GAME_SCREEN;
@@ -27,18 +27,18 @@ InventoryMenu::InventoryMenu(int padding, Tile _border, string _title, Game* _ga
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = _title;
+    title = "Inventory";
 }
 
 Menu* InventoryMenu::make_selection()
 {
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, BLOCK_WALL, "Main Menu", game);
+        return new MainMenu(1, BLOCK_WALL, game);
     }
     else
     {
-        return new ItemMenu(1, BLOCK_WALL, options[selection], game, items->at(selection)); 
+        return new ItemMenu(1, BLOCK_WALL, game, items->at(selection)); 
     }
     return this;
 }

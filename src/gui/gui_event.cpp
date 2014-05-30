@@ -89,6 +89,20 @@ void GUI::perform_action_press(SDLKey key) {
                 current_screen = GAME_SCREEN;
             } 
             break;
+        case SDLK_ESCAPE:
+            if(current_screen == GAME_SCREEN) 
+            {
+                current_screen = MENU_SCREEN;
+                delete menu;
+                menu = new EscapeMenu(1, BLOCK_WALL, &game);
+                game.pause();
+            }
+            else if (current_screen == MENU_SCREEN)
+            {
+                current_screen = menu->get_screen();
+                game.unpause();
+            }
+            break;
         case SDLK_u:
             if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
@@ -106,7 +120,7 @@ void GUI::perform_action_press(SDLKey key) {
             {
                 current_screen = MENU_SCREEN;
                 delete menu;
-                menu = new MainMenu(1, BLOCK_WALL, "Main Menu", &game);
+                menu = new MainMenu(1, BLOCK_WALL, &game);
                 game.pause();
             }
             break;

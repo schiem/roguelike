@@ -85,7 +85,7 @@ class StartMenu : public Menu
 {
     public:
 
-        StartMenu(int, Tile, string);
+        StartMenu(int, Tile);
         Menu* make_selection();
         void construct_menu();
 };
@@ -93,7 +93,7 @@ class StartMenu : public Menu
 class MainMenu: public Menu
 {
     public:
-        MainMenu(int, Tile, string, Game*);
+        MainMenu(int, Tile, Game*);
         Menu* make_selection();
         void construct_menu();
 
@@ -102,7 +102,7 @@ class MainMenu: public Menu
 class EquipmentMenu: public Menu
 {
     public: 
-        EquipmentMenu(int, Tile, string, Game*);
+        EquipmentMenu(int, Tile, Game*);
         Menu* make_selection();
         void construct_menu();
 
@@ -113,7 +113,7 @@ class InventoryMenu: public Menu
     protected:
         vector<Item*>* items;
     public:
-        InventoryMenu(int, Tile, string, Game*);
+        InventoryMenu(int, Tile, Game*);
         Menu* make_selection();
         void construct_menu();
 };
@@ -123,7 +123,7 @@ class ItemMenu: public Menu
     protected:
         Item* item;
     public:
-        ItemMenu(int, Tile, string, Game*, Item*);
+        ItemMenu(int, Tile, Game*, Item*);
         Menu* make_selection();
         void construct_menu();
 };
@@ -133,7 +133,31 @@ class EquipMenu: public Menu
     protected:
         int item;
     public:
-        EquipMenu(int, Tile, string, Game*, int);
+        EquipMenu(int, Tile, Game*, int);
+        Menu* make_selection();
+        void construct_menu();
+};
+
+class EscapeMenu: public Menu
+{
+    public:
+        EscapeMenu(int, Tile, Game*);
+        Menu* make_selection();
+        void construct_menu();
+};
+
+class AudioMenu: public Menu
+{
+    public:
+        AudioMenu(int, Tile, Game*);
+        Menu* make_selection();
+        void construct_menu();
+};
+
+class FontMenu: public Menu
+{
+    public:
+        FontMenu(int, Tile, Game*);
         Menu* make_selection();
         void construct_menu();
 };

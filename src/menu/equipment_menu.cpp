@@ -19,25 +19,25 @@
 
 #include "menu.h"
 
-EquipmentMenu::EquipmentMenu(int padding, Tile _border, string _title, Game* _game) : Menu(padding, _border)
+EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     game = _game;
     next_screen = GAME_SCREEN;
     construct_menu();
     height = options.size() + padding;
     width = get_max_width(options) + padding;
-    title = _title;
+    title = "Equipment";
 }
 
 Menu* EquipmentMenu::make_selection()
 {
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, BLOCK_WALL, "Main Menu", game);
+        return new MainMenu(1, BLOCK_WALL, game);
     }
     else if (options[selection] != "Not equipped")
     {
-        return new EquipMenu(1, BLOCK_WALL, "Equipment", game, selection);
+        return new EquipMenu(1, BLOCK_WALL, game, selection);
     }
     return this;
 }
