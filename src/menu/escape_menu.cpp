@@ -24,9 +24,10 @@ EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _
     id = 4;
     game = _game;
     next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    options.push_back("Resume");
+    options.push_back("Audio");
+    options.push_back("Font");
+    options.push_back("Quit");
     title = "Escape Menu";
 }
 
@@ -48,15 +49,8 @@ Menu* EscapeMenu::make_selection()
     else if(options[selection] == "Quit")
     {
         //Not entirely sure what to do with this
-        return this;
+        exit = true;
+        return NULL;
     }
-}
-
-void EscapeMenu::construct_menu()
-{
-    options.push_back("Resume");
-    options.push_back("Audio");
-    options.push_back("Font");
-    options.push_back("Quit");
 }
 

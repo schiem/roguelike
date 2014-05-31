@@ -24,10 +24,12 @@ InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padd
     id = 6;
     game = _game;
     next_screen = GAME_SCREEN;
-    items = game->main_char.get_inventory();
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    for(int i=0; i<items->size();i++)
+    {
+        options.push_back(items->at(i)->get_name());
+    }
+    options.push_back("Back");
+   items = game->main_char.get_inventory();
     title = "Inventory";
 }
 
@@ -42,14 +44,5 @@ Menu* InventoryMenu::make_selection()
         return new ItemMenu(1, BLOCK_WALL, game, items->at(selection)); 
     }
     return this;
-}
-
-void InventoryMenu::construct_menu()
-{
-    for(int i=0; i<items->size();i++)
-    {
-        options.push_back(items->at(i)->get_name());
-    }
-    options.push_back("Back");
 }
 

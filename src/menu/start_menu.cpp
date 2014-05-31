@@ -23,10 +23,9 @@ StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
 {
     id = 9;
     next_screen = MAP_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
     title = "POOPBUTTS: THE RECKONING";
+    options.push_back("New Game");
+    options.push_back("Continue");
 }
 
 Menu* StartMenu::make_selection()
@@ -35,8 +34,3 @@ Menu* StartMenu::make_selection()
    return this;
 }
 
-void StartMenu::construct_menu()
-{
-    options.push_back("New Game");
-    options.push_back("Continue");
-}

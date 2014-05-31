@@ -26,9 +26,8 @@ FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
     id = 5;
     game = _game;
     next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    options = all_files_of_type(FONTDIR, ".bmp");
+    options.push_back("Back");
     title = "Font Menu";
 }
 
@@ -41,12 +40,6 @@ Menu* FontMenu::make_selection()
         return this;
     }
     return new EscapeMenu(1, BLOCK_WALL, game);
-}
-
-void FontMenu::construct_menu()
-{
-    options = all_files_of_type(FONTDIR, ".bmp");
-    options.push_back("Back");
 }
 
 

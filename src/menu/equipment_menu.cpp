@@ -23,10 +23,20 @@ EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padd
 {
     id = 3;
     game = _game;
-    next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    vector<Item*>* items = game->main_char.get_equipment();
+    for(int i=0;i<items->size();i++)
+    {
+        if(items->at(i) != NULL)
+        {
+            options.push_back(BODY_PARTS[i] + std::string(": ")+items->at(i)->get_name());
+        }
+        else
+        {
+            options.push_back(BODY_PARTS[i] + std::string(": None"));
+        }
+    }
+    options.push_back("Back");
+   next_screen = GAME_SCREEN;
     title = "Equipment";
 }
 
@@ -42,20 +52,3 @@ Menu* EquipmentMenu::make_selection()
     }
     return this;
 }
-
-void EquipmentMenu::construct_menu()
-{
-    vector<Item*>* items = game->main_char.get_equipment();
-    for(int i=0;i<items->size();i++)
-    {
-        if(items->at(i) != NULL)
-        {
-            options.push_back(BODY_PARTS[i] + std::string(": ")+items->at(i)->get_name());
-        }
-        else
-        {
-            options.push_back(BODY_PARTS[i] + std::string(": None"));
-        }
-    }
-    options.push_back("Back");
-} 

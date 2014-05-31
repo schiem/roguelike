@@ -24,9 +24,10 @@ MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
     id = 8;
     next_screen = GAME_SCREEN;
     game = _game;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    options.push_back("Equipment");
+    options.push_back("Inventory");
+    options.push_back("Stats");
+    options.push_back("Return");
     title = "Main Menu";
 }
 
@@ -53,11 +54,3 @@ Menu* MainMenu::make_selection()
             break;
     }
 }
-
-void MainMenu::construct_menu()
-{
-    options.push_back("Equipment");
-    options.push_back("Inventory");
-    options.push_back("Stats");
-    options.push_back("Return");
-} 

@@ -76,29 +76,49 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
-                //this is a temporary hack to get it to display
-                //this correctly when transitioning menus
+                
+                //get the next menu from the selection
                 menu = menu->make_selection();
+                //if the menu returned NULL, then we should quit the game
+                if(menu == NULL)
+                {
+                    running = false;
+                    menu = new EscapeMenu(1, BLOCK_WALL, &game);
+                    current_screen = menu->get_screen();
+                }
+                
+                //if the menu is the font menu, then we should change the font
                 if(menu->get_id() == 5)
                 {
+                    //only change the font if a font has been selected (i.e. they didn't
+                    //push back
                     if(((FontMenu*)menu)->get_font() != "")
                     {
                         load_font(((FontMenu*)menu)->get_font());
                     }
                 }
+
+                //switch back to the game and unpause
                 if(menu->should_exit()) 
                 {
                     current_screen = menu->get_screen();
                     game.unpause();
                 }
             } else if(current_screen == MAP_SCREEN) {
+                //swith the screen from the map to the game (should only happen at 
+                //the beginnig of the game
                 current_screen = GAME_SCREEN;
             } 
+
+            //render the canvas to clear away any old menus that might be lingering
             render_canvas();
             break;
         case SDLK_ESCAPE:
+            //open up the escape menu
             if(current_screen == GAME_SCREEN) 
             {
+                //switch the menu to the escape menu and 
+                //delete the old one
                 current_screen = MENU_SCREEN;
                 delete menu;
                 menu = new EscapeMenu(1, BLOCK_WALL, &game);

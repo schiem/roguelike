@@ -141,10 +141,12 @@ void GUI::render_menu(Menu* menu)
     //menu's will always be rendered in the middle of the screen, fyi
     //clear the background in the specified height/width
     //width is automatically 20
-    int start_row = (STARTING_HEIGHT - menu->height) / 2;
-    int start_col = (STARTING_WIDTH - menu->width) / 2;
-    int end_row = (STARTING_HEIGHT + menu->height) / 2;
-    int end_col = (STARTING_WIDTH + menu->width) / 2;
+    int height = menu->options.size() + menu->padding;
+    int width = menu->get_max_width(menu->options) + menu->padding;
+    int start_row = (STARTING_HEIGHT - height) / 2;
+    int start_col = (STARTING_WIDTH - width) / 2;
+    int end_row = (STARTING_HEIGHT + height) / 2;
+    int end_col = (STARTING_WIDTH + width) / 2;
     for(int row = start_row; row <= end_row; row++)
     {
         for(int col = start_col; col <= end_col; col++)

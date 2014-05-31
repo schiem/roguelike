@@ -25,9 +25,8 @@ EquipMenu::EquipMenu(int padding, Tile _border, Game* _game, int _item) : Menu(p
     game = _game;
     item = _item;
     next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    options.push_back("Remove");
+    options.push_back("Back");
     title = "Equip Menu";
 }
 
@@ -39,10 +38,3 @@ Menu* EquipMenu::make_selection()
     }
     return new EquipmentMenu(1, BLOCK_WALL, game);
 }
-
-void EquipMenu::construct_menu()
-{
-    options.push_back("Remove");
-    options.push_back("Back");
-}
-

@@ -24,10 +24,8 @@ AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bo
     id = 1;
     game = _game;
     next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
     title = "Silly, there's no audio yet.  Maybe Seth can compose something later...";
+    options.push_back("Back");
 }
 
 Menu* AudioMenu::make_selection()
@@ -35,9 +33,3 @@ Menu* AudioMenu::make_selection()
 
     return new EscapeMenu(1, BLOCK_WALL, game);
 }
-
-void AudioMenu::construct_menu()
-{
-    options.push_back("Back");
-}
-

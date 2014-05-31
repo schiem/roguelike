@@ -20,7 +20,8 @@
 #include "menu.h"
 
 
-Menu::Menu(int padding, Tile _border) {
+Menu::Menu(int _padding, Tile _border) {
+    padding = _padding;
     border = _border;
     selection = 0;
     exit=false;
@@ -83,4 +84,3 @@ int Menu::get_id()
 {
     return id;
 }
-

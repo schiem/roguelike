@@ -25,9 +25,17 @@ ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(p
     game = _game;
     item = _item;
     next_screen = GAME_SCREEN;
-    construct_menu();
-    height = options.size() + padding;
-    width = get_max_width(options) + padding;
+    if(item->can_use)
+    {
+        options.push_back("Use");
+    }
+    if(item->can_equip)
+    {
+        options.push_back("Equip");
+    }
+    options.push_back("Drop");
+    options.push_back("Destroy");
+    options.push_back("Back");
     title = "Item Menu";
 }
 
@@ -50,20 +58,5 @@ Menu* ItemMenu::make_selection()
         game->main_char.destroy_item(item);
     }
     return new InventoryMenu(1, BLOCK_WALL,  game);
-}
-
-void ItemMenu::construct_menu()
-{
-    if(item->can_use)
-    {
-        options.push_back("Use");
-    }
-    if(item->can_equip)
-    {
-        options.push_back("Equip");
-    }
-    options.push_back("Drop");
-    options.push_back("Destroy");
-    options.push_back("Back");
 }
 

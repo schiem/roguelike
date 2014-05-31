@@ -45,8 +45,6 @@ class Menu {
         Screen next_screen;
         int selection;
         string title;
-        int width;
-        int height;
         Tile border;
         vector<string> options;
         bool exit; 
@@ -54,7 +52,7 @@ class Menu {
         int id;
         Menu(int, Tile);
         void move_selection(int);
-        
+        int padding; 
         /*
         This is the most important function.  There are three possibilities:
         1.  The selection just transitions to a new menu.  The menu returned will
@@ -68,7 +66,6 @@ class Menu {
         There's no reason that 2 & 3 can't be combined.
         */
         virtual Menu* make_selection() = 0;
-        virtual void construct_menu() = 0;
         //For now, this takes care of its own
         //rendering and knows about SDL. I will likely
         //regret this very soon.
@@ -89,7 +86,7 @@ class StartMenu : public Menu
 
         StartMenu(int, Tile);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class MainMenu: public Menu
@@ -97,7 +94,7 @@ class MainMenu: public Menu
     public:
         MainMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
+        
 
 };
 
@@ -106,7 +103,7 @@ class EquipmentMenu: public Menu
     public: 
         EquipmentMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
+        
 
 };
 
@@ -117,7 +114,7 @@ class InventoryMenu: public Menu
     public:
         InventoryMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class ItemMenu: public Menu
@@ -127,7 +124,7 @@ class ItemMenu: public Menu
     public:
         ItemMenu(int, Tile, Game*, Item*);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class EquipMenu: public Menu
@@ -137,7 +134,7 @@ class EquipMenu: public Menu
     public:
         EquipMenu(int, Tile, Game*, int);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class EscapeMenu: public Menu
@@ -145,7 +142,7 @@ class EscapeMenu: public Menu
     public:
         EscapeMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class AudioMenu: public Menu
@@ -153,7 +150,7 @@ class AudioMenu: public Menu
     public:
         AudioMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
+        
 };
 
 class FontMenu: public Menu
@@ -163,7 +160,6 @@ class FontMenu: public Menu
     public:
         FontMenu(int, Tile, Game*);
         Menu* make_selection();
-        void construct_menu();
         string get_font();
 };
 
