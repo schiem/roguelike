@@ -35,7 +35,8 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     moral = _morality;
     corpse = _corpse;
     //somewhat temporary
-    attack_dam= _attack;
+    base_attack = _attack;
+    attack_dam= base_attack;
     armor = 0;
     
     sprite = _sprite;
@@ -145,7 +146,7 @@ void Character::equip_item(Item* item)
         drop_item(item);
         remove_item(6);
         equipment[6] = item;
-        attack_dam += ((Weapon*)item)->get_damage();
+        attack_dam = ((Weapon*)item)->get_damage();
     }
 }
 
@@ -161,7 +162,7 @@ void Character::remove_item(int item)
         }
         else
         {
-            attack_dam -= ((Weapon*)equipment[item])->get_damage();
+            attack_dam = base_attack;
             add_item(equipment[item]);
             equipment[item] = NULL;
         }

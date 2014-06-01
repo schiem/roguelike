@@ -41,6 +41,7 @@ class Character
         int x;
         int y;
         int attack_dam;
+        int base_attack;
         int armor;    
         std::vector<Item*> inventory;
         std::vector<Item*> equipment;

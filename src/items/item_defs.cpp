@@ -34,7 +34,7 @@ namespace equipment
     EquipType boots = {3, BOOTS, "Boots", 0, 3, 0, 5, false};
 }
 
-namespace weapon
+namespace weapons
 {
     WeaponType dagger = {1, SWORD, "Small Dagger", 0, 3, 2, 1, false};
 }

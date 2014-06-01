@@ -66,5 +66,4 @@ namespace weapons
     extern WeaponType dagger;
 }
 
-
 #endif

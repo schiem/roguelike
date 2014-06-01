@@ -29,7 +29,7 @@ ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(p
     {
         options.push_back("Use");
     }
-    if(item->can_equip)
+    if(item->can_equip || item->can_wield)
     {
         options.push_back("Equip");
     }

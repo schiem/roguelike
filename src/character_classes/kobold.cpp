@@ -21,7 +21,7 @@
 
 using namespace tiledef;
 using namespace equipment;
-
+using namespace weapons;
 
 Kobold::Kobold()
 {
@@ -32,7 +32,8 @@ Kobold::Kobold(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
     moral = 5;
     current_health = 20;
     max_health = 20;
-    attack_dam = 2;
+    base_attack = 2;
+    attack_dam = base_attack;
     armor = 0;
     id = 1;
     sight = 20;
@@ -46,6 +47,14 @@ Kobold::Kobold(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
         cout<<"I have an item, and it's "<<equip_list[i]->get_name()<<endl;
         inventory.push_back(equip_list[i]);
     }
+    WeaponType wp[1] = {dagger};
+    Weapon* weapon = generate_weapon(vector<WeaponType>(&wp[0], &wp[0]+1));
+    if(weapon != NULL)
+    {
+        cout<<"I have a weapon, and it's "<<weapon->get_name()<<endl;
+        inventory.push_back(weapon);
+    }
+
 }
 
 void Kobold::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)

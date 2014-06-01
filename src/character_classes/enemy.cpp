@@ -342,4 +342,5 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
             return new Weapon(IntPoint(y, x), weapon_list[i]);
         }
     }
+    return NULL;
 }

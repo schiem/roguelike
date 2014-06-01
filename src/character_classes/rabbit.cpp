@@ -31,7 +31,8 @@ Rabbit::Rabbit(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
     moral = 3;
     current_health = 10;
     max_health = 10;
-    attack_dam = 0;
+    base_attack = 0;
+    attack_dam = base_attack;
     armor = 0;
     id = 2;
     sight = 15;
