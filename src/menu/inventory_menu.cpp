@@ -24,12 +24,12 @@ InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padd
     id = 6;
     game = _game;
     next_screen = GAME_SCREEN;
+    items = game->main_char.get_inventory();
     for(int i=0; i<items->size();i++)
     {
         options.push_back(items->at(i)->get_name());
     }
     options.push_back("Back");
-   items = game->main_char.get_inventory();
     title = "Inventory";
 }
 

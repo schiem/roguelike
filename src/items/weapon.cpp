@@ -1,5 +1,5 @@
 /**
- *  EQUIPMENT.CPP
+ *  WEAPON.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -22,43 +22,44 @@
 using namespace tiledef;
 using namespace equipment;
 
-Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t, int ac) : Item(_rarity, _weight, _sprite, _name, _coords)
+Weapon::Weapon(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int t,  int _dam) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
-    body_part = bp;
     type = t;
-    armor_class = ac;
-    can_equip = true;   
+    damage = _dam;
+    can_equip = false;   
     can_use = false;
-    can_wield = false;
+    can_wield = true;
 }
 
-Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
+Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(_coords)
 {
-    rarity = eqp.rarity;
-    weight = eqp.weight;
-    sprite = eqp.sprite;
-    name = eqp.name;
-    body_part = eqp.body_part;
-    type = eqp.type;
-    armor_class = eqp.armor_class;
-    can_use = eqp.use;
-    can_equip = true;
+    rarity = wpn.rarity;
+    weight = wpn.weight;
+    sprite = wpn.sprite;
+    name = wpn.name;
+    damage = wpn.damage;
+    range = wpn.range;
+    type = wpn.type;
+    can_use = wpn.use;
+    can_equip = false;
+    can_wield = true;
 }
 
 
-void Equipment::perform_action()
+void Weapon::perform_action()
 {
     if(can_use)
     {
     }
 }
 
-int Equipment::get_body_part()
+int Weapon::get_type()
 {
-    return body_part;
+    return type;
 }
 
-int Equipment::get_armor()
+
+int Weapon::get_damage()
 {
-    return armor_class;
+    return damage;
 }

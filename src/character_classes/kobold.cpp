@@ -20,6 +20,8 @@
 #include <enemy.h>
 
 using namespace tiledef;
+using namespace equipment;
+
 
 Kobold::Kobold()
 {
@@ -27,17 +29,23 @@ Kobold::Kobold()
 
 Kobold::Kobold(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_x, _y, _chunk_x, _chunk_y, _depth)
 {
-   moral = 5;
-   current_health = 20;
-   max_health = 20;
-   attack_dam = 2;
-   armor = 0;
-   id = 1;
-   sight = 20;
-   speed = 100;
-   sprite = KOBOLD;
-   corpse = KOBOLD_CORPSE;
-   timer = 0;
+    moral = 5;
+    current_health = 20;
+    max_health = 20;
+    attack_dam = 2;
+    armor = 0;
+    id = 1;
+    sight = 20;
+    speed = 100;
+    sprite = KOBOLD;
+    corpse = KOBOLD_CORPSE; 
+    EquipType eq[1] = {boots};
+    vector<Equipment*> equip_list = generate_equipment(vector<EquipType>(&eq[0], &eq[0]+1));
+    for(int i = 0;i<equip_list.size();i++)
+    {
+        cout<<"I have an item, and it's "<<equip_list[i]->get_name()<<endl;
+        inventory.push_back(equip_list[i]);
+    }
 }
 
 void Kobold::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)

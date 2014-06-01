@@ -63,6 +63,9 @@ class Enemy : public Character
         int sight;
         int speed;
         std::string name;
+        std::vector<Equipment*> generate_equipment(std::vector<EquipType>);
+        Weapon* generate_weapon(std::vector<WeaponType>);
+        
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
         IntPoint get_next_step(IntPoint, TileMatrix&);

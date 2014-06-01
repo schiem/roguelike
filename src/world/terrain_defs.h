@@ -63,6 +63,7 @@ namespace tiledef {
     extern Tile BOOTS;
     extern Tile RABBIT;
     extern Tile RABBIT_CORPSE;
+    extern Tile SWORD;
 }
 
 struct MapTile {

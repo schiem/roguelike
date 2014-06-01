@@ -28,6 +28,7 @@ Enemy::Enemy()
 
 Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
 {
+    timer = 0;
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -317,4 +318,28 @@ int Enemy::get_smallest_f(std::vector<ATile>& list)
         }
     }
     return index;
+}
+
+std::vector<Equipment*> Enemy::generate_equipment(std::vector<EquipType> equipment_list)
+{
+    std::vector<Equipment*> new_equipment;
+    for(int i = 0; i<equipment_list.size();i++)
+    {
+        if(rand() % (5 + equipment_list[i].rarity) == 0)
+        {
+           new_equipment.push_back(new Equipment(IntPoint(y, x), equipment_list[i]));
+        }
+    }
+    return new_equipment;
+}
+
+Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
+{
+    for(int i = 0; i<weapon_list.size();i++)
+    {
+        if(rand() % (5 + weapon_list[i].rarity) == 0)
+        {
+            return new Weapon(IntPoint(y, x), weapon_list[i]);
+        }
+    }
 }

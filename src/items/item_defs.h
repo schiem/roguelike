@@ -28,6 +28,7 @@ struct EquipType
     int weight;
     Tile sprite;
     std::string name;
+    int rarity;
     int body_part;
     int type;
     int armor_class;
@@ -38,9 +39,32 @@ struct EquipType
     }
 };
 
+struct WeaponType
+{
+    int weight;
+    Tile sprite;
+    std::string name;
+    int rarity;
+    int damage;
+    int type;
+    int range;
+    bool use;
+    bool operator==(const EquipType& rhs) const 
+    {
+        return this->name==rhs.name;
+    }
+};
+
+
 namespace equipment
 {
     extern EquipType boots;
 }
+
+namespace weapons
+{
+    extern WeaponType dagger;
+}
+
 
 #endif

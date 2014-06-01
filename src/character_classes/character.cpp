@@ -42,7 +42,7 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
-    equipment = vector<Item*>(6);    
+    equipment = vector<Item*>(7);    
 }
 
 /*
@@ -140,15 +140,39 @@ void Character::equip_item(Item* item)
         equipment[((Equipment*)item)->get_body_part()] = item;
         armor += ((Equipment*)item)->get_armor();
     }
+    else if(item->can_wield)
+    {
+        drop_item(item);
+        remove_item(6);
+        equipment[6] = item;
+        attack_dam += ((Weapon*)item)->get_damage();
+    }
 }
 
 void Character::remove_item(int item)
 {
     if(equipment[item] != NULL)
     {
-        armor -= ((Equipment*)equipment[item])->get_armor();
-        add_item(equipment[item]);
-        equipment[item] = NULL;
+        if(item < 6)
+        {
+            armor -= ((Equipment*)equipment[item])->get_armor();
+            add_item(equipment[item]);
+            equipment[item] = NULL;
+        }
+        else
+        {
+            attack_dam -= ((Weapon*)equipment[item])->get_damage();
+            add_item(equipment[item]);
+            equipment[item] = NULL;
+        }
+    }
+}
+
+void Character::remove_all()
+{
+    for(int i=0;i<equipment.size();i++)
+    {
+        remove_item(i);
     }
 }
 

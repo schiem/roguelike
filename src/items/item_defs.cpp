@@ -31,6 +31,11 @@
 using namespace tiledef;
 namespace equipment
 {
-    EquipType boots = {3, BOOTS, "Boots", 3, 0, 5, false};
+    EquipType boots = {3, BOOTS, "Boots", 0, 3, 0, 5, false};
+}
+
+namespace weapon
+{
+    WeaponType dagger = {1, SWORD, "Small Dagger", 0, 3, 2, 1, false};
 }
 

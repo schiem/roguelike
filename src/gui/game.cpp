@@ -218,6 +218,16 @@ void Game::run_enemies(long delta_ms) {
         if(!enemy->is_alive())
         {
             chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
+            enemy->remove_all();
+            vector<Item*>* item_list = enemy->get_inventory();
+            for(int j=0;j<item_list->size();j++)
+            {
+                Item* item = item_list->at(j);
+                enemy->drop_item(item);
+                item->set_coords(IntPoint(enemy->get_y(), enemy->get_x()));
+                chunk_map[enem_chunk.row][enem_chunk.col].add_item(item, enemy->get_depth());
+            }
+            
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         }

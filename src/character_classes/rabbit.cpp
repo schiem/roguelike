@@ -38,7 +38,6 @@ Rabbit::Rabbit(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Enemy(_
     speed = (rand() % 20) + 50;
     sprite = RABBIT;
     corpse = RABBIT_CORPSE;
-    timer = 0;
     spooked = false;
     direction_spooked = IntPoint(0, 0);
     time_spooked = 0;

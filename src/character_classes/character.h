@@ -71,7 +71,8 @@ class Character
         void destroy_item(Item*);
         void equip_item(Item*);
         void remove_item(int);
-        
+        void remove_all();
+
         int get_x();
         int get_y();
         IntPoint get_chunk();

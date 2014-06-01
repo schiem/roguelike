@@ -118,7 +118,6 @@ void Overworld::build_forest_overworld() {
         coords = IntPoint(rand() % height, rand() % width);
     }
     while (ground[coords.row][coords.col].can_be_moved_through == false);
-    items.push_back(new Equipment(coords, equipment::boots));
 
 
     for(int i = 0; i < height; i++) {

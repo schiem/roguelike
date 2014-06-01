@@ -65,6 +65,7 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/dungeonbuilder.cpp\
 	src/items/item.cpp\
     src/items/equipment.cpp\
+    src/items/weapon.cpp\
     src/items/item_defs.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \

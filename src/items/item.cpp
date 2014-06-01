@@ -24,8 +24,9 @@ Item::Item(IntPoint _coords)
     coords = _coords;
 }
 
-Item::Item(int _weight, Tile _sprite, std::string _name, IntPoint _coords)
+Item::Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords)
 {
+    rarity = _rarity;
     weight = _weight;
     sprite = _sprite;
     name = _name;
@@ -57,3 +58,7 @@ void Item::set_coords(IntPoint _c)
     coords = _c;
 }
 
+int Item::get_rarity()
+{
+    return rarity;
+}

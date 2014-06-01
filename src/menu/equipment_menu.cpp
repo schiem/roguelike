@@ -36,7 +36,7 @@ EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padd
         }
     }
     options.push_back("Back");
-   next_screen = GAME_SCREEN;
+    next_screen = GAME_SCREEN;
     title = "Equipment";
 }
 
