@@ -147,7 +147,7 @@ void Dungeon::make_spawner(int _depth)
     spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
     }
     while(spawn==down_stair || spawn == up_stair);
-    spawner = Spawner(spawn.col, spawn.row, _depth, "Kobold");
+    spawner = Spawner(spawn.col, spawn.row, _depth, kobold);
     dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
 }
 

@@ -209,14 +209,17 @@ void Game::run_spawners() {
  */
 void Game::run_enemies(long delta_ms) {
     Enemy* enemy;
+
+    //iterate through the enemies that we know about
     for(int i=0;i<enemy_list.size();i++) {
         enemy = enemy_list[i];
-        
-
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
+        
         if(!enemy->is_alive())
         {
+            
+            //if the enemy isn't alive, drop the entire inventory and then delete the enemy
             chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
             enemy->remove_all();
             vector<Item*>* item_list = enemy->get_inventory();
@@ -232,9 +235,13 @@ void Game::run_enemies(long delta_ms) {
             enemy_list.erase(enemy_list.begin() + i);
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
+            
+            //delete the enemy if it's not in the buffer
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
+            //if the enemy is at the same depth as the main character,
+            //run its ai
             TileMatrix surroundings = get_surroundings(enem_chunk, enem_coords, enemy->get_depth(),
                     IntPoint(enemy->get_sight(), enemy->get_sight()));
 

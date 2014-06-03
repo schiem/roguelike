@@ -1,5 +1,5 @@
 /**
- *  SPAWNER.CPP
+ *  ENEMY_DEFS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,42 +17,17 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <spawner.h>
-using namespace std;
-Spawner::Spawner()
-{
-    }
+#include <enemy_defs.h>
 
-Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
-{
-    x = _x;
-    y = _y;
-    depth = _depth;
-    enemy = _enemy;
-}
+using namespace tiledef;
+using namespace equipment;
+using namespace weapons;
+using namespace boost::assign;
 
-bool Spawner::should_spawn()
+namespace enemies
 {
-    //TODO: put in a switch{case} for this
-    return (rand() % 100 == 0);
-}
-
-Enemy* Spawner::spawn_creep(int chunk_x, int chunk_y)
-{
-    return new Enemy(x -1, y - 1, chunk_x, chunk_y, depth, enemy);
-}
-
-int Spawner::get_x()
-{
-    return x;
-}
-
-int Spawner::get_y()
-{
-    return y;
-}
-
-int Spawner::get_depth()
-{
-    return depth;
+    EquipType kob_eq[] = {boots};
+    WeaponType kob_wp[] = {dagger};
+    EnemyType kobold = {5, 20, 2, 0, 1, 20, 100, "Kobold",  KOBOLD, KOBOLD_CORPSE, std::vector<EquipType>(&kob_eq[0], &kob_eq[0]+1), std::vector<WeaponType>(&kob_wp[0], &kob_wp[0]+1)}; 
+    EnemyType rabbit = {3, 10, 0, 0, 2, 15, (rand() % (20 + 50)), "Rabbit",  RABBIT, RABBIT_CORPSE, std::vector<EquipType>(), std::vector<WeaponType>()}; 
 }

@@ -26,9 +26,59 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
+Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType enemy) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
 {
     timer = 0;
+    //determines if the character is good or evit, on a scale of 1-5 (5 is evil, 3 is passive)
+    moral = enemy.moral;
+    max_health = enemy.max_health;
+    current_health = max_health;
+    base_attack = enemy.base_attack;
+    attack_dam = base_attack;
+    armor = enemy.armor;
+    id = enemy.id;
+    name = enemy.name;
+    sight = enemy.sight;
+    speed = enemy.speed;
+    sprite = enemy.sprite;
+    corpse = enemy.corpse; 
+
+    //is the enemy scared? if so, what direction and for how long
+    spooked = false;
+    direction_spooked = IntPoint(0, 0);
+    time_spooked = 0;
+
+    //generate the enemy's list of equipment and weapons
+    vector<Equipment*> equip_list = generate_equipment(enemy.equip_list);
+    for(int i = 0;i<equip_list.size();i++)
+    {
+        cout<<"I have an item, and it's "<<equip_list[i]->get_name()<<endl;
+        inventory.push_back(equip_list[i]);
+    }
+    Weapon* weapon = generate_weapon(vector<WeaponType>(enemy.wep_list));
+    if(weapon != NULL)
+    {
+        cout<<"I have a weapon, and it's "<<weapon->get_name()<<endl;
+        inventory.push_back(weapon);
+    }
+
+}
+
+void Enemy::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+{
+    switch(id)
+    {
+        case 1:
+            //kobolds
+            aggressive_ai(surroundings, char_list, delta_ms);
+            break;
+        case 2:
+            //rabbits
+            passive_ai(surroundings, char_list, delta_ms);
+            break;
+        default:
+            break;
+    }
 }
 
 void Enemy::move(int x_change, int y_change)
@@ -343,4 +393,187 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
         }
     }
     return NULL;
+}
+
+
+/*------------------------------
+ *   AI FUNCTIONS
+ ------------------------------*/
+
+ /* The ai for the aggressive enemies.
+    Takes the surroundings as a tilematrix and a list of nearby characters and
+    steps towards one if it is determined that it should attack it.  If it is next
+    to one, it will attack it.
+    */
+
+void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+{
+    timer += delta_ms;
+    //If the timer > speed, then it is okay to act.
+    while(timer > speed) {
+        timer -= speed;
+        //get a target
+        target = find_best_target(0, 1, char_list);
+
+        if(target != NULL)
+        {
+            //if we found a target, find the next step to get to it
+            IntPoint target_coords = get_sur_coords(target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
+            IntPoint next_step = get_next_step(target_coords, surroundings);
+            if(next_step != target_coords)
+            {
+                //if we're not next to the target, step towards it
+                if(rand() % 3 != 0) {
+                    move(next_step.col-(sight+1), next_step.row-(sight+1));
+                }
+            }
+            else
+            {
+                //attack it if we're next to it
+                attack(target);
+            }
+        }
+        else
+        {
+            //if we didn't find a target, meander
+            int will_move = rand() % 5;
+            int x_change = rand() % 3 - 1;
+            int y_change = rand() % 3 - 1;
+            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+            {
+                move(x_change, y_change);
+            }
+        }
+    }
+}
+
+
+
+void Enemy::passive_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+{
+    timer += delta_ms;
+    //If the timer > speed, then it is okay to act.
+    while(timer > speed) {
+        timer -= speed;
+        
+        //if it's spooked, have the chance to unspook
+        if(spooked && rand() % (20 - time_spooked) == 0)
+        {
+            spooked = false;
+        }
+       
+       //look for a nearby scary thing
+        //if one is noticed, spook for the next turn
+        target = passive_best_target(0, 1, char_list);
+        if(target != NULL && rand() % 2 == 0)
+        {
+            spooked = true;
+            time_spooked = 0;
+            IntPoint abs_coords = get_abs(chunk, IntPoint(y, x));
+            IntPoint target_abs = get_abs(target->get_chunk(),  IntPoint(target->get_y(), target->get_x()));
+            
+            //some funky math that tells it which way to run
+            float rise = abs_coords.row-target_abs.row;
+            float run = abs_coords.col- target_abs.col;
+            float slope = rise/run;
+            float unsigned_slope = slope * (-1 * (slope < 0));
+            int x_change = 0;
+            int y_change = 0;
+            if(run == 0)
+            {
+                unsigned_slope = 2;
+            }
+            if(unsigned_slope < 1)
+            {
+                x_change = 0 - (run < 0) + (run > 0);
+            }
+            else if(unsigned_slope > 1)
+            {
+                y_change = 0 - (rise < 0) + (rise > 0);
+            }
+            else if(unsigned_slope == 1)
+            {
+                x_change = 0 - (run < 0) + (run > 0);
+                y_change = 0 - (rise < 0) + (rise > 0);
+            }
+
+            direction_spooked = IntPoint(y_change, x_change);
+        }
+
+        if (spooked)
+        {
+            //try to move in the direction that it's spooked
+            time_spooked += 1;
+            if(rand() % 5 == 0)
+            {
+                direction_spooked.row = direction_spooked.row + (((rand() % 3) - 1) * (direction_spooked.row == 0)); 
+                direction_spooked.col = direction_spooked.col + (((rand() % 3) - 1) * (direction_spooked.col == 0));
+            }
+            if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1].can_be_moved_through)
+            {
+                move(direction_spooked.col, direction_spooked.row);
+            }
+
+        }
+        else
+        {
+            int will_move = rand() % 5;
+            int x_change = rand() % 3 - 1;
+            int y_change = rand() % 3 - 1;
+            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+            {
+                move(x_change, y_change);
+            }
+        }
+    }
+}
+
+
+
+Character* Enemy::find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list)
+{
+    Character* best = NULL;
+    for(int i=0; i<enemy_list.size(); i++)
+    {
+        if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
+        {
+            if(best == NULL)
+            {
+                best = enemy_list[i];
+            }
+            else
+            {
+                if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                {
+                    best = enemy_list[i];
+                }
+            }
+        }
+    }
+    return best;
+}
+
+
+
+Character* Enemy::passive_best_target(int target_id, int selectability, std::vector<Character*> enemy_list)
+{
+    Character* best = NULL;
+    for(int i=0; i<enemy_list.size(); i++)
+    {
+        if(enemy_list[i]->get_moral() != 3)
+        {
+            if(best == NULL)
+            {
+                best = enemy_list[i];
+            }
+            else
+            {
+                if((unsigned int)(enemy_list[i]->get_moral() - moral) < (unsigned int)(best->get_moral() - moral))
+                {
+                    best = enemy_list[i];
+                }
+            }
+        }
+    }
+    return best;
 }

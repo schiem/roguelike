@@ -22,7 +22,7 @@
 #include <enemy.h>
 #include <ctime>
 #include <iostream>
-
+#include <enemy_defs.h>
 
 class Spawner
 {
@@ -30,11 +30,11 @@ class Spawner
         int x;
         int y;
         int depth;
-        std::string enemy;
+        EnemyType enemy;
 
     public:
         Spawner();
-        Spawner(int, int, int,  std::string);
+        Spawner(int, int, int,  EnemyType);
         bool should_spawn();
         Enemy* spawn_creep(int, int);
         int get_x();

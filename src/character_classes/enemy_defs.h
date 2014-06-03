@@ -1,5 +1,5 @@
 /**
- *  SPAWNER.CPP
+ *  ENEMY_DEFS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,42 +17,42 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <spawner.h>
-using namespace std;
-Spawner::Spawner()
+#ifndef ENEMY_DEFS_H
+#define ENEMY_DEFS_H
+
+#include <terrain_defs.h>
+#include <item_defs.h>
+#include <vector>
+#include <string>
+#include <stdarg.h>
+#include <ctime>
+#include <stdlib.h>
+#include <boost/assign/list_of.hpp>
+
+struct EnemyType
 {
+    int moral;
+    int max_health;
+    int base_attack;
+    int armor;
+    int id;
+    int sight;
+    int speed;
+    std::string name;
+    Tile sprite;
+    Tile corpse;
+    std::vector<EquipType> equip_list;
+    std::vector<WeaponType> wep_list;
+    bool operator==(const EnemyType& rhs) const
+    {
+        return this->id==rhs.id;
     }
+};
 
-Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
+namespace enemies
 {
-    x = _x;
-    y = _y;
-    depth = _depth;
-    enemy = _enemy;
+    extern EnemyType kobold;
+    extern EnemyType rabbit;
 }
 
-bool Spawner::should_spawn()
-{
-    //TODO: put in a switch{case} for this
-    return (rand() % 100 == 0);
-}
-
-Enemy* Spawner::spawn_creep(int chunk_x, int chunk_y)
-{
-    return new Enemy(x -1, y - 1, chunk_x, chunk_y, depth, enemy);
-}
-
-int Spawner::get_x()
-{
-    return x;
-}
-
-int Spawner::get_y()
-{
-    return y;
-}
-
-int Spawner::get_depth()
-{
-    return depth;
-}
+#endif

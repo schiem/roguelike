@@ -25,8 +25,11 @@
 #include <string>
 #include <vector>
 #include <helper.h>
+#include <enemy_defs.h>
 
-static std::string ENEMY_LIST[] = {"Kobold", "Rabbit"};
+using namespace enemies;
+
+static EnemyType ENEMY_LIST[] = {kobold, rabbit};
 static int NUM_ENEMIES = 2;
 
 struct ATile
@@ -58,10 +61,13 @@ class Enemy : public Character
     typedef std::vector<std::vector<Tile> > TileMatrix;
     protected:
         long timer;
-        
+
         int id;
         int sight;
         int speed;
+        bool spooked;
+        IntPoint direction_spooked;
+        int time_spooked;
         std::string name;
         std::vector<Equipment*> generate_equipment(std::vector<EquipType>);
         Weapon* generate_weapon(std::vector<WeaponType>);
@@ -74,40 +80,19 @@ class Enemy : public Character
         int manhattan(IntPoint, IntPoint);
         int get_smallest_f(std::vector<ATile>&);
         IntPoint get_sur_coords(IntPoint, IntPoint);
-        virtual Character* find_best_target(int, int, std::vector<Character*>)=0;
+        Character* find_best_target(int, int, std::vector<Character*>);
+        Character* passive_best_target(int, int, std::vector<Character*>);
     public:
         Enemy();
-        Enemy(int, int, int, int, int);
-        virtual void run_ai(TileMatrix, std::vector<Character*>, long) = 0;
+        Enemy(int, int, int, int, int, EnemyType);
+        void run_ai(TileMatrix, std::vector<Character*>, long);
+        void aggressive_ai(TileMatrix, std::vector<Character*>, long);
+        void passive_ai(TileMatrix, std::vector<Character*>, long);
         void set_depth(int);
         int get_id();
         int get_sight();
         void dump_matrix(TileMatrix&);
 };
 
-class Kobold : public Enemy
-{
-    typedef std::vector<std::vector<Tile> > TileMatrix;
-    protected:
-        Character* find_best_target(int, int, std::vector<Character*>);
-    public:
-        Kobold();
-        Kobold(int, int, int, int, int);
-        void run_ai(TileMatrix, std::vector<Character*>, long);
-};
-
-class Rabbit: public Enemy
-{
-    typedef std::vector<std::vector<Tile> > TileMatrix;
-    protected:
-        Character* find_best_target(int, int, std::vector<Character*>);
-        bool spooked; 
-        IntPoint direction_spooked;
-        int time_spooked;
-    public:
-        Rabbit();
-        Rabbit(int, int, int, int, int);
-        void run_ai(TileMatrix, std::vector<Character*>, long);
-};
 
 #endif
