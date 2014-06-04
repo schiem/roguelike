@@ -30,10 +30,10 @@
 #include <chunk.h>
 #include <virtual_event.h>
 #include <game.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <world_map.h>
 #include <world_map_gui.h>
-#include <def.h>
+#include <color_def.h>
 #include <menu.h>
 #include <game_states.h>
 #include <stdio.h>

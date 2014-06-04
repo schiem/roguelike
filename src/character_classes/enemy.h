@@ -25,9 +25,10 @@
 #include <string>
 #include <vector>
 #include <helper.h>
-#include <enemy_defs.h>
+#include <defs.h>
 
 using namespace enemies;
+
 
 static EnemyType ENEMY_LIST[] = {kobold, rabbit};
 static int NUM_ENEMIES = 2;

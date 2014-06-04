@@ -33,7 +33,7 @@
 #include <corruptible_pblind_db.h>
 #include <dungeon.h>
 #include <overworld.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <ctime>
 #include <iostream>
 #include <spawner.h>

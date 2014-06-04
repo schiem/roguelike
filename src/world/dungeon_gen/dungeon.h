@@ -23,7 +23,7 @@
 //#define ROOM_COUNT_DEBUG
 #include <vector>
 #include <assert.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <room.h>
 #include <spawner.h>
 #include <item.h>

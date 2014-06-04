@@ -25,8 +25,8 @@
 #include <time.h>
 #include <iostream>
 
-#include <def.h>
-#include <terrain_defs.h>
+#include <color_def.h>
+#include <defs.h>
 
 class WorldMap {
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;

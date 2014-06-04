@@ -1,5 +1,5 @@
 /**
- *  TERRAIN_DEFS.CPP
+ *  DEFS.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,8 +17,11 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <terrain_defs.h>
+#include <defs.h>
 
+/****************************
+ *   TERRAIN DEFS
+ ***************************/
 namespace tiledef {
     Tile OVERWORLD_DIRT = {250, 1, BROWN, true, false, false, false};
     Tile DIRT = {250, 2, BROWN, true, false, false, false};
@@ -57,3 +60,43 @@ namespace map_tile {
     MapTile CURSOR = {88, WHITE, 5, false};
 }
 
+
+/****************************
+ *   ITEM DEFS
+ ***************************/
+/*****
+     0
+   54145
+     1
+    2 2
+    3 3
+ Body index diagram.
+******/
+
+
+namespace equipment
+{
+    EquipType boots = {3, tiledef::BOOTS, "Boots", 0, 3, 0, 5, false};
+}
+
+namespace weapons
+{
+    WeaponType dagger = {1, tiledef::SWORD, "Small Dagger", 0, 3, 2, 1, false};
+}
+
+/****************************
+ *   ENEMY DEFS
+ ***************************/
+
+EquipType kob_eq[] = {equipment::boots};
+std::vector<EquipType> kob_eq_vec(&kob_eq[0], &kob_eq[0] + 1);
+WeaponType kob_wep[] = {weapons::dagger};
+std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
+
+
+
+namespace enemies
+{
+    EnemyType kobold = {5, 20, 2, 0, 1, 20, 100, "Kobold", tiledef::KOBOLD, tiledef::KOBOLD_CORPSE, kob_eq_vec, kob_wep_vec};
+    EnemyType rabbit = {3, 10, 0, 0, 2, 15, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, tiledef::RABBIT_CORPSE, std::vector<EquipType>(), std::vector<WeaponType>()}; 
+}

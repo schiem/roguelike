@@ -30,7 +30,7 @@
 #include <enemy.h>
 #include <dungeonbuilder.h>
 #include <dungeon.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <character.h>
 #include <world_map.h>
 #include <helper.h>

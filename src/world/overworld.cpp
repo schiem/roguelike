@@ -47,12 +47,16 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
 
     if (tile_type == map_tile::MAP_DEFAULT) {
         build_land_overworld();
+        equipment.push_back(equipment::boots);
+        weapons.push_back(weapons::dagger);
     } else if (tile_type == map_tile::MAP_WATER) {
         build_water_overworld();
     } else if (tile_type == map_tile::MAP_BEACH) {
         build_beach_overworld();
     } else if (tile_type == map_tile::MAP_FOREST) {
         build_forest_overworld();
+        equipment.push_back(equipment::boots);
+        weapons.push_back(weapons::dagger);
     }
 
     }
@@ -246,3 +250,13 @@ Spawner Overworld::get_spawner()
     return spawner;
 }
 
+
+std::vector<EquipType> Overworld::get_equipment()
+{
+    return equipment;
+}
+
+std::vector<WeaponType> Overworld::get_weapons()
+{
+    return weapons;
+}

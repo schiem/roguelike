@@ -22,7 +22,7 @@
 #include <enemy.h>
 #include <ctime>
 #include <iostream>
-#include <enemy_defs.h>
+#include <defs.h>
 
 class Spawner
 {

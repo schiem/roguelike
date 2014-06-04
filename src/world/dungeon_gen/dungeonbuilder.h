@@ -36,7 +36,7 @@
 
 #include <int_point.h>
 #include <room.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <dungeon.h>
 #include <ASCII_Lib.h>
 

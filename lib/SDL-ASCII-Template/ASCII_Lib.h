@@ -1,7 +1,7 @@
 #ifndef ASCII_LIB_H
 #define ASCII_LIB_H
 #include <SDL/SDL.h>
-#include <def.h>
+#include <color_def.h>
 #include <math.h>
 
 

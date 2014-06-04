@@ -19,9 +19,8 @@
 
 #ifndef ITEM_H
 #define ITEM_H
-#include <terrain_defs.h>
+#include <defs.h>
 #include <string>
-#include <item_defs.h>
 #include <int_point.h>
 
 class Character;

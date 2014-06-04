@@ -49,13 +49,13 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     time_spooked = 0;
 
     //generate the enemy's list of equipment and weapons
-    vector<Equipment*> equip_list = generate_equipment(enemy.equip_list);
+    vector<Equipment*> equip_list = generate_equipment(enemy.eq);
     for(int i = 0;i<equip_list.size();i++)
     {
         cout<<"I have an item, and it's "<<equip_list[i]->get_name()<<endl;
         inventory.push_back(equip_list[i]);
     }
-    Weapon* weapon = generate_weapon(vector<WeaponType>(enemy.wep_list));
+    Weapon* weapon = generate_weapon(vector<WeaponType>(enemy.wep));
     if(weapon != NULL)
     {
         cout<<"I have a weapon, and it's "<<weapon->get_name()<<endl;

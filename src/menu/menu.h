@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 #include <ASCII_Lib.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <game_states.h>
 #include <item.h>
 #include <game.h>

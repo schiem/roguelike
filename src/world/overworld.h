@@ -20,7 +20,6 @@
 #ifndef _OVERWORLD_H
 #define _OVERWORLD_H
 
-#include <terrain_defs.h>
 #include <vector>
 #include <ctime>
 #include <stdlib.h>
@@ -29,7 +28,8 @@
 #include <int_point.h>
 #include <bresenham.h>
 #include <item.h>
-#include <item_defs.h>
+#include <defs.h>
+
 
 class Overworld
 {
@@ -40,6 +40,8 @@ class Overworld
         Spawner spawner;
         bool smoothing_pass(int, Tile, int);
         std::vector<Item*> items;
+        std::vector<EquipType> equipment;
+        std::vector<WeaponType> weapons;
     public:
         bool has_layer_below;
         IntPoint down_stair;
@@ -56,7 +58,9 @@ class Overworld
         std::vector<std::vector<Tile> >& get_ground();
         std::vector<Item*>* get_items();
         void add_item(Item*);
-        
+        std::vector<EquipType> get_equipment();
+        std::vector<WeaponType> get_weapons();
+
         Spawner get_spawner();
 
 

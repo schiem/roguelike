@@ -1,5 +1,5 @@
 /**
- *  TERRAIN_DEFS.H
+ *  DEFS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,9 +17,13 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TERRAIN_DEFS_H
-#define TERRAIN_DEFS_H
-#include <def.h>
+#ifndef DEFS_H
+#define DEFS_H
+#include <color_def.h>
+#include <string>
+#include <ctime>
+#include <stdlib.h>
+#include <vector>
 
 struct Tile {
     int char_count;
@@ -87,4 +91,77 @@ namespace map_tile {
     extern MapTile MAP_BEACH;
 }
 
+
+struct EquipType
+{
+    int weight;
+    Tile sprite;
+    std::string name;
+    int rarity;
+    int body_part;
+    int type;
+    int armor_class;
+    bool use;
+    bool operator==(const EquipType& rhs) const 
+    {
+        return this->name==rhs.name;
+    }
+};
+
+struct WeaponType
+{
+    int weight;
+    Tile sprite;
+    std::string name;
+    int rarity;
+    int damage;
+    int type;
+    int range;
+    bool use;
+    bool operator==(const EquipType& rhs) const 
+    {
+        return this->name==rhs.name;
+    }
+};
+
+
+namespace equipment
+{
+    extern EquipType boots;
+}
+
+namespace weapons
+{
+    extern WeaponType dagger;
+}
+
+
+struct EnemyType
+{
+    int moral;
+    int max_health;
+    int base_attack;
+    int armor;
+    int id;
+    int sight;
+    int speed;
+    std::string name;
+    Tile sprite;
+    Tile corpse;
+    std::vector<EquipType> eq;
+    std::vector<WeaponType> wep;
+    bool operator==(const EnemyType& rhs) const
+    {
+        return this->id==rhs.id;
+    }
+};
+
+namespace enemies
+{
+    extern EnemyType kobold;
+    extern EnemyType rabbit;
+}
+
 #endif
+
+

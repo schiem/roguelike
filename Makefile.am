@@ -7,6 +7,7 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/gui\
 			  -Isrc/items\
               -Isrc/menu\
+              -Isrc/\
               $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
@@ -25,14 +26,14 @@ bin_PROGRAMS = roguelike
 roguelikedir = .
 
 roguelike_SOURCES = \
-	src/main.cpp\
+	src/defs.cpp\
+    src/main.cpp\
 	src/misc_classes/int_point.cpp\
 	src/misc_classes/bresenham.cpp\
 	src/misc_classes/helper.cpp\
     src/character_classes/main_character.cpp\
 	src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
-    src/character_classes/enemy_defs.cpp\
     src/character_classes/spawner.cpp\
     src/gui/gui_loop.cpp\
 	src/gui/gui.cpp\
@@ -55,7 +56,6 @@ roguelike_SOURCES = \
 	src/gui/world_map_gui.cpp\
 	src/world/overworld.cpp\
 	src/world/chunk.cpp\
-	src/world/terrain_defs.cpp\
 	src/world/world_map.cpp\
 	src/world/dungeon_gen/dungeon.cpp\
 	src/world/dungeon_gen/procedurally_blind_db.cpp\
@@ -65,15 +65,14 @@ roguelike_SOURCES = \
 	src/items/item.cpp\
     src/items/equipment.cpp\
     src/items/weapon.cpp\
-    src/items/item_defs.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
-	src/misc_classes/bresenham.h\
+	src/defs.h\
+    src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
 	src/misc_classes/helper.h\
     src/character_classes/character.h\
     src/character_classes/enemy.h\
-    src/character_classes/enemy_defs.h\
     src/character_classes/spawner.h\
     src/gui/virtual_event.h\
 	src/gui/gui.h\
@@ -81,7 +80,6 @@ roguelike_SOURCES = \
 	src/gui/game_states.h\
     src/menu/menu.h\
 	src/gui/world_map_gui.h\
-	src/world/terrain_defs.h\
 	src/world/chunk.h\
 	src/world/dungeon_gen/dungeonbuilder.h\
 	src/world/dungeon_gen/room.h\
@@ -91,8 +89,7 @@ roguelike_SOURCES = \
 	src/world/overworld.h\
 	src/world/world_map.h\
     src/items/item.h\
-    src/items/item_defs.h\
-	lib/SDL-ASCII-Template/def.h\
+	lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
 dist_localdata_DATA = data/ data/chunk/

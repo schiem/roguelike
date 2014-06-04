@@ -20,9 +20,9 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include <SDL/SDL.h>
-#include <terrain_defs.h>
+#include <defs.h>
 #include <ASCII_Lib.h>
-#include <def.h>
+#include <color_def.h>
 #include <iostream>
 #include <int_point.h>
 #include <item.h>
