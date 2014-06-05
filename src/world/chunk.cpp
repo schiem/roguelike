@@ -291,7 +291,7 @@ void Chunk::serialize() {
             for(int k = 0; k < width; k++) {
                 current_tile = *get_tile(i - 1, j, k);
                 tile_id = current_tile.tile_id;
-                seen = current_tile.seen;
+                seen = (unsigned int) current_tile.seen;
 
                 //Fewer than 128 different tile ids, so we can shift it to make
                 //room in that byte for the boolean value! Thanks for ruining my
@@ -301,11 +301,11 @@ void Chunk::serialize() {
                 //BEFORE: 00001100
                 //AFTER: 00011001
 
-                //cout<<"tile_id before: "<<tile_id<<endl;
                 tile_id = tile_id << 1;
                 tile_id = tile_id | seen;
+                //cout<<"tile_id mid: "<<tile_id<<endl;
                 file[current_byte] = tile_id;
-                //cout<<"tile_id after: "<<file[current_byte]<<endl;
+                //cout<<"tile_id after: "<<(int) file[current_byte]<<endl;
 
                 current_byte += bytes_per_tile;
             }

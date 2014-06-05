@@ -164,7 +164,13 @@ Chunk* ChunkMatrix::get_center_chunk() {
 void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     int world_row, world_col;
 
-    if(directions.row == -1) {
+    if(directions.row == 1) {
+        assert((offset.row + (diameter - 1)) < WORLD_HEIGHT);
+        //For the topmost row, we will first have to serialize and clear.
+        for(int col = 0; col < diameter; col++) {
+            model[0][col].serialize();
+        }
+
         //For everything but the last row, we will just copy the next row into the
         //current row.
         for(int row = 0; row < (diameter - 1); row++) {
@@ -173,23 +179,23 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
             }
         }
 
-        assert((offset.row + (diameter - 1)) < WORLD_HEIGHT);
-        //For the last row, we will first have to serialize and clear.
-        int row = diameter - 1;
-        for(int col = 0; col < diameter; col++) {
-            model[row][col].serialize();
-            model[row][col] = Chunk();
-        }
-
         //Create or deserialize new chunks for the last row.
-        world_row = offset.row + (diameter - 1);
+        int row = diameter - 1;
+        world_row = offset.row + row;
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
             model[row][col].init(world_map[world_row][world_col],
                                  world_row, world_col);
         }
 
-    } else if (directions.row == 1) {
+    } else if (directions.row == -1) {
+        assert(offset.row > 0);
+        //For the last row, serialize.
+        int row = diameter - 1;
+        for(int col = 0; col < diameter; col++) {
+            model[row][col].serialize();
+        }
+
         //For everything but the first row, copy the previous row into the
         //current row.
         for(int row = 1; row < diameter; row++) {
@@ -198,24 +204,23 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
             }
         }
 
-        assert(offset.row > 0);
-        //For the first row, serialize and clear.
-        int row = 0;
-        for(int col = 0; col < diameter; col++) {
-            model[row][col].serialize();
-            model[row][col] = Chunk();
-        }
-
         //Create or deserialize new chunks for the first row.
         world_row = offset.row;
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
-            model[row][col].init(world_map[world_row][world_col],
+            model[0][col].init(world_map[world_row][world_col],
                                  world_row, world_col);
         }
     }
 
-    if(directions.col == -1) {
+    if(directions.col == 1) {
+        assert((offset.col + (diameter - 1)) < WORLD_WIDTH);
+
+        //For the leftmost column, serialize and clear.
+        for(int row = 0; row < diameter; row++) {
+            model[row][0].serialize();
+        }
+
         //For everything but the rightmost column, copy the right neighbor into
         //the current column.
         for(int row = 0; row < diameter; row++) {
@@ -224,22 +229,23 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
             }
         }
 
-        assert((offset.col + (diameter - 1)) < WORLD_WIDTH);
-        //For the last column, serialize and clear.
-        int col = (diameter - 1);
-        for(int row = 0; row < diameter; row++) {
-            model[row][col].serialize();
-            model[row][col] = Chunk();
-        }
-
         //Create or deserialize new chunks for the last column.
+        int col = (diameter - 1);
         world_col = offset.col + (diameter - 1);
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
             model[row][col].init(world_map[world_row][world_col],
                                  world_row, world_col);
         }
-    } else if (directions.col == 1) {
+    } else if (directions.col == -1) {
+        assert(offset.col > 0);
+
+        int col = diameter - 1;
+        //For the rightmost column, serialize and clear.
+        for(int row = 0; row < diameter; row++) {
+            model[row][col].serialize();
+        }
+
         //For everything but the leftmost column, copy the left neighbor into
         //the current column.
         for(int row = 0; row < diameter; row++) {
@@ -248,19 +254,11 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
             }
         }
 
-        assert(offset.col > 0);
-        //For the first column serialize and clear.
-        int col = 0;
-        for(int row = 0; row < diameter; row++) {
-            model[row][col].serialize();
-            model[row][col] = Chunk();
-        }
-
         //Create or deserialize new chunks for the first column.
         world_col = offset.col;
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
-            model[row][col].init(world_map[world_row][world_col],
+            model[row][0].init(world_map[world_row][world_col],
                                  world_row, world_col);
         }
     }

@@ -294,7 +294,7 @@ void Game::move_main_char(int col_change, int row_change) {
         if(main_char.get_chunk() != new_chunk) {
             main_char.set_chunk(new_chunk);
             update_chunk_map(main_char.get_chunk());
-            cout<<main_char.get_chunk()<<endl;
+            cout<<"Main character: "<<main_char.get_chunk()<<endl;
             update_buffer(main_char.get_chunk());
 
         }
@@ -588,13 +588,8 @@ void Game::update_buffer(IntPoint central_chunk) {
 
                     Tile* buffer_tile;
                     current_chunk = chunk_map.get_chunk_abs(row, col);
-                    if(!current_chunk->out_of_bounds(main_char.get_depth(), a, b)) {
-                        buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
-                    } else {
-                        buffer_tile = &block_wall_tile;
-                    }
-
-
+                    assert(!current_chunk->out_of_bounds(main_char.get_depth(), a, b));
+                    buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
@@ -606,6 +601,7 @@ void Game::update_chunk_map(IntPoint new_central_chunk) {
     IntPoint old_central_chunk = chunk_map.get_center_chunk()->get_world_loc();
     IntPoint shift_dir = IntPoint(new_central_chunk.row - old_central_chunk.row,
                                   new_central_chunk.col - old_central_chunk.col);
+    cout<<"SHIFTING: "<<shift_dir<<endl;
     chunk_map.shift_matrix(shift_dir, world_map);
 
 }
