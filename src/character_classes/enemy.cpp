@@ -473,31 +473,8 @@ void Enemy::passive_ai(TileMatrix surroundings, std::vector<Character*> char_lis
             IntPoint target_abs = get_abs(target->get_chunk(),  IntPoint(target->get_y(), target->get_x()));
             
             //some funky math that tells it which way to run
-            float rise = abs_coords.row-target_abs.row;
-            float run = abs_coords.col- target_abs.col;
-            float slope = rise/run;
-            float unsigned_slope = slope * (-1 * (slope < 0));
-            int x_change = 0;
-            int y_change = 0;
-            if(run == 0)
-            {
-                unsigned_slope = 2;
-            }
-            if(unsigned_slope < 1)
-            {
-                x_change = 0 - (run < 0) + (run > 0);
-            }
-            else if(unsigned_slope > 1)
-            {
-                y_change = 0 - (rise < 0) + (rise > 0);
-            }
-            else if(unsigned_slope == 1)
-            {
-                x_change = 0 - (run < 0) + (run > 0);
-                y_change = 0 - (rise < 0) + (rise > 0);
-            }
-
-            direction_spooked = IntPoint(y_change, x_change);
+            
+            direction_spooked = get_spooked(abs_coords, target_abs);
         }
 
         if (spooked)
@@ -576,4 +553,32 @@ Character* Enemy::passive_best_target(int target_id, int selectability, std::vec
         }
     }
     return best;
+}
+
+IntPoint Enemy::get_spooked(IntPoint abs_coords, IntPoint target_abs)
+{
+    float rise = abs_coords.row-target_abs.row;
+    float run = abs_coords.col- target_abs.col;
+    float slope = rise/run;
+    float unsigned_slope = slope * (-1 * (slope < 0));
+    int x_change = 0;
+    int y_change = 0;
+    if(run == 0)
+    {
+        unsigned_slope = 2;
+    }
+    if(unsigned_slope < 1)
+    {
+        x_change = 0 - (run < 0) + (run > 0);
+    }
+    else if(unsigned_slope > 1)
+    {
+        y_change = 0 - (rise < 0) + (rise > 0);
+    }
+    else if(unsigned_slope == 1)
+    {
+        x_change = 0 - (run < 0) + (run > 0);
+        y_change = 0 - (rise < 0) + (rise > 0);
+    }
+    return IntPoint(y_change, x_change);
 }

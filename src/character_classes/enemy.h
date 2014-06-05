@@ -83,6 +83,7 @@ class Enemy : public Character
         IntPoint get_sur_coords(IntPoint, IntPoint);
         Character* find_best_target(int, int, std::vector<Character*>);
         Character* passive_best_target(int, int, std::vector<Character*>);
+        IntPoint get_spooked(IntPoint, IntPoint);
     public:
         Enemy();
         Enemy(int, int, int, int, int, EnemyType);
