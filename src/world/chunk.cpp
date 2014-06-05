@@ -40,6 +40,7 @@ void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
 
     bool found_chunk = find_serialized_chunk(world_row, world_col);
     if(!found_chunk) {
+        cout<<"Building new chunk "<<get_world_loc()<<endl;
         if(tile_type == map_tile::MAP_DEFAULT) {
             build_land_chunk();
         } else if (tile_type == map_tile::MAP_WATER) {
@@ -326,7 +327,7 @@ void Chunk::serialize() {
  * PRE: Will be given the world_row and world_col of a chunk.
  */
 void Chunk::deserialize(string file_name, int world_row, int world_col) {
-
+    cout<<"Deserializing chunk "<<get_world_loc()<<endl;
     ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);
 

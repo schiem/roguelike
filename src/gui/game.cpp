@@ -75,8 +75,6 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 
     world_map = _world_map;
 
-    //Eventually, this should be based on screen size.
-    chunk_map = ChunkMatrix(3, selected_chunk, world_map);
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
     buffer = TilePointerMatrix(150, vector<Tile*>(300));
@@ -91,8 +89,11 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(SCREEN_HEIGHT, vector<Tile*>(SCREEN_WIDTH));
-    update_chunk_map(main_char.get_chunk());
+
+    //Eventually, this should be based on screen size.
+    chunk_map = ChunkMatrix(3, selected_chunk, world_map);
     update_buffer(main_char.get_chunk());
+
     recalculate_visibility_lines(15);
     refresh();
 
@@ -282,8 +283,9 @@ void Game::move_main_char(int col_change, int row_change) {
 
     next_col = next_col +  (CHUNK_WIDTH * (next_col<0)) - (CHUNK_WIDTH * (next_col>=CHUNK_WIDTH));
     next_row = next_row +  (CHUNK_HEIGHT * (next_row<0)) - (CHUNK_HEIGHT * (next_row>=CHUNK_HEIGHT));
-    IntPoint coords = IntPoint(next_row, next_col);
-    Character* enem = enemy_at_loc(new_chunk, coords);
+    IntPoint next_coords = IntPoint(next_row, next_col);
+    Character* enem = enemy_at_loc(new_chunk, next_coords);
+
 
     if((chunk_map.get_chunk_abs(new_chunk)->get_tile(main_char.get_depth(), next_row, next_col)->
             can_be_moved_through) && (enem == NULL)) {
@@ -292,11 +294,12 @@ void Game::move_main_char(int col_change, int row_change) {
         main_char.set_x(col);
         main_char.set_y(row);
         if(main_char.get_chunk() != new_chunk) {
+            IntPoint shift_dir = IntPoint(new_chunk.row - main_char.get_chunk_y(), 
+                                          new_chunk.col - main_char.get_chunk_x());
             main_char.set_chunk(new_chunk);
-            update_chunk_map(main_char.get_chunk());
+            update_chunk_map(shift_dir);
             cout<<"Main character: "<<main_char.get_chunk()<<endl;
             update_buffer(main_char.get_chunk());
-
         }
     } else if(enem != NULL) {
         main_char.attack(enem);
@@ -561,6 +564,7 @@ void Game::update_buffer(IntPoint central_chunk) {
         for(int col=central_chunk.col-1;col<=central_chunk.col+1;col++) {
             x = col - (central_chunk.col - 1);
             y = row - (central_chunk.row - 1);
+            //cout<<"Central chunk: "<<central_chunk.row<<" "<<central_chunk.col<<endl;
             current_chunk = chunk_map.get_chunk_abs(row, col);
 
             for (int a=0; a<CHUNK_HEIGHT; a++) {
@@ -597,13 +601,14 @@ void Game::update_buffer(IntPoint central_chunk) {
     }
 }
 
-void Game::update_chunk_map(IntPoint new_central_chunk) {
+void Game::update_chunk_map(IntPoint shift_dir) {
+    /*
     IntPoint old_central_chunk = chunk_map.get_center_chunk()->get_world_loc();
     IntPoint shift_dir = IntPoint(new_central_chunk.row - old_central_chunk.row,
                                   new_central_chunk.col - old_central_chunk.col);
+    */
     cout<<"SHIFTING: "<<shift_dir<<endl;
     chunk_map.shift_matrix(shift_dir, world_map);
-
 }
 
 /*

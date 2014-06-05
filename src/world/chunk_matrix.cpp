@@ -36,6 +36,17 @@ ChunkMatrix::ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix& wo
     populate_initial(center_chunk, world_map);
 }
 
+void ChunkMatrix::pretty_print() {
+    for(int row = 0; row < diameter; row++) {
+        cout<<endl<<"--------------------------"<<endl;
+        for(int col = 0; col<diameter; col++) {
+            cout<<"|"<<model[row][col].get_world_loc();
+        }
+        cout<<"|";
+    }
+    cout<<endl<<"--------------------------"<<endl;
+}
+
 void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_map) {
     int world_row, world_col;
     for(int row = 0; row < diameter; row++) {
@@ -46,6 +57,7 @@ void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_m
                                 world_row, world_col);
         }
     }
+    pretty_print();
 }
 
 /**
@@ -88,9 +100,11 @@ void ChunkMatrix::set_chunk_abs(IntPoint abs_chunk_loc, Chunk data) {
     IntPoint localized = IntPoint(abs_chunk_loc.row - offset.row,
                                   abs_chunk_loc.col - offset.col);
     if(out_of_bounds(localized)) {
+        /*
         cout<<"Absolute point at "<<abs_chunk_loc.row<<", "<<abs_chunk_loc.col
             <<" was out of bounds: Localized to "<<localized.row<<", "
             <<localized.col<<" (setter)";
+            */
     } else {
         model[localized.row][localized.col] = data;
     }
@@ -104,9 +118,11 @@ Chunk* ChunkMatrix::get_chunk_abs(IntPoint abs_chunk_loc) {
     IntPoint localized = IntPoint(abs_chunk_loc.row - offset.row,
                                   abs_chunk_loc.col - offset.col);
     if(out_of_bounds(localized)) {
+        /*
         cout<<"Absolute point at "<<abs_chunk_loc.row<<", "<<abs_chunk_loc.col
             <<" was out of bounds: Localized to "<<localized.row<<", "
-            <<localized.col<<endl;
+            <<localized.col<<endl<<"     offset = "<<offset<<endl;
+            */
 
         return &model[0][0];
     }
@@ -181,7 +197,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
 
         //Create or deserialize new chunks for the last row.
         int row = diameter - 1;
-        world_row = offset.row + row;
+        world_row = offset.row + diameter;
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
             model[row][col].init(world_map[world_row][world_col],
@@ -198,14 +214,14 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
 
         //For everything but the first row, copy the previous row into the
         //current row.
-        for(int row = 1; row < diameter; row++) {
+        for(int row = (diameter - 1); row > 0; row--) {
             for(int col = 0; col < diameter; col++) {
                 model[row][col] = model[row - 1][col];
             }
         }
 
         //Create or deserialize new chunks for the first row.
-        world_row = offset.row;
+        world_row = offset.row - 1;
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
             model[0][col].init(world_map[world_row][world_col],
@@ -231,7 +247,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
 
         //Create or deserialize new chunks for the last column.
         int col = (diameter - 1);
-        world_col = offset.col + (diameter - 1);
+        world_col = offset.col + diameter;
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
             model[row][col].init(world_map[world_row][world_col],
@@ -249,13 +265,13 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         //For everything but the leftmost column, copy the left neighbor into
         //the current column.
         for(int row = 0; row < diameter; row++) {
-            for(int col = 1; col < diameter; col++) {
+            for(int col = (diameter - 1); col > 0; col--) {
                 model[row][col] = model[row][col - 1];
             }
         }
 
         //Create or deserialize new chunks for the first column.
-        world_col = offset.col;
+        world_col = offset.col - 1;
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
             model[row][0].init(world_map[world_row][world_col],
@@ -266,4 +282,5 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     offset.row += directions.row;
     offset.col += directions.col;
     cout<<"New offset: "<<offset.row<<", "<<offset.col<<endl;
+    pretty_print();
 }

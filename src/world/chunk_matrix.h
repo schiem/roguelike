@@ -43,6 +43,7 @@ class ChunkMatrix
     public:
         ChunkMatrix();
         ChunkMatrix(int, IntPoint, MapTileMatrix&);
+        void pretty_print();
         bool out_of_bounds(IntPoint);
         vector<vector<Chunk> >& get_matrix();
         IntPoint get_offset();
@@ -54,7 +55,6 @@ class ChunkMatrix
         Chunk* get_chunk(IntPoint);
         Chunk* get_center_chunk();
         void shift_matrix(IntPoint, MapTileMatrix&);
-
 };
 
 #endif
