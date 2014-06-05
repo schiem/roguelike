@@ -265,6 +265,9 @@ void Chunk::dungeon_dump(int _depth) {
 void Chunk::serialize() {
     cout<<"Serializing chunk "<<world_row<<", "<<world_col<<endl;
     int chunk_depth = depth;
+    if((chunk_depth < 0) || (chunk_depth > 10)) {
+        cout<<"CHUNK DEPTH: "<<chunk_depth<<endl;
+    }
     stringstream ss;
     ss<<"chunk"<<world_row<<"_"<<world_col;
     string file_name = std::string(CHUNK_DIR) + std::string("/") + ss.str();

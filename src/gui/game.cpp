@@ -554,10 +554,14 @@ reflects the chunks surrounding the characters current one.
 void Game::update_buffer(IntPoint central_chunk) {
     int x, y;
     Chunk* current_chunk;
+    Tile* buffer_tile;
 
     for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
 
         for(int col=central_chunk.col-1;col<=central_chunk.col+1;col++) {
+            x = col - (central_chunk.col - 1);
+            y = row - (central_chunk.row - 1);
+            current_chunk = chunk_map.get_chunk_abs(row, col);
 
             for (int a=0; a<CHUNK_HEIGHT; a++) {
                 for (int b=0; b<CHUNK_WIDTH; b++) {
@@ -581,13 +585,9 @@ void Game::update_buffer(IntPoint central_chunk) {
                      *  start writing at 0 + (CHUNK_WIDTH * 2).
                      */
 
-                    x = col - (central_chunk.col - 1);
-                    y = row - (central_chunk.row - 1);
                     int buffer_col = b + (x * CHUNK_WIDTH);
                     int buffer_row = a + (y * CHUNK_HEIGHT);
 
-                    Tile* buffer_tile;
-                    current_chunk = chunk_map.get_chunk_abs(row, col);
                     assert(!current_chunk->out_of_bounds(main_char.get_depth(), a, b));
                     buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
                     buffer[buffer_row][buffer_col] = buffer_tile;
