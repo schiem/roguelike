@@ -1,5 +1,5 @@
 /**
- *  EQUIPMENT.CPP
+ *  CONSUMABLES.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -22,47 +22,46 @@
 using namespace tiledef;
 using namespace equipment;
 
-Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t, int ac) : Item(_rarity, _weight, _sprite, _name, _coords)
+Consumable::Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
-    body_part = bp;
-    type = t;
-    armor_class = ac;
-    can_equip = true;   
+    stat_modified = stat;
+    amount_modified = val;
+    can_equip = false;   
     can_use = false;
     can_wield = false;
-    can_consume = false;
+    can_consume = true;
 }
 
-Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
+Consumable::Consumable(IntPoint _coords, ConsumableType cons) : Item(_coords)
 {
-    rarity = eqp.rarity;
-    weight = eqp.weight;
-    sprite = eqp.sprite;
-    description = eqp.description;
-    name = eqp.name;
-    body_part = eqp.body_part;
-    type = eqp.type;
-    armor_class = eqp.armor_class;
-    can_use = eqp.use;
+    rarity = cons.rarity;
+    weight = cons.weight;
+    sprite = cons.sprite;
+    description = cons.description;
+    name = cons.name;
+    stat_modified = cons.stat;
+    amount_modified = cons.value;
+    can_use = cons.use;
     can_equip = true;
     can_wield = false;
-    can_consume = false;
+    can_consume = true;
 }
 
 
-void Equipment::perform_action()
+void Consumable::perform_action()
 {
     if(can_use)
     {
     }
 }
 
-int Equipment::get_body_part()
+int Consumable::get_stat()
 {
-    return body_part;
+    return stat_modified;
 }
 
-int Equipment::get_armor()
+int Consumable::get_amount()
 {
-    return armor_class;
+    return amount_modified;
 }
+

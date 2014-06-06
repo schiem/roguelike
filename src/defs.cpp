@@ -49,7 +49,8 @@ namespace tiledef {
     Tile BOOTS = {28, 24, BROWN, true, false, false, false};
     Tile RABBIT = {114, 25, BROWN, false, true, false, false};
     Tile RABBIT_CORPSE = {114, 26, GRAY, true, false, false, false};
-    Tile SWORD = {47, 26, GRAY, true, false, false, false};
+    Tile SWORD = {47, 27, GRAY, true, false, false, false};
+    Tile POTATO = {7, 28, true, false, false, false};
 }
 
 namespace map_tile {
@@ -76,13 +77,18 @@ namespace map_tile {
 
 namespace equipment
 {
-    EquipType boots = {3, tiledef::BOOTS, "Boots", 0, 3, 0, 5, false};
+    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of boots.", 0, 3, 0, 5, false};
 }
 
 namespace weapons
 {
-    WeaponType dagger = {1, tiledef::SWORD, "Small Dagger", 0, 3, 2, 1, false};
+    WeaponType dagger = {2.0, tiledef::SWORD, "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false};
 }
+
+namespace consumables
+{
+    ConsumableType potato = {0.3, tiledef::POTATO, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, 0, 1};
+} 
 
 /****************************
  *   ENEMY DEFS

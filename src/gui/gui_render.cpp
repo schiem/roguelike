@@ -142,11 +142,32 @@ void GUI::render_menu(Menu* menu)
     //clear the background in the specified height/width
     //width is automatically 20
     int height = menu->options.size() + menu->padding;
-    int width = menu->get_max_width(menu->options) + menu->padding;
+    int width = get_max_width(menu->options) + menu->padding;
     int start_row = (STARTING_HEIGHT - height) / 2;
     int start_col = (STARTING_WIDTH - width) / 2;
     int end_row = (STARTING_HEIGHT + height) / 2;
     int end_col = (STARTING_WIDTH + width) / 2;
+ 
+    int extra_row = start_row - menu->padding;
+    int extra_end_row = start_row + menu->num_extra_lines() + menu->padding;
+    int extra_width = get_max_width(menu->get_extra_lines()) + menu->padding; 
+    int extra_col = (STARTING_WIDTH - extra_width)/2;
+    int extra_end_col = (STARTING_WIDTH + extra_width)/2;
+    
+    if(menu->num_extra_lines() != 0)
+    {
+        start_row = start_row + menu->num_extra_lines() + 2;
+        end_row = start_row + menu->num_extra_lines() + 2;
+        for(int row = extra_row; row <= extra_end_row; row++)
+        {
+            for(int col = extra_col; col <= extra_end_col; col++)
+            {
+                drawChr(col, row, menu->border.char_count, ascii, screen, BLACK);
+            }
+        }
+    }
+
+    //draw a box around the menu
     for(int row = start_row; row <= end_row; row++)
     {
         for(int col = start_col; col <= end_col; col++)
@@ -155,12 +176,32 @@ void GUI::render_menu(Menu* menu)
         }
     }
 
+    //draw a box around the extra lines 
+
     int starting_col;
     starting_col = (STARTING_WIDTH - menu->title.size()) / 2;
+    
+    //draw the title
     drawStr(starting_col, (STARTING_HEIGHT/4), menu->title.c_str(),
             ascii, screen, RED);
-
+    
+    
     int color, string_size;
+
+    //draw the extra lines
+    for(int i = 0; i< menu->num_extra_lines(); i++)
+    {
+        string option = menu->get_extra_lines()[i];
+        if(option.size() % 2 != 0)
+        {
+            option = " " + option;
+        }
+
+        color = RED;
+
+        drawStr(extra_col, extra_row + menu->padding + i, option.c_str(), ascii, screen, color);
+    }
+
     //Render selections
     for(int i = 0; i < menu->options.size(); i++) {
         string option = menu->options[i];
@@ -178,7 +219,7 @@ void GUI::render_menu(Menu* menu)
             color = DARK_GRAY;
         }
 
-        drawStr(starting_col, ((STARTING_HEIGHT - menu->options.size())/2) + i,
+        drawStr(starting_col, start_row + menu->padding + i,
                 option.c_str(), ascii, screen, color);
     }
 

@@ -25,6 +25,10 @@
 #include <stdlib.h>
 #include <vector>
 
+/****************************
+ *   TERRAIN DEFS
+ ***************************/
+
 struct Tile {
     int char_count;
     int tile_id;
@@ -68,6 +72,7 @@ namespace tiledef {
     extern Tile RABBIT;
     extern Tile RABBIT_CORPSE;
     extern Tile SWORD;
+    extern Tile POTATO;
 }
 
 struct MapTile {
@@ -91,12 +96,24 @@ namespace map_tile {
     extern MapTile MAP_BEACH;
 }
 
+/****************************
+ *   ITEM DEFS
+ ***************************/
+/*****
+     0
+   54145
+     1
+    2 2
+    3 3
+ Body index diagram.
+******/
 
 struct EquipType
 {
-    int weight;
+    float weight;
     Tile sprite;
     std::string name;
+    std::string description;
     int rarity;
     int body_part;
     int type;
@@ -110,9 +127,10 @@ struct EquipType
 
 struct WeaponType
 {
-    int weight;
+    float weight;
     Tile sprite;
     std::string name;
+    std::string description;
     int rarity;
     int damage;
     int type;
@@ -124,6 +142,21 @@ struct WeaponType
     }
 };
 
+struct ConsumableType
+{
+    float weight;
+    Tile sprite;
+    std::string name;
+    std::string description;
+    bool use;
+    int rarity;
+    int stat;
+    int value;
+    bool operator==(const EquipType& rhs) const 
+    {
+        return this->name==rhs.name;
+    }
+};
 
 namespace equipment
 {
@@ -135,6 +168,10 @@ namespace weapons
     extern WeaponType dagger;
 }
 
+namespace consumables
+{
+    extern ConsumableType potato;
+}
 
 struct EnemyType
 {
@@ -155,6 +192,12 @@ struct EnemyType
         return this->id==rhs.id;
     }
 };
+
+
+/****************************
+ *   ENEMY DEFS
+ ***************************/
+
 
 namespace enemies
 {

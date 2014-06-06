@@ -53,8 +53,10 @@ class Menu {
         Menu(int, Tile);
         void move_selection(int);
         int padding; 
+        vector<string> extra_lines;
+        
         /*
-        This is the most important function.  There are three possibilities:
+        This is the most important function.  There are four possibilities:
         1.  The selection just transitions to a new menu.  The menu returned will
             be the new menu.
         2.  The selection just performs a function and then returns to the same menu.
@@ -62,7 +64,7 @@ class Menu {
         3.  The selection causes an exit of the menu screen.  When this happens, 
             "this" will be returned and should_exit will be toggled. On the next pass,
             the game_state will then transition to the next_screen.
-
+        4.  The function returns NULL, in which case the game is exited.
         There's no reason that 2 & 3 can't be combined.
         */
         virtual Menu* make_selection() = 0;
@@ -74,10 +76,11 @@ class Menu {
         void add_item(string);
         bool should_exit();
         int get_selection();
-        int get_max_width(vector<string>);
         void toggle_exit();
         Screen get_screen();
         int get_id();
+        int num_extra_lines();
+        vector<string> get_extra_lines();
 };
 
 class StartMenu : public Menu
@@ -161,6 +164,15 @@ class FontMenu: public Menu
         FontMenu(int, Tile, Game*);
         Menu* make_selection();
         string get_font();
+};
+
+class InfoMenu: public Menu
+{
+    protected:
+        Item* item;
+    public:
+        InfoMenu(int, Tile, Game*, Item*);
+        Menu* make_selection();
 };
 
 #endif

@@ -34,5 +34,5 @@ IntPoint get_abs(IntPoint, IntPoint);
 std::vector<std::string> all_files(const string &);
 std::vector<std::string> all_files_of_type(const string &, const string & extension);
 std::string parse_settings(string &);
-
+int get_max_width(std::vector<std::string>);
 #endif

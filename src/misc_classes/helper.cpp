@@ -87,3 +87,16 @@ std::string parse_settings(string &setting)
         return value;
     }
 }
+
+int get_max_width(vector<string> string_list)
+{
+    int length = 0;
+    for(int i=0; i<string_list.size(); i++)
+    {
+        if(string_list[i].size() > length)
+        {
+            length = string_list[i].size();
+        }
+    }
+    return length;
+}

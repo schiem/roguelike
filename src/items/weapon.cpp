@@ -29,6 +29,7 @@ Weapon::Weapon(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoi
     can_equip = false;   
     can_use = false;
     can_wield = true;
+    can_consume = false;
 }
 
 Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(_coords)
@@ -37,12 +38,14 @@ Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(_coords)
     weight = wpn.weight;
     sprite = wpn.sprite;
     name = wpn.name;
+    description = wpn.description;
     damage = wpn.damage;
     range = wpn.range;
     type = wpn.type;
     can_use = wpn.use;
     can_equip = false;
     can_wield = true;
+    can_consume = false;
 }
 
 

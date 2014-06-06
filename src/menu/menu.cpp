@@ -52,18 +52,7 @@ void Menu::add_item(string new_item)
     options.push_back(new_item);
 }
 
-int Menu::get_max_width(vector<string> string_list)
-{
-    int length = 0;
-    for(int i=0; i<string_list.size(); i++)
-    {
-        if(string_list[i].size() > length)
-        {
-            length = string_list[i].size();
-        }
-    }
-    return length;
-}
+
 
 bool Menu::should_exit()
 {
@@ -83,4 +72,14 @@ Screen Menu::get_screen()
 int Menu::get_id()
 {
     return id;
+}
+
+int Menu::num_extra_lines()
+{
+    return extra_lines.size();
+}
+
+vector<string> Menu::get_extra_lines()
+{
+    return extra_lines;
 }

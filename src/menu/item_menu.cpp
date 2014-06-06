@@ -33,10 +33,15 @@ ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(p
     {
         options.push_back("Equip");
     }
+    if(item->can_consume)
+    {
+        options.push_back("Consume");
+    }
+    options.push_back("Info");
     options.push_back("Drop");
     options.push_back("Destroy");
     options.push_back("Back");
-    title = "Item Menu";
+    title = item->get_name();
 }
 
 Menu* ItemMenu::make_selection()
@@ -48,6 +53,13 @@ Menu* ItemMenu::make_selection()
     else if(options[selection] == "Equip")
     { 
         game->main_char.equip_item(item);
+    }
+    else if(options[selection] == "Consume")
+    {
+    }
+    else if(options[selection] == "Info")
+    {
+        return new InfoMenu(1, BLOCK_WALL, game, item);
     }
     else if(options[selection] == "Drop")
     {

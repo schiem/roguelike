@@ -31,6 +31,7 @@ class Item
 {
     protected:
         std::string name;
+        std::string description;
         int weight;
         IntPoint coords;
         Tile sprite;
@@ -40,7 +41,7 @@ class Item
         bool can_equip;
         bool can_use;
         bool can_wield;
-
+        bool can_consume;
         Item(IntPoint);
         Item(int, int, Tile, std::string, IntPoint);
         int get_weight();
@@ -50,6 +51,7 @@ class Item
         void set_coords(IntPoint);
         std::string get_name();
         int get_rarity();
+        std::string get_description();
 };
 
 
@@ -106,5 +108,17 @@ class Weapon : public Item
         int get_damage();
 };
 
+class Consumable : public Item
+{
+    protected:
+        int stat_modified;
+        int amount_modified;
+    public:
+        Consumable(int, int, Tile, std::string, IntPoint, int, int);
+        Consumable(IntPoint, ConsumableType);
+        void perform_action();
+        int get_stat();
+        int get_amount();
+};
 
 #endif

@@ -1,5 +1,5 @@
 /**
- *  ITEM.CPP
+ *  INFO_MENU.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,53 +17,21 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <item.h>
+#include "menu.h"
 
-Item::Item(IntPoint _coords)
+InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
-    coords = _coords;
+    id = 10;
+    game = _game;
+    item = _item;
+    next_screen = GAME_SCREEN;
+    options.push_back("Okay");
+    extra_lines.push_back(item->get_description());
+    title = item->get_name();
 }
 
-Item::Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords)
+Menu* InfoMenu::make_selection()
 {
-    rarity = _rarity;
-    weight = _weight;
-    sprite = _sprite;
-    name = _name;
-    coords = _coords;
+    return new ItemMenu(1, BLOCK_WALL,  game, item);
 }
 
-int Item::get_weight()
-{
-    return weight;
-}
-
-Tile* Item::get_sprite()
-{
-    return &sprite;
-}
-
-IntPoint Item::get_coords()
-{
-    return coords;
-}
-
-std::string Item::get_name()
-{
-    return name;
-}
-
-void Item::set_coords(IntPoint _c)
-{
-    coords = _c;
-}
-
-int Item::get_rarity()
-{
-    return rarity;
-}
-
-std::string Item::get_description()
-{
-    return description;
-}

@@ -51,6 +51,7 @@ roguelike_SOURCES = \
     src/menu/font_menu.cpp\
     src/menu/escape_menu.cpp\
     src/menu/audio_menu.cpp\
+    src/menu/info_menu.cpp\
     src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
@@ -65,6 +66,7 @@ roguelike_SOURCES = \
 	src/items/item.cpp\
     src/items/equipment.cpp\
     src/items/weapon.cpp\
+    src/items/consumables.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/defs.h\
