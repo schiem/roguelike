@@ -35,6 +35,8 @@ struct Tile {
 };
 
 namespace tiledef {
+    extern Tile TILE_INDEX[24]; //CHANGE THIS WHEN YOU ADD TILES!
+
     extern Tile OVERWORLD_DIRT;
     extern Tile DIRT;
     extern Tile DUNGEON_BORDER;
@@ -77,6 +79,8 @@ struct MapTile {
 };
 
 namespace map_tile {
+    extern MapTile MAP_TILE_INDEX[5];
+
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
     extern MapTile CURSOR;

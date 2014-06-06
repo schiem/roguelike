@@ -33,7 +33,7 @@ Chunk::Chunk(MapTile tile_type, int _world_row, int _world_col) {
 }
 
 void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
-    type = tile_type;
+    chunk_type = tile_type;
     initialized = true;
     world_row = _world_row;
     world_col = _world_col;
@@ -226,11 +226,11 @@ bool Chunk::is_initialized() const {
 
 MapTile Chunk::get_type()
 {
-    return type;
+    return chunk_type;
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
-    return (_depth >= depth ||
+    return (_depth > depth ||
             row >= height ||
             col >= width);
 }
@@ -257,7 +257,7 @@ void Chunk::dungeon_dump(int _depth) {
 /**
  * Serialized file looks like this:
  * HEADER:
- * 3 bytes: Width, Height, and Depth.
+ * 4 bytes: Width, Height, Depth, Chunk Type (map tile ID)
  * BODY:
  * 2 bytes per tile: tile_id; seen
  *
@@ -276,16 +276,17 @@ void Chunk::serialize() {
     ofstream chunk_data_file(file_name.c_str(),
             std::ofstream::out | std::ofstream::binary);
 
-    int num_header_bytes = 3;
+    int num_header_bytes = 4;
     int bytes_per_tile = 1;
 
-    int file_size = 3 + (bytes_per_tile*width*height*(chunk_depth+1));
+    int file_size = num_header_bytes + (bytes_per_tile*width*height*(chunk_depth+1));
     char file[file_size];
 
     file[0] = width;
     file[1] = height;
     file[2] = chunk_depth;
-    int current_byte = 3;
+    file[3] = chunk_type.id;
+    int current_byte = num_header_bytes;
 
     unsigned int tile_id, seen;
     Tile current_tile;
@@ -335,31 +336,31 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
     char * file_data = new char[file_size];
     chunk_data_file.read(file_data, file_size);
 
+    int num_header_bytes=4;
+
     width = file_data[0];
     height = file_data[1];
     depth = file_data[2];
+    chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
 
+    overworld = Overworld(width,height,(depth > 0),chunk_type);
 
+    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    Tile current_tile;
     unsigned int tile_id;
     bool seen;
+    int current_byte = num_header_bytes;
 
-    int current_byte = 3;
-    for(int i = 0; i < (depth + 1); i++) {
+    for(int i = -1; i < depth; i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
-                seen = (file_data[current_byte] & 1);
-                tile_id = (file_data[current_byte] >> 1);
 
-                /**
-                 * We will need to have a table to look up tile ID values
-                 * and match to their corresponding Tile definition. Actually,
-                 * that could just be an array. But it would have to match
-                 * perfectly with the tile IDs.
-                 *
-                 * Then, make a set_tile method in Chunk and do
-                 * set_tile(i, j, k) and set height,width, and depth to their
-                 * appropriate values.
-                 */
+                seen = (file_data[current_byte] & 1);
+                tile_id = (file_data[current_byte] >> 1); 
+                current_tile=tiledef::TILE_INDEX[tile_id];
+                current_tile.seen = seen;
+                
+                set_tile(i, j, k, current_tile);
 
                 current_byte++;
             }

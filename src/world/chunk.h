@@ -40,7 +40,6 @@
 #include <spawner.h>
 #include <int_point.h>
 
-using namespace tiledef;
 using namespace std;
 namespace fs=boost::filesystem;
 
@@ -51,7 +50,7 @@ class Chunk{
         int depth;
         int world_row;
         int world_col;
-        MapTile type;
+        MapTile chunk_type;
         //Dungeon* dungeon;
         vector<Dungeon> dungeon_floors;
         Overworld overworld;

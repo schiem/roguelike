@@ -36,6 +36,9 @@ ChunkMatrix::ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix& wo
     populate_initial(center_chunk, world_map);
 }
 
+/*
+ * Not actually as pretty as you might think
+ */
 void ChunkMatrix::pretty_print() {
     for(int row = 0; row < diameter; row++) {
         cout<<endl<<"--------------------------"<<endl;

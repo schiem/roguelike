@@ -43,6 +43,7 @@ Dungeon::Dungeon(int _width, int _height)
 {
     width = _width;
     height = _height;
+    cout<<"Dungeon created with width: "<<width<<" and height: "<<height<<endl;
     dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
