@@ -50,7 +50,8 @@ namespace tiledef {
     Tile RABBIT = {114, 25, BROWN, false, true, false, false};
     Tile RABBIT_CORPSE = {114, 26, GRAY, true, false, false, false};
     Tile SWORD = {47, 27, GRAY, true, false, false, false};
-    Tile POTATO = {7, 28, true, false, false, false};
+    Tile POTATO = {7, 28, BROWN, true, false, false, false};
+    Tile PLANT = {6, 29, GREEN, true, false, false, false};
 }
 
 namespace map_tile {
@@ -82,12 +83,13 @@ namespace equipment
 
 namespace weapons
 {
-    WeaponType dagger = {2.0, tiledef::SWORD, "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false};
+    WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false};
 }
 
 namespace consumables
 {
-    ConsumableType potato = {0.3, tiledef::POTATO, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, 0, 1};
+    ConsumableType potato = {0.3, tiledef::PLANT, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, HEALTH, rand() % 2, RESTORE};
+    ConsumableType CONSUMABLE_LIST[NUM_CONSUMABLES] = {potato};  
 } 
 
 /****************************
@@ -103,6 +105,8 @@ std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 
 namespace enemies
 {
-    EnemyType kobold = {5, 20, 2, 0, 1, 20, 100, "Kobold", tiledef::KOBOLD, tiledef::KOBOLD_CORPSE, kob_eq_vec, kob_wep_vec};
-    EnemyType rabbit = {3, 10, 0, 0, 2, 15, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, tiledef::RABBIT_CORPSE, std::vector<EquipType>(), std::vector<WeaponType>()}; 
+    EnemyType kobold = {5, 20, 2, 0, 0, 20, 100, "Kobold", tiledef::KOBOLD, tiledef::KOBOLD_CORPSE, kob_eq_vec, kob_wep_vec};
+    EnemyType rabbit = {3, 10, 0, 0, 1, 15, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, tiledef::RABBIT_CORPSE, std::vector<EquipType>(), std::vector<WeaponType>()}; 
+    EnemyType ENEMY_LIST[2] = {kobold, rabbit};
+    int NUM_ENEMIES = 2; 
 }

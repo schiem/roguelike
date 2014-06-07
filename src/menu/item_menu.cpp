@@ -56,6 +56,7 @@ Menu* ItemMenu::make_selection()
     }
     else if(options[selection] == "Consume")
     {
+        game->main_char.consume_item(item);
     }
     else if(options[selection] == "Info")
     {

@@ -145,7 +145,7 @@ void Overworld::build_forest_overworld() {
         }
     }
 
-    if(rand() % 1 == 0)
+    if(rand() % 10 == 0)
     {
        //spawn a grove!
        int radius = (rand() % 5) + 10;

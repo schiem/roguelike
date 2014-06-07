@@ -22,10 +22,11 @@
 using namespace tiledef;
 using namespace equipment;
 
-Consumable::Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val) : Item(_rarity, _weight, _sprite, _name, _coords)
+Consumable::Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val, int _type) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     stat_modified = stat;
     amount_modified = val;
+    type = _type;
     can_equip = false;   
     can_use = false;
     can_wield = false;
@@ -42,7 +43,8 @@ Consumable::Consumable(IntPoint _coords, ConsumableType cons) : Item(_coords)
     stat_modified = cons.stat;
     amount_modified = cons.value;
     can_use = cons.use;
-    can_equip = true;
+    type = cons.type;
+    can_equip = false;
     can_wield = false;
     can_consume = true;
 }
@@ -65,3 +67,7 @@ int Consumable::get_amount()
     return amount_modified;
 }
 
+int Consumable::get_type()
+{
+    return type;
+}

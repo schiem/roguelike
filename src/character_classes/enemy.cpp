@@ -31,11 +31,10 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     timer = 0;
     //determines if the character is good or evit, on a scale of 1-5 (5 is evil, 3 is passive)
     moral = enemy.moral;
-    max_health = enemy.max_health;
-    current_health = max_health;
-    base_attack = enemy.base_attack;
-    attack_dam = base_attack;
-    armor = enemy.armor;
+    stats[HEALTH] = enemy.max_health;
+    stats[ARMOR] = enemy.armor;
+    stats[ATTACK] = enemy.base_attack;
+    current_stats = stats;
     id = enemy.id;
     name = enemy.name;
     sight = enemy.sight;
@@ -68,11 +67,11 @@ void Enemy::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, l
 {
     switch(id)
     {
-        case 1:
+        case 0:
             //kobolds
             aggressive_ai(surroundings, char_list, delta_ms);
             break;
-        case 2:
+        case 1:
             //rabbits
             passive_ai(surroundings, char_list, delta_ms);
             break;

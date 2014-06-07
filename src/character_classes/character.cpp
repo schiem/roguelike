@@ -28,17 +28,17 @@ Character::Character() {
  * POST: A character object with the desired attributes will be returned
 */
 Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y,  int _depth, int _morality, int _attack) {
-    current_health = _max_health;
-    max_health = _max_health;
+    stats.resize(3);
+    
+    stats[HEALTH] = _max_health;
+    stats[ARMOR] = 0;
+    stats[ATTACK] = _attack;
+    current_stats = stats;
     x = _x;
     y = _y;
     moral = _morality;
     corpse = _corpse;
     //somewhat temporary
-    base_attack = _attack;
-    attack_dam= base_attack;
-    armor = 0;
-    
     sprite = _sprite;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
@@ -51,19 +51,20 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
  */
 Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
 {
+    stats.resize(3);
     x = _x;
     y = _y;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
-    equipment = vector<Item*>(6);    
+    equipment = vector<Item*>(7);    
 }
 
 /* PRE: None
- * POST: Returns true if the character is still alive (health is > max_health)
+ * POST: Returns true if the character is still alive (health is > stats[HEALTH])
 */
 bool Character::is_alive() const {
-    if (current_health <= 0){
+    if (current_stats[HEALTH] <= 0){
         return false;
     } else {
         return true;
@@ -78,12 +79,12 @@ bool Character::is_alive() const {
  * POST: Subtracts the damage from health and checks if the character is still alive
 */
 void Character::take_damage(int damage){
-    current_health -= damage;
+    current_stats[HEALTH] -= damage;
 }
 
 void Character::attack(Character* _chara)
 {
-    _chara->take_damage(attack_dam);
+    _chara->take_damage(current_stats[ATTACK]);
 }
 
 vector<Item*>* Character::get_inventory()
@@ -139,14 +140,14 @@ void Character::equip_item(Item* item)
         drop_item(item);
         remove_item(((Equipment*)item)->get_body_part());
         equipment[((Equipment*)item)->get_body_part()] = item;
-        armor += ((Equipment*)item)->get_armor();
+        current_stats[ARMOR] += ((Equipment*)item)->get_armor();
     }
     else if(item->can_wield)
     {
         drop_item(item);
         remove_item(6);
         equipment[6] = item;
-        attack_dam = ((Weapon*)item)->get_damage();
+        current_stats[ATTACK] = ((Weapon*)item)->get_damage();
     }
 }
 
@@ -156,13 +157,13 @@ void Character::remove_item(int item)
     {
         if(item < 6)
         {
-            armor -= ((Equipment*)equipment[item])->get_armor();
+            current_stats[ARMOR] -= ((Equipment*)equipment[item])->get_armor();
             add_item(equipment[item]);
             equipment[item] = NULL;
         }
         else
         {
-            attack_dam = base_attack;
+            current_stats[ATTACK] = stats[ATTACK];
             add_item(equipment[item]);
             equipment[item] = NULL;
         }
@@ -192,7 +193,7 @@ void Character::set_depth(int d) {
 
 void Character::set_armor(int a)
 {
-    armor = a;
+    current_stats[ARMOR] = a;
 }
 
 int Character::get_x() {
@@ -258,12 +259,12 @@ Character* Character::get_target()
 
 int Character::get_max_hp()
 {
-    return max_health;
+    return stats[HEALTH];
 }
 
 int Character::get_cur_hp()
 {
-    return current_health;
+    return current_stats[HEALTH];
 }
 
 int Character::get_moral()
@@ -273,6 +274,42 @@ int Character::get_moral()
 
 int Character::get_armor()
 {
-    return armor;
+    return current_stats[ARMOR];
+}
+
+void Character::consume_item(Item* item)
+{
+    if(item->can_consume)
+    {
+        int type = ((Consumable*)item)->get_type();
+        int stat = ((Consumable*)item)->get_stat();
+        int amount = ((Consumable*)item)->get_amount();
+        if(type == consumables::INCREASE)
+        {
+            stats[stat] += amount;
+        }
+        else
+        {
+            current_stats[stat] += amount;
+            if(((Consumable*)item)->get_type() == consumables::RESTORE)
+            {
+                if(current_stats[stat] > stats[stat])
+                {
+                    current_stats[stat] = stats[stat];
+                }
+            }
+        }
+        destroy_item(item);
+    }
+}
+
+int Character::get_stat(int stat)
+{
+    return current_stats[stat];
+}
+
+void Character::set_stat(int stat, int amount)
+{
+    current_stats[stat] = amount;
 }
 

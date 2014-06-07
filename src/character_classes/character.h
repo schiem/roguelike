@@ -27,22 +27,22 @@
 #include <int_point.h>
 #include <item.h>
 #include <vector>
+#include <cstring>
+
 class Character
 {
+
     protected:
         //variables
         //Moral is a spectrum from 0-5, and represents
         //...morality? Basically, it's a good/evil thing
         //so you can see if something should attack/be attacked
         int moral;
-        int current_health;
-        int max_health;
+        std::vector<int> stats;
+        std::vector<int> current_stats;
         //current coordinates within dungeon
         int x;
         int y;
-        int attack_dam;
-        int base_attack;
-        int armor;    
         std::vector<Item*> inventory;
         std::vector<Item*> equipment;
         int inventory_size;
@@ -96,6 +96,9 @@ class Character
         void set_target(Character*);
         void set_armor(int);
         Tile* get_underfoot();
+        void consume_item(Item*);
+        int get_stat(int);
+        void set_stat(int, int);
         //terrain get_surroundings
 
 };

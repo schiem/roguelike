@@ -29,10 +29,6 @@
 
 using namespace enemies;
 
-
-static EnemyType ENEMY_LIST[] = {kobold, rabbit};
-static int NUM_ENEMIES = 2;
-
 struct ATile
 {
     //my own jenky-ass linked list

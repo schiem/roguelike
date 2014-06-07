@@ -25,6 +25,14 @@
 #include <stdlib.h>
 #include <vector>
 
+enum STATS
+{
+    HEALTH,
+    ARMOR,
+    ATTACK
+};
+
+
 /****************************
  *   TERRAIN DEFS
  ***************************/
@@ -73,6 +81,7 @@ namespace tiledef {
     extern Tile RABBIT_CORPSE;
     extern Tile SWORD;
     extern Tile POTATO;
+    extern Tile PLANT;
 }
 
 struct MapTile {
@@ -152,6 +161,7 @@ struct ConsumableType
     int rarity;
     int stat;
     int value;
+    int type;
     bool operator==(const EquipType& rhs) const 
     {
         return this->name==rhs.name;
@@ -171,6 +181,15 @@ namespace weapons
 namespace consumables
 {
     extern ConsumableType potato;
+    static const int NUM_CONSUMABLES = 1;
+    extern ConsumableType CONSUMABLE_LIST[NUM_CONSUMABLES];
+    enum ConsumableTypes
+    {
+        RESTORE,
+        FORTIFY,
+        DROP,
+        INCREASE
+    };
 }
 
 struct EnemyType
@@ -203,6 +222,8 @@ namespace enemies
 {
     extern EnemyType kobold;
     extern EnemyType rabbit;
+    extern EnemyType ENEMY_LIST[2];
+    extern int NUM_ENEMIES;
 }
 
 #endif
