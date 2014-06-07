@@ -259,6 +259,7 @@ void Game::change_main_depth(int direction) {
                 main_char.set_depth(main_char.get_depth() + 1);
                 main_char.set_x(current_chunk->get_up_stair(main_char.get_depth()).col);
                 main_char.set_y(current_chunk->get_up_stair(main_char.get_depth()).row);
+                cout<<"Main char location: "<<main_char.get_y()<<"  "<<main_char.get_x()<<endl;
             }
         }
     }
@@ -287,9 +288,10 @@ void Game::move_main_char(int col_change, int row_change) {
     IntPoint next_coords = IntPoint(next_row, next_col);
     Character* enem = enemy_at_loc(new_chunk, next_coords);
 
+    bool can_move = (chunk_map.get_chunk_abs(new_chunk)->get_tile(main_char.get_depth(), next_row, next_col)->
+            can_be_moved_through);
 
-    if((chunk_map.get_chunk_abs(new_chunk)->get_tile(main_char.get_depth(), next_row, next_col)->
-            can_be_moved_through) && (enem == NULL)) {
+    if(can_move && (enem == NULL)) {
         col = next_col;
         row = next_row;
         main_char.set_x(col);

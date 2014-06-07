@@ -44,6 +44,7 @@ class Dungeon
         int num_rooms;
         IntPoint down_stair;
         IntPoint up_stair;
+        IntPoint spawner_loc;
         std::vector<Room> rooms;
         void make_stairs(bool);
         void make_border();

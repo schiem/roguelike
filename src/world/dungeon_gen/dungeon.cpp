@@ -37,7 +37,6 @@ Dungeon::Dungeon()
             dungeon[i][j] = DIRT;
         }
     }
-    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 Dungeon::Dungeon(int _width, int _height)
@@ -56,7 +55,6 @@ Dungeon::Dungeon(int _width, int _height)
         }
     }
 
-    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 
@@ -74,7 +72,6 @@ Dungeon::Dungeon(const Dungeon& d)
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
-    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 
@@ -92,7 +89,6 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     for(int i = 0; i < num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
-    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
     return *this;
 }
 
@@ -150,9 +146,10 @@ void Dungeon::make_spawner(int _depth)
     while(spawn_room.br.row-spawn_room.tl.row<4 || spawn_room.br.col-spawn_room.tl.col<4);
     IntPoint spawn;
     do{
-    spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
+        spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
     }
     while(spawn==down_stair || spawn == up_stair);
+    spawner_loc = spawn;
     spawner = Spawner(spawn.col, spawn.row, _depth, Kobold);
     dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
 }

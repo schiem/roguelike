@@ -28,6 +28,7 @@
 #include <sstream>
 #include <fstream>
 #include <boost/filesystem.hpp>
+#include <assert.h>
 
 #include <constants.h>
 #include <procedurally_blind_db.h>
@@ -47,7 +48,7 @@ class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
         bool initialized;
-        int depth;
+        int chunk_depth;
         int world_row;
         int world_col;
         MapTile chunk_type;

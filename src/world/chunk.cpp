@@ -99,16 +99,16 @@ bool Chunk::find_serialized_chunk(int world_row, int world_col) {
 }
 
 void Chunk::build_land_chunk() {
-    depth = rand() % 6 + 1;
-    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    chunk_depth = rand() % 6 + 1;
+    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
     Dungeon* temp_d;
     ProcedurallyBlindDB db(width, height);
     //CorruptiblePBlindDB db(width, height);
 
     bool has_layer_below;
 
-    for (int i=0; i < depth; i++) {
-        has_layer_below = (i < depth - 1);
+    for (int i=0; i < chunk_depth; i++) {
+        has_layer_below = (i < chunk_depth - 1);
         db.build_dungeon(5, 5);
         temp_d = db.get_dungeon();
 
@@ -119,21 +119,21 @@ void Chunk::build_land_chunk() {
         dungeon_floors[i].make_spawner(i);
     }
     //generate the overworld
-    has_layer_below = (depth > 0);
+    has_layer_below = (chunk_depth > 0);
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_DEFAULT);
 }
 
 void Chunk::build_forest_chunk() {
-    depth = rand() % 6 + 1;
-    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    chunk_depth = rand() % 6 + 1;
+    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
     Dungeon* temp_d;
     ProcedurallyBlindDB db(width, height);
     //CorruptiblePBlindDB db(width, height);
 
     bool has_layer_below;
 
-    for (int i=0; i < depth; i++) {
-        has_layer_below = (i < depth - 1);
+    for (int i=0; i < chunk_depth; i++) {
+        has_layer_below = (i < chunk_depth - 1);
         db.build_dungeon(5, 5);
         temp_d = db.get_dungeon();
 
@@ -144,19 +144,19 @@ void Chunk::build_forest_chunk() {
         dungeon_floors[i].make_spawner(i);
     }
     //generate the overworld
-    has_layer_below = (depth > 0);
+    has_layer_below = (chunk_depth > 0);
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_FOREST);
 }
 
 
 void Chunk::build_water_chunk() {
-    depth = 0;
+    chunk_depth = 0;
     bool has_layer_below = false;
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_WATER);
 }
 
 void Chunk::build_beach_chunk() {
-    depth = 0;
+    chunk_depth = 0;
     bool has_layer_below = false;
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_BEACH);
 }
@@ -216,7 +216,7 @@ IntPoint Chunk::get_down_stair(int depth) const{
 }
 
 int Chunk::get_depth() const {
-    return depth;
+    return chunk_depth;
 }
 
 bool Chunk::is_initialized() const {
@@ -229,7 +229,7 @@ MapTile Chunk::get_type()
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
-    return (_depth >= depth ||
+    return (_depth >= chunk_depth ||
             row >= height ||
             col >= width);
 }
@@ -263,7 +263,6 @@ void Chunk::dungeon_dump(int _depth) {
  * So the end file size is 3 + (2*w*h*d) bytes.
  */
 void Chunk::serialize() {
-    int chunk_depth = depth;
     if((chunk_depth < 0) || (chunk_depth > 10)) {
         cout<<"CHUNK DEPTH: "<<chunk_depth<<endl;
     }
@@ -277,14 +276,30 @@ void Chunk::serialize() {
     int num_header_bytes = 4;
     int bytes_per_tile = 1;
 
-    int file_size = num_header_bytes + (bytes_per_tile*width*height*(chunk_depth+1));
+    int file_size = num_header_bytes
+                    + 6*(chunk_depth)
+                    + bytes_per_tile*width*height*(chunk_depth+1);
     char file[file_size];
 
     file[0] = width;
     file[1] = height;
     file[2] = chunk_depth;
     file[3] = chunk_type.id;
+
     int current_byte = num_header_bytes;
+
+    for(int i = 0; i < chunk_depth; i++) {
+        file[current_byte] = dungeon_floors[i].spawner_loc.row;
+        file[current_byte + 1] = dungeon_floors[i].spawner_loc.col;
+        file[current_byte + 2] = dungeon_floors[i].down_stair.row;
+        file[current_byte + 3] = dungeon_floors[i].down_stair.col;
+        file[current_byte + 4] = dungeon_floors[i].up_stair.row;
+        file[current_byte + 5] = dungeon_floors[i].up_stair.col;
+        current_byte += 6;
+    }
+
+    cout<<chunk_depth<<"  "<<current_byte<<endl;
+    assert(chunk_depth == ((current_byte - 4) / 6));
 
     unsigned int tile_id, seen;
     Tile current_tile;
@@ -330,7 +345,6 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
             std::ifstream::in | std::ifstream::binary);
 
     int file_size = fs::file_size(file_name);
-    cout<<"FS file size: "<<file_size<<endl;
     char * file_data = new char[file_size];
     chunk_data_file.read(file_data, file_size);
 
@@ -338,18 +352,31 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
 
     width = file_data[0];
     height = file_data[1];
-    depth = file_data[2];
+    chunk_depth = file_data[2];
     chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
 
-    overworld = Overworld(width,height,(depth > 0),chunk_type);
+    overworld = Overworld(width,height,(chunk_depth > 0),chunk_type);
 
-    dungeon_floors = vector<Dungeon>(depth, Dungeon(width, height));
+    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
+    int current_byte = num_header_bytes;
+
+    for(int i = 0; i < chunk_depth; i++) {
+        dungeon_floors[i].spawner_loc.row = file_data[current_byte];
+        dungeon_floors[i].spawner_loc.col = file_data[current_byte + 1];
+        dungeon_floors[i].down_stair.row = file_data[current_byte + 2];
+        dungeon_floors[i].down_stair.col = file_data[current_byte + 3];
+        dungeon_floors[i].up_stair.row = file_data[current_byte + 4];
+        dungeon_floors[i].up_stair.col = file_data[current_byte + 5];
+        current_byte += 6;
+    }
+
+    cout<<chunk_depth<<"  "<<current_byte<<endl;
+    assert(chunk_depth == ((current_byte - 4) / 6));
+
     Tile current_tile;
     unsigned int tile_id;
     bool seen;
-    int current_byte = num_header_bytes;
-
-    for(int i = -1; i < depth; i++) {
+    for(int i = -1; i < chunk_depth; i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
 
