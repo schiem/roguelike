@@ -229,7 +229,7 @@ MapTile Chunk::get_type()
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
-    return (_depth > depth ||
+    return (_depth >= depth ||
             row >= height ||
             col >= width);
 }
