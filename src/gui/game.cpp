@@ -255,6 +255,7 @@ void Game::change_main_depth(int direction) {
     } else {
         if (main_char.get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == DOWN_STAIR) {
+                current_chunk->dungeon_dump(main_char.get_depth()+1);
                 main_char.set_depth(main_char.get_depth() + 1);
                 main_char.set_x(current_chunk->get_up_stair(main_char.get_depth()).col);
                 main_char.set_y(current_chunk->get_up_stair(main_char.get_depth()).row);
@@ -592,8 +593,11 @@ void Game::update_buffer(IntPoint central_chunk) {
                     int buffer_col = b + (x * CHUNK_WIDTH);
                     int buffer_row = a + (y * CHUNK_HEIGHT);
 
-                    assert(!current_chunk->out_of_bounds(main_char.get_depth(), a, b));
-                    buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
+                    if(!current_chunk->out_of_bounds(main_char.get_depth(), a, b)) {
+                        buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
+                    } else {
+                        buffer_tile = &block_wall_tile;
+                    }
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }

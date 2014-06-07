@@ -43,7 +43,7 @@ class GUI : public VirtualEvent {
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
-        static const long STD_MS_PER_FRAME = 80;
+        static const long STD_MS_PER_FRAME = 40;
 
         pt::ptime game_clock;
 

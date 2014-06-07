@@ -40,7 +40,6 @@ void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
 
     bool found_chunk = find_serialized_chunk(world_row, world_col);
     if(!found_chunk) {
-        cout<<"Building new chunk "<<get_world_loc()<<endl;
         if(tile_type == map_tile::MAP_DEFAULT) {
             build_land_chunk();
         } else if (tile_type == map_tile::MAP_WATER) {
@@ -264,7 +263,6 @@ void Chunk::dungeon_dump(int _depth) {
  * So the end file size is 3 + (2*w*h*d) bytes.
  */
 void Chunk::serialize() {
-    cout<<"Serializing chunk "<<world_row<<", "<<world_col<<endl;
     int chunk_depth = depth;
     if((chunk_depth < 0) || (chunk_depth > 10)) {
         cout<<"CHUNK DEPTH: "<<chunk_depth<<endl;
@@ -291,10 +289,10 @@ void Chunk::serialize() {
     unsigned int tile_id, seen;
     Tile current_tile;
 
-    for(int i = 0; i < (chunk_depth + 1); i++) {
+    for(int i = -1; i < chunk_depth; i++) {
         for(int j = 0; j < height; j++) {
             for(int k = 0; k < width; k++) {
-                current_tile = *get_tile(i - 1, j, k);
+                current_tile = *get_tile(i, j, k);
                 tile_id = current_tile.tile_id;
                 seen = (unsigned int) current_tile.seen;
 
@@ -328,11 +326,11 @@ void Chunk::serialize() {
  * PRE: Will be given the world_row and world_col of a chunk.
  */
 void Chunk::deserialize(string file_name, int world_row, int world_col) {
-    cout<<"Deserializing chunk "<<get_world_loc()<<endl;
     ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);
 
     int file_size = fs::file_size(file_name);
+    cout<<"FS file size: "<<file_size<<endl;
     char * file_data = new char[file_size];
     chunk_data_file.read(file_data, file_size);
 
@@ -356,10 +354,10 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
             for(int k = 0; k < width; k++) {
 
                 seen = (file_data[current_byte] & 1);
-                tile_id = (file_data[current_byte] >> 1); 
+                tile_id = (file_data[current_byte] >> 1);
                 current_tile=tiledef::TILE_INDEX[tile_id];
                 current_tile.seen = seen;
-                
+
                 set_tile(i, j, k, current_tile);
 
                 current_byte++;

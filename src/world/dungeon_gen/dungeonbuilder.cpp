@@ -155,7 +155,7 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
  *       ROOM_WALL tile.
  */
 void DungeonBuilder::set_wall_if_not_path(int a, int b)  {
-    if(main_dungeon.get_tile(a, b).tile_id != 6) {
+    if(!(main_dungeon.get_tile(a, b) == PATH)) {
         main_dungeon.set_tile(a, b, ROOM_WALL);
     }
 }

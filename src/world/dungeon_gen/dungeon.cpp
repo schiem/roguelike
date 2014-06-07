@@ -37,13 +37,13 @@ Dungeon::Dungeon()
             dungeon[i][j] = DIRT;
         }
     }
+    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 Dungeon::Dungeon(int _width, int _height)
 {
     width = _width;
     height = _height;
-    cout<<"Dungeon created with width: "<<width<<" and height: "<<height<<endl;
     dungeon = TileMatrix(height, std::vector<Tile>(width, BLOCK_WALL));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
@@ -55,6 +55,8 @@ Dungeon::Dungeon(int _width, int _height)
             dungeon[i][j] = BLOCK_WALL;
         }
     }
+
+    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 
@@ -72,6 +74,7 @@ Dungeon::Dungeon(const Dungeon& d)
     for(int i = 0; i < d.num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
+    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
 }
 
 
@@ -89,6 +92,7 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     for(int i = 0; i < num_rooms; i++) {
         this->rooms[i] = d.rooms[i];
     }
+    cout<<"Dungeon created with width "<<width<<" and height "<<height<<endl;
     return *this;
 }
 
@@ -230,19 +234,22 @@ void Dungeon::dungeon_dump()
                 case 2:
                     cout<<".";
                     break;
+                case 5:
+                    cout<<":";
+                    break;
                 case 4:
                     cout<<"#";
                     break;
                 case 12:
-                    cout<<"#";
+                    cout<<"d";
                     break;
                 case 13:
-                    cout<<"d";
+                    cout<<"u";
                     break;
                 case 30:
                     cout<<"u";
                     break;
-                case 16:
+                case 15:
                     cout<<"S";
                     break;
                 default:
