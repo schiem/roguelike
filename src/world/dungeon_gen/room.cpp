@@ -1,6 +1,8 @@
 /**
- *  ROOM.CPP
+ *  @file ROOM.CPP
+ *  @author Seth A. Yoder
  *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify

@@ -36,8 +36,8 @@ using namespace tiledef;
 /*
  * Just call the super constructor
  */
-CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height, int seed) :
-    ProcedurallyBlindDB(_width, _height, seed) {
+CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height) :
+    ProcedurallyBlindDB(_width, _height) {
 
 }
 

@@ -1,5 +1,8 @@
 /**
- *  DUNGEONBUILDER.H
+ *  @file DUNGEONBUILDER.H
+ *  @author Seth A. Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -42,33 +45,134 @@
 
 using namespace std;
 
+/**
+ * A class from which all dungeon-building classes inherit.
+ *
+ * This class will usually not be used directly, but only through its
+ * subclasses. It provides core functionality that those dungeon builders share.
+ *
+ * @see ProcedurallyBlindDB
+ * @see CorruptiblePBlindDB
+ * \todo get rid of these #defines.
+ */
 class DungeonBuilder
 {
+
     friend ostream& operator<<(ostream&, const DungeonBuilder&);
     protected:
-        static const int START_WIDTH=30;
-        static const int START_HEIGHT=30;
-        //variables
+        /**
+         * The width of the dungeon to be created.
+         */
         int width;
+
+        /**
+         * The height of the dungeon to be created.
+         */
         int height;
+
+        /**
+         * The number of rooms in this dungeon.
+         * @see Room
+         */
         int num_rooms;
+
+        /**
+         * The dungeon object that this instance of DungeonBuilder will twerk
+         * on.
+         *
+         * @see Dungeon
+         */
         Dungeon main_dungeon;
-        //methods
-        bool rolled_over(int) const;
-        bool is_empty_space(IntPoint) const;
-        bool point_is_beyond_bounds(IntPoint) const;
-        string edges_collide_with_something(Room&) const;
-        int determine_which_wall(IntPoint) const;
-        void set_wall_if_not_path(int, int);
-        Room build_room(IntPoint, IntPoint);
-        int get_wall_count(const Room&) const;
+
+        /**
+         * Has an n% chance of returning 'true', where n is the given number.
+         *
+         * @param given - the desired probability that this check will return
+         * true.
+         * @return True if a random roll between 1 and 100 landed below the
+         * given number.
+         */
+        bool rolled_over(int given) const;
+
+        /**
+         * Check if the given point on the dungeon model can be written over.
+         * @param point - the point to check.
+         * @return True if the given point is empty.
+         */
+        bool is_empty_space(IntPoint point) const;
+
+        /**
+         * Determines whether or not the given point is beyond the bounds of the
+         * dungeon.
+         * @param point - the point to check
+         * @return True if the point is out of bounds.
+         * \todo get rid of the TODO here and fix it.
+         */
+        bool point_is_beyond_bounds(IntPoint point) const;
+
+        /**
+         * Determines whether the edges of a given room collide with another
+         * room.
+         * @param r - the room to check
+         * @return A binary string that denotes which edges of the room found
+         * collisions; the first bit is the top edge, then right, then bottom,
+         * then left.
+         *
+         * \todo maybe use a bitset here.
+         */
+        string edges_collide_with_something(Room &r) const;
+
+
+        /**
+         * Determines which wall of a room a given point lies on.
+         * @param point - a point which has previously been determined to lie on
+         * the edge of a room wall.
+         *
+         * @return An integer denoting the wall that the given room lies on,
+         * where 0 = top, 1 = right, 2 = bottom, 3 = left.
+         */
+        int determine_which_wall(IntPoint point) const;
+
+        /**
+         * Builds a room in the dungeon with the given points.
+         * @param tl - the top-left corner of the room.
+         * @param br - the bottom-right corner of the room.
+         * @return The room that was built.
+         * @see room
+         */
+        Room build_room(IntPoint tl, IntPoint br);
+
+        /**
+         * Finds a random tile on the circumference of the given room.
+         * @param current_room - the room to use.
+         * @return A random IntPoint on the circumference of this room.
+         */
         IntPoint rand_wall_block(const Room&);
+
+        /**
+         * Finds the adjacent point in the given direction
+         * @param this_point - the current point.
+         * @param direction - the direction to move, where 0 = up, 1 = right, 2 =
+         * down, and 3 = left.
+         * @return The point that was found.
+         */
         IntPoint get_next_point(IntPoint, int) const;
 
-    public:
-        //DungeonBuilder();
+        /**
+         * Resets the num_rooms and main_dungeon variables, effectively clearing
+         * the dungeon. The dungeon must be initialized before calling this
+         * method.
+         */
         virtual void reset();
-        //void print(SDL_Surface* ascii, SDL_Surface* screen, int color) const;
+    private:
+        /**
+         * Sets the given point to a ROOM_WALL tile if it is not a PATH tile.
+         * @param row
+         * @param col
+         */
+        void set_wall_if_not_path(int row, int col);
+
+    public:
         Dungeon* get_dungeon();
 };
 

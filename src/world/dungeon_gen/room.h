@@ -1,6 +1,8 @@
 /**
- *  ROOM.H
+ *  @file ROOM.H
+ *  @author Seth A. Yoder
  *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -22,20 +24,61 @@
 #include <int_point.h>
 #include <iostream>
 
+/**
+ * A representation of a room in a dungeon. Used most often to place objects in
+ * reasonable places.
+ */
+
 using namespace std;
 
 class Room
 {
-    friend ostream& operator<<(ostream&, const Room&);
+    /**
+     * @param R the room to output
+     * Overloaded output stream operator to easily print a room.
+     */
+    friend ostream& operator<<(ostream&, const Room &R);
     private:
+        /**
+         * Prints a description of the points in this room.
+         */
         void print() const;
 
     public:
+        /**
+         * The top left corner of the room relative to its parent dungeon.
+         */
         IntPoint tl;
+
+        /**
+         * The bottom left corner of the room relative to its parent dungeon.
+         */
         IntPoint br;
+
+        /**
+         * Empty constructor.
+         */
         Room();
+
+        /**
+         * Copy constructor.
+         */
         Room(const Room&);
-        Room(IntPoint, IntPoint);
+
+        /**
+         * @param _tl the top-left corner of the room relative to its parent
+         * dungeon
+         * @param _br the bottom-right corner of the room relative to its parent
+         * dungeon
+         *
+         * Creates a new room.
+         */
+        Room(IntPoint _tl, IntPoint _br);
+
+        /**
+         * Empty destructor.
+         * \todo check if this needs to be here
+         */
         ~Room();
 };
 

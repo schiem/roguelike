@@ -6,6 +6,7 @@
 *.dirstamp
 
 data/chunk/chunk*
+docs/*
 
 roguelike
 aclocal.m4

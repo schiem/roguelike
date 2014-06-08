@@ -30,7 +30,7 @@ class CorruptiblePBlindDB : public ProcedurallyBlindDB
 
     public:
         //CorruptiblePBlindDB();
-        CorruptiblePBlindDB(int _width, int _height, int seed=time(NULL));
+        CorruptiblePBlindDB(int _width, int _height);
         void build_dungeon(int target, int deviation);
 };
 

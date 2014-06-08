@@ -1,5 +1,8 @@
 /**
- *  DUNGEON.CPP
+ *  @file DUNGEON.CPP
+ *  @author (Seth|Michael) Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -54,7 +57,6 @@ Dungeon::Dungeon(int _width, int _height)
     }
 }
 
-
 Dungeon::Dungeon(const Dungeon& d)
 {
     dungeon = d.dungeon;
@@ -70,8 +72,6 @@ Dungeon::Dungeon(const Dungeon& d)
         this->rooms[i] = d.rooms[i];
     }
 }
-
-
 
 Dungeon& Dungeon::operator= (const Dungeon& d){
     dungeon = d.dungeon;
@@ -89,11 +89,6 @@ Dungeon& Dungeon::operator= (const Dungeon& d){
     return *this;
 }
 
-/**
- * PRE: Will be given two integers representing a row and column.
- * POST: Will run the given point in the dungeon through a series of assertions
- * to ensure that it is valid.
- */
 void Dungeon::tile_assertions(int row, int col) const {
     assert(row >= 0);
     assert(row < height);
@@ -101,14 +96,6 @@ void Dungeon::tile_assertions(int row, int col) const {
     assert(col < width);
 }
 
-/**
- * PRE: Given a bool whether there is a dungeon below it in the chunk.
- * POST: Will create a set of upstairs in a random rooms, and a set of
- * downstairs if there is a chunk below it.
- *
- * Also contains a dungeon dump, to view the coordinates of the rooms in
- * the dungeon which this method is called on.  Currently commented out.
- */
 void Dungeon::make_stairs(bool has_layer_below){
     assert(num_rooms > 0);
 
@@ -132,46 +119,6 @@ void Dungeon::make_stairs(bool has_layer_below){
     dungeon[up_stair.row][up_stair.col] = UP_STAIR;
 }
 
-
-void Dungeon::make_spawner(int _depth)
-{
-    Room spawn_room;
-    do
-    {
-        spawn_room = rooms[rand() % num_rooms];
-    }
-    while(spawn_room.br.row-spawn_room.tl.row<4 || spawn_room.br.col-spawn_room.tl.col<4);
-    IntPoint spawn;
-    do{
-        spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
-    }
-    while(spawn==down_stair || spawn == up_stair);
-    spawner_loc = spawn;
-    spawner = Spawner(spawn.col, spawn.row, _depth, kobold);
-    dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
-}
-
-/**
- * PRE: None
- * POST: Will replace the outer edge of the dungeon with a border.
- */
-void Dungeon::make_border() {
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
-            if((j == 0) || (j == width - 1)) {
-                dungeon[i][j] = DUNGEON_BORDER;
-            }
-            if((i == 0) || (i == height - 1)) {
-                dungeon[i][j] = DUNGEON_BORDER;
-            }
-        }
-    }
-}
-
-
-/**
- * self-explanatory getters
- */
 Tile Dungeon::get_tile(int row, int col) const {
     tile_assertions(row, col);
     return dungeon[row][col];
@@ -187,9 +134,11 @@ Tile* Dungeon::get_tile_pointer(int row, int col) {
     return &dungeon[row][col];
 }
 
-/**
- * self-explanatory setters
- */
+Tile* Dungeon::get_tile_pointer(IntPoint point) {
+    tile_assertions(point.row, point.col);
+    return &dungeon[point.row][point.col];
+}
+
 void Dungeon::set_tile(int row, int col, Tile theTile) {
     tile_assertions(row, col);
     dungeon[row][col] = theTile;
@@ -204,24 +153,36 @@ const std::vector<std::vector<Tile> >&  Dungeon::get_dungeon(){
     return dungeon;
 }
 
-Spawner Dungeon::get_spawner()
-{
+void Dungeon::make_spawner(int _depth) {
+    Room spawn_room;
+    do {
+        spawn_room = rooms[rand() % num_rooms];
+    } while(spawn_room.br.row-spawn_room.tl.row<4 || spawn_room.br.col-spawn_room.tl.col<4);
+
+    IntPoint spawn;
+    do {
+        spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
+    } while(spawn==down_stair || spawn == up_stair);
+
+    spawner_loc = spawn;
+    spawner = Spawner(spawn.col, spawn.row, _depth, kobold);
+    dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
+}
+
+Spawner Dungeon::get_spawner() {
     return spawner;
 }
 
 
-vector<Item*>* Dungeon::get_items()
-{
+vector<Item*>* Dungeon::get_items() {
     return &items;
 }
 
-void Dungeon::add_item(Item* item)
-{
+void Dungeon::add_item(Item* item) {
     items.push_back(item);
 }
 
-void Dungeon::dungeon_dump()
-{
+void Dungeon::dungeon_dump() {
     //dungeon dump
     int tile;
     for(int row=0;row<dungeon.size();row++)
