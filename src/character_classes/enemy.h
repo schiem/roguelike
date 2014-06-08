@@ -370,7 +370,7 @@ class Enemy : public Character
          * Alternatively, you can use it to dump a different matrix.
          * @param map The matrix to dump.
          */
-        void dump_matrix(TileMatrix&i map);
+        void dump_matrix(TileMatrix& map);
 };
 
 #endif
