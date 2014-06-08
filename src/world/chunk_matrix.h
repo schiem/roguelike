@@ -34,27 +34,23 @@ class ChunkMatrix
 {
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;
     private:
-        int diameter;
+        int diameter; /** The diameter of this matrix. */
         vector<vector<Chunk> > model;
-        IntPoint offset;
+        IntPoint offset; /** The amount by which the top left corner of the matrix is offset from the world. */
         IntPoint center;
-        void populate_initial(IntPoint, MapTileMatrix&);
+        void populate_initial(IntPoint center_chunk, MapTileMatrix &world_map);
 
     public:
         ChunkMatrix();
-        ChunkMatrix(int, IntPoint, MapTileMatrix&);
+        ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix &world_map);
         void pretty_print();
-        bool out_of_bounds(IntPoint);
-        vector<vector<Chunk> >& get_matrix();
+        bool out_of_bounds(IntPoint local_chunk_point);
         IntPoint get_offset();
-        void set_offset(IntPoint);
-        void set_chunk_abs(IntPoint, Chunk);
-        Chunk* get_chunk_abs(IntPoint);
-        Chunk* get_chunk_abs(int, int);
-        void set_chunk(IntPoint, Chunk);
-        Chunk* get_chunk(IntPoint);
+        void set_offset(IntPoint point);
+        Chunk* get_chunk_abs(IntPoint abs_chunk_loc);
+        Chunk* get_chunk_abs(int row, int col);
         Chunk* get_center_chunk();
-        void shift_matrix(IntPoint, MapTileMatrix&);
+        void shift_matrix(IntPoint directions, MapTileMatrix &world_map);
 };
 
 #endif
