@@ -40,7 +40,7 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     sight = enemy.sight;
     speed = enemy.speed;
     sprite = enemy.sprite;
-    corpse = enemy.corpse; 
+    corpse = new Misc(IntPoint(x, y), enemy.corpse); 
 
     //is the enemy scared? if so, what direction and for how long
     spooked = false;

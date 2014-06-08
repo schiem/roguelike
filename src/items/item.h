@@ -35,9 +35,6 @@ class Item
         int weight;
         IntPoint coords;
         Tile sprite;
-        //if there's something that happens to make it switch to another
-        //sprite
-        Tile second_sprite;
         int rarity; 
 
     public:
@@ -124,6 +121,14 @@ class Consumable : public Item
         int get_stat();
         int get_amount();
         int get_type();
+};
+
+class Misc : public Item
+{
+    public:
+        Misc(int, int, Tile, std::string, IntPoint);
+        Misc(IntPoint, MiscType);
+        void perform_action();
 };
 
 #endif

@@ -1,5 +1,5 @@
 /**
- *  MAIN_CHARACTER.CPP
+ *  MISC.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,14 +17,36 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <item.h>
 #include <character.h>
-#include <iostream>
+using namespace tiledef;
+using namespace equipment;
 
-Main_Character::Main_Character() {
-
+Misc::Misc(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords) : Item(_rarity, _weight, _sprite, _name, _coords)
+{
+    can_equip = false;   
+    can_use = false;
+    can_wield = false;
+    can_consume = false;
 }
 
-Main_Character::Main_Character(int _max_health, int _x, int _y,
-                               Tile _sprite,  MiscType _corpse, int _chunk_x, int _chunk_y , int _depth, int _morality, int _attack) :
-    Character(_max_health, _x, _y,  _sprite, _corpse, _chunk_x, _chunk_y, _depth, _morality, _attack){
+Misc::Misc(IntPoint _coords, MiscType misc) : Item(_coords)
+{
+    rarity = misc.rarity;
+    weight = misc.weight;
+    sprite = misc.sprite;
+    description = misc.description;
+    name = misc.name;
+    can_use = misc.use;
+    can_equip = false;
+    can_wield = false;
+    can_consume = false;
+}
+
+
+void Misc::perform_action()
+{
+    if(can_use)
+    {
+    }
 }

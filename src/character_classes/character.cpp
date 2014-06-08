@@ -27,7 +27,7 @@ Character::Character() {
  * The x and the y are the coordinates within the current chunk/dungeon
  * POST: A character object with the desired attributes will be returned
 */
-Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse, int _chunk_x, int _chunk_y,  int _depth, int _morality, int _attack) {
+Character::Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y,  int _depth, int _morality, int _attack) {
     stats.resize(3);
     
     stats[HEALTH] = _max_health;
@@ -37,7 +37,7 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, Tile _corpse
     x = _x;
     y = _y;
     moral = _morality;
-    corpse = _corpse;
+    corpse = new Misc(IntPoint(y, x), _corpse);
     //somewhat temporary
     sprite = _sprite;
     chunk = IntPoint(_chunk_y, _chunk_x);
@@ -239,7 +239,7 @@ Tile Character::get_char() {
     return sprite;
 }
 
-Tile Character::get_corpse(){
+Item* Character::get_corpse(){
     return corpse;
 }
 

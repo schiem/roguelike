@@ -67,6 +67,7 @@ roguelike_SOURCES = \
     src/items/equipment.cpp\
     src/items/weapon.cpp\
     src/items/consumables.cpp\
+    src/items/misc.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/defs.h\

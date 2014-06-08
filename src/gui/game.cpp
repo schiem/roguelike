@@ -92,7 +92,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
                            world_map[selected_chunk.row][selected_chunk.col],
                            selected_chunk.row, selected_chunk.col);
 
-    main_char = Main_Character(100, 50, 25, MAIN_CHAR, MAIN_CHAR, selected_chunk.col, selected_chunk.row, -1, 0, 10);
+    main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, -1, 0, 10);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
     canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
@@ -220,7 +220,14 @@ void Game::run_enemies(long delta_ms) {
         {
             
             //if the enemy isn't alive, drop the entire inventory and then delete the enemy
-            chunk_map[enem_chunk.row][enem_chunk.col].set_tile(enemy->get_depth(), enem_coords.row, enem_coords.col, enemy->get_corpse());
+            Item* corpse = enemy->get_corpse();
+            corpse->set_coords(enem_coords);
+            chunk_map[enem_chunk.row][enem_chunk.col].add_item(corpse, enemy->get_depth());
+            for(int j = 0; j<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->size();j++)
+            {
+                cout<<"Item "<<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->at(j)->get_name();
+                cout<<"at "<<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->at(j)->get_coords()<<endl;
+            }
             enemy->remove_all();
             vector<Item*>* item_list = enemy->get_inventory();
             for(int j=0;j<item_list->size();j++)

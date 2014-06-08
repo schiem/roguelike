@@ -162,11 +162,26 @@ struct ConsumableType
     int stat;
     int value;
     int type;
-    bool operator==(const EquipType& rhs) const 
+    bool operator==(const ConsumableType& rhs) const 
     {
         return this->name==rhs.name;
     }
 };
+
+struct MiscType
+{
+    float weight;
+    Tile sprite;
+    std::string name;
+    std::string description;
+    bool use;
+    int rarity;
+    bool operator==(const MiscType& rhs) const
+    {
+        return this->name==rhs.name;
+    }
+};
+
 
 namespace equipment
 {
@@ -192,6 +207,19 @@ namespace consumables
     };
 }
 
+namespace misc
+{
+    extern MiscType kobold_corpse;
+    extern MiscType rabbit_corpse;
+    extern MiscType player_corpse;
+}
+
+
+
+/****************************
+ *   ENEMY DEFS
+ ***************************/
+
 struct EnemyType
 {
     int moral;
@@ -203,7 +231,7 @@ struct EnemyType
     int speed;
     std::string name;
     Tile sprite;
-    Tile corpse;
+    MiscType corpse;
     std::vector<EquipType> eq;
     std::vector<WeaponType> wep;
     bool operator==(const EnemyType& rhs) const
@@ -212,10 +240,6 @@ struct EnemyType
     }
 };
 
-
-/****************************
- *   ENEMY DEFS
- ***************************/
 
 
 namespace enemies

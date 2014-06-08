@@ -48,7 +48,7 @@ class Character
         int inventory_size;
         //Skills skill[];
         Tile sprite;
-        Tile corpse;
+        Item* corpse;
         int depth;
         IntPoint chunk;
         Tile underfoot;
@@ -59,7 +59,7 @@ class Character
         Character();
         // what the heck are these parameters you guys??
         //lol who cares alan?
-        Character(int, int, int, Tile, Tile, int, int, int, int, int);
+        Character(int, int, int, Tile, MiscType, int, int, int, int, int);
         Character(int, int, int, int, int);
         bool is_alive() const;
         void take_damage(int);
@@ -80,7 +80,7 @@ class Character
         int get_chunk_x();
         int get_chunk_y();
         Tile get_char();
-        Tile get_corpse();
+        Item* get_corpse();
         int get_depth();
         Character* get_target();
         int get_max_hp();
@@ -110,7 +110,7 @@ class Main_Character : public Character{
         //equipment
    public:
         Main_Character();
-        Main_Character(int, int, int, Tile, Tile, int, int, int, int, int);
+        Main_Character(int, int, int, Tile, MiscType, int, int, int, int, int);
 };
 
 #endif
