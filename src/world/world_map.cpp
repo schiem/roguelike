@@ -22,13 +22,9 @@
 using namespace std;
 
 WorldMap::WorldMap() {
-
-}
-
-WorldMap::WorldMap(int h, int w) {
     srand(time(NULL));
-    height = h;
-    width = w;
+    height = WORLD_HEIGHT;
+    width = WORLD_WIDTH;
     map = std::vector<std::vector<MapTile> >(height,
             std::vector<MapTile>(width));
 

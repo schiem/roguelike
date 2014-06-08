@@ -352,7 +352,6 @@ int Enemy::manhattan(IntPoint current, IntPoint goal)
 /*  PRE: It's a simple function.
  *  POST: Returns the smallest f value from a list.
  */
-
 int Enemy::get_smallest_f(std::vector<ATile>& list)
 {
     int smallest = list[0].f;

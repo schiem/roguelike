@@ -27,6 +27,7 @@
 
 #include <color_def.h>
 #include <defs.h>
+#include <constants.h>
 
 class WorldMap {
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;

@@ -38,6 +38,7 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
  * Will return true if result <= given; will return false if
  * result > given.
  */
+
 bool DungeonBuilder::rolled_over(int given) const {
     int generated = rand() % 100;
     if(generated <= given) {
@@ -155,7 +156,7 @@ int DungeonBuilder::determine_which_wall(IntPoint point) const {
  *       ROOM_WALL tile.
  */
 void DungeonBuilder::set_wall_if_not_path(int a, int b)  {
-    if(main_dungeon.get_tile(a, b).tile_id != 6) {
+    if(!(main_dungeon.get_tile(a, b) == PATH)) {
         main_dungeon.set_tile(a, b, ROOM_WALL);
     }
 }

@@ -31,7 +31,6 @@
 
 class Character
 {
-
     protected:
         //variables
         //Moral is a spectrum from 0-5, and represents
@@ -52,7 +51,7 @@ class Character
         int depth;
         IntPoint chunk;
         Tile underfoot;
-        Character* target; 
+        Character* target;
         //methods
 
     public:

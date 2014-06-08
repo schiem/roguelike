@@ -42,7 +42,7 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
     has_layer_below = _has_layer_below;
     int attack;
     ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
-    
+
 
 
     if (tile_type == map_tile::MAP_DEFAULT) {

@@ -19,13 +19,13 @@
 
 #ifndef ENEMY_H
 #define ENEMY_H
-#define CHUNK_WIDTH 100
-#define CHUNK_HEIGHT 50
 #include <character.h>
+#include <defs.h>
+#include <constants.h>
 #include <string>
 #include <vector>
 #include <helper.h>
-#include <defs.h>
+#include <constants.h>
 
 using namespace enemies;
 
@@ -68,7 +68,7 @@ class Enemy : public Character
         std::string name;
         std::vector<Equipment*> generate_equipment(std::vector<EquipType>);
         Weapon* generate_weapon(std::vector<WeaponType>);
-        
+
         void move(int, int);
         IntPoint get_cur_coords(IntPoint, IntPoint);
         IntPoint get_next_step(IntPoint, TileMatrix&);
@@ -91,6 +91,5 @@ class Enemy : public Character
         int get_sight();
         void dump_matrix(TileMatrix&);
 };
-
 
 #endif

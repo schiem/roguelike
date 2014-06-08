@@ -1,5 +1,5 @@
 /**
- *  HELPER.H
+ *  CONSTANTS.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,21 +17,16 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _CONSTANTS_H
+#define _CONSTANTS_H
 
-#ifndef HELPER_H
-#define HELPER_H
-#include <int_point.h>
-#include <vector>
-#include <boost/filesystem.hpp>
-#include <string.h>
-#include <constants.h>
+static const int CHUNK_WIDTH = 100;
+static const int CHUNK_HEIGHT = 50;
 
-using namespace boost::filesystem;
+static const int SCREEN_WIDTH = 100;
+static const int SCREEN_HEIGHT = 50;
 
+static const int WORLD_WIDTH = 100;
+static const int WORLD_HEIGHT = 50;
 
-IntPoint get_abs(IntPoint, IntPoint);
-std::vector<std::string> all_files(const string &);
-std::vector<std::string> all_files_of_type(const string &, const string & extension);
-std::string parse_settings(string &);
-int get_max_width(std::vector<std::string>);
 #endif

@@ -20,10 +20,10 @@
 #include <world_map_gui.h>
 
 typedef std::vector<std::vector<MapTile> > MapTileMatrix;
-WorldMapGUI::WorldMapGUI(int w, int h) {
-    height = h;
-    width = w;
-    world_map = WorldMap(h, w);
+WorldMapGUI::WorldMapGUI() {
+    height = WORLD_HEIGHT;
+    width = WORLD_WIDTH;
+    world_map = WorldMap();
     top_layer = std::vector<TopLayerData>();
     canvas = std::vector<std::vector<MapTile> >(height,
             std::vector<MapTile>(width));

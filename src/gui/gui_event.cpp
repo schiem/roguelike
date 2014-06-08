@@ -76,7 +76,7 @@ void GUI::perform_action_press(SDLKey key) {
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
-                
+
                 //get the next menu from the selection
                 menu = menu->make_selection();
                 //if the menu returned NULL, then we should quit the game
@@ -105,7 +105,7 @@ void GUI::perform_action_press(SDLKey key) {
                     game.unpause();
                 }
             } else if(current_screen == MAP_SCREEN) {
-                //swith the screen from the map to the game (should only happen at 
+                //switch the screen from the map to the game (should only happen at 
                 //the beginnig of the game
                 current_screen = GAME_SCREEN;
             } 

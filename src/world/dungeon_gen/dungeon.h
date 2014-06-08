@@ -22,11 +22,14 @@
 #define MAX_ROOMS 15
 //#define ROOM_COUNT_DEBUG
 #include <vector>
+#include <stdlib.h>
 #include <assert.h>
+
 #include <defs.h>
 #include <room.h>
 #include <spawner.h>
 #include <item.h>
+#include <enemy.h>
 
 class Dungeon
 {
@@ -44,6 +47,7 @@ class Dungeon
         int num_rooms;
         IntPoint down_stair;
         IntPoint up_stair;
+        IntPoint spawner_loc;
         std::vector<Room> rooms;
         void make_stairs(bool);
         void make_border();

@@ -218,7 +218,6 @@ Room ProcedurallyBlindDB::find_viable_room_space(IntPoint the_point) const {
     IntPoint br = IntPoint(lower_bound, right_bound);
 
     if((point_is_beyond_bounds(tl)) || (point_is_beyond_bounds(br))) {
-        //TODO This really shouldn't happen
         return Room(IntPoint(-1, -1), IntPoint(-1, 1));
     }
 

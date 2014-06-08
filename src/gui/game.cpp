@@ -62,9 +62,7 @@ taken from the buffer with the character at the center.
 /* ========= PUBLIC METHODS ==========*/
 
 /*--------------------Base Model Functions--------------------------*/
-Game::Game(int w, int h) {
-    STARTING_WIDTH = w;
-    STARTING_HEIGHT = h;
+Game::Game() {
     initialized = false;
     paused = false;
 }
@@ -79,7 +77,7 @@ Game::~Game()
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     world_map = _world_map;
-    chunk_map = ChunkMatrix(world_map.size(), vector<Chunk>(world_map[0].size()));
+
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
     buffer = TilePointerMatrix(150, vector<Tile*>(300));
@@ -88,15 +86,13 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    chunk_map[selected_chunk.row][selected_chunk.col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT,
-                           world_map[selected_chunk.row][selected_chunk.col],
-                           selected_chunk.row, selected_chunk.col);
-
     main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, -1, 0, 10);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
-    canvas = TilePointerMatrix(STARTING_HEIGHT, vector<Tile*>(STARTING_WIDTH));
-    update_chunk_map(main_char.get_chunk());
+    canvas = TilePointerMatrix(SCREEN_HEIGHT, vector<Tile*>(SCREEN_WIDTH));
+
+    //Eventually, this should be based on screen size.
+    chunk_map = ChunkMatrix(3, selected_chunk, world_map);
     update_buffer(main_char.get_chunk());
     recalculate_visibility_lines(15);
     refresh();
@@ -110,7 +106,8 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 }
 
 Chunk* Game::get_current_chunk() {
-    return &chunk_map[main_char.get_chunk().row][main_char.get_chunk().col];
+    return chunk_map.get_center_chunk();
+    //return &chunk_map[main_char.get_chunk().row][main_char.get_chunk().col];
 }
 
 
@@ -135,21 +132,24 @@ const std::vector<std::vector<Tile*> >& Game::get_canvas() {
 IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     IntPoint temp;
     IntPoint abs = get_abs(chunk, coords);
-    IntPoint tl_abs = get_abs(main_char.get_chunk(), IntPoint(main_char.get_y() - STARTING_HEIGHT/2, main_char.get_x() - STARTING_WIDTH/2));
+    //tl stands for top-left
+    //TODO I honestly have no clue if this should be CHUNK_HEIGHT or
+    //SCREEN_HEIGHT. Trying the former for now...
+    IntPoint tl_abs = get_abs(main_char.get_chunk(),
+            IntPoint(main_char.get_y() - CHUNK_HEIGHT/2, main_char.get_x() - CHUNK_WIDTH/2));
     temp = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
     return temp;
 }
 
 std::vector<Enemy*> Game::get_vis_enemies() {
-    std::vector<Enemy*> temp;
-    for(int i=0;i<enemy_list.size();i++)
-    {
+    std::vector<Enemy*> temp = std::vector<Enemy*>();
+    for(int i=0;i<enemy_list.size();i++) {
         IntPoint chunk = IntPoint(enemy_list[i]->get_chunk_y(), enemy_list[i]->get_chunk_x());
         IntPoint coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-        IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) && enemy_list[i]->get_depth() == main_char.get_depth())
-        {
+        IntPoint radius  = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
+                enemy_list[i]->get_depth() == main_char.get_depth()) {
             temp.push_back(enemy_list[i]);
         }
     }
@@ -158,19 +158,17 @@ std::vector<Enemy*> Game::get_vis_enemies() {
 
 
 /*
- * Resets the top layer.
- * Checks to see if the character is out of the chunk.  If so, update the chunk/chunk_map
  * Updates the canvas with the area around the character in terms of buffer coordinates.
  * Draws visibility lines.
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    for(int i = 0; i < STARTING_HEIGHT; i++) {
-        for (int j = 0; j < STARTING_WIDTH; j++) {
-            int buffer_tile_row = (STARTING_HEIGHT + main_char.get_y()) -
-                (STARTING_HEIGHT/2) + i;
-            int buffer_tile_col = (STARTING_WIDTH + main_char.get_x()) -
-                (STARTING_WIDTH/2) + j;
+    for(int i = 0; i < SCREEN_HEIGHT; i++) {
+        for (int j = 0; j < SCREEN_WIDTH; j++) {
+            int buffer_tile_row = (SCREEN_HEIGHT + main_char.get_y()) -
+                (SCREEN_HEIGHT/2) + i;
+            int buffer_tile_col = (SCREEN_WIDTH + main_char.get_x()) -
+                (SCREEN_WIDTH/2) + j;
             set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
     }
@@ -191,10 +189,11 @@ void Game::run_spawners() {
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
-            chunk = &chunk_map[i][j];
-            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn)
-            {
+            chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
+
+            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
                 spawner = chunk->get_spawner(main_char.get_depth());
+
                 if(spawner.should_spawn()) {
                     enemy_list.push_back(spawner.spawn_creep(j, i));
                 }
@@ -209,24 +208,26 @@ void Game::run_spawners() {
  */
 void Game::run_enemies(long delta_ms) {
     Enemy* enemy;
+    Chunk* current_chunk;
 
     //iterate through the enemies that we know about
     for(int i=0;i<enemy_list.size();i++) {
         enemy = enemy_list[i];
         IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
         IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-        
         if(!enemy->is_alive())
         {
-            
+
             //if the enemy isn't alive, drop the entire inventory and then delete the enemy
             Item* corpse = enemy->get_corpse();
             corpse->set_coords(enem_coords);
-            chunk_map[enem_chunk.row][enem_chunk.col].add_item(corpse, enemy->get_depth());
-            for(int j = 0; j<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->size();j++)
+            current_chunk = chunk_map.get_chunk_abs(enem_chunk.row,enem_chunk.col);
+            current_chunk->add_item(corpse, enemy->get_depth());
+
+            for(int j = 0; j < current_chunk->get_items(enemy->get_depth())->size();j++)
             {
-                cout<<"Item "<<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->at(j)->get_name();
-                cout<<"at "<<chunk_map[enem_chunk.row][enem_chunk.col].get_items(enemy->get_depth())->at(j)->get_coords()<<endl;
+                cout<<"Item "<<current_chunk->get_items(enemy->get_depth())->at(j)->get_name();
+                cout<<"at "<<current_chunk->get_items(enemy->get_depth())->at(j)->get_coords()<<endl;
             }
             enemy->remove_all();
             vector<Item*>* item_list = enemy->get_inventory();
@@ -235,14 +236,14 @@ void Game::run_enemies(long delta_ms) {
                 Item* item = item_list->at(j);
                 enemy->drop_item(item);
                 item->set_coords(IntPoint(enemy->get_y(), enemy->get_x()));
-                chunk_map[enem_chunk.row][enem_chunk.col].add_item(item, enemy->get_depth());
+                current_chunk->add_item(item, enemy->get_depth());
             }
-            
+
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
-            
+
             //delete the enemy if it's not in the buffer
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
@@ -302,30 +303,31 @@ void Game::move_main_char(int col_change, int row_change) {
     int next_row = main_char.get_y() + row_change;
 
 
-    IntPoint new_chunk = IntPoint(main_char.get_chunk_y() + (next_row>=STARTING_HEIGHT) - (next_row<0), main_char.get_chunk_x() + (next_col>=STARTING_WIDTH) - (next_col<0));
+    IntPoint new_chunk = IntPoint(main_char.get_chunk_y() + (next_row >= CHUNK_HEIGHT) - (next_row<0),
+            main_char.get_chunk_x() + (next_col>=CHUNK_WIDTH) - (next_col<0));
 
-    next_col = next_col +  (STARTING_WIDTH * (next_col<0)) - (STARTING_WIDTH * (next_col>=STARTING_WIDTH));
-    next_row = next_row +  (STARTING_HEIGHT * (next_row<0)) - (STARTING_HEIGHT * (next_row>=STARTING_HEIGHT));
-    IntPoint coords = IntPoint(next_row, next_col);
-    Character* enem = enemy_at_loc(new_chunk, coords);
+    next_col = next_col +  (CHUNK_WIDTH * (next_col<0)) - (CHUNK_WIDTH * (next_col>=CHUNK_WIDTH));
+    next_row = next_row +  (CHUNK_HEIGHT * (next_row<0)) - (CHUNK_HEIGHT * (next_row>=CHUNK_HEIGHT));
+    IntPoint next_coords = IntPoint(next_row, next_col);
+    Character* enem = enemy_at_loc(new_chunk, next_coords);
 
-    if(chunk_map[new_chunk.row][new_chunk.col].get_tile(main_char.get_depth(), next_row, next_col)->can_be_moved_through && enem == NULL)
-    {
+    bool can_move = (chunk_map.get_chunk_abs(new_chunk)->get_tile(main_char.get_depth(), next_row, next_col)->
+            can_be_moved_through);
+
+    if(can_move && (enem == NULL)) {
         col = next_col;
         row = next_row;
         main_char.set_x(col);
         main_char.set_y(row);
-        if(main_char.get_chunk() != new_chunk)
-        {
+        if(main_char.get_chunk() != new_chunk) {
+            IntPoint shift_dir = IntPoint(new_chunk.row - main_char.get_chunk_y(), 
+                                          new_chunk.col - main_char.get_chunk_x());
             main_char.set_chunk(new_chunk);
-            update_chunk_map(main_char.get_chunk());
-            cout<<main_char.get_chunk()<<endl;
+            update_chunk_map(shift_dir);
+            cout<<"Main character: "<<main_char.get_chunk()<<endl;
             update_buffer(main_char.get_chunk());
-
         }
-    }
-    else if(enem != NULL)
-    {
+    } else if(enem != NULL) {
         main_char.attack(enem);
     }
 }
@@ -335,11 +337,12 @@ void Game::get_item()
 {
     //make this take in a character so that other characters can call it?
     Item* temp_item = item_at_coords(IntPoint(main_char.get_y(), main_char.get_x()), main_char.get_chunk(), main_char.get_depth());
+    Chunk* current_chunk = chunk_map.get_chunk_abs(main_char.get_chunk_y(), main_char.get_chunk_x());
     if(temp_item != NULL)
     {
         //add a check if the inventory is full
         main_char.add_item(temp_item);
-        chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].remove_item(temp_item, main_char.get_depth());
+        current_chunk->remove_item(temp_item, main_char.get_depth());
     }
 }
 
@@ -347,7 +350,8 @@ void Game::drop_item(Item* item)
 {
     main_char.drop_item(item);
     item->set_coords(IntPoint(main_char.get_y(), main_char.get_x()));
-    chunk_map[main_char.get_chunk_y()][main_char.get_chunk_x()].add_item(item, main_char.get_depth());
+    Chunk* current_chunk = chunk_map.get_chunk_abs(main_char.get_chunk_y(), main_char.get_chunk_x());
+    current_chunk->add_item(item, main_char.get_depth());
 }
 
 /*========= PRIVATE METHODS ============*/
@@ -360,9 +364,9 @@ void Game::drop_item(Item* item)
  */
 void Game::point_assertions(int row, int col) {
     assert(row >= 0);
-    assert(row < STARTING_HEIGHT);
+    assert(row < SCREEN_HEIGHT);
     assert(col >= 0);
-    assert(col < STARTING_WIDTH);
+    assert(col < SCREEN_WIDTH);
 }
 
 /**
@@ -393,7 +397,7 @@ void Game::set_tile(IntPoint point, Tile* tile) {
 
 Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth)
 {
-    vector<Item*>* item_list = chunk_map[chunk.row][chunk.col].get_items(depth);
+    vector<Item*>* item_list = chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
     for(int i=0;i<item_list->size();i++)
     {
         if(item_list->at(i)->get_coords() == coords)
@@ -428,24 +432,20 @@ bool Game::out_of_bounds(IntPoint point) {
     return out_of_bounds(point.row, point.col);
 }
 
-bool Game::is_paused()
-{
+bool Game::is_paused() {
     return paused;
 }
 
-void Game::pause()
-{
+void Game::pause() {
     paused = true;
 }
 
-void Game::toggle_pause()
-{
+void Game::toggle_pause() {
     paused = !paused;
 }
 
 
-void Game::unpause()
-{
+void Game::unpause() {
     paused = false;
 }
 
@@ -456,18 +456,16 @@ void Game::unpause()
  * false otherwise.
  */
 bool Game::out_of_bounds(int row, int col) {
-    return (col < 0 || col >= STARTING_WIDTH ||
-            row < 0 || row >= STARTING_HEIGHT);
+    return (col < 0 || col >= SCREEN_WIDTH ||
+            row < 0 || row >= SCREEN_HEIGHT);
 }
 
 /*
  * PRE: Takes an x and a y coordinate (chunk).
  * POST: Returns whether or not the chunk is currently in the buffer.
  */
-bool Game::in_buffer(int x, int y) {
-    bool is_x = (x>=main_char.get_chunk().col-1 && x<=main_char.get_chunk().col+1);
-    bool is_y = (y>=main_char.get_chunk().row-1 && y<=main_char.get_chunk().row+1);
-    return (is_x && is_y);
+bool Game::in_buffer(int row, int col) {
+    return chunk_map.out_of_bounds(IntPoint(row, col));
 }
 
 /*
@@ -515,17 +513,17 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
     Tile new_tile;
     IntPoint buffer_coords = get_buffer_coords(_chunk, _coords);
     IntPoint sur_coords;
-    for(int row=(buffer_coords.row-radius.row);row<(buffer_coords.row+radius.row);row++) {
-        for(int col=(buffer_coords.col-radius.col);col<(buffer_coords.col+radius.col);col++) {
-            sur_coords = IntPoint(row+radius.row - buffer_coords.row, col+radius.col - buffer_coords.col);
-            if(row<0 || row>= STARTING_HEIGHT * 3 || col<0 || col>= STARTING_WIDTH * 3) {
+    for(int row=(buffer_coords.row - radius.row);row<(buffer_coords.row + radius.row);row++) {
+        for(int col=(buffer_coords.col-radius.col);col<(buffer_coords.col + radius.col);col++) {
+            sur_coords = IntPoint(row+radius.row - buffer_coords.row, col + radius.col - buffer_coords.col);
+
+            //TODO Where do the 4 and 3 in the following line come from? -SAY 4/10/2014
+            if(row < 0 || row >= CHUNK_HEIGHT * 3 || col < 0 || col >= CHUNK_WIDTH * 3) {
                 new_tile = EMPTY;
-            } else if (sur_coords.row == 0 || sur_coords.col == 0 || sur_coords.row == (radius.row*2-1) || sur_coords.col == radius.col*2 - 1)
-            {
+            } else if (sur_coords.row == 0 || sur_coords.col == 0 ||
+                    sur_coords.row == (radius.row*2-1) || sur_coords.col == radius.col*2 - 1) {
                 new_tile = BLOCK_WALL;
-            }
-            else
-            {
+            } else {
                 new_tile = *buffer[row][col];
             }
             surroundings[sur_coords.row][sur_coords.col] = new_tile;
@@ -535,25 +533,20 @@ Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int d
     return surroundings;
 }
 
-std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, IntPoint threshold)
-{
+std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, IntPoint threshold) {
     std::vector<Character*> nearby_enem;
-    for(int i=0; i<enemy_list.size(); i++)
-    {
-        if(in_range(enemy_list[i]->get_chunk(), IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()), _chunk, _coords, threshold))
-        {
+    for(int i=0; i<enemy_list.size(); i++) {
+        if(in_range(enemy_list[i]->get_chunk(), IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()), _chunk, _coords, threshold)) {
             nearby_enem.push_back(enemy_list[i]);
         }
     }
-    if(in_range(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), _chunk, _coords, threshold))
-    {
+    if(in_range(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), _chunk, _coords, threshold)) {
         nearby_enem.push_back(&main_char);
     }
     return nearby_enem;
 }
 
-Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords)
-{
+Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
     for(int i=0;i<enemy_list.size();i++)
     {
         IntPoint enem_chunk = enemy_list[i]->get_chunk();
@@ -568,37 +561,37 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords)
 
 /*----------------Rendering Functions----------------*/
 
-/**
- * PRE: Will be given :int size:, the radius of the FOV circle
- * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
- * points for raytraced lines.
- */
+//TODO Write PRE/POST for this function
+void Game::show_vis_items() {
+    Chunk* current_chunk;
+    for(int i=main_char.get_chunk().row-1; i<=main_char.get_chunk().row+1; i++) {
+        for(int j=main_char.get_chunk().col-1; j<=main_char.get_chunk().col+1; j++) {
+            current_chunk = chunk_map.get_chunk_abs(i,j);
 
-void Game::show_vis_items()
-{
-    for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++)
-    {
-        for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++)
-        {
-            if(main_char.get_depth() < chunk_map[i][j].get_depth()){
-               vector<Item*>* item_list = chunk_map[i][j].get_items(main_char.get_depth());
-               for(int index=0;index<item_list->size();index++)
-               {
-                   IntPoint chunk = IntPoint(i, j); 
-                   IntPoint coords = item_list->at(index)->get_coords(); 
-                   IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-                   IntPoint radius  = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-                   if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius))
-                   {
-                       IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
-                       canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
-                   }
-               }
+            if(main_char.get_depth() < current_chunk->get_depth()) {
+                vector<Item*>* item_list = current_chunk->get_items(main_char.get_depth());
+
+                for(int index=0; index < item_list->size(); index++) {
+                    IntPoint chunk = IntPoint(i, j);
+                    IntPoint coords = item_list->at(index)->get_coords();
+                    IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
+                    IntPoint radius  = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
+
+                    if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius)) {
+                        IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
+                        canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
+                    }
+                }
             }
         }
     }
 }
 
+/**
+ * PRE: Will be given :int size:, the radius of the FOV circle
+ * POST: Will set bresenham_lines, a vector of IntPoint vectors containing
+ * points for raytraced lines.
+ */
 void Game::recalculate_visibility_lines(int size) {
     IntPoint true_center = IntPoint(0, 0);
     std::vector<IntPoint> circle_points = bresenham_circle(true_center, size);
@@ -624,13 +617,19 @@ reflects the chunks surrounding the characters current one.
 */
 void Game::update_buffer(IntPoint central_chunk) {
     int x, y;
+    Chunk* current_chunk;
+    Tile* buffer_tile;
 
     for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
 
         for(int col=central_chunk.col-1;col<=central_chunk.col+1;col++) {
+            x = col - (central_chunk.col - 1);
+            y = row - (central_chunk.row - 1);
+            //cout<<"Central chunk: "<<central_chunk.row<<" "<<central_chunk.col<<endl;
+            current_chunk = chunk_map.get_chunk_abs(row, col);
 
-            for (int a=0;a<STARTING_HEIGHT;a++) {
-                for (int b=0;b<STARTING_WIDTH;b++) {
+            for (int a=0; a<CHUNK_HEIGHT; a++) {
+                for (int b=0; b<CHUNK_WIDTH; b++) {
                     /**
                      *  This part is a bit confusing.  What I need is to write
                      *  the contents of the chunk to the appropriate place in
@@ -651,48 +650,24 @@ void Game::update_buffer(IntPoint central_chunk) {
                      *  start writing at 0 + (CHUNK_WIDTH * 2).
                      */
 
-                    x = col - (central_chunk.col - 1);
-                    y = row - (central_chunk.row - 1);
-                    int buffer_col = b + (x * STARTING_WIDTH);
-                    int buffer_row = a + (y * STARTING_HEIGHT);
+                    int buffer_col = b + (x * CHUNK_WIDTH);
+                    int buffer_row = a + (y * CHUNK_HEIGHT);
 
-                    Tile* buffer_tile;
-                    if(!chunk_map[row][col].out_of_bounds(main_char.get_depth(), a, b)) {
-                        buffer_tile = chunk_map[row][col].get_tile(main_char.get_depth(), a, b);
+                    if(!current_chunk->out_of_bounds(main_char.get_depth(), a, b)) {
+                        buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
                     } else {
                         buffer_tile = &block_wall_tile;
                     }
-
-
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
             }
         }
     }
+    refresh();
 }
 
-void Game::update_chunk_map(IntPoint central_chunk) {
-    for(int row=central_chunk.row - 1;row<=central_chunk.row+1;row++) {
-        //Check to ensure that the chunk map is big enough.
-        if(chunk_map.size() < (size_t) row + 1) {
-            chunk_map.resize(row + 1);
-        }
-
-        //as above but with the x coordinate.
-        for(int col=central_chunk.col-1;col<=central_chunk.col+1;col++) {
-            if (chunk_map[row].size() < (size_t) col + 1) {
-                chunk_map[row].resize(col + 1);
-            }
-
-            //check to ensure that the chunk we're about to operate on is
-            //initialized.  If not, initialize it.
-            if (chunk_map[row][col].is_initialized() == false) {
-                chunk_map[row][col] = Chunk(STARTING_WIDTH, STARTING_HEIGHT,
-                                             world_map[row][col], row, col);
-                chunk_map[row][col].serialize(row, col);
-            }
-        }
-    }
+void Game::update_chunk_map(IntPoint shift_dir) {
+    chunk_map.shift_matrix(shift_dir, world_map);
 }
 
 /*
@@ -701,15 +676,7 @@ void Game::update_chunk_map(IntPoint central_chunk) {
  * to true if they have been seen by the player.
  */
 void Game::draw_visibility_lines() {
-    /*
-    IntPoint m_char;
-    if(main_char.get_depth() >=0) {
-        m_char = IntPoint(main_char.get_y(),
-                                      main_char.get_x());
-    } else {
-    */
-    IntPoint m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-    //}
+    IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -733,15 +700,7 @@ void Game::draw_visibility_lines() {
 }
 
 void Game::undo_visibility() {
-    /*
-    IntPoint m_char;
-    if(main_char.get_depth() >=0) {
-        m_char = IntPoint(main_char.get_y(),
-                                      main_char.get_x());
-    } else {
-    */
-    IntPoint m_char = IntPoint(STARTING_HEIGHT/2, STARTING_WIDTH/2);
-    //}
+    IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;

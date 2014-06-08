@@ -23,13 +23,13 @@
 /*
  * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
  * representing coordinates within that chunk.
- * POST: Returns and IntPoint containing the absolute coordinates, i.e. the
- * coordinates there were no chunks.
+ * POST: Returns an IntPoint containing the absolute coordinates, i.e. the
+ * coordinates if there were no chunks.
  */
 
 IntPoint get_abs(IntPoint chunk, IntPoint coords) {
-    return IntPoint(chunk.row * STARTING_HEIGHT + coords.row, 
-            chunk.col * STARTING_WIDTH + coords.col);
+    return IntPoint(chunk.row * CHUNK_HEIGHT + coords.row,
+            chunk.col * CHUNK_WIDTH + coords.col);
 }
 
 /* Returns all the files in a directory

@@ -18,7 +18,6 @@
  */
 
 #include <dungeon.h>
-#include <stdlib.h>
 using namespace tiledef;
 
 Dungeon::Dungeon()
@@ -144,9 +143,10 @@ void Dungeon::make_spawner(int _depth)
     while(spawn_room.br.row-spawn_room.tl.row<4 || spawn_room.br.col-spawn_room.tl.col<4);
     IntPoint spawn;
     do{
-    spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
+        spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
     }
     while(spawn==down_stair || spawn == up_stair);
+    spawner_loc = spawn;
     spawner = Spawner(spawn.col, spawn.row, _depth, kobold);
     dungeon[spawn.row][spawn.col] = KOBOLD_SPAWNER;
 }
@@ -233,19 +233,22 @@ void Dungeon::dungeon_dump()
                 case 2:
                     cout<<".";
                     break;
+                case 5:
+                    cout<<":";
+                    break;
                 case 4:
                     cout<<"#";
                     break;
                 case 12:
-                    cout<<"#";
+                    cout<<"d";
                     break;
                 case 13:
-                    cout<<"d";
+                    cout<<"u";
                     break;
                 case 30:
                     cout<<"u";
                     break;
-                case 16:
+                case 15:
                     cout<<"S";
                     break;
                 default:

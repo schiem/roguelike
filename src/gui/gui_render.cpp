@@ -42,14 +42,13 @@ void GUI::OnRender() {
         render_enemies();
         render_character();
         render_interface();
-           
-    } else if (current_screen == DEATH_SCREEN) 
-    {
+
+    } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
         drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
-    } 
-    if(game.is_paused())
-    {
+    }
+
+    if(game.is_paused()) {
         drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
     SDL_Flip(screen);
@@ -57,9 +56,9 @@ void GUI::OnRender() {
 
 void GUI::clear_screen()
 {
-    for(int i =0;i<STARTING_WIDTH;i++)
+    for(int i =0;i<SCREEN_WIDTH;i++)
     {
-        for(int j=0;j<STARTING_HEIGHT;j++)
+        for(int j=0;j<SCREEN_HEIGHT;j++)
         {
             drawStr(i, j, std::string(" ").c_str(), ascii, screen, WHITE);
         }
@@ -88,8 +87,7 @@ void GUI::render_canvas()
     }
 }
 
-void GUI::render_enemies()
-{
+void GUI::render_enemies() {
     Tile current_tile;
     IntPoint current_point;
     TilePointerMatrix tm = game.get_canvas();
@@ -106,14 +104,11 @@ void GUI::render_enemies()
     }
 }
 
-void GUI::render_character()
-{
-
-    drawChr(STARTING_WIDTH/2, STARTING_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
+void GUI::render_character() {
+    drawChr(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
 }
 
-void GUI::render_interface()
-{
+void GUI::render_interface() {
     Character* target = game.main_char.get_target();
     if(target != NULL)
     {
@@ -125,34 +120,34 @@ void GUI::render_interface()
     {
         drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
     }
-    
+
     stringstream ss;
     ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
     stringstream ac;
     ac << "Armor: " <<game.main_char.get_armor();
-    drawStr(STARTING_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
-    drawStr(STARTING_WIDTH/2, 0, ac.str().c_str(), ascii, screen, WHITE);
+    drawStr(SCREEN_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
+    drawStr(SCREEN_WIDTH/2, 0, ac.str().c_str(), ascii, screen, WHITE);
 }
 
 
 void GUI::render_menu(Menu* menu)
 {
-    
-    //menu's will always be rendered in the middle of the screen, fyi
+
+    //menus will always be rendered in the middle of the screen, fyi
     //clear the background in the specified height/width
     //width is automatically 20
     int height = menu->options.size() + menu->padding;
     int width = get_max_width(menu->options) + menu->padding;
-    int start_row = (STARTING_HEIGHT - height) / 2;
-    int start_col = (STARTING_WIDTH - width) / 2;
-    int end_row = (STARTING_HEIGHT + height) / 2;
-    int end_col = (STARTING_WIDTH + width) / 2;
+    int start_row = (SCREEN_HEIGHT - height) / 2;
+    int start_col = (SCREEN_WIDTH - width) / 2;
+    int end_row = (SCREEN_HEIGHT + height) / 2;
+    int end_col = (SCREEN_WIDTH + width) / 2;
  
     int extra_row = start_row - menu->padding;
     int extra_end_row = start_row + menu->num_extra_lines() + menu->padding;
     int extra_width = get_max_width(menu->get_extra_lines()) + menu->padding; 
-    int extra_col = (STARTING_WIDTH - extra_width)/2;
-    int extra_end_col = (STARTING_WIDTH + extra_width)/2;
+    int extra_col = (SCREEN_WIDTH - extra_width)/2;
+    int extra_end_col = (SCREEN_WIDTH + extra_width)/2;
     
     if(menu->num_extra_lines() != 0)
     {
@@ -179,10 +174,10 @@ void GUI::render_menu(Menu* menu)
     //draw a box around the extra lines 
 
     int starting_col;
-    starting_col = (STARTING_WIDTH - menu->title.size()) / 2;
-    
+    starting_col = (SCREEN_WIDTH - menu->title.size()) / 2;
+
     //draw the title
-    drawStr(starting_col, (STARTING_HEIGHT/4), menu->title.c_str(),
+    drawStr(starting_col, (SCREEN_WIDTH/4), menu->title.c_str(),
             ascii, screen, RED);
     
     
@@ -211,8 +206,7 @@ void GUI::render_menu(Menu* menu)
         }
         
         string_size = option.size();
-        starting_col = (STARTING_WIDTH - string_size) / 2;
-        
+        starting_col = (SCREEN_WIDTH - string_size) / 2;
         if(menu->selection == i) {
             color = WHITE;
         } else {
