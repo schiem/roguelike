@@ -177,7 +177,7 @@ void GUI::render_menu(Menu* menu)
     starting_col = (SCREEN_WIDTH - menu->title.size()) / 2;
 
     //draw the title
-    drawStr(starting_col, (SCREEN_WIDTH/4), menu->title.c_str(),
+    drawStr(starting_col, (SCREEN_HEIGHT/4), menu->title.c_str(),
             ascii, screen, RED);
     
     
