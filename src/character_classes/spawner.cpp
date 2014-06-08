@@ -1,6 +1,8 @@
 /**
- *  SPAWNER.CPP
- *
+ *  @file SPAWNER.CPP
+ *  @author Michael Yoder
+ * 
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -33,7 +35,6 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
 
 bool Spawner::should_spawn()
 {
-    //TODO: put in a switch{case} for this
     return (rand() % 100 == 0);
 }
 

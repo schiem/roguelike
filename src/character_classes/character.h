@@ -418,14 +418,24 @@ class Character
 
 };
 
+/**
+ * The class for the character used by the player.
+ * The main character class.  I really don't know how much else there is
+ * to say about it...maybe I'll think of it later.
+ */
+
 class Main_Character : public Character{
-    protected:
-        char name[];
-        //inventory
-        //equipment
    public:
+        /**
+         * The default constructor.
+         */
         Main_Character();
-        Main_Character(int, int, int, Tile, MiscType, int, int, int, int, int);
+
+        /**
+         * The basic constructor.
+         * @see Character(int _max_health, int _x, int _y, Tile _sprite, Item* _corpse, int _chunk_y, int _chunk_y, int _depth, int _morality, int _attack)
+         */
+        Main_Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int_chunk_x, int _chunk_y, int _depth, int _morality, int _attack);
 };
 
 #endif

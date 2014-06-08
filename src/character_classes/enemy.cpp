@@ -1,6 +1,8 @@
 /**
- *  ENEMY.CPP
- *
+ *  @file ENEMY.CPP
+ *  @author Michael Yoder
+ *  
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -117,8 +119,6 @@ int Enemy::get_sight()
     return sight;
 }
 
-/* Converts the chunk/x-y coordinates to coordinates in the enemies surroundings
- */
 IntPoint Enemy::get_sur_coords(IntPoint _chunk, IntPoint _coords)
 {
     IntPoint tl = get_abs(chunk, IntPoint(y-(sight+1), x-(sight+1)));
@@ -138,27 +138,6 @@ IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
         return IntPoint(sight+1, sight+1);
     }
 }
-
-/* PRE: Assumes that the start and goal are within surroundings
- * POST: Returns a vector of IntPoints containing the appropriate path
- *
- * This calculates the best path between two coordinates on a given array of tiles
- * using the a* algorithm.  This is done by keeping track of an "open" and a "closed"
- * list of tiles.  The open list represents tiles that could potentially be looked at,
- * and the closed list is a list of tiles that have already been looked at.
- *
- * The current tile is the tile that is currently being considered, and every tile around
- * it is added to the open list, assuming that those tiles can be moved through and are
- * not on the closed list.  Each tile added to the open list is given a g, h, and f score,
- * and the curren tile becomes the parent.
- * G represents the distance from the start point to the tile, h (standing for heuristic)
- * is a measure from the tile to the goal, and f = h + g.  If a tile is on the open list,
- * then f is recalculated for the current tile.  If it is lower, then the current tile becomes
- * the new parent.
- *
- * Each loop, the current tile is the one on the open list with the shortest f score.  If the
- * goal is on the open list, or the open list is empty, then the algorithm is stopped.
- */
 
 std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
 {
@@ -267,10 +246,6 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
     return path;
 }
 
-/*
- * Little debugging thing to dump a tilematrix to cout
- */
-
 void Enemy::dump_matrix(TileMatrix& map)
 {
     int tile;
@@ -320,11 +295,6 @@ void Enemy::dump_matrix(TileMatrix& map)
     cout<<"-----------------------------------------------------"<<endl;
 }
 
-/* PRE: I hate pre/post conditions.
- * POST: Returns an int containing the index if the element is present,
- * or -1 if it isn't.
- */
-
 int Enemy::is_in(IntPoint point, std::vector<ATile> list)
 {
     for(int i=0;i<list.size();i++)
@@ -337,9 +307,6 @@ int Enemy::is_in(IntPoint point, std::vector<ATile> list)
     return -1;
 }
 
-/* The manhattan heuristic.
- */
-
 int Enemy::manhattan(IntPoint current, IntPoint goal)
 {
     int dy = (current.row - goal.row) * 10;
@@ -349,9 +316,6 @@ int Enemy::manhattan(IntPoint current, IntPoint goal)
     return dx + dy;
 }
 
-/*  PRE: It's a simple function.
- *  POST: Returns the smallest f value from a list.
- */
 int Enemy::get_smallest_f(std::vector<ATile>& list)
 {
     int smallest = list[0].f;
@@ -397,12 +361,6 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
 /*------------------------------
  *   AI FUNCTIONS
  ------------------------------*/
-
- /* The ai for the aggressive enemies.
-    Takes the surroundings as a tilematrix and a list of nearby characters and
-    steps towards one if it is determined that it should attack it.  If it is next
-    to one, it will attack it.
-    */
 
 void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
 {
