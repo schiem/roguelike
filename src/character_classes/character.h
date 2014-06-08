@@ -1,6 +1,8 @@
 /**
- *  CHARACTER.H
- *
+ *  @file CHARACTER.H
+ *  @author Michael Yoder
+ *  
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -29,76 +31,390 @@
 #include <vector>
 #include <cstring>
 
+/**
+ * A class which is used to construct all characters in game.
+ * This is the class that acts as the base for all enemies, NPCs,
+ * the main character, and anything else that may be considered an
+ * enemy in the game.
+ */
+
 class Character
 {
     protected:
-        //variables
-        //Moral is a spectrum from 0-5, and represents
-        //...morality? Basically, it's a good/evil thing
-        //so you can see if something should attack/be attacked
+        /**
+         * A protected spectrum ranging from 0-5.
+         * Morality acts as the basis for whether or not characters
+         * will attack each other, i.e. characters with 0 will attack
+         * characters with 5.
+         * \todo Make this an enum.
+         */
         int moral;
+        
+        /** 
+         * A vector representation of the stats of a character.
+         * All of the stats of a character (health, armor, strength, etc.
+         * will be held in this vector.
+         */
         std::vector<int> stats;
+        
+        /**
+         * A vector representing the current stats of a character.
+         * Whenever one of the player's stats temporarily changes,
+         * as in a lowering or raising of health, or lowering or raising
+         * of another stat, it will be held in this vector.
+         */
         std::vector<int> current_stats;
-        //current coordinates within dungeon
+        
+        /**
+         * The character's coordinate in the x direction.
+         */
         int x;
+        
+        /**
+         * The character's coordinates in the y direction.
+         */
         int y;
+        
+        /**
+         * A vector representing the character's current inventory.
+         */
         std::vector<Item*> inventory;
+        
+        /**
+         * A vector representing the character's equipment.
+         * This will be "statically" sized, and certain indices
+         * represent certain item slots, e.g. head
+         */
         std::vector<Item*> equipment;
+        
+        /**
+         * An integer representing the maximum size of a characters inventory.
+         * \todo Implement this so that character's cannot carry more than their
+         * inventory.
+         */
         int inventory_size;
-        //Skills skill[];
+        
+        /**
+         * How the character will appear in the game.
+         */
         Tile sprite;
+        
+        /**
+         * An item representing the body of the character.  
+         * An item that is completely separate from the inventory that is droppped
+         * onto the map upon the death of the character.  Because it will always be moved
+         * to the chunk object before destructing the character, it does not need to be
+         * deleted by the character.
+         */
         Item* corpse;
+        
+        /**
+         * The depth the character is in the chunk.
+         */
         int depth;
+        
+        /**
+         * An IntPoint object of the character's coordinates in the chunk_map.
+         */
         IntPoint chunk;
-        Tile underfoot;
+        
+        /**
+         * What the character is currently focused on.
+         * For the main character, this will primarily be to display information about
+         * the enemy or NPC that they are focused on.  For non-players characters (both
+         * enemies and NPCs, this will act as a continuous representation of their focus.
+         * \todo Implement the targetting system for the main character.
+         */
         Character* target;
-        //methods
 
     public:
+        /**
+         * The default constructor.
+         */
         Character();
-        // what the heck are these parameters you guys??
-        //lol who cares alan?
-        Character(int, int, int, Tile, MiscType, int, int, int, int, int);
-        Character(int, int, int, int, int);
+        
+        /**
+         * The constructor for the character class.
+         * This is the constructor which is used to construct the enemy and 
+         * main character derived classes. 
+         * @param _x The x value to give the character.
+         * @param _y The y value to give to the character.
+         * @param _chunk_x The x coordinate of the chunk to place the character.
+         * @param _chunk_y The y coordinate of the chunk to place the character.
+         * @param _depth The depth in the chunk to place the charcter.
+         */
+        Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth);
+        
+        /**
+         * A check to see whether or not the character is alive.
+         * @returns True if the character's current health is > 0, otherwise false.
+         * @see current_stats, stats
+         */
         bool is_alive() const;
-        void take_damage(int);
-        void attack(Character*);
+        
+        /**
+         * Reduces the character's current health by a given amount.
+         * @param damage The amount to reduce the character's health by.
+         * @see current_stats
+         * @see stats
+         */ 
+        void take_damage(int damage);
+        
+        /**
+         * Reduces a given character's health by a certain amount.
+         * Damages another character by calling take_damage() on that
+         * character.
+         * @see take_damage(int damage)
+         * @see current_stats
+         * @see stats
+         */
+        void attack(Character* _chara);
+        
+        /**
+         * Public access function for the character's inventory.
+         * @return The character's inventory.
+         * @see inventory
+         */
         std::vector<Item*>* get_inventory();
+        
+         /**
+          * Public access function for the character's equipment.
+          * @return The character's equipment.
+          * @see equipment
+          */
         std::vector<Item*>* get_equipment();
-        void add_item(Item*);
-        void drop_item(Item*);
-        void drop_item(int);
-        void destroy_item(Item*);
-        void equip_item(Item*);
-        void remove_item(int);
+        
+        /**
+         * Add an item to the character's inventory.
+         * @param new_item The item to place in the character's inventory.
+         */
+        void add_item(Item* new_item);
+        
+        /**
+         * Remove an item from the character's inventory.
+         * This function is NOT memory safe, and only remove's the pointer to
+         * the item, it does not delete the item.  The item should always be asisgned
+         * somewhere else (in the case of this function, it should be in the chunk). If
+         * the item passed in is not in the inventory, nothing will happen.
+         * @param item The item to remove from the inventory.
+         */
+        void drop_item(Item* item);
+        
+        /**
+         * Remove an item from the character's inventory by index.
+         * Behaves the same as add_item(Item* new_item)
+         * @see add_item(Item* new_item)
+         */
+        void drop_item(int item);
+        
+        /**
+         * Remove an item from the inventory and destroy the reference to it.
+         * This function IS memory safe, and will remove the pointer to the item.
+         * This means that there should no longer be ANY references to this object
+         * upon calling this function.  If the item is not found in the inventory,
+         * nothing will happen. 
+         * @param item The item to destroy.
+         */
+        void destroy_item(Item* item);
+        
+        /**
+         * Moves an item from the inventory to the equipment.
+         * Checks if it is possible to equip or wield the item.  If so, it checks the
+         * equipment slot that item should go into and places it in that slot.  If an
+         * item is already equipped, it will remove it from the equipment.  The armor
+         * or attack is updated based on the item's stats.
+         * @param item THe item which will be equipped.
+         * @see equipment
+         * @see remove_item(int item)
+         * @see Item
+         */
+        void equip_item(Item* item);
+        
+        /**
+         * Removes an item from the equipment by index.
+         * If there is an item equipped, it will remove it.
+         * @param item The index of the item to be removed.
+         */
+        void remove_item(int item);
+        
+        /**
+         * Removes all equipment.
+         */
         void remove_all();
-
+        
+        /**
+         * Public accessor for the x coordinate.
+         * @return Member variable x. 
+         * @see x
+         */
         int get_x();
+        
+        /** Public accessor for the y coordinate.
+         * @return Member variable y. 
+         * @see y
+         */
         int get_y();
+        
+        /**
+         * Public accessor for the chunk coordinates.
+         * @return Member variable chunk.
+         * @see chunk
+         */
         IntPoint get_chunk();
+        
+        /**
+         * Public accessor for the x component of the chunk.
+         * @return Column component of chunk.
+         * @see chunk
+         */
         int get_chunk_x();
+        
+          
+        /**
+         * Public accessor for the y component of the chunk.
+         * @return Row component of chunk.
+         * @see chunk
+         */
         int get_chunk_y();
+        
+        /**
+         * Public accessor for the sprite.
+         * @return Member variable sprite.
+         * @see sprite
+         */
         Tile get_char();
+        
+        /**
+         * Public accessor for the corpse.
+         * @return Member variable corpse.
+         * @see corpse
+         */
         Item* get_corpse();
+        
+        /**
+         * Public accessor for the depth.
+         * @return Member variable depth.
+         * @see depth
+         */
         int get_depth();
+        
+        /**
+         * Public accessor for the target.
+         * @return Member variable target.
+         * @see target
+         */
         Character* get_target();
+        
+        /**
+         * Public accessor for the max health.
+         * Max health corresponds to stats[HEALTH].
+         * @return Member variable stats[HEALTH].
+         * @see stats
+         */
         int get_max_hp();
+        
+        /**
+         * Public accessor for the current health.
+         * Current health corresponds to current_stats[HEALTH].
+         * @return Member variable current_stats[HEALTH].
+         * @see current_stats
+         */
         int get_cur_hp();
+        
+        /**
+         * Public accessor for the moral member variable.
+         * @return Member variable moral.
+         * @see moral
+         */
         int get_moral();
+        
+        /**
+         * Public accessor for the armor.
+         * Armor corresponds to current_stats[ARMOR].
+         * @see current_stats
+         */
         int get_armor();
-        void set_x(int);
-        void set_y(int);
-        void set_chunk(IntPoint);
-        void set_chunk_x(int);
-        void set_chunk_y(int);
+
+        /**
+         * Public setter for the x coordinate.
+         * @param _x New x coordinate.
+         * @see x
+         */
+        void set_x(int _x);
+  
+        /**
+         * Public setter for the y coordinate.
+         * @param _y New y coordinate.
+         * @see y
+         */      
+        void set_y(int _y);
+        
+        /**
+         * Public setter for the chunk.
+         * @param _chunk New set of chunk coordinates.
+         * @see chunk
+         */
+        void set_chunk(IntPoint _chunk);
+        
+        /**
+         * Public setter for the x component of chunk.
+         * @param _chunk_x New x component of the chunk.
+         * @see chunk
+         */
+        void set_chunk_x(int _chunk_x);
+        
+        /**
+         * Public setter for the y component of chunk.
+         * @param _chunk_y New y component of the chunk.
+         * @see chunk
+         */
+        void set_chunk_y(int _chunk_y);
+        
+        /**
+         * Public setter for the depth.
+         * @param d New depth.
+         * @see depth
+         */
         void set_depth(int);
-        void set_target(Character*);
-        void set_armor(int);
-        Tile* get_underfoot();
-        void consume_item(Item*);
+        
+        /**
+         * Public setter for the target.
+         * @param _target New target.
+         * @see target
+         */
+        void set_target(Character* _target);
+        
+        /** 
+         * Public setter for the armor.
+         * @param a New armor value.
+         * @see current_stats
+         */
+        void set_armor(int a);
+        
+        /**
+         * Consume an item based on the stats of that item.
+         * Checks to see if the item is consumable.  If so, alter the appropriate
+         * stats based on the item's attributes.
+         * @param item The item to consume.
+         * @see Consumable
+         */
+        void consume_item(Item* item);
+        
+        /**
+         * Public getter for accessing a current stat value.
+         * @param stat The index value of the stat to access.
+         * @return The current value of that stat from the array current_stats.
+         * @see current_stats
+         */
         int get_stat(int);
-        void set_stat(int, int);
-        //terrain get_surroundings
+        
+        /**
+         * Public setter for setting a current stat value.
+         * @param stat The index value of the stat to set.
+         * @param amount The value the stat should be set to.
+         * @see current_stats
+         */
+        void set_stat(int stat, int amount);
 
 };
 

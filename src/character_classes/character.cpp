@@ -1,6 +1,8 @@
 /**
- *  CHARACTER.CPP
+ *  @file CHARACTER.CPP
+ *  @author Michael Yoder
  *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -23,32 +25,6 @@ Character::Character() {
 
 }
 
-/* PRE: Will be given a max health, a starting x and a starting y
- * The x and the y are the coordinates within the current chunk/dungeon
- * POST: A character object with the desired attributes will be returned
-*/
-Character::Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y,  int _depth, int _morality, int _attack) {
-    stats.resize(3);
-    
-    stats[HEALTH] = _max_health;
-    stats[ARMOR] = 0;
-    stats[ATTACK] = _attack;
-    current_stats = stats;
-    x = _x;
-    y = _y;
-    moral = _morality;
-    corpse = new Misc(IntPoint(y, x), _corpse);
-    //somewhat temporary
-    sprite = _sprite;
-    chunk = IntPoint(_chunk_y, _chunk_x);
-    depth = _depth;
-    target = NULL;
-    equipment = vector<Item*>(7);    
-}
-
-/*
- * Constructor for the character class
- */
 Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
 {
     stats.resize(3);
@@ -60,9 +36,6 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     equipment = vector<Item*>(7);    
 }
 
-/* PRE: None
- * POST: Returns true if the character is still alive (health is > stats[HEALTH])
-*/
 bool Character::is_alive() const {
     if (current_stats[HEALTH] <= 0){
         return false;
@@ -71,13 +44,6 @@ bool Character::is_alive() const {
     }
 }
 
-/* PRE: Will be passed the desired change in x and y coordinates
- * POST: Will change the character's coordinates to match this
-*/
-
-/* PRE: Takes damage to reduce a character's health by
- * POST: Subtracts the damage from health and checks if the character is still alive
-*/
 void Character::take_damage(int damage){
     current_stats[HEALTH] -= damage;
 }
