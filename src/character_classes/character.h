@@ -1,7 +1,7 @@
 /**
  *  @file CHARACTER.H
  *  @author Michael Yoder
- *  
+ *
  *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
@@ -100,7 +100,7 @@ class Character
         Tile sprite;
 
         /**
-         * An item representing the body of the character.  
+         * An item representing the body of the character.
          * An item that is completely separate from the inventory that is droppped
          * onto the map upon the death of the character.  Because it will always be moved
          * to the chunk object before destructing the character, it does not need to be
@@ -175,7 +175,7 @@ class Character
          * @param damage The amount to reduce the character's health by.
          * @see current_stats
          * @see stats
-         */ 
+         */
         void take_damage(int damage);
 
         /**
@@ -195,11 +195,11 @@ class Character
          */
         std::vector<Item*>* get_inventory();
 
-        /**
-         * Public access function for the character's equipment.
-         * @return The character's equipment.
-         * @see equipment
-         */
+         /**
+          * Public access function for the character's equipment.
+          * @return The character's equipment.
+          * @see equipment
+          */
         std::vector<Item*>* get_equipment();
 
         /**
@@ -230,7 +230,7 @@ class Character
          * This function IS memory safe, and will remove the pointer to the item.
          * This means that there should no longer be ANY references to this object
          * upon calling this function.  If the item is not found in the inventory,
-         * nothing will happen. 
+         * nothing will happen.
          * @param item The item to destroy.
          */
         void destroy_item(Item* item);
@@ -262,13 +262,13 @@ class Character
 
         /**
          * Public accessor for the x coordinate.
-         * @return Member variable x. 
+         * @return Member variable x.
          * @see x
          */
         int get_x();
 
         /** Public accessor for the y coordinate.
-         * @return Member variable y. 
+         * @return Member variable y.
          * @see y
          */
         int get_y();
@@ -364,7 +364,7 @@ class Character
          * Public setter for the y coordinate.
          * @param _y New y coordinate.
          * @see y
-         */      
+         */
         void set_y(int _y);
 
         /**
@@ -402,7 +402,7 @@ class Character
          */
         void set_target(Character* _target);
 
-        /** 
+        /**
          * Public setter for the armor.
          * @param a New armor value.
          * @see current_stats

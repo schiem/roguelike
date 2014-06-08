@@ -1,6 +1,8 @@
-/*
- *  CHUNK_MATRIX.CPP
+/** 
+ *  @file CHUNK_MATRIX.CPP
+ *  @author Seth Yoder
  *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -17,25 +19,8 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chunk_matrix.h"
+#include <chunk_matrix.h>
 
-/**
- * @file chunk_matrix.cpp
- *
- * The primary data model and memory-loading bottleneck.
- *
- * The Chunk Matrix s a square matrix with a diameter that is given at
- * construction. The matrix is initialized using populate_initial, given central
- * chunk coordinates on the world map and a reference to the world map.
- *
- * For each of those chunks, that function calls the init() method, which will
- * by default construct the chunks if they haven't already been saved to the
- * filesystem or load them from the filesystem if they have.
- *
- * Every time the main character crosses a chunk boundary, shift_matrix will be
- * called. The chunk matrix will load in the proper chunks, creating or
- * deserializing chunks as needed.
- */
 
 ChunkMatrix::ChunkMatrix() {
 
@@ -54,11 +39,6 @@ ChunkMatrix::ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix& wo
     populate_initial(center_chunk, world_map);
 }
 
-/**
- * Populates the chunk matrix initially, affecting the internal model.
- * @param[in] center_chunk An IntPoint representing the central chunk in the matrix
- * @param[in] world_map The world map, passed by reference here to avoid copying.
- */
 void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_map) {
     int world_row, world_col;
     for(int row = 0; row < diameter; row++) {
@@ -72,10 +52,6 @@ void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_m
     pretty_print();
 }
 
-/**
- * Not actually as pretty as you might think, but prints a graphic of the chunk
- * matrix and its coordinates.
- */
 void ChunkMatrix::pretty_print() {
     for(int row = 0; row < diameter; row++) {
         cout<<endl<<"--------------------------"<<endl;
@@ -87,40 +63,20 @@ void ChunkMatrix::pretty_print() {
     cout<<endl<<"--------------------------"<<endl;
 }
 
-/**
- * Determines whether or not the given local coordinates on this small chunk map
- * are out of bounds.
- * @param[in] chunk_point an IntPoint representing a chunk's location on the
- * private "model" matrix.
- * @return True if the given point cannot lie on the chunk map.
- */
 bool ChunkMatrix::out_of_bounds(IntPoint local_chunk_point) {
     return (local_chunk_point.row < 0 || local_chunk_point.row >= diameter ||
             local_chunk_point.col < 0 || local_chunk_point.col >= diameter);
 }
 
-/**
- * @return an IntPoint representing the amount by which the top left corner of
- * the ChunkMatrix is offset from the top left corner of the world.
- */
 IntPoint ChunkMatrix::get_offset() {
     return offset;
 }
 
-/**
- * Set the offset (amount by which the top left corner of the ChunkMatrix
- * differs from the world's top left corner).
- * @param[in] point a point representing a location on the world map.
- */
 void ChunkMatrix::set_offset(IntPoint point) {
     offset = point;
 }
 
 
-/**
- * @param abs_chunk_loc the absolute chunk coordinates on the world map.
- * @return a reference to the chunk from the local buffer.
- */
 Chunk* ChunkMatrix::get_chunk_abs(IntPoint abs_chunk_loc) {
     IntPoint localized = IntPoint(abs_chunk_loc.row - offset.row,
                                   abs_chunk_loc.col - offset.col);
@@ -137,48 +93,16 @@ Chunk* ChunkMatrix::get_chunk_abs(IntPoint abs_chunk_loc) {
     return &model[localized.row][localized.col];
 }
 
-/**
- * The same as the other get_chunk_abs, but with two ints instead of an
- * IntPoint.
- */
 Chunk* ChunkMatrix::get_chunk_abs(int row, int col) {
     return get_chunk_abs(IntPoint(row, col));
 }
 
-/**
- * TODO update more code to use this instead of get_chunk_abs(main_char.get_y(),
- * main_char.get_x()) 
- * @return the central chunk in the model.
- */
 Chunk* ChunkMatrix::get_center_chunk() {
     int rowcol = (diameter - 1) / 2;
     //cout<<"Center chunk = "<<rowcol<<endl;
     return &model[rowcol][rowcol];
 }
 
-/**
- * Shifts the contents of the chunk matrix.
- *
- * Will shift the chunk buffer around on the world map, agnostic of the
- * chunk buffer diameter. The concept of the chunk buffer is shown below.
- * Periods are unloaded chunks on the world map, and x's are chunks within the
- * chunk buffer (so, they are loaded). The buffer will move around, loading and
- * unloading chunks as needed. Serialization and deserialization should all be
- * handled in this function and the functions that it causes.
- *
- *    . . . . . .
- *    . . . . . .
- *    . . x x x .
- *    . . x x x .
- *    . . x x x .
- *    . . . . . .
- *
- * @param directions an IntPoint representing the direction to shift the matrix:
- * (1, 0) means one chunk to the right; (-1, -1) means one chunk to the left and
- * one chunk up; (0, -1) means 1 chunk up, etc.
- * @param world_map a reference to the world map.
- *
- */
 void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     int world_row, world_col;
 
