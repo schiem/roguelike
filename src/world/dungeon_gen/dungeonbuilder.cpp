@@ -38,6 +38,7 @@ void DungeonBuilder::print(SDL_Surface* ascii, SDL_Surface* screen, int color) c
  * Will return true if result <= given; will return false if
  * result > given.
  */
+
 bool DungeonBuilder::rolled_over(int given) const {
     int generated = rand() % 100;
     if(generated <= given) {

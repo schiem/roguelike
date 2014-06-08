@@ -42,7 +42,7 @@ class Character
         int x;
         int y;
         int attack_dam;
-        int armor;    
+        int armor;
         std::vector<Item*> inventory;
         std::vector<Item*> equipment;
 
@@ -52,7 +52,7 @@ class Character
         int depth;
         IntPoint chunk;
         Tile underfoot;
-        Character* target; 
+        Character* target;
         //methods
 
     public:

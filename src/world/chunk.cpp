@@ -273,11 +273,12 @@ void Chunk::serialize() {
     ofstream chunk_data_file(file_name.c_str(),
             std::ofstream::out | std::ofstream::binary);
 
-    int num_header_bytes = 4;
+    int num_header_bytes = 5;
     int bytes_per_tile = 1;
 
     int file_size = num_header_bytes
                     + 6*(chunk_depth)
+                    + 2*(overworld.has_layer_below)
                     + bytes_per_tile*width*height*(chunk_depth+1);
     char file[file_size];
 
@@ -285,8 +286,15 @@ void Chunk::serialize() {
     file[1] = height;
     file[2] = chunk_depth;
     file[3] = chunk_type.id;
+    file[4] = overworld.has_layer_below;
 
     int current_byte = num_header_bytes;
+
+    if(overworld.has_layer_below) {
+        file[current_byte] = overworld.down_stair.row;
+        file[current_byte + 1] = overworld.down_stair.col;
+        current_byte += 2;
+    }
 
     for(int i = 0; i < chunk_depth; i++) {
         file[current_byte] = dungeon_floors[i].spawner_loc.row;
@@ -299,7 +307,6 @@ void Chunk::serialize() {
     }
 
     cout<<chunk_depth<<"  "<<current_byte<<endl;
-    assert(chunk_depth == ((current_byte - 4) / 6));
 
     unsigned int tile_id, seen;
     Tile current_tile;
@@ -348,17 +355,24 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
     char * file_data = new char[file_size];
     chunk_data_file.read(file_data, file_size);
 
-    int num_header_bytes=4;
+    int num_header_bytes=5;
 
     width = file_data[0];
     height = file_data[1];
     chunk_depth = file_data[2];
     chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
-
     overworld = Overworld(width,height,(chunk_depth > 0),chunk_type);
+    overworld.has_layer_below = file_data[4];
+
 
     dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
     int current_byte = num_header_bytes;
+
+    if(overworld.has_layer_below) {
+        overworld.down_stair.row = file_data[current_byte];
+        overworld.down_stair.col = file_data[current_byte + 1];
+        current_byte += 2;
+    }
 
     for(int i = 0; i < chunk_depth; i++) {
         dungeon_floors[i].spawner_loc.row = file_data[current_byte];

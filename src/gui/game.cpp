@@ -159,8 +159,6 @@ std::vector<Enemy> Game::get_vis_enemies() {
 
 
 /*
- * Resets the top layer.
- * Checks to see if the character is out of the chunk.  If so, update the chunk/chunk_map
  * Updates the canvas with the area around the character in terms of buffer coordinates.
  * Draws visibility lines.
  * This is to refresh the screen whenever the character moves.
@@ -492,7 +490,7 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
     for(int i=0;i<enemy_list.size();i++)
     {
         IntPoint enem_chunk = enemy_list[i].get_chunk();
-        IntPoint enem_coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x()); 
+        IntPoint enem_coords = IntPoint(enemy_list[i].get_y(), enemy_list[i].get_x());
         if(get_abs(enem_chunk, enem_coords) == get_abs(_chunk, _coords))
         {
             return &enemy_list[i];
@@ -605,6 +603,7 @@ void Game::update_buffer(IntPoint central_chunk) {
             }
         }
     }
+    refresh();
 }
 
 void Game::update_chunk_map(IntPoint shift_dir) {
@@ -623,15 +622,7 @@ void Game::update_chunk_map(IntPoint shift_dir) {
  * to true if they have been seen by the player.
  */
 void Game::draw_visibility_lines() {
-    /*
-    IntPoint m_char;
-    if(main_char.get_depth() >=0) {
-        m_char = IntPoint(main_char.get_y(),
-                                      main_char.get_x());
-    } else {
-    */
     IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
-    //}
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -655,15 +646,7 @@ void Game::draw_visibility_lines() {
 }
 
 void Game::undo_visibility() {
-    /*
-    IntPoint m_char;
-    if(main_char.get_depth() >=0) {
-        m_char = IntPoint(main_char.get_y(),
-                                      main_char.get_x());
-    } else {
-    */
     IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
-    //}
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;

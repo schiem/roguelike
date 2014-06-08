@@ -87,7 +87,6 @@ class Game
         void recalculate_visibility_lines(int radius);
         void update_buffer(IntPoint);
         void update_chunk_map(IntPoint);
-        void draw_visibility_lines();
         void undo_visibility();
 
         //ENEMY Data/Models
@@ -124,6 +123,9 @@ public:
         //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);
+
+        
+        void draw_visibility_lines();
 
 };
 
