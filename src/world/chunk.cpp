@@ -1,5 +1,8 @@
 /**
- *  CHUNK.CPP
+ *  @file CHUNK.CPP
+ *  @author Michael & Seth Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -21,7 +24,6 @@
 using namespace std;
 
 Chunk::Chunk() {
-    initialized = false;
     height = CHUNK_HEIGHT;
     width = CHUNK_WIDTH;
 }
@@ -32,52 +34,6 @@ Chunk::Chunk(MapTile tile_type, int _world_row, int _world_col) {
     init(tile_type, _world_row, _world_col);
 }
 
-void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
-    chunk_type = tile_type;
-    initialized = true;
-    world_row = _world_row;
-    world_col = _world_col;
-
-    bool found_chunk = find_serialized_chunk(world_row, world_col);
-    if(!found_chunk) {
-        if(tile_type == map_tile::MAP_DEFAULT) {
-            build_land_chunk();
-        } else if (tile_type == map_tile::MAP_WATER) {
-            build_water_chunk();
-        } else if (tile_type == map_tile::MAP_BEACH) {
-            build_beach_chunk();
-        } else if (tile_type == map_tile::MAP_FOREST) {
-            build_forest_chunk();
-        }
-    }
-}
-
-/**
- * PRE: Will be given a file name of a chunk data file.
- * POST: Will determine the chunk's row and column. Files are saved in the form
- * 'chunk_<row>_<col>'.
- */
-IntPoint Chunk::parse_file_name(string _file_name) {
-    //The word "chunk" is the prefix of the file name.
-    string file_name = _file_name.substr(5);
-
-    string row_str = "";
-    string col_str = "";
-    int first_underscore = file_name.find("_");
-    for(int i = 0; i < first_underscore; i++) {
-        row_str.push_back(file_name[i]);
-    }
-    col_str = file_name.substr(first_underscore+1);
-
-    return IntPoint(atoi(row_str.c_str()), atoi(col_str.c_str()));
-}
-
-/**
- * PRE: Will be given a row and column on the world map.
- * POST: Will search for the given chunk in CHUNK_DIR, and if it exists, return
- * the name of the file in a string. If it does not exist, return an empty
- * string.
- */
 bool Chunk::find_serialized_chunk(int world_row, int world_col) {
     fs::path chunk_dir(CHUNK_DIR);
 
@@ -96,6 +52,107 @@ bool Chunk::find_serialized_chunk(int world_row, int world_col) {
     }
 
     return false;
+}
+
+void Chunk::deserialize(string file_name, int world_row, int world_col) {
+    //Open the data file.
+    ifstream chunk_data_file(file_name.c_str(),
+            std::ifstream::in | std::ifstream::binary);
+
+    //Stat the file to get the file size easily.
+    int file_size = fs::file_size(file_name);
+    //Initialize an array for the file data.
+    /** \todo does this have to be dynamically allocated? */
+    char * file_data = new char[file_size];
+    //Read the entire file into the file_data array.
+    chunk_data_file.read(file_data, file_size);
+
+    int num_header_bytes=5; //Change this to stay relevant - must match 
+                            //serialization functionality.
+
+    /*
+     * Simply reversing the deserialization.
+     */
+    width = file_data[0];
+    height = file_data[1];
+    chunk_depth = file_data[2];
+    /*
+     * The map tile ID was stored, now we just reverse it to get the chunk type.
+     */
+    chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
+    //Build the overworld.
+    overworld = Overworld(width,height,(chunk_depth > 0),chunk_type);
+    overworld.has_layer_below = file_data[4];
+
+
+    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
+    int current_byte = num_header_bytes;
+    
+    //There is a possibility of 2 bytes being stored for the overworld down
+    //stair location.
+    if(overworld.has_layer_below) {
+        overworld.down_stair.row = file_data[current_byte];
+        overworld.down_stair.col = file_data[current_byte + 1];
+        current_byte += 2;
+    }
+
+    /*
+     * Finding the dungeon stairs, if they have been serialized.
+     */
+    for(int i = 0; i < chunk_depth; i++) {
+        dungeon_floors[i].spawner_loc.row = file_data[current_byte];
+        dungeon_floors[i].spawner_loc.col = file_data[current_byte + 1];
+        dungeon_floors[i].down_stair.row = file_data[current_byte + 2];
+        dungeon_floors[i].down_stair.col = file_data[current_byte + 3];
+        dungeon_floors[i].up_stair.row = file_data[current_byte + 4];
+        dungeon_floors[i].up_stair.col = file_data[current_byte + 5];
+        current_byte += 6;
+    }
+
+    cout<<chunk_depth<<"  "<<current_byte<<endl;
+    assert(chunk_depth == ((current_byte - 4) / 6));
+
+    Tile current_tile;
+    unsigned int tile_id;
+    bool seen;
+    //Undo the serialization.
+    for(int i = -1; i < chunk_depth; i++) {
+        for(int j = 0; j < height; j++) {
+            for(int k = 0; k < width; k++) {
+                //The smallest bit will be 1 if seen = true.
+                seen = (file_data[current_byte] & 1);
+                //Then, we shift right by 1 bit to obtain the tile ID.
+                tile_id = (file_data[current_byte] >> 1);
+                current_tile=tiledef::TILE_INDEX[tile_id];
+                current_tile.seen = seen;
+
+                set_tile(i, j, k, current_tile);
+                current_byte++;
+            }
+        }
+    }
+    //Cleaning up.
+    delete [] file_data;
+    chunk_data_file.close();
+}
+
+void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
+    chunk_type = tile_type;
+    world_row = _world_row;
+    world_col = _world_col;
+
+    bool found_chunk = find_serialized_chunk(world_row, world_col);
+    if(!found_chunk) {
+        if(tile_type == map_tile::MAP_DEFAULT) {
+            build_land_chunk();
+        } else if (tile_type == map_tile::MAP_WATER) {
+            build_water_chunk();
+        } else if (tile_type == map_tile::MAP_BEACH) {
+            build_beach_chunk();
+        } else if (tile_type == map_tile::MAP_FOREST) {
+            build_forest_chunk();
+        }
+    }
 }
 
 void Chunk::build_land_chunk() {
@@ -242,10 +299,6 @@ int Chunk::get_depth() const {
     return chunk_depth;
 }
 
-bool Chunk::is_initialized() const {
-    return initialized;
-}
-
 MapTile Chunk::get_type()
 {
     return chunk_type;
@@ -367,68 +420,3 @@ void Chunk::serialize() {
     chunk_data_file.close();
 }
 
-/**
- * PRE: Will be given the world_row and world_col of a chunk.
- */
-void Chunk::deserialize(string file_name, int world_row, int world_col) {
-    ifstream chunk_data_file(file_name.c_str(),
-            std::ifstream::in | std::ifstream::binary);
-
-    int file_size = fs::file_size(file_name);
-    char * file_data = new char[file_size];
-    chunk_data_file.read(file_data, file_size);
-
-    int num_header_bytes=5;
-
-    width = file_data[0];
-    height = file_data[1];
-    chunk_depth = file_data[2];
-    chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
-    overworld = Overworld(width,height,(chunk_depth > 0),chunk_type);
-    overworld.has_layer_below = file_data[4];
-
-
-    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
-    int current_byte = num_header_bytes;
-
-    if(overworld.has_layer_below) {
-        overworld.down_stair.row = file_data[current_byte];
-        overworld.down_stair.col = file_data[current_byte + 1];
-        current_byte += 2;
-    }
-
-    for(int i = 0; i < chunk_depth; i++) {
-        dungeon_floors[i].spawner_loc.row = file_data[current_byte];
-        dungeon_floors[i].spawner_loc.col = file_data[current_byte + 1];
-        dungeon_floors[i].down_stair.row = file_data[current_byte + 2];
-        dungeon_floors[i].down_stair.col = file_data[current_byte + 3];
-        dungeon_floors[i].up_stair.row = file_data[current_byte + 4];
-        dungeon_floors[i].up_stair.col = file_data[current_byte + 5];
-        current_byte += 6;
-    }
-
-    cout<<chunk_depth<<"  "<<current_byte<<endl;
-    assert(chunk_depth == ((current_byte - 4) / 6));
-
-    Tile current_tile;
-    unsigned int tile_id;
-    bool seen;
-    for(int i = -1; i < chunk_depth; i++) {
-        for(int j = 0; j < height; j++) {
-            for(int k = 0; k < width; k++) {
-
-                seen = (file_data[current_byte] & 1);
-                tile_id = (file_data[current_byte] >> 1);
-                current_tile=tiledef::TILE_INDEX[tile_id];
-                current_tile.seen = seen;
-
-                set_tile(i, j, k, current_tile);
-
-                current_byte++;
-            }
-        }
-    }
-
-    delete [] file_data;
-    chunk_data_file.close();
-}
