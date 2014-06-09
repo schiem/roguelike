@@ -1,5 +1,8 @@
 /**
- *  CORRUPTIBLE_PBLIND_DB.CPP
+ *  @file CORRUPTIBLE_PBLIND_DB.CPP
+ *  @author Seth A. Yoder
+ *  
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,44 +20,16 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * CORRUPTIBLE PROCEDURALLY-BLIND DUNGEON GENERATION
- * =================================================
- *
- * This variant on a procedurally-blind dungeon has a more decayed look. Its
- * walls are often caved in. This is achieved by passing over the created
- * dungeon with an algorithm that modifies cells according to their surroundings
- * and random chance.
- */
-
-
 #include <corruptible_pblind_db.h>
 
 using namespace std;
 using namespace tiledef;
 
-/*
- * Just call the super constructor
- */
 CorruptiblePBlindDB::CorruptiblePBlindDB(int _width, int _height) :
     ProcedurallyBlindDB(_width, _height) {
 
 }
 
-/**
- * PRE: Will be given a vector of IntPoints containing corner blocks on a room.
- * dungeon.
- *
- * POST: Does this:
- *
- *   O O O   15%  O O O
- *   O X X  --->  O O X
- *   O X .        O X X
- *     |
- *     |     15%  O O O
- *     \------->  O O X
- *                O X .
- */
 void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
     int vert = 0;
     int horiz = 0;
@@ -111,42 +86,6 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
     }
 }
 
-/*
- * PRE: Will be called after a dungeon is built.
- * POST: Will "corrupt" dungeon walls according to the following rules:
- *
- * O = empty
- * X = wall
- * . = path
- * ? = anything
- *
- *   O O O   15%  O O O
- *   O X X  --->  O O X
- *   O X .        O X X
- *     |
- *     |     15%  O O O
- *     \------->  O O X
- *                O X .
- *
- *   O O O   5%   O O O
- *   X X X  --->  X O X
- *   ? . ?        X X X
- *     |
- *     |     5%
- *     |------->  O O O
- *     |          X O X
- *     |          . X .
- *     |
- *     |     5%
- *     |------->  O O O
- *     |          X O X
- *     |          . X X
- *     |
- *     |     5%
- *     \------->  O O O
- *                X O X
- *                X X .
- */
 void CorruptiblePBlindDB::corrupt_walls()
 { 
     //Loop through the rooms.
