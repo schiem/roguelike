@@ -42,13 +42,21 @@ EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padd
 
 Menu* EquipmentMenu::make_selection()
 {
+    vector<Item*>* items = game->main_char.get_equipment();
     if(selection == options.size() - 1)
     {
         return new MainMenu(1, BLOCK_WALL, game);
     }
-    else if (options[selection] != "Not equipped")
+    else
     {
-        return new EquipMenu(1, BLOCK_WALL, game, selection);
+        if(items->at(selection) != NULL)
+        {
+            return new EquipMenu(1, BLOCK_WALL, game, selection);
+        }
+        else
+        {
+            return this;
+        }
     }
     return this;
 }

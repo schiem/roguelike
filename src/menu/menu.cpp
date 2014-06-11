@@ -31,9 +31,6 @@ bool Menu::out_of_bounds(int row) {
     return ((row < 0) || (row >= options.size()));
 }
 
-/**
- * Changes the selection menu option.
- */
 void Menu::move_selection(int direction) {
     int new_selection = selection + direction;
     //That rhymed.

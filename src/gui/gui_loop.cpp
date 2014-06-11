@@ -31,4 +31,10 @@ void GUI::OnLoop() {
            current_screen = DEATH_SCREEN;
         }
     }
+    else if(game.is_initialized() && game.is_paused())
+    {
+        //this shouldn't effect anything else because the game is paused,
+        //and it'll make navigating the menu less of a pain.
+        SDL_Delay(100);
+    }
 }
