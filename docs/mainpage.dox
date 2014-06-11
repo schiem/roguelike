@@ -26,4 +26,9 @@ To try it for yourself, clone the repository and generate your own configure scr
     autoreconf --install
     ./configure
     make
+
+Documentation
+-------------
+
+This site represents the dev documentation for the project (thank you very much doxygen).
 */
