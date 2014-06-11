@@ -1,6 +1,8 @@
 /**
- *  AUDIO_MENU.CPP
+ *  @file AUDIO_MENU.CPP
+ *  @author Michael Yoder
  *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify

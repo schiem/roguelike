@@ -36,11 +36,11 @@
 using namespace tiledef;
 using namespace std;
 
-/*
-Each different type of menu is going to be a subclass that overloads the make_selection() function 
-to provide different functionality.  See the documentation for make_selection for more detail.
-*/
-
+/**
+ * The basis of the menuing system for the roguelike.
+ * Each different type of menu is going to be a subclass that overloads the make_selection() function 
+ * to provide different functionality.  See the documentation for make_selection for more detail.
+ */
 class Menu {
     public:
         /**
