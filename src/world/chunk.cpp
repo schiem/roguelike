@@ -332,18 +332,19 @@ void Chunk::serialize() {
     int num_header_bytes = 5;
     int bytes_per_tile = 1;
 
-    file[0] = width;
-    file[1] = height;
-    file[2] = chunk_depth;
-    file[3] = chunk_type.id;
-    file[4] = overworld.has_layer_below;
-
+    
     //THIS MUST BE CHANGED EVERY TIME THE SERIALIZATION FUNCTION IS CHANGED.
     int file_size = num_header_bytes //This refers to the bytes initialized above.
                     + 6*(chunk_depth) //Every chunk will have 6 bytes for spawner and stair locations.
                     + 2*(overworld.has_layer_below) //Stair locations in the overworld.
                     + bytes_per_tile*width*height*(chunk_depth+1); //The chunk itself.
     char file[file_size];
+    
+    file[0] = width;
+    file[1] = height;
+    file[2] = chunk_depth;
+    file[3] = chunk_type.id;
+    file[4] = overworld.has_layer_below;
 
     int current_byte = num_header_bytes;
 

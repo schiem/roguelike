@@ -29,9 +29,49 @@
 using namespace boost::filesystem;
 
 
+/**
+ * Converts chunk coordinates to absolute coordinates.
+ * Takes a chunka and the coordinates within the chunk and
+ * turns it into an absolute coordinate (the coordinates 
+ * that would be used if there wasn't a chunk system, e.g.
+ * chunk(2, 2) coordinates(10, 10) would become absolute(110, 210).
+ * This uses the formula ((chunk_height * chunk_y) + y), ((chunk_width * 
+ * chunk_x) + x).
+ * @param chunk The chunk to be multiplied.
+ * @param coords The coordinates in the chunk.
+ * @return The absolute coordinates.
+ */
 IntPoint get_abs(IntPoint, IntPoint);
-std::vector<std::string> all_files(const string &);
-std::vector<std::string> all_files_of_type(const string &, const string & extension);
-std::string parse_settings(string &);
-int get_max_width(std::vector<std::string>);
+
+/**
+ * A function to get all the files in a given directory as strings.
+ * @param dir_string The directory to search.
+ * @preturn A vector of strings representing all of the flie paths in that directory.
+ */
+std::vector<std::string> all_files(const string & dir_string);
+
+/**
+ * Finds all of the files in a directory matching an extension.
+ * @param dir_string The directory to search.
+ * @param extension The extension to match (no .)
+ * @return A vector of strings representing all of the files matching the extension.
+ */
+std::vector<std::string> all_files_of_type(const string & dir_string, const string & extension);
+
+/**
+ * Parses settings in the settings.conf.
+ * Takes in a string (usually from settings.conf), and places the name of the setting
+ * in the original variable passed.  It returns the value of the settings.
+ * Settings are in the form of setting=value
+ * @param setting The string to be parsed.
+ * @return Empty string if no = is found.  Otherwise a string value of the setting.
+ */
+std::string parse_settings(string &setting);
+
+/**
+ * Finds the longest string in a vector of strings.
+ * @param string_list List of strings to be parsed.
+ * @return The length of the longest string in the list.
+ */
+int get_max_width(std::vector<std::string> string_list);
 #endif
