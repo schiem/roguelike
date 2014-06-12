@@ -191,23 +191,119 @@ class Chunk{
         void build_beach_chunk();
 
         /**
-         * 
+         * Returns an IntPoint representing the chunk's location on the world
+         * map.
+         * \todo Just use an IntPoint to store world location in general.
+         * @return the chunk's location on the world map
          */
         IntPoint get_world_loc() const;
-        IntPoint get_up_stair(int) const;
-        IntPoint get_down_stair(int) const;
-        void set_tile(int, int, int, Tile);
-        std::vector<Item*>* get_items(int);
-        void remove_item(Item*, int);
-        void add_item(Item*, int);
-        const std::vector<std::vector<Tile> >& get_floor(int);
-        Tile* get_tile(int, int, int) ;
+
+        /**
+         * Returns the location of the up stair in the chunk as an IntPoint.
+         *
+         * @param depth - the depth of this chunk.
+         */
+        IntPoint get_up_stair(int depth) const;
+
+        /**
+         * Returns the location of the down stair in the chunk as an IntPoint.
+         *
+         * @param depth - the depth of this chunk.
+         */
+        IntPoint get_down_stair(int depth) const;
+
+        /**
+         * Returns a vector of all the items on the ground in this chunk.
+         * @param depth - the depth of this chunk.
+         * @return a pointer to a vector of items in the chunk.
+         * \todo should this return a reference instead of a pointer?
+         */
+        std::vector<Item*>* get_items(int depth);
+
+        /**
+         * Will remove the given item from the chunk.
+         * @param item - a pointer to the item to remove
+         * @param depth - the depth at which to remove the item.
+         */
+        void remove_item(Item* item, int depth);
+
+        /**
+         * Will add the given item to the chunk's item list.
+         * @param item - a pointer to the item to add
+         * @param depth - the depth at which to add the item.
+         */
+        void add_item(Item* item, int depth);
+
+        /**
+         * @param depth - the depth to get (-1 is the overworld)
+         * @return a reference to the TileMatrix of the given floor
+         */
+        const std::vector<std::vector<Tile> >& get_floor(int depth);
+
+        /**
+         * @param depth
+         * @param row
+         * @param col
+         * @return a pointer to the tile at the given location.
+         */
+        Tile* get_tile(int depth, int row, int col) ;
+
+        /**
+         * Sets a tile at the given position to the given tile type. If the
+         * depth is -1, the tile will be set at the overworld.
+         *
+         * @param depth - the depth of this chunk.
+         * @param row - the row of the tile to set.
+         * @param col - the column of the tile to set.
+         * @param tile - the tile type.
+         */
+        void set_tile(int depth, int row, int col, Tile tile);
+
+        /**
+         * Determine how many layers are beneath the overworld in this chunk.
+         * @return the depth.
+         */
         int get_depth() const;
-        bool out_of_bounds(int, int, int) const;
-        Spawner get_spawner(int);
-        void dungeon_dump(int);
-        void serialize();
+
+        /**
+         * Given a point, will determine whether the point is out of bounds.
+         * @param depth
+         * @param row
+         * @param col
+         * @return true if the given location is out of bounds on the chunk.
+         */
+        bool out_of_bounds(int depth, int row, int col) const;
+
+        /**
+         * Returns the spawner object at the given depth.
+         * @param depth
+         * @return the spawner object
+         */
+        Spawner get_spawner(int depth);
+
+        /**
+         * Prints a graphical representation of the given layer to stdout.
+         * @param depth - the depth of the layer to print.
+         */
+        void dungeon_dump(int depth);
+
+        /**
+         * @return the type of chunk.
+         */
         MapTile get_type();
+
+        /**
+         * Saves all of the important information for this chunk in a file. The
+         * file size is first carefully calculated, then a char array is created
+         * with that size and populated with the dungeon data. The file is saved
+         * in data/chunk.
+         *
+         * Some bitwise arithmetic is used to pack ints and bools together in a
+         * single byte. As we get over 128 tile IDs, we will have to change this
+         * functionality.
+         */
+        void serialize();
+
 };
 
 #endif

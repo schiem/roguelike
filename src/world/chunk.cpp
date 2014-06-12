@@ -218,66 +218,6 @@ void Chunk::build_beach_chunk() {
     overworld = Overworld(width, height, has_layer_below, map_tile::MAP_BEACH);
 }
 
-const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {
-    if (depth == -1){
-        return overworld.get_ground();
-    } else {
-        return dungeon_floors[depth].get_dungeon();
-    }
-}
-
-Tile* Chunk::get_tile(int depth, int row, int col) {
-    if (depth == -1){
-        return overworld.get_tile(row, col);
-    } else {
-        return dungeon_floors[depth].get_tile_pointer(row, col);
-    }
-}
-
-
-vector<Item*>* Chunk::get_items(int depth)
-{
-    if(depth == -1)
-    {
-        return overworld.get_items();
-    }
-    else
-    {
-        return dungeon_floors[depth].get_items();
-    }
-}
-
-void Chunk::remove_item(Item* item, int depth)
-{
-    vector<Item*>* items = get_items(depth);
-    for(int i = 0; i<items->size();i++)
-    {
-        if(items->at(i) == item)
-        {
-            items->erase(items->begin() + i);
-        }
-    }
-}
-
-void Chunk::add_item(Item* item,  int depth)
-{
-   if(depth == -1)
-   {
-       overworld.add_item(item);
-   }
-   else{
-       dungeon_floors[depth].add_item(item);
-   }
-}
-
-void Chunk::set_tile(int depth, int row, int col, Tile tile){
-    if (depth == -1) {
-        overworld.set_tile(row, col, tile);
-    } else {
-        dungeon_floors[depth].set_tile(row, col, tile);
-    }
-}
-
 IntPoint Chunk::get_world_loc() const{
     return IntPoint(world_row, world_col);
 }
@@ -295,13 +235,57 @@ IntPoint Chunk::get_down_stair(int depth) const{
     }
 }
 
-int Chunk::get_depth() const {
-    return chunk_depth;
+vector<Item*>* Chunk::get_items(int depth) {
+    if(depth == -1) {
+        return overworld.get_items();
+    } else {
+        return dungeon_floors[depth].get_items();
+    }
 }
 
-MapTile Chunk::get_type()
-{
-    return chunk_type;
+void Chunk::remove_item(Item* item, int depth) {
+    vector<Item*>* items = get_items(depth);
+    for(int i = 0; i<items->size();i++) {
+        if(items->at(i) == item) {
+            items->erase(items->begin() + i);
+        }
+    }
+}
+
+void Chunk::add_item(Item* item,  int depth) {
+   if(depth == -1) {
+       overworld.add_item(item);
+   } else {
+       dungeon_floors[depth].add_item(item);
+   }
+}
+
+const std::vector<std::vector<Tile> >& Chunk::get_floor(int depth) {
+    if (depth == -1){
+        return overworld.get_ground();
+    } else {
+        return dungeon_floors[depth].get_dungeon();
+    }
+}
+
+Tile* Chunk::get_tile(int depth, int row, int col) {
+    if (depth == -1){
+        return overworld.get_tile(row, col);
+    } else {
+        return dungeon_floors[depth].get_tile_pointer(row, col);
+    }
+}
+
+void Chunk::set_tile(int depth, int row, int col, Tile tile){
+    if (depth == -1) {
+        overworld.set_tile(row, col, tile);
+    } else {
+        dungeon_floors[depth].set_tile(row, col, tile);
+    }
+}
+
+int Chunk::get_depth() const {
+    return chunk_depth;
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
@@ -316,7 +300,6 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * But that will also have ramifications in how
  * the game will handle things.
  */
-
 Spawner Chunk::get_spawner(int _depth) {
     if(_depth>=0) {
         return dungeon_floors[_depth].get_spawner();
@@ -329,15 +312,12 @@ void Chunk::dungeon_dump(int _depth) {
     dungeon_floors[_depth].dungeon_dump();
 }
 
-/**
- * Serialized file looks like this:
- * HEADER:
- * 4 bytes: Width, Height, Depth, Chunk Type (map tile ID)
- * BODY:
- * 2 bytes per tile: tile_id; seen
- *
- * So the end file size is 3 + (2*w*h*d) bytes.
- */
+MapTile Chunk::get_type()
+{
+    return chunk_type;
+}
+
+
 void Chunk::serialize() {
     if((chunk_depth < 0) || (chunk_depth > 10)) {
         cout<<"CHUNK DEPTH: "<<chunk_depth<<endl;
@@ -352,17 +332,18 @@ void Chunk::serialize() {
     int num_header_bytes = 5;
     int bytes_per_tile = 1;
 
-    int file_size = num_header_bytes
-                    + 6*(chunk_depth)
-                    + 2*(overworld.has_layer_below)
-                    + bytes_per_tile*width*height*(chunk_depth+1);
-    char file[file_size];
-
     file[0] = width;
     file[1] = height;
     file[2] = chunk_depth;
     file[3] = chunk_type.id;
     file[4] = overworld.has_layer_below;
+
+    //THIS MUST BE CHANGED EVERY TIME THE SERIALIZATION FUNCTION IS CHANGED.
+    int file_size = num_header_bytes //This refers to the bytes initialized above.
+                    + 6*(chunk_depth) //Every chunk will have 6 bytes for spawner and stair locations.
+                    + 2*(overworld.has_layer_below) //Stair locations in the overworld.
+                    + bytes_per_tile*width*height*(chunk_depth+1); //The chunk itself.
+    char file[file_size];
 
     int current_byte = num_header_bytes;
 
@@ -404,9 +385,7 @@ void Chunk::serialize() {
 
                 tile_id = tile_id << 1;
                 tile_id = tile_id | seen;
-                //cout<<"tile_id mid: "<<tile_id<<endl;
                 file[current_byte] = tile_id;
-                //cout<<"tile_id after: "<<(int) file[current_byte]<<endl;
 
                 current_byte += bytes_per_tile;
             }
