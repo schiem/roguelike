@@ -58,5 +58,5 @@ To try it for yourself, clone the repository and generate your own configure scr
 
 Documentation
 -------------
-Now with documentation!  Check it out over at <a href=schiem.github.io/roguelike>github pages</a>.
+Now with documentation!  Check it out over at <a href=https://schiem.github.io/roguelike>github pages</a>.
 Many thanks to doxygen.
