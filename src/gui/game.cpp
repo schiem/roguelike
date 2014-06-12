@@ -80,7 +80,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
 
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
-    buffer = TilePointerMatrix(150, vector<Tile*>(300));
+    buffer = TilePointerMatrix(CHUNK_HEIGHT * 3, vector<Tile*>(CHUNK_WIDTH * 3));
 
 
     //Each chunk holds an overworld and several

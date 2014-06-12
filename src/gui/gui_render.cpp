@@ -30,9 +30,9 @@ void GUI::OnRender() {
                 drawChr(j, i, map_canvas[i][j].char_count, ascii, screen, map_canvas[i][j].color);
             }
         }
-        drawStr(0, 48, std::string("Use the arrow keys to move the cursor.").c_str(),
+        drawStr(0, SCREEN_HEIGHT - 2, std::string("Use the arrow keys to move the cursor.").c_str(),
                 ascii, screen, WHITE);
-        drawStr(0, 49, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
+        drawStr(0, SCREEN_HEIGHT - 1, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
                 ascii, screen, WHITE);
     } else if (current_screen == GAME_SCREEN) {
         if(!game.is_initialized()) {
@@ -45,11 +45,11 @@ void GUI::OnRender() {
 
     } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
-        drawStr(38, 25, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
+        drawStr(SCREEN_WIDTH/2 - 12, SCREEN_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
     }
 
     if(game.is_paused()) {
-        drawStr(80, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
+        drawStr(SCREEN_WIDTH-20, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
     SDL_Flip(screen);
 }
