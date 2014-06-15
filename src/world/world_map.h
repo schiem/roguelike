@@ -1,5 +1,8 @@
 /**
- *  WORLD_MAP.H
+ *  @file WORLD_MAP.H
+ *  @author Seth A. Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -29,24 +32,126 @@
 #include <defs.h>
 #include <constants.h>
 
+/**
+ * A representation of the game's world map.
+ * The world map is finite and represented by a two-dimensional array, like
+ * literally everything else in the game. The map takes care of its own
+ * generation in its constructor, then the map is passed to the outside world by
+ * a call to get_map().
+ */
 class WorldMap {
+
+    /**
+     * A self-explanatory typedef for the base model for this class.
+     */
     typedef std::vector<std::vector<MapTile> > MapTileMatrix;
     private:
-        MapTileMatrix canvas;
+
+        /**
+         * The base model for this class. A two-dimensional matrix storing
+         * MapTiles.
+         *
+         * @see MapTile
+         */
         std::vector<std::vector<MapTile> > map;
+
+        /**
+         * Height, which is set to WORLD_HEIGHT in the constructor. Essentially
+         * just makes the variable less verbose. May be removed.
+         */
         int height;
+
+        /**
+         * Width, which is set to WORLD_WIDTH in the constructor. Essentially
+         * just makes the variable less verbose. May be removed.
+         */
         int width;
-        bool out_of_bounds(int, int);
-        int count_in_surrounding_tiles(int, int, MapTile);
-        void starting_noise(int);
+
+        /**
+         * Determines whether a given row-column pair is out of bounds on the
+         * world map matrix.
+         *
+         * @param row
+         * @param col
+         * @return a boolean denoting whether the point is out of bounds.
+         */
+        bool out_of_bounds(int row, int col);
+
+        /**
+         * Counts the number of occurences of the given MapTile type in the 8
+         * tiles surrounding the given point.
+         *
+         * @param row
+         * @param col
+         * @param tile_type - the type of MapTile to query for
+         * @return an integer result of the query.
+         */
+        int count_in_surrounding_tiles(int row, int col, MapTile tile_type);
+
+        /**
+         * Fills the world map (minus the ocean border) with randomly-placed
+         * tiles, then performs the following transformation to all tiles on the
+         * map:
+         * \verbatim
+           ?O?     ?O?
+           O?O --> OOO
+           ?O?     ?O?
+         * \endverbatim
+         *
+         * @param border - the width of the ocean border surrounding the map.
+         */
+        void starting_noise(int border);
+
+        /**
+         * Will loop through the world map. On each tile, if the number of
+         * surrounding tiles of the given type is greater or equal to the given
+         * "threshold", there is a 1/(8 - num_surrounding_tiles) chance that the
+         * tile in question will be changed to :tile_type:. This function is
+         * relatively portable, and could be ported to any number of other
+         * situations. When applied sequentially with different thresholds (as
+         * in generate_land_mass()), will produce a passable world.
+         */
+        void smoothing_pass(MapTile tile_type, int threshold);
+
+        /**
+         * Generates the main land mass in the water by calling smoothing_pass
+         * in sequence with different parameters on both land and water tiles.
+         */
         void generate_land_mass();
-        void set_land_or_water(int, int, int, bool);
-        void ocean_borders(int);
-        void smoothing_pass(MapTile, int);
+
+        /**
+         * Has a chance of setting a given tile to either a land or water tile.
+         * This is for preliminary continent generation in the world.
+         * @param row
+         * @param col
+         * @param mod - the inverse of the chance that the given tile will be
+         * turned to water/land (for more_water=true/false respectively) @param
+         * more_water - Should be set to 'true' if the given tile should be more
+         * likely to be set to water, and 'false' if the given tile should be
+         * more likely to be set to land.
+         */
+        void set_land_or_water(int row, int col, int mod, bool more_water);
+
+        /**
+         * Will generate an ocean border with the given width around the map.
+         * @param border - the desired width of the border.
+         */
+        void ocean_borders(int border);
+
+        /**
+         * Generates beaches at the borders of all land and water tiles.
+         */
         void generate_beaches();
     public:
+        /**
+         * The main constructor, which also generates the world's continents.
+         */
         WorldMap();
-        WorldMap(int height, int width);
+
+        /**
+         * Returns a reference to the world map.
+         * @return a reference to the world map.
+         */
         const std::vector<std::vector<MapTile> >& get_map();
 };
 

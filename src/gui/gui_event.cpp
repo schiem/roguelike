@@ -1,5 +1,8 @@
 /**
- *  GUI_EVENT.CPP
+ *  @file GUI_EVENT.CPP
+ *  @author Michael & Seth Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -19,6 +22,10 @@
 
 #include <gui.h>
 
+/**
+ * \todo find a better way to do key input; currently we're using polling, which
+ * feels really weird if you press a key in-between frames.
+ */
 void GUI::OnEvent(SDL_Event* Event) {
     VirtualEvent::OnEvent(Event);
 }
