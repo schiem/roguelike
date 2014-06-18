@@ -39,7 +39,7 @@ void GUI::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
                 if(current_screen == DEBUG_CONSOLE)
                 {
                     current_screen = last_screen;
-                    keyset = GAME;        
+                    keyset = GAME;
                     game.unpause();
                 }
                 else
@@ -117,7 +117,7 @@ void GUI::perform_action_press(SDLKey key) {
                     menu = new EscapeMenu(1, BLOCK_WALL, &game);
                     current_screen = menu->get_screen();
                 }
-                
+
                 //if the menu is the font menu, then we should change the font
                 if(menu->get_id() == 5)
                 {
@@ -130,25 +130,25 @@ void GUI::perform_action_press(SDLKey key) {
                 }
 
                 //switch back to the game and unpause
-                if(menu->should_exit()) 
+                if(menu->should_exit())
                 {
                     current_screen = menu->get_screen();
                     game.unpause();
                 }
             } else if(current_screen == MAP_SCREEN) {
-                //switch the screen from the map to the game (should only happen at 
+                //switch the screen from the map to the game (should only happen at
                 //the beginnig of the game
                 current_screen = GAME_SCREEN;
-            } 
+            }
 
             //render the canvas to clear away any old menus that might be lingering
             render_canvas();
             break;
         case SDLK_ESCAPE:
             //open up the escape menu
-            if(current_screen == GAME_SCREEN) 
+            if(current_screen == GAME_SCREEN)
             {
-                //switch the menu to the escape menu and 
+                //switch the menu to the escape menu and
                 //delete the old one
                 current_screen = MENU_SCREEN;
                 delete menu;
@@ -266,10 +266,10 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
                {
                    buffer[buffer_place] = input;
                }
-               
+
                //parse what they did
-               std::vector<std::string> command = split_string(input, " ");   
-               
+               std::vector<std::string> command = split_string(input, ' ');
+
                //convert all the arguments to ints, because all arguments are going
                //to be ints.  Because I said so.
                stringstream ss;
@@ -364,7 +364,7 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
                {
                    debug_message = "Sorry, I didn't understand that command.";
                }
-               
+
                //Update the buffer
                current_place = buffer_place;
                input = "";
@@ -401,6 +401,6 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
         default:
             input += (char)unicode;
             break;
-        
+
     }
 }
