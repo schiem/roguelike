@@ -88,7 +88,7 @@ int get_max_width(vector<string> string_list)
     return length;
 }
 
-std::vector<std::string> parse_string(std::string input, std::string character)
+std::vector<std::string> split_string(std::string input, std::string character)
 {
     std::vector<std::string> strings;
     unsigned int position = input.find(character);

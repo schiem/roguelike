@@ -268,7 +268,7 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
                }
                
                //parse what they did
-               std::vector<std::string> command = parse_string(input, " ");   
+               std::vector<std::string> command = split_string(input, " ");   
                
                //convert all the arguments to ints, because all arguments are going
                //to be ints.  Because I said so.
