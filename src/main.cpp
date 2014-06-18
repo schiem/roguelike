@@ -18,12 +18,21 @@
  */
 
 #include <gui.h>
+#include <string.h>
+#include <helper.h>
 #include <boost/filesystem.hpp>
 
 using namespace std;
 namespace fs=boost::filesystem;
 
 int main(int argc, char* args[]) {
+
+    std::string i("Hello, World!");
+    split_string(i, ',');
+    split_string(std::string("Hello, World!"),'!');
+    split_string(std::string("Hello, World!"),'H');
+    split_string(std::string("Hello, World!"),'o');
+
     fs::path chunk_dir(CHUNK_DIR);
     for(fs::directory_iterator end, it(chunk_dir); it != end; it++) {
         remove(it->path());

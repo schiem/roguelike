@@ -88,16 +88,26 @@ int get_max_width(vector<string> string_list)
     return length;
 }
 
-std::vector<std::string> parse_string(std::string input, std::string character)
+std::vector<std::string> split_string(std::string input, char character)
 {
+    cout<<input<<" "<<character<<endl;
     std::vector<std::string> strings;
-    unsigned int position = input.find(character);
-    while(position != input.npos)
-    {
-        strings.push_back(input.substr(0, position));
-        input = input.substr(position+1);
-        position = input.find(character);
+    int last_position = 0;
+    for(int i = 0; i < input.length();i++) {
+        if(input[i] == character) {
+            strings.push_back(input.substr(last_position, i - last_position));
+            last_position = i+1;
+        }
     }
-    strings.push_back(input);
+    strings.push_back(input.substr(last_position, input.length()));
+
+    /*
+    cout<<"Strings: ";
+    for(int i = 0; i < strings.size(); i++) {
+        cout<<strings[i]<<endl;
+    }
+    cout<<endl;
+    */
+
     return strings;
 }
