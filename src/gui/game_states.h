@@ -24,9 +24,14 @@ enum Screen {
             MAP_SCREEN,
             GAME_SCREEN,
             DEATH_SCREEN,
-            MENU_SCREEN
+            MENU_SCREEN,
+            DEBUG_CONSOLE
         };
 
+enum KeyState {
+            GAME,
+            TEXT
+};
 #endif
 
 

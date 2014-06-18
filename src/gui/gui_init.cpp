@@ -63,7 +63,7 @@ bool GUI::OnInit() {
         return false;
     }
 
-
+    SDL_EnableUNICODE(SDL_ENABLE);
 
     game_clock = pt::microsec_clock::local_time();
 

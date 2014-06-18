@@ -46,8 +46,12 @@ void GUI::OnRender() {
     } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
         drawStr(SCREEN_WIDTH/2 - 12, SCREEN_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
+    } else if (current_screen == DEBUG_CONSOLE) {
+        render_canvas();
+        render_enemies();
+        render_character();
+        render_debug();
     }
-
     if(game.is_paused()) {
         drawStr(SCREEN_WIDTH-20, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
@@ -219,3 +223,13 @@ void GUI::render_menu(Menu* menu)
 
 }
 
+void GUI::render_debug()
+{
+    for(int i=0;i<SCREEN_WIDTH;i++)
+    {
+        drawChr(i, SCREEN_HEIGHT-3, BLOCK_WALL.char_count, ascii, screen, BLACK);
+        drawChr(i, SCREEN_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, BLACK);
+    }
+    drawStr(0, SCREEN_HEIGHT-3, debug_message.c_str(), ascii, screen, WHITE);
+    drawStr(0, SCREEN_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
+}

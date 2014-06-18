@@ -23,7 +23,6 @@
 #ifndef _DUNGEON_H
 #define _DUNGEON_H
 #define MAX_ROOMS 15
-//#define ROOM_COUNT_DEBUG
 #include <vector>
 #include <stdlib.h>
 #include <assert.h>

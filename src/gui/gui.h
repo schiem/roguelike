@@ -53,8 +53,18 @@ class GUI : public VirtualEvent {
         pt::ptime game_clock;
 
         bool running;
-        Screen current_screen;
+        std::vector<std::string> messages;
+        std::string debug_message;
+        std::vector<std::string> buffer;
+        int buffer_place;
+        int current_place;
+        int buffer_size;
 
+        std::string input;
+
+        KeyState keyset;
+        Screen current_screen;
+        Screen last_screen;
         WorldMapGUI world_map_gui;
         Menu* menu;
         Game game;
@@ -71,6 +81,7 @@ class GUI : public VirtualEvent {
         void render_character();
         void render_interface();
         void render_menu(Menu* menu);
+        void render_debug();
     public:
         GUI();
         ~GUI();
@@ -86,6 +97,13 @@ class GUI : public VirtualEvent {
 
         void perform_action_press(SDLKey);
         void perform_action_cont();
+        /**
+         * The function for handling keyboard input for typing text.
+         * This function handles text input, as opposed to the player
+         * hitting keys to play the game.
+         * @param unicode The key pressed.
+         */
+        void add_key_input(SDLKey key, Uint16 unicode); 
 };
 
 #endif

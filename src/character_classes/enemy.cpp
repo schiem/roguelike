@@ -20,7 +20,6 @@
  */
 
 #include <enemy.h>
-#define PATH_DEBUG 0
 
 using namespace tiledef;
 using namespace std;
@@ -230,18 +229,18 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
         ATile current = open[index];
         while(current.parent != -1)
         {
-            if(PATH_DEBUG == 1)
+            if(DEBUG == 1)
             {
-                surroundings[current.coords.row][current.coords.col] = EMPTY;
+                //surroundings[current.coords.row][current.coords.col] = EMPTY;
             }
             path.push_back(current.coords);
             current = current_list[current.parent];
 
         }
     }
-    if(PATH_DEBUG == 1)
+    if(DEBUG == 1)
     {
-        dump_matrix(surroundings);
+        //dump_matrix(surroundings);
     }
     return path;
 }

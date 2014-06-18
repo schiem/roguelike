@@ -20,20 +20,11 @@
 
 #include <helper.h>
 
-/*
- * PRE: Takes in an IntPoint representing chunk coordinates, and an InPoint
- * representing coordinates within that chunk.
- * POST: Returns an IntPoint containing the absolute coordinates, i.e. the
- * coordinates if there were no chunks.
- */
-
 IntPoint get_abs(IntPoint chunk, IntPoint coords) {
     return IntPoint(chunk.row * CHUNK_HEIGHT + coords.row,
             chunk.col * CHUNK_WIDTH + coords.col);
 }
 
-/* Returns all the files in a directory
-*/
 std::vector<std::string> all_files(const string & dir_string)
 {
     path dir_path(dir_string);
@@ -95,4 +86,18 @@ int get_max_width(vector<string> string_list)
         }
     }
     return length;
+}
+
+std::vector<std::string> parse_string(std::string input, std::string character)
+{
+    std::vector<std::string> strings;
+    unsigned int position = input.find(character);
+    while(position != input.npos)
+    {
+        strings.push_back(input.substr(0, position));
+        input = input.substr(position+1);
+        position = input.find(character);
+    }
+    strings.push_back(input);
+    return strings;
 }

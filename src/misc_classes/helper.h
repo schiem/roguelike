@@ -74,4 +74,12 @@ std::string parse_settings(string &setting);
  * @return The length of the longest string in the list.
  */
 int get_max_width(std::vector<std::string> string_list);
+
+/**
+ * Splits a string on the character passed in.
+ * @param input The string passed in.
+ * @param character The character to split on.
+ * @return A vector of strings as the result.
+ **/
+std::vector<std::string> parse_string(std::string input, std::string character);
 #endif

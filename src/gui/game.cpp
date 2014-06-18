@@ -261,6 +261,16 @@ void Game::run_enemies(long delta_ms) {
     }
 }
 
+void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type)
+{
+    Enemy* temp = new Enemy(x, y, chunk_x, chunk_y, depth, ENEMY_LIST[type]);
+    enemy_list.push_back(temp);
+}
+
+std::vector<Enemy*>* Game::get_enemies()
+{
+    return &enemy_list;
+}
 /*--------------------Main Char Functions----------------------*/
 void Game::change_main_depth(int direction) {
     assert(direction == -1 || direction == 1);

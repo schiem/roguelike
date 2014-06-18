@@ -20,6 +20,8 @@
 #include <gui.h>
 
 //this is for backward compatibility with c98 standard
+//gross...
+
 GUI::GUI() : world_map_gui(),
              game() {
     menu = new StartMenu(1, BLOCK_WALL);
@@ -27,8 +29,13 @@ GUI::GUI() : world_map_gui(),
     screen = NULL;
     asciiBase = NULL;
     ascii = NULL;
-
+    keyset = GAME;
     running = true;
+    buffer_place = 0;
+    current_place = 0;
+    buffer_size = 20;
+    buffer.push_back("");
+    debug_message = "Input your command";
 }
 
 int GUI::OnExecute() {

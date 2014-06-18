@@ -30,6 +30,7 @@
 #include <ctime>
 #include <stdlib.h>
 #include <vector>
+#define DEBUG 1
 
 /**
  * Holds the different stats of the character.
