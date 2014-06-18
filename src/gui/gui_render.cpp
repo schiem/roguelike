@@ -230,6 +230,7 @@ void GUI::render_debug()
         drawChr(i, SCREEN_HEIGHT-3, BLOCK_WALL.char_count, ascii, screen, BLACK);
         drawChr(i, SCREEN_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, BLACK);
     }
+    drawChr(input.size(), SCREEN_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, WHITE);
     drawStr(0, SCREEN_HEIGHT-3, debug_message.c_str(), ascii, screen, WHITE);
     drawStr(0, SCREEN_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }

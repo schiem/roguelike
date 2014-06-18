@@ -46,6 +46,8 @@ void GUI::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
                 {
                     last_screen = current_screen;
                     current_screen = DEBUG_CONSOLE;
+                    debug_message = "Input your command";
+                    input = "";
                     keyset = TEXT;
                     game.pause();
                 }
@@ -304,7 +306,7 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
                    }
                    else if(command[1] == "list")
                    {
-                       debug_message = "List available something. Options are: enemytypes, coords";
+                       debug_message = "List available something. Options are: enemytype, coords";
                    }
                    else if(command[1] == "killall")
                    {
