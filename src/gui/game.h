@@ -52,22 +52,84 @@ class Game
     private:
 
         //BASE Data/Models
+        /**
+         * Whether or not the game has been initialized.
+         */
         bool initialized;
+        
+        /**
+         * If the game is currently paused.
+         * This isn't a game state because things still need to
+         * be happening in other game states while the game is paused.
+         */
         bool paused;
 
+        /**
+         * The map of the world.
+         * @see MapTile
+         */
         MapTileMatrix world_map;
+        
+        /**
+         * A two dimentsional vector containing the chunks.
+         * This is the core of how the game doesn't run out of 
+         * memory.  It's broken up into chunks, which are then
+         * serialized/deserialized as the player moves about.
+         * @see Chunk
+         */
         ChunkMatrix chunk_map;
+        
+        /**
+         * Is this still here?
+         * \todo Do something else with this...
+         */
         Tile block_wall_tile;
 
         //BASE model access functions
-        void point_assertions(int, int);
-        void set_tile(int, int, Tile*);
-        void set_tile(IntPoint, Tile*);
+        /**
+         * Assertions to ensure that the current point is in the screen.
+         * @param row The row of the point.
+         * @param col The column of the point.
+         */
+        void point_assertions(int row, int col);
+        
+        /**
+         * Sets the point in the canvas at row, col to Tile
+         * @param row The row of the canvas to set the tile.
+         * @param col The column of the canvas to set the tile.
+         * @param tile The tile to set row, col to.
+         */
+        void set_tile(int row, int col, Tile* tile);
+        
+        /**
+         * Sets the point in the canvas at IntPoint to tile.
+         * @param point The point of the canvas to set the tile.
+         * @param tile The tile to set the IntPoint of the canvas to.
+         */
+        void set_tile(IntPoint point, Tile* tile);
+        
+        /**
+         * Gets the item at the specific coordinates.
+         * @param coords The coordinates in the chunk.
+         * @param chunk The chunk of the item.
+         * @return The item at the coordinates. NULL if none is found.
+         */
         Item* item_at_coords(IntPoint, IntPoint, int);
 
-        Tile* get_tile(int, int);
-        Tile* get_tile(IntPoint);
-        bool out_of_bounds(IntPoint);
+        /**
+         * Public accessor for the tile at canvas[row][col].
+         */
+        Tile* get_tile(int row, int col);
+
+        /**
+         * Public accessor for the tile at canvas[point.row][point.col].
+         */
+        Tile* get_tile(IntPoint point);
+        
+        /**
+         * Checks if the point at (row, col) is out of the screen.
+         */
+        bool out_of_bounds(IntPoint point);
         bool out_of_bounds(int, int);
         bool in_buffer(int, int);
         bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);

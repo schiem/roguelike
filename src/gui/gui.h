@@ -92,6 +92,7 @@ class GUI : public VirtualEvent {
 
         void perform_action_press(SDLKey);
         void perform_action_cont();
+        
         /**
          * The function for handling keyboard input for typing text.
          * This function handles text input, as opposed to the player
