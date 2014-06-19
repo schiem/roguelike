@@ -111,3 +111,19 @@ std::vector<std::string> split_string(std::string input, char character)
 
     return strings;
 }
+
+std::vector<int> strings_to_ints(std::vector<std::string> strings)
+{
+    std::vector<int> int_vec;
+    stringstream ss;
+    int temp;
+    for(int i = 0; i < strings.size();i++)
+    {
+        ss << strings[i];
+        ss >> temp;
+        int_vec.push_back(temp);
+        ss.str(std::string());
+        ss.clear();
+    }
+    return int_vec;
+}

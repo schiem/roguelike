@@ -46,7 +46,6 @@ void GUI::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
                 {
                     last_screen = current_screen;
                     current_screen = DEBUG_CONSOLE;
-                    debug_message = "Input your command";
                     input = "";
                     keyset = TEXT;
                     game.pause();
@@ -251,145 +250,22 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
     switch(sym)
     {
         case SDLK_RETURN:
-           if(current_screen == DEBUG_CONSOLE)
-           {
-               buffer_place += 1;
-               if(buffer_place >= buffer_size)
-               {
-                   buffer_place = 0;
-               }
-               if(buffer.size() < buffer_size)
-               {
-                   buffer.push_back(input);
-               }
-               else
-               {
-                   buffer[buffer_place] = input;
-               }
-
-               //parse what they did
-               std::vector<std::string> command = split_string(input, ' ');
-
-               //convert all the arguments to ints, because all arguments are going
-               //to be ints.  Because I said so.
-               stringstream ss;
-               bool success = true;
-               std::vector<int> args(command.size());
-               std::string func = command[0];
-               if(command[0] == "spawn")
-               {
-                   for(int i =1; i<command.size();i++)
-                   {
-                       ss << command[i];
-                       if(!(ss >> args[i]))
-                       {
-                           success = false;
-                       }
-                       ss.str(std::string());
-                       ss.clear();
-                   }
-               }
-               if(!success)
-               {
-                   debug_message = "Not all arguments are ints.";
-               }
-               //The commands
-               else if(func == "help" || func == "?")
-               {
-                   if(command.size() <= 1)
-                   {
-                       debug_message = "Commands: spawn, help, list, killall.  Type 'help <command>' for how to use a command.";
-                   }
-                   else if(command[1] == "spawn")
-                   {
-                       debug_message = "Spawn enemies.  Arguments are: chunk_x, chunk_y, x, y, depth, type of enemy, times to run command.";
-                   }
-                   else if(command[1] == "list")
-                   {
-                       debug_message = "List available something. Options are: enemytype, coords";
-                   }
-                   else if(command[1] == "killall")
-                   {
-                       debug_message = "Kill all the enemies.  Like, all of them.";
-                   }
-               }
-               else if(func == "list")
-               {
-                   if(command.size() < 2)
-                   {
-                       debug_message = "Not enough arguments.  Not executed.";
-                   }
-                   else if(command[1] == "enemytype")
-                   {
-                       debug_message = "EnemyTypes--1: Kobold, 2: Rabbit";
-                   }
-                   else if(command[1] == "coords")
-                   {
-                       std::stringstream ss;
-                       int chunk_x = game.main_char.get_chunk().col;
-                       int chunk_y = game.main_char.get_chunk().row;
-                       int x = game.main_char.get_x();
-                       int y = game.main_char.get_y();
-                       ss << "Chunk (x, y): (" << chunk_x<<", "<<chunk_y<<"), Coords (x, y) : ("<<x<<", "<<y<<")";
-                       debug_message = ss.str();
-                   }
-               }
-
-               else if(func == "spawn")
-               {
-                   if(command.size() < 8)
-                   {
-                       debug_message = "Not enough arguments.  Not executed.";
-                   }
-                   else
-                   {
-                       cout<<args[6]<<endl;
-                       for(int i =0;i<args[7];i++)
-                       {
-                           game.spawn_enemy(args[1], args[2], args[3], args[4], args[5], args[6]);
-                       }
-                       debug_message = "Done.";
-                   }
-               }
-               else if(func == "killall")
-               {
-                   std::vector<Enemy*>* enemy_list = game.get_enemies();
-                   for(int i=0;i<enemy_list->size();i++)
-                   {
-                       Enemy* temp = enemy_list->at(i);
-                       temp->take_damage(temp->get_max_hp());
-                   }
-               }
-               else
-               {
-                   debug_message = "Sorry, I didn't understand that command.";
-               }
-
-               //Update the buffer
-               current_place = buffer_place;
-               input = "";
-           }
-           break;
+            if(current_screen == DEBUG_CONSOLE)
+            {
+                debug.run_command(input); 
+                input = "";
+            }
+            break;
         case SDLK_UP:
             if(current_screen == DEBUG_CONSOLE)
             {
-                input = buffer[current_place];
-                current_place -= 1;
-                if(current_place < 0)
-                {
-                    current_place = buffer.size() - 1;
-                }
+                input = debug.input_from_buffer(-1);
             }
             break;
         case SDLK_DOWN:
             if(current_screen == DEBUG_CONSOLE)
             {
-                current_place += 1;
-                if(current_place >= buffer.size())
-                {
-                    current_place = 0;
-                }
-                input = buffer[current_place];
+                input = debug.input_from_buffer(1);
             }
             break;
         case SDLK_BACKSPACE:

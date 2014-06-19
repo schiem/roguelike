@@ -23,7 +23,6 @@
 #define FONTDIR DATADIR "/font/"
 
 #include <SDL/SDL.h>
-#include <vector>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -38,6 +37,7 @@
 #include <game_states.h>
 #include <stdio.h>
 #include <fstream>
+#include <debug.h>
 
 namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {
@@ -54,14 +54,9 @@ class GUI : public VirtualEvent {
 
         bool running;
         std::vector<std::string> messages;
-        std::string debug_message;
-        std::vector<std::string> buffer;
-        int buffer_place;
-        int current_place;
-        int buffer_size;
-
         std::string input;
-
+        
+        DebugConsole debug;
         KeyState keyset;
         Screen current_screen;
         Screen last_screen;

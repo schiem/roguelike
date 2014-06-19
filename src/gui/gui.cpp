@@ -31,11 +31,7 @@ GUI::GUI() : world_map_gui(),
     ascii = NULL;
     keyset = GAME;
     running = true;
-    buffer_place = 0;
-    current_place = 0;
-    buffer_size = 20;
-    buffer.push_back("");
-    debug_message = "Input your command";
+    debug = DebugConsole(&game); 
 }
 
 int GUI::OnExecute() {

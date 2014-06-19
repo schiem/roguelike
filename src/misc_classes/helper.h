@@ -25,6 +25,8 @@
 #include <boost/filesystem.hpp>
 #include <string.h>
 #include <constants.h>
+#include <sstream>
+
 
 using namespace boost::filesystem;
 
@@ -82,4 +84,14 @@ int get_max_width(std::vector<std::string> string_list);
  * @return A vector of strings as the result.
  **/
 std::vector<std::string> split_string(std::string input, char character);
+
+/**
+ * Converts a list of strings to a list of ints.
+ * Takes in a list of strings, converts each one to an int,
+ * and returns the list of ints. If it's not possible, the int is 0.
+ * @param strings The list of strings to convert
+ * @return A list of ints.
+ */
+std::vector<int> strings_to_ints(std::vector<std::string> strings);
+
 #endif
