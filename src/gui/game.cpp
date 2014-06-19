@@ -261,11 +261,6 @@ void Game::run_enemies(long delta_ms) {
     }
 }
 
-void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type)
-{
-    Enemy* temp = new Enemy(x, y, chunk_x, chunk_y, depth, ENEMY_LIST[type]);
-    enemy_list.push_back(temp);
-}
 
 std::vector<Enemy*>* Game::get_enemies()
 {
@@ -705,4 +700,34 @@ void Game::undo_visibility() {
             }
         }
     }
+}
+
+
+/*-----------------------------------DEBUG FUNCTIONS----------------------*/
+
+
+void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type)
+{
+        Enemy* temp = new Enemy(x, y, chunk_x, chunk_y, depth, ENEMY_LIST[type]);
+            enemy_list.push_back(temp);
+}
+
+void Game::teleport(int chunk_x, int chunk_y, int x, int y)
+{
+    main_char.set_x(x);
+    main_char.set_y(y);
+    main_char.set_chunk(IntPoint(chunk_y, chunk_x));
+    update_buffer(main_char.get_chunk());
+    unsigned int delta_x = chunk_x - main_char.get_chunk().col;
+    unsigned int delta_y = chunk_y - main_char.get_chunk().row;
+    if(delta_x > 1 || delta_y > 1)
+    {
+        chunk_map.serialize_all();
+        chunk_map.populate_initial(main_char.get_chunk(), world_map);
+    }
+    else
+    {
+        update_chunk_map(IntPoint(delta_y, delta_x));
+    }
+
 }

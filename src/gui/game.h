@@ -183,13 +183,20 @@ public:
         //ENEMY Functionality
         void run_spawners();
         void run_enemies(long);
-        void spawn_enemy(int, int, int, int, int, int);
         std::vector<Enemy*>* get_enemies();
         //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);
         void get_item(); 
         void drop_item(Item*);
+
+        //DEBUG FUNCTIONS
+        void spawn_enemy(int, int, int, int, int, int);
+
+        /**
+         * Debug function to teleport the character to a new place.
+         */
+        void teleport(int chunk_x, int chunk_y, int x, int y);
 };
 
 #endif

@@ -68,6 +68,11 @@ class ChunkMatrix
          */
         IntPoint offset;
 
+        
+    public:
+        ChunkMatrix();
+        ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix &world_map);
+
         /**
          * Populates the chunk matrix initially, affecting the internal model.
          * @param[in] center_chunk An IntPoint representing the central chunk in the matrix
@@ -75,10 +80,7 @@ class ChunkMatrix
          */
         void populate_initial(IntPoint center_chunk, MapTileMatrix &world_map);
 
-    public:
-        ChunkMatrix();
-        ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix &world_map);
-
+        
         /**
          * Prints a graphic of the chunk matrix and its coordinates.
          */
@@ -149,6 +151,11 @@ class ChunkMatrix
          *
          */
         void shift_matrix(IntPoint directions, MapTileMatrix &world_map);
+
+        /**
+         * Serializes all the chunks in the chunk_map.
+         */
+        void serialize_all();
 };
 
 #endif

@@ -210,3 +210,15 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     cout<<"New offset: "<<offset.row<<", "<<offset.col<<endl;
     pretty_print();
 }
+
+void ChunkMatrix::serialize_all()
+{
+    for(int i=0;i<diameter;i++)
+    {
+        for(int j=0;j<diameter;j++)
+        {
+            model[i][j].serialize();
+        }
+    }
+}
+

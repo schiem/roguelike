@@ -31,7 +31,6 @@ DebugConsole::DebugConsole(Game* _game)
     buffer_place = 0;
     current_place = 0;
     buffer_size = 20;
-    buffer.push_back("");
     game = _game;
     debug_message = "Input your command";
     
@@ -41,8 +40,9 @@ DebugConsole::DebugConsole(Game* _game)
     func_map["list"] = &DebugConsole::list;
     func_map["killall"] = &DebugConsole::killall;
     func_map["spawn"] = &DebugConsole::spawn;    
+    func_map["teleport"] = &DebugConsole::teleport;
 }
-
+    
 void DebugConsole::run_command(std::string input)
 {
     //increase the position in the buffer
@@ -103,6 +103,10 @@ void DebugConsole::help(std::vector<std::string> command, std::vector<int> args)
     {
         debug_message = db_messages[HELP_KILLALL];
     }
+    else if(command[0] == "teleport")
+    {
+        debug_message = db_messages[HELP_TELEPORT];
+    }
     else
     {
         debug_message = db_messages[GENERAL_ERROR];
@@ -161,6 +165,17 @@ void DebugConsole::spawn(std::vector<std::string> command, std::vector<int> args
     }
 }
 
+void DebugConsole::teleport(std::vector<std::string> command, std::vector<int> args)
+{
+    if(command.size() < 4)
+    {
+        debug_message = db_messages[NUM_ARG_ERROR];
+    }
+    else
+    {
+        game->teleport(args[0], args[1], args[2], args[3]);
+    }
+}
 
 std::string DebugConsole::get_message()
 {
@@ -168,15 +183,22 @@ std::string DebugConsole::get_message()
 }
 std::string DebugConsole::input_from_buffer(int direction)
 {
-    std::string input;
+    if(buffer.size() == 0)
+    {
+        return "";
+    }
     current_place += direction;
-    if(current_place >= buffer.size())
+    if(current_place == buffer.size())
     {
         current_place = 0;
     }
     else if(current_place < 0)
     {
-        current_place = buffer.size();
+        current_place = buffer.size() - 1;
+    }
+    if(current_place + 1 == buffer_place)
+    {
+        return "";
     }
     return buffer[current_place];
 }

@@ -45,18 +45,20 @@ enum DEBUG_MESSAGES
     HELP_SPAWN,
     HELP_LIST,
     HELP_KILLALL,
+    HELP_TELEPORT,
     LIST_ENEMYTYPE,
     COMPLETE
 };
 
-static std::string db_messages[9] = {
+static std::string db_messages[10] = {
     "I'm sorry, I couldn't understand that command.",
     "Too few arguments.",
     "Incorrect argument types.",
     "Commands: spawn, help, list, killall.  Type 'help <command>' for how to use a command.",
-    "Spawn enemies.  Arguments are: chunk_x, chunk_y, x, y, depth, type of enemy, times to run command.",
+    "Spawn enemies.  Args: chunk_x, chunk_y, x, y, depth, type of enemy, times to run command.",
     "List available something. Options are: enemytype, coords",
     "Kill all the enemies.  Like, all of them.",
+    "Teleports the player. Args: chunk_x, chunk_y, x, y",
     "EnemyTypes--1: Kobold, 2: Rabbit",
     "Done."
 };
@@ -161,8 +163,14 @@ class DebugConsole
          * @param command The list of string arguments for the function.
          * @param args The list of int arguments for the function.
          */
-        void spawn(std::vector<std::string>command, std::vector<int> args);
+        void spawn(std::vector<std::string> command, std::vector<int> args);
 
+        /**
+         * Teleports the main character.
+         * @param command The list of string arguments for the function.
+         * @param args The list of int arguments for the function.
+         */ 
+        void teleport(std::vector<std::string> command, std::vector<int> args);
 };
 
 #endif
