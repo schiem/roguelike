@@ -1,5 +1,8 @@
 /**
- *  OVERWORLD.CPP
+ *  @file OVERWORLD.CPP
+ *  @author Michael Yoder
+ *
+ *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -59,7 +62,25 @@ Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile til
         weapons.push_back(weapons::dagger);
     }
 
+}
+
+bool Overworld::smoothing_pass(int threshold, Tile tile_type, int num)
+{
+    if(num >= threshold) {
+        if (rand() % (8 - (num -1)) == 0) {
+            return true;
+        }
     }
+    return false;
+}
+
+Tile* Overworld::get_tile(int row, int col) {
+    return &ground[row][col];
+}
+
+void Overworld::set_tile(int row, int col, Tile tile) {
+    ground[row][col] = tile;
+}
 
 void Overworld::build_land_overworld() {
     for(int i = 0; i < height; i++) {
@@ -211,20 +232,6 @@ void Overworld::build_forest_overworld() {
     ground[spawn_y][spawn_x] = KOBOLD_SPAWNER;
 }
 
-bool Overworld::smoothing_pass(int threshold, Tile tile_type, int num)
-{
-    if(num >= threshold) {
-        if (rand() % (8 - (num -1)) == 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-Tile* Overworld::get_tile(int row, int col) {
-    return &ground[row][col];
-}
-
 vector<Item*>* Overworld::get_items()
 {
     return &items;
@@ -236,20 +243,9 @@ void Overworld::add_item(Item* item)
 }
 
 
-void Overworld::set_tile(int row, int col, Tile tile) {
-    ground[row][col] = tile;
-}
-
 std::vector<std::vector<Tile> >& Overworld::get_ground() {
     return ground;
 }
-
-
-Spawner Overworld::get_spawner()
-{
-    return spawner;
-}
-
 
 std::vector<EquipType> Overworld::get_equipment()
 {
@@ -259,4 +255,9 @@ std::vector<EquipType> Overworld::get_equipment()
 std::vector<WeaponType> Overworld::get_weapons()
 {
     return weapons;
+}
+
+Spawner Overworld::get_spawner()
+{
+    return spawner;
 }

@@ -106,10 +106,14 @@ class WorldMap {
          * Will loop through the world map. On each tile, if the number of
          * surrounding tiles of the given type is greater or equal to the given
          * "threshold", there is a 1/(8 - num_surrounding_tiles) chance that the
-         * tile in question will be changed to :tile_type:. This function is
+         * tile in question will be changed to tile_type. This function is
          * relatively portable, and could be ported to any number of other
          * situations. When applied sequentially with different thresholds (as
          * in generate_land_mass()), will produce a passable world.
+         *
+         * @param tile_type - the type of tile that will be changed.
+         * @param threshold - The number of surrounding tiles must be greater
+         * than this value for any change to occur.
          */
         void smoothing_pass(MapTile tile_type, int threshold);
 

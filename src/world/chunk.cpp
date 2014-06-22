@@ -67,7 +67,7 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
     //Read the entire file into the file_data array.
     chunk_data_file.read(file_data, file_size);
 
-    int num_header_bytes=5; //Change this to stay relevant - must match 
+    int num_header_bytes=5; //Change this to stay relevant - must match
                             //serialization functionality.
 
     /*
@@ -87,7 +87,7 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
 
     dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
     int current_byte = num_header_bytes;
-    
+
     //There is a possibility of 2 bytes being stored for the overworld down
     //stair location.
     if(overworld.has_layer_below) {
@@ -109,7 +109,6 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
         current_byte += 6;
     }
 
-    cout<<chunk_depth<<"  "<<current_byte<<endl;
     assert(chunk_depth == ((current_byte - 4) / 6));
 
     Tile current_tile;
@@ -324,22 +323,19 @@ void Chunk::serialize() {
     }
     stringstream ss;
     ss<<"chunk"<<world_row<<"_"<<world_col;
-    string file_name = std::string(CHUNK_DIR) + std::string("/") + ss.str();
-
-    ofstream chunk_data_file(file_name.c_str(),
-            std::ofstream::out | std::ofstream::binary);
 
     int num_header_bytes = 5;
     int bytes_per_tile = 1;
 
-    
+
     //THIS MUST BE CHANGED EVERY TIME THE SERIALIZATION FUNCTION IS CHANGED.
     int file_size = num_header_bytes //This refers to the bytes initialized above.
                     + 6*(chunk_depth) //Every chunk will have 6 bytes for spawner and stair locations.
                     + 2*(overworld.has_layer_below) //Stair locations in the overworld.
                     + bytes_per_tile*width*height*(chunk_depth+1); //The chunk itself.
-    char file[file_size];
-    
+
+    char file[file_size] = {};
+
     file[0] = width;
     file[1] = height;
     file[2] = chunk_depth;
@@ -363,8 +359,6 @@ void Chunk::serialize() {
         file[current_byte + 5] = dungeon_floors[i].up_stair.col;
         current_byte += 6;
     }
-
-    cout<<chunk_depth<<"  "<<current_byte<<endl;
 
     unsigned int tile_id, seen;
     Tile current_tile;
@@ -393,9 +387,20 @@ void Chunk::serialize() {
         }
     }
 
+    string file_name = std::string(CHUNK_DIR) + std::string("/") + ss.str();
+    ofstream chunk_data_file;
+
+    chunk_data_file.open(file_name.c_str(), std::ofstream::out | std::ofstream::binary);
+
     for(int i = 0; i < file_size; i++) {
+        /*
+        if((i > 8180) && (i < 8200)) {
+            cerr<< (int) file[i] <<endl;
+        }
+        */
         chunk_data_file<<file[i];
     }
+    //cerr<<endl;
 
     chunk_data_file.close();
 }
