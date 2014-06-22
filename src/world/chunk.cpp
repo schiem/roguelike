@@ -165,7 +165,7 @@ void Chunk::build_land_chunk() {
 
     for (int i=0; i < chunk_depth; i++) {
         has_layer_below = (i < chunk_depth - 1);
-        db.build_dungeon(5, 5);
+        db.build_dungeon(5);
         temp_d = db.get_dungeon();
 
         dungeon_floors[i] = *temp_d;
@@ -190,7 +190,7 @@ void Chunk::build_forest_chunk() {
 
     for (int i=0; i < chunk_depth; i++) {
         has_layer_below = (i < chunk_depth - 1);
-        db.build_dungeon(5, 5);
+        db.build_dungeon(5);
         temp_d = db.get_dungeon();
 
         dungeon_floors[i] = *temp_d;

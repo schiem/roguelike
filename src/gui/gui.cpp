@@ -22,8 +22,9 @@
 //this is for backward compatibility with c98 standard
 //gross...
 
-GUI::GUI() : world_map_gui(),
-             game() {
+GUI::GUI() {
+    world_map_gui = WorldMapGUI();
+    game = Game();
     menu = new StartMenu(1, BLOCK_WALL);
     current_screen = MENU_SCREEN;
     screen = NULL;

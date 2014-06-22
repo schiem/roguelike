@@ -67,6 +67,12 @@ class Dungeon
          */
         void tile_assertions(int row, int col) const;
 
+        /**
+         * Copies over all values from the given dungeon to this dungeon.
+         * @param d - The dungeon from which to swap ownership.
+         */
+        void swap(const Dungeon& d);
+
 
     public:
         /**
@@ -106,7 +112,6 @@ class Dungeon
         /**
          * Empty constructor. Initializes with width 10 and height 10. Probably
          * should never use explicitly.
-         * \todo check if this needs to have anything inside of it at all.
          */
         Dungeon();
 
@@ -128,7 +133,6 @@ class Dungeon
          * @param d a reference to another dungeon
          * @return a reference to this dungeon
          *
-         * \todo just call the copy constructor.
          */
         Dungeon& operator= (const Dungeon& d);
 
@@ -210,7 +214,6 @@ class Dungeon
 
         /**
          * Prints an ASCII representation of the dungeon to stdout.
-         * \todo modify this to use tile names instead of IDs.
          */
         void dungeon_dump();
 

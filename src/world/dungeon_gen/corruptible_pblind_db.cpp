@@ -1,7 +1,7 @@
 /**
  *  @file CORRUPTIBLE_PBLIND_DB.CPP
  *  @author Seth A. Yoder
- *  
+ *
  *  @section LICENSE
  *
  *  This file is part of ROGUELIKETHING.
@@ -44,31 +44,31 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
 
         if (rolled_over(40)) {
             vert = 0; horiz = 0; wall_blocks_found = 0;
-            //There are a number of ways I could go about doing this. 
+            //There are a number of ways I could go about doing this.
             //I'm going with the weirdest, because YOLO.
             //This is for the first rule listed above corrupt_walls().
 
             //If the block below this point is a ROOM_WALL block...
-            if((corners[j].row + 1 < main_dungeon.height) && 
-                    (main_dungeon.get_tile(corners[j].row + 1, corners[j].col) 
+            if((corners[j].row + 1 < main_dungeon.height) &&
+                    (main_dungeon.get_tile(corners[j].row + 1, corners[j].col)
                      == ROOM_WALL)) {
                 vert = 1;
                 wall_blocks_found++;
-            } 
-            if ((corners[j].row - 1 >= 0) && 
-                    (main_dungeon.get_tile(corners[j].row - 1, corners[j].col) 
+            }
+            if ((corners[j].row - 1 >= 0) &&
+                    (main_dungeon.get_tile(corners[j].row - 1, corners[j].col)
                      == ROOM_WALL)) {
                 vert = -1;
                 wall_blocks_found++;
-            } 
-            if ((corners[j].col + 1 < main_dungeon.width) && 
-                    (main_dungeon.get_tile(corners[j].row, corners[j].col + 1) 
+            }
+            if ((corners[j].col + 1 < main_dungeon.width) &&
+                    (main_dungeon.get_tile(corners[j].row, corners[j].col + 1)
                      == ROOM_WALL)) {
                 horiz = 1;
                 wall_blocks_found++;
-            } 
-            if ((corners[j].col + 1 < main_dungeon.width) && 
-                    (main_dungeon.get_tile(corners[j].row, corners[j].col - 1) 
+            }
+            if ((corners[j].col + 1 < main_dungeon.width) &&
+                    (main_dungeon.get_tile(corners[j].row, corners[j].col - 1)
                      == ROOM_WALL)) {
                 horiz = -1;
                 wall_blocks_found++;
@@ -78,8 +78,8 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
                 return;
             } else {
                 main_dungeon.set_tile(corners[j], EMPTY);
-                main_dungeon.set_tile(corners[j].row + vert, 
-                        corners[j].col + horiz, 
+                main_dungeon.set_tile(corners[j].row + vert,
+                        corners[j].col + horiz,
                         ROOM_WALL);
             }
         }
@@ -87,7 +87,7 @@ void CorruptiblePBlindDB::corrupt_corners(vector<IntPoint> corners) {
 }
 
 void CorruptiblePBlindDB::corrupt_walls()
-{ 
+{
     //Loop through the rooms.
     for(int i = 0; i < num_rooms; i++) {
         Room& current_room = main_dungeon.rooms[i];
@@ -98,11 +98,11 @@ void CorruptiblePBlindDB::corrupt_walls()
         vector<IntPoint> corners = vector<IntPoint>(4);
         corners[0] = tl; corners[1] = tr; corners[2] = bl; corners[3] = br;
         corrupt_corners(corners);
-    }   
+    }
 }
 
-void CorruptiblePBlindDB::build_dungeon(int target, int deviation)
-{   
+void CorruptiblePBlindDB::build_dungeon(int target)
+{
     reset();
     bool dungeon_is_awesome;
     build_start_room();
@@ -110,7 +110,7 @@ void CorruptiblePBlindDB::build_dungeon(int target, int deviation)
     do {
         tries++;
         dungeon_is_awesome = true;
-        build_dungeon_recursive(target, deviation);
+        build_dungeon_recursive(target);
         corrupt_walls();
         if (num_rooms < (target - 3)) {
             dungeon_is_awesome = false;

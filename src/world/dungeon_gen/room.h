@@ -74,12 +74,6 @@ class Room
          * Creates a new room.
          */
         Room(IntPoint _tl, IntPoint _br);
-
-        /**
-         * Empty destructor.
-         * \todo check if this needs to be here
-         */
-        ~Room();
 };
 
 #endif

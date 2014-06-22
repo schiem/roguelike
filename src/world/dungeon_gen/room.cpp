@@ -43,7 +43,3 @@ ostream& operator<<(ostream &out, const Room &R) {
     R.print();
     return out;
 }
-
-Room::~Room() {
-
-}

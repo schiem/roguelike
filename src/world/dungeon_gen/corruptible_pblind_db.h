@@ -117,10 +117,9 @@ class CorruptiblePBlindDB : public ProcedurallyBlindDB
          * class's method of the same room, and adds a call to corrupt_walls().
          *
          * @param target - The target number of rooms to build.
-         * @param deviation - The standard room count deviation.
          * @see corrupt_walls()
          */
-        void build_dungeon(int target, int deviation);
+        void build_dungeon(int target);
 };
 
 #endif
