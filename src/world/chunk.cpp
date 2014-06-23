@@ -334,7 +334,7 @@ void Chunk::serialize() {
                     + 2*(overworld.has_layer_below) //Stair locations in the overworld.
                     + bytes_per_tile*width*height*(chunk_depth+1); //The chunk itself.
 
-    char file[file_size] = {};
+    char file[file_size];
 
     file[0] = width;
     file[1] = height;
