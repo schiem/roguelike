@@ -156,7 +156,10 @@ void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
 
 void Chunk::build_land_chunk() {
     chunk_depth = rand() % 6 + 1;
-    dungeon_floors = vector<Dungeon>(chunk_depth, Dungeon(width, height));
+    layers = std::vector<TileMatrix>(chunk_depth, 
+                std::vector< std::vector<Tile> >(height, 
+                   std::vector<Tile>(width, BLOCK_WALL) ) );
+    //dungeon_floors = vector<TileMatrix>(chunk_depth, Dungeon(width, height));
     Dungeon* temp_d;
     ProcedurallyBlindDB db(width, height);
     //CorruptiblePBlindDB db(width, height);
