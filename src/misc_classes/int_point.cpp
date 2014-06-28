@@ -46,3 +46,22 @@ bool IntPoint::operator!=(const IntPoint& i)
     return !(*this == i);
 }
 
+IntPoint IntPoint::operator+(const int &i)
+{
+    return IntPoint(row + i, col + i);
+}
+
+IntPoint IntPoint::operator+(const IntPoint& i)
+{
+    return IntPoint(row + i.row, col + i.col);
+}
+
+IntPoint IntPoint::operator-(const IntPoint& i)
+{
+    return IntPoint(row - i.row, col - i.col);
+}
+
+IntPoint IntPoint::operator-(const int &i)
+{
+    return IntPoint(row - i, col - i);
+}

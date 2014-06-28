@@ -172,6 +172,7 @@ class Chunk{
 
         /**
          * Builds a chunk with dirt, trees, and dungeons.
+         * Behaves as the default overworld.
          */
         void build_land_chunk();
 

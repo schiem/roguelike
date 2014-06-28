@@ -127,16 +127,37 @@ class Game
         Tile* get_tile(IntPoint point);
         
         /**
-         * Checks if the point at (row, col) is out of the screen.
+         * Checks if the point at (point.row, point.col) is out of the screen.
          */
         bool out_of_bounds(IntPoint point);
-        bool out_of_bounds(int, int);
-        bool in_buffer(int, int);
-        bool in_range(IntPoint, IntPoint, IntPoint, IntPoint, IntPoint);
+        
+        /**
+         * Checks if the point at (row, col) is out of the screen.
+         */
+        bool out_of_bounds(int row, int col);
+        
+        /**
+         * Returns whether or not the chunk is currently in the buffer.
+         */
+        bool in_buffer(int row, int col);
+        
+        /**
+         * Checks if one point is within a certain radius of another.
+         * @param chunk The chunk of the point to check.
+         * @param coords The coords of the point to check.
+         * @param range_chunk The chunk of the second point to check.
+         * @param center The coords of the second chunk to check.
+         * @param radius The radius around the first check.
+         * @return Whether or not the point is in range.
+         */
+        bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius);
+        
+        /**
+         * What does this do? I have no idea.
+         */
         void update_main_char_chunk();
         IntPoint get_canvas_coords(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
-        TileMatrix get_surroundings(IntPoint, IntPoint, int, IntPoint);
         std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint); 
         Character* enemy_at_loc(IntPoint, IntPoint);
 

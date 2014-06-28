@@ -35,7 +35,7 @@ using namespace enemies;
  * A rather odd way of handling linked lists.
  * This is only really used in the A-star algorithm, and is designed to
  * act as a linked list by accessing on index instead of by memory address.
- * @see Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings) 
+ * @see Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings) 
  */
 struct ATile
 {
@@ -97,7 +97,7 @@ struct ATile
  */
 class Enemy : public Character
 {
-    typedef std::vector<std::vector<Tile> > TileMatrix;
+    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     protected:
         /**
          * The game timer.
@@ -195,10 +195,11 @@ class Enemy : public Character
          * shortest path is to reach that goal.
          * @param goal THe coordinates of the goal to reach
          * @param surroundings A matrix of the tiles surrounding the enemy.
+         * @param cur_coords The current coordinates in the surroundings matrix.
          * @return The coordinates of the best next move.
-         * @see a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
+         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
          */
-        IntPoint get_next_step(IntPoint goal, TileMatrix& surroundings);
+        IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords);
         
         /**
          * Determines whether the coords are in the list of Tiles.
@@ -207,7 +208,7 @@ class Enemy : public Character
          * @param point The point to check against.
          * @param list The list of ATiles which may possess the point.
          * @return The index of the location of the point in the list, or -1 if it is not in the list.
-         * @see a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
+         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
          */
         int is_in(IntPoint point, std::vector<ATile> list);
         
@@ -235,7 +236,7 @@ class Enemy : public Character
          * @param surroundings The surroundings within the sight of the enemy.
          * @return A vector containing a list of IntPoints representing the best path, or an empty vector if there is no path. 
          */
-        std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TileMatrix&surroundings);
+        std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TilePointerMatrix &surroundings);
 
         /**
          * A heuristic to estimate the distance from a point to the goal.
@@ -244,7 +245,7 @@ class Enemy : public Character
          * @param current The current point.
          * @param goal The goal the enemy is trying to reach.
          * @return The evaluated value.
-         * @see a_star(IntPoint start, IntPoint goal, TileMatrix&surroundings)
+         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix&surroundings)
          */
         int manhattan(IntPoint, IntPoint);
         
@@ -264,9 +265,11 @@ class Enemy : public Character
          * sight, givng coordinates relative to the enemy's LOS.
          * @param _chunk The chunk of the object to be converted.
          * @param _coords The coords of the object to be converted.
+         * @param sur_chunk The chunk of top left corner of the surroundings.
+         * @param sur_coords The coordinates of the top left corner of the surroundings.
          * @return The coordinates of the object where (0, 0) is the top corner of the enemies LOS>
          */
-        IntPoint get_sur_coords(IntPoint, IntPoint);
+        IntPoint get_sur_coords(IntPoint sur_chunk, IntPoint sur_coords, IntPoint _chunk, IntPoint _coords);
         
         /**
          * Finds a target for non-passive enemies.
@@ -316,13 +319,18 @@ class Enemy : public Character
          * Wrapper function for calling different types of AI.
          * Depending on the type of enemy, this function will call a different
          * type of AI.
+         * It is necessary to pass in the sur_chunk and sur_coords so that
+         * the coordinates of the character an be converted into the coords
+         * of the surroundnigs tilematrix.
          * @param surroundings The tiles around the enemy.
+         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
-         * @see aggressive_ai(TileMatrix surroundings, std::vector<character*> char_list, long delta_ms)
-         * @see passive_ai(TileMatrix surroundings, std::vector<character*> char_list, long delta_ms)
+         * @see aggressive_ai(TilePointerMatrix surroundings, std::vector<character*> char_list, long delta_ms)
+         * @see passive_ai(TilePointerMatrix surroundings, std::vector<character*> char_list, long delta_ms)
          */
-        void run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms);
+        void run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
         
         /** 
          * The ai for the aggressive enemies.
@@ -330,10 +338,12 @@ class Enemy : public Character
          * that target.  If it is next to the target, it will attack it.
          * If no target is found, it will move randomly.
          * @param surroundings The tiles around the enemy.
+         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
          */
-        void aggressive_ai(TileMatrix, std::vector<Character*>, long);
+        void aggressive_ai(TilePointerMatrix&, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
         
         /** 
          * The ai for the passive enemies.
@@ -342,12 +352,15 @@ class Enemy : public Character
          * passes, it has a greater and greater chance of being un-spooked
          * and going back to grazing.
          * @param surroundings The tiles around the enemy.
+         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
          * \todo Make them find a food source and move toward that. 
          * @see spooked
          */
-        void passive_ai(TileMatrix, std::vector<Character*>, long);
+        void passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
+        
         /**
          * Public accessor for the id.
          * @return The member id.
@@ -369,8 +382,10 @@ class Enemy : public Character
          * a-star algrorithm work.  Or if you like massive dumps to cout.
          * Alternatively, you can use it to dump a different matrix.
          * @param map The matrix to dump.
+         * @param tl The top left corner of the area to dump.
+         * @param br The bottom right corner of the area to dump.
          */
-        void dump_matrix(TileMatrix& map);
+        void dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br);
 };
 
 #endif

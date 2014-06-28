@@ -130,12 +130,10 @@ IntPoint Enemy::get_next_step(IntPoint goal, TilePointerMatrix& surroundings, In
     {
         IntPoint buffer_step = path[path.size() - 1];
         IntPoint next_step = IntPoint(buffer_step.row - cur_coords.row, buffer_step.col - cur_coords.col);
-        cout<<"My next step is "<<buffer_step<<" and my current coordinates are "<<cur_coords<<", but my 'next_step' is "<<next_step<<endl;
         return next_step;
     }
     else
     {
-        cout<<"A-star didn't find anything..."<<endl;
         return IntPoint(0, 0);
     }
 }
@@ -149,13 +147,12 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMa
      * on the open list to point to.  Each tile's parent is
      * an int which corresponds to an index value for any tile
      * which has at some point been the "current tile"
-     */
-    std::vector<ATile> current_list;
+     */ 
+     std::vector<ATile> current_list;
 
     //The first tile is added to the open list
     open.push_back(ATile(-1, start));
     int cur_index;
-
     //while the goal hasn't been found
     while(is_in(goal, open) == -1)
     {
@@ -164,14 +161,11 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMa
             //if the open list is empty, stop
             break;
         }
-
         //set the current to the smallest f value
         int current_i = get_smallest_f(open);
-
         //set the "parent" index to the index of the current on the current_lsit
         cur_index = current_list.size();
-        // wtf drunk michael???? eric you blew????
-        current_lnd eric you blew itist.push_back(open[current_i]);
+        current_list.push_back(open[current_i]);
 
         //move the current from the open list to the closed list
         open.erase(open.begin() + current_i);
@@ -187,33 +181,31 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMa
                 {
                     //check if this point is on the open list
                     int open_index = is_in(IntPoint(i, j), open);
-                    bool in_range = ((unsigned)i-start.row) <= sight && ((unsigned)j-start.col) <= sight;
-                    bool is_good = i>=0 && j>=0 && i < surroundings.size() && j < surroundings[i].size();
                     
-                    if(!is_good || !in_range)
-                    {
-                        ATile temp = ATile(cur_index, IntPoint(i, j));
-                        closed.push_back(temp);
-                    }
+                    int y_move = (i-start.row) >= 0 ? (i-start.row) : ((i-start.row) * -1);
+                    int x_move = (j-start.col) >= 0 ? (j-start.col) : ((j-start.col) * -1);
+                    bool in_range = y_move <= sight && x_move <= sight;
+                    bool is_good = i>=0 && j>=0 && i < surroundings.size() && j < surroundings[i].size();
                     //check if this point can be moved through, isn't on the open list, and isn't on the closed list and isn't out of range
-                    if(surroundings[i][j]->can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
+                    if(in_range && is_good && surroundings[i][j]->can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         ATile temp = ATile(cur_index, IntPoint(i, j));
-                        temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) &&
-                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
-                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
+                        temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
+                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i - 
+                            current_list[cur_index].coords.row == 0) || (j - current_list[cur_index].coords.col == 0)));
 
                         temp.h = manhattan(IntPoint(i, j), goal);
                         temp.f = temp.h + temp.g;
                         open.push_back(temp);
+                        
                     }
                     //check if it can be moved through, is on the open list, and isn't on the closed list
                     else if(surroundings[i][j]->can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         //recalculate g to give a new f
-                        int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0)
-                            && (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
-                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
+                        int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
+                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i - 
+                            current_list[cur_index].coords.row == 0) || (j - current_list[cur_index].coords.col == 0)));
 
                         //if the new g is lower, replace the old parent
                         if(new_g<open[open_index].g)
@@ -244,19 +236,15 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMa
 
         }
     }
-    if(DEBUG == 1)
-    {
-        //dump_matrix(surroundings);
-    }
     return path;
 }
 
-void Enemy::dump_matrix(TilePointerMatrix& map)
+void Enemy::dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br)
 {
     int tile;
-    for(int i=0; i<map.size();i++)
+    for(int i=tl.row; i<br.row;i++)
     {
-        for(int j=0; j<map[i].size();j++)
+        for(int j=tl.col; j<br.col;j++)
         {
             tile = map[i][j]->tile_id;
             switch(tile){
@@ -273,22 +261,31 @@ void Enemy::dump_matrix(TilePointerMatrix& map)
                     cout<<"P";
                     break;
                 case 6:
-                    cout<<".";
+                    cout<<"M";
                     break;
-                case 11:
+                case 10:
                     cout<<"T";
                     break;
-                case 12:
+                case 11:
                     cout<<"#";
                     break;
-                case 13:
+                case 12:
                     cout<<"d";
                     break;
-                case 14:
+                case 13:
                     cout<<"u";
                     break;
-                case 16:
+                case 15:
                     cout<<"S";
+                    break;
+                case 16:
+                    cout<<"~";
+                    break;
+                case 20:
+                    cout<<"t";
+                    break;
+                case 21:
+                    cout<<".";
                     break;
                 default:
                     cout<<"0";
@@ -371,7 +368,6 @@ void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, I
 {
     timer += delta_ms;
     IntPoint this_coords = get_sur_coords(sur_chunk, sur_coords, chunk, IntPoint(y, x));
-    cout<<"Mah coords: "<<this_coords<<endl;
     //If the timer > speed, then it is okay to act.
     while(timer > speed) {
         timer -= speed;
@@ -403,7 +399,10 @@ void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, I
             int will_move = rand() % 5;
             int x_change = rand() % 3 - 1;
             int y_change = rand() % 3 - 1;
-            if(surroundings[y_change + this_coords.row][x_change + this_coords.col]->can_be_moved_through && will_move==0)
+            int y_place = y_change + this_coords.row;
+            int x_place = x_change + this_coords.col;
+            bool in_range = y_place >= 0 && x_place >= 0 && y_place < surroundings.size() && x_place < surroundings[y_place].size();
+            if(in_range && surroundings[y_change + this_coords.row][x_change + this_coords.col]->can_be_moved_through && will_move==0)
             {
                 move(x_change, y_change);
             }
