@@ -91,7 +91,7 @@ class ProcedurallyBlindDB : public DungeonBuilder
          *
          * @return the point that was found.
          */
-        IntPoint find_viable_starting_point(int std_width, int std_height) const;
+        IntPoint find_viable_starting_point() const;
 
         /**
          * Builds a path starting at the given point.
@@ -114,21 +114,18 @@ class ProcedurallyBlindDB : public DungeonBuilder
          * Finds a viable wall block in the given room, building paths
          * outward from those wall blocks and often building rooms at the ends
          * of those paths. Every time a new room is built, the function is
-         * called again with that room's index passed as 
+         * called again.
          *
          * @param target - The target number of rooms.
-         * @param deviation - The standard room number deviation.
-         * \todo Deviation should be a const int in DungeonBuilder.
          */
-        void build_dungeon_recursive(int target, int deviation);
+        void build_dungeon_recursive(int target);
 
     public:
         /**
-         * Empty constructor. Should never really be called.
-         * \todo Remove things in ProcedurallyBlindDB constructor.
+         * Empty constructor.
          */
         ProcedurallyBlindDB();
-        
+
         /**
          * Primary constructor. Will not build the dungeon, but will initialize
          * one.
@@ -142,9 +139,8 @@ class ProcedurallyBlindDB : public DungeonBuilder
          * The primary entry point for dungeon building.
          *
          * @param target - The target number of rooms to build.
-         * @param deviation - The standard room count deviation.
          */
-        virtual void build_dungeon(int target, int deviation);
+        virtual void build_dungeon(int target);
 };
 
 #endif

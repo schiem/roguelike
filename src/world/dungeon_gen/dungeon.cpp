@@ -25,19 +25,7 @@ using namespace tiledef;
 
 Dungeon::Dungeon()
 {
-    dungeon = TileMatrix(30, std::vector<Tile>(30, BLOCK_WALL));
-    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
-    num_rooms = 0;
-    width = 10;
-    height= 10;
-    down_stair = IntPoint(0, 0);
-    up_stair = IntPoint(0, 0);
-    items = std::vector<Item*>();
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
-            dungeon[i][j] = DIRT;
-        }
-    }
+
 }
 
 Dungeon::Dungeon(int _width, int _height)
@@ -57,8 +45,7 @@ Dungeon::Dungeon(int _width, int _height)
     }
 }
 
-Dungeon::Dungeon(const Dungeon& d)
-{
+void Dungeon::swap(const Dungeon& d) {
     dungeon = d.dungeon;
     width = d.width;
     height = d.height;
@@ -73,19 +60,12 @@ Dungeon::Dungeon(const Dungeon& d)
     }
 }
 
+Dungeon::Dungeon(const Dungeon& d) {
+    operator=(d);
+}
+
 Dungeon& Dungeon::operator= (const Dungeon& d){
-    dungeon = d.dungeon;
-    width = d.width;
-    height = d.height;
-    down_stair = d.down_stair;
-    up_stair = d.up_stair;
-    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
-    num_rooms = d.num_rooms;
-    spawner = d.spawner;
-    items = d.items;
-    for(int i = 0; i < num_rooms; i++) {
-        this->rooms[i] = d.rooms[i];
-    }
+    swap(d);
     return *this;
 }
 
@@ -184,37 +164,26 @@ void Dungeon::add_item(Item* item) {
 
 void Dungeon::dungeon_dump() {
     //dungeon dump
-    int tile;
-    for(int row=0;row<dungeon.size();row++)
+    Tile tile;
+    for(int row=0;row<height;row++)
     {
-        for(int col=0;col<dungeon[row].size();col++)
+        for(int col=0;col<width;col++)
         {
-            tile = dungeon[row][col].tile_id;
-            switch(tile){
-                case 2:
-                    cout<<".";
-                    break;
-                case 5:
-                    cout<<":";
-                    break;
-                case 4:
-                    cout<<"#";
-                    break;
-                case 12:
-                    cout<<"d";
-                    break;
-                case 13:
-                    cout<<"u";
-                    break;
-                case 30:
-                    cout<<"u";
-                    break;
-                case 15:
-                    cout<<"S";
-                    break;
-                default:
-                    cout<<" ";
-                    break;
+            tile = dungeon[row][col];
+            if(tile == DIRT) {
+                cout<<".";
+            } else if (tile == PATH) {
+                cout<<":";
+            } else if (tile == ROOM_WALL) {
+                cout<<"#";
+            } else if (tile == DOWN_STAIR) {
+                cout<<"d";
+            } else if (tile == UP_STAIR) {
+                cout<<"u";
+            } else if (tile == KOBOLD_SPAWNER) {
+                cout<<"S";
+            } else {
+                cout<<" ";
             }
         }
         cout<<endl;

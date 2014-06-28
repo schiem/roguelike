@@ -23,13 +23,6 @@
 #ifndef DUNGEONBUILDER_H
 #define DUNGEONBUILDER_H
 
-#define MAX_PATH_LENGTH 75
-#define MIN_PATH_LENGTH 16
-#define STD_ROOM_WIDTH 8
-#define STD_ROOM_HEIGHT 6
-//keep these two numbers even.
-#define ROOM_WIDTH_DEV 2
-#define ROOM_HEIGHT_DEV 2
 
 #include <iostream>
 #include <string>
@@ -53,13 +46,28 @@ using namespace std;
  *
  * @see ProcedurallyBlindDB
  * @see CorruptiblePBlindDB
- * \todo get rid of these #defines.
  */
 class DungeonBuilder
 {
 
     friend ostream& operator<<(ostream&, const DungeonBuilder&);
     protected:
+        /**
+         * "Typical" rooms are about this large.
+         */
+        static const int STD_ROOM_WIDTH=8;
+        static const int STD_ROOM_HEIGHT=6;
+
+        static const int MAX_PATH_LENGTH=75;
+        static const int MIN_PATH_LENGTH=16;
+
+        /**
+         * Rooms can only deviate by this width and height.
+         * Keep these two numbers even.
+         */
+        static const int ROOM_WIDTH_DEV=2;
+        static const int ROOM_HEIGHT_DEV=2;
+
         /**
          * The width of the dungeon to be created.
          */
@@ -106,7 +114,6 @@ class DungeonBuilder
          * dungeon.
          * @param point - the point to check
          * @return True if the point is out of bounds.
-         * \todo get rid of the TODO here and fix it.
          */
         bool point_is_beyond_bounds(IntPoint point) const;
 
