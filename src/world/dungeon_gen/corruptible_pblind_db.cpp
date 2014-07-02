@@ -114,7 +114,7 @@ void CorruptiblePBlindDB::build_dungeon(int target)
         corrupt_walls();
         if (num_rooms < (target - 3)) {
             dungeon_is_awesome = false;
-            main_dungeon = Dungeon(width, height);
+            main_dungeon = ChunkLayer(width, height);
             num_rooms = 0;
         }
     } while(!dungeon_is_awesome);

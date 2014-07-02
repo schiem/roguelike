@@ -3,32 +3,19 @@
 
 #include <defs.h>
 #include <spawner.h>
-#include <vector.h>
+#include <room.h>
+#include <vector>
 
+typedef std::vector<std::vector<Tile> > TileMatrix;
 class ChunkLayer {
-    typedef std::vector<std::vector<Tile> > TileMatrix;
 
     private:
-        /**
-         * The width of this layer.
-         */
-        int width;
-
-        /**
-         * The height of this layer.
-         */
-        int height;
-
+        static const int MAX_ROOMS=15;
         /**
          * The central data model for the class: A two-dimensional matrix
          * storing the layer's tiles.
          */
         TileMatrix ground;
-
-        /**
-         * Any monster spawners that are stored on this layer.
-         */
-        std::vector<Spawner> spawners;
 
         /**
          * A vector storing pointers to each item on the chunk.
@@ -60,12 +47,6 @@ class ChunkLayer {
         void tile_assertions(int row, int col) const;
 
         /**
-         * The number of rooms in this layer.
-         * \todo figure out what to do with this.
-         */
-        int num_rooms;
-
-        /**
          * A vector of IntPoints representing the location of down stairs on
          * this chunk.
          */
@@ -77,27 +58,57 @@ class ChunkLayer {
          */
         std::vector<IntPoint> up_stairs;
 
-        /**
-         * A vector containing data about the rooms in this dungeon.
-         */
-        std::vector<Room> rooms;
 
     public:
         ChunkLayer();
-        ChunkLayer(int _width, int _height, bool has_layer_below, MapTile tile_type);
+        ChunkLayer(int _width, int _height);
+        ChunkLayer(int _width, int _height, bool has_layer_below);
         ChunkLayer(const ChunkLayer& l);
+
+        /**
+         * \todo these should be gone in a few commits.
+         */
+        IntPoint down_stair;
+        IntPoint up_stair;
+        IntPoint spawner_loc;
+
+        /**
+         * The width of this layer.
+         */
+        int width;
+
+        /**
+         * The height of this layer.
+         */
+        int height;
 
         /**
          * @param d a reference to another dungeon
          * @return a reference to this dungeon
          *
          */
-        Dungeon& operator= (const Dungeon& d);
+        ChunkLayer& operator= (const ChunkLayer& d);
 
         /**
          * True if there is a layer below this one.
          */
         bool has_layer_below;
+
+        /**
+         * The number of rooms in this layer.
+         * \todo figure out what to do with this.
+         */
+        int num_rooms;
+
+        /**
+         * A vector containing data about the rooms in this dungeon.
+         */
+        std::vector<Room> rooms;
+
+        /**
+         * Any monster spawners that are stored on this layer.
+         */
+        std::vector<Spawner> spawners;
 
         /**
          * Returns the tile at the given (row, col) location.
@@ -109,8 +120,8 @@ class ChunkLayer {
         Tile* get_tile_pointer(int row, int col);
         Tile* get_tile_pointer(IntPoint point);
 
-        Tile get_tile(int row, int col);
-        Tile get_tile(IntPoint point);
+        Tile get_tile(int row, int col) const;
+        Tile get_tile(IntPoint point) const;
 
         /**
          * Sets the tile at the given location.
@@ -121,6 +132,8 @@ class ChunkLayer {
          */
         void set_tile(int row, int col, Tile tile_type);
 
+        void set_tile(IntPoint point, Tile tile_type);
+
         /**
          * @return a reference to the matrix of tiles on this layer.
          */
@@ -130,7 +143,7 @@ class ChunkLayer {
          * @return a pointer to the list of item pointers on this chunk.
          * \todo why a pointer and not a reference? There could be a legit reason. -Seth
          */
-        std::vector<Item*>& get_items();
+        std::vector<Item*>* get_items();
 
         /**
          * @return a vector of the equipment on this chunk.
@@ -173,11 +186,13 @@ class ChunkLayer {
          */
         void make_spawner(int depth);
 
+        void make_spawner(int depth, IntPoint point);
+
         /**
          * Prints an ASCII representation of the layer to stdout.
          */
         void layer_dump();
 
-}
+};
 
 #endif
