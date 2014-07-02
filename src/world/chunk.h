@@ -218,7 +218,7 @@ class Chunk{
          * @return a pointer to a vector of items in the chunk.
          * \todo should this return a reference instead of a pointer?
          */
-        std::vector<Item*>* get_items(int depth);
+        std::vector<Item*>& get_items(int depth);
 
         /**
          * Will remove the given item from the chunk.

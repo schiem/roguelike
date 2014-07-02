@@ -103,8 +103,8 @@ TileMatrix& ChunkLayer::get_ground() {
     return ground;
 }
 
-std::vector<Item*>* ChunkLayer::get_items() {
-    return &items;
+std::vector<Item*>& ChunkLayer::get_items() {
+    return items;
 }
 
 std::vector<EquipType>& ChunkLayer::get_equipment() {

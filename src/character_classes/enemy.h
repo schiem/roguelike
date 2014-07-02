@@ -35,37 +35,37 @@ using namespace enemies;
  * A rather odd way of handling linked lists.
  * This is only really used in the A-star algorithm, and is designed to
  * act as a linked list by accessing on index instead of by memory address.
- * @see Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings) 
+ * @see Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
  */
 struct ATile
 {
     /**
      * The index value of the parent of this tile
-     */ 
+     */
     int parent;
-    
+
     /**
      * The coordinates of the tile.
      */
     IntPoint coords;
-    
+
     /**
      * The total "score" for this tile.
      * Made up of f + g
      */
     int f;
-    
+
     /**
      * The distance that has passed from the origin to this tile.
      */
     int g;
-    
+
     /**
      * The result of the Manhattan Heuristic
      * @see Enemy::manhattan(IntPoint current, IntPoint goal)
      */
     int h;
-    
+
     /**
      * Default constructor.
      */
@@ -75,7 +75,7 @@ struct ATile
         g = -1;
         h = -1;
     }
-    
+
     /**
      * The constructor
      */
@@ -114,12 +114,12 @@ class Enemy : public Character
          * enemy.
          */
         int id;
-        
+
         /**
          * Member variable to hold how far the enemy can see.
          */
         int sight;
-        
+
         /**
          * How quickly the enemy moves.
          * Represents the threshold for how many milliseconds must pass before
@@ -127,14 +127,14 @@ class Enemy : public Character
          * @see timer
          */
         int speed;
-        
+
         /**
          * Determines whether or not the enemy will flee.
-         * If spooked is true, enemies will begin to flee from anything with a 
+         * If spooked is true, enemies will begin to flee from anything with a
          * morality that is different from its own.
          */
         bool spooked;
-        
+
         /**
          * The direction that the spooked enemy will run in.
          * Once the enemy has been spooked, the direction for it to go will be
@@ -143,18 +143,18 @@ class Enemy : public Character
          * @see get_spooked(IntPoint abs_coords, IntPoint target_abs)
          */
         IntPoint direction_spooked;
-        
+
         /**
          * The number of this enemy's actions which have passed since it was spooked.
          */
         int time_spooked;
-        
-        /** 
+
+        /**
          * A string of the name of the enemy.
          * This is a generic string, as in "kobold," or "rabbit."
          */
         std::string name;
-        
+
         /**
          * Generates the equipment from a list of EquipType.
          * Loops through a list of possible equipment that an enemy can have,
@@ -164,7 +164,7 @@ class Enemy : public Character
          * @return A list of equipment that the enemy does have.
          */
         std::vector<Equipment*> generate_equipment(std::vector<EquipType> equipment_list);
-        
+
         /**
          * Generates the weapon from a list of WeaponType.
          * Loops through a list of possible weapons that an enemy can have,
@@ -187,11 +187,11 @@ class Enemy : public Character
          * @see y
          */
         void move(int x_change, int y_change);
-        
+
         /**
          * Determines the best next move to make to reach a goal.
-         * This function loods at the current coordinates, the coordinates of 
-         * the goal, and surroundings, and decides what the next move on the 
+         * This function loods at the current coordinates, the coordinates of
+         * the goal, and surroundings, and decides what the next move on the
          * shortest path is to reach that goal.
          * @param goal THe coordinates of the goal to reach
          * @param surroundings A matrix of the tiles surrounding the enemy.
@@ -200,7 +200,7 @@ class Enemy : public Character
          * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
          */
         IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords);
-        
+
         /**
          * Determines whether the coords are in the list of Tiles.
          * A helper function for the a_star which determines if a given
@@ -211,7 +211,7 @@ class Enemy : public Character
          * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
          */
         int is_in(IntPoint point, std::vector<ATile> list);
-        
+
         /**
          * A pathfinding algorithm.
          * This calculates the best path between two coordinates on a given array of tiles
@@ -234,13 +234,13 @@ class Enemy : public Character
          * @param start The starting point for the algorithm.
          * @param goal The place the enemy is trying to get to.
          * @param surroundings The surroundings within the sight of the enemy.
-         * @return A vector containing a list of IntPoints representing the best path, or an empty vector if there is no path. 
+         * @return A vector containing a list of IntPoints representing the best path, or an empty vector if there is no path.
          */
         std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TilePointerMatrix &surroundings);
 
         /**
          * A heuristic to estimate the distance from a point to the goal.
-         * A helper function for the a-star algorithm, it calculates the 
+         * A helper function for the a-star algorithm, it calculates the
          * distance as the x_change + y_change between a point and the goal.
          * @param current The current point.
          * @param goal The goal the enemy is trying to reach.
@@ -248,7 +248,7 @@ class Enemy : public Character
          * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix&surroundings)
          */
         int manhattan(IntPoint, IntPoint);
-        
+
         /**
          * Returns the ATile with the smallest f value.
          * A helper fucntion for the a-star algorithm which finds the smallest
@@ -257,10 +257,10 @@ class Enemy : public Character
          * @return The index of the smallest f value found in the list.
          */
         int get_smallest_f(std::vector<ATile>& list);
-        
+
         /**
          * Converts chunk/coords into the enemies surroundings coordinates.
-         * Converts the passed in chunk/coordinates to absolute coordinates, 
+         * Converts the passed in chunk/coordinates to absolute coordinates,
          * and then subtracts that from the top right of the enemy's line of
          * sight, givng coordinates relative to the enemy's LOS.
          * @param _chunk The chunk of the object to be converted.
@@ -270,7 +270,7 @@ class Enemy : public Character
          * @return The coordinates of the object where (0, 0) is the top corner of the enemies LOS>
          */
         IntPoint get_sur_coords(IntPoint sur_chunk, IntPoint sur_coords, IntPoint _chunk, IntPoint _coords);
-        
+
         /**
          * Finds a target for non-passive enemies.
          * Finds the best target to act on by searching for the character
@@ -281,21 +281,21 @@ class Enemy : public Character
          * @return The character that is found as the best target.  NULL if none is found.
          */
         Character* find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list);
-        
+
         /**
          * Finds an enemy that isn't pasive.
          * If a character is found that isn't passive, it returns that
-         * character.  Otherwise it returns NULL. 
+         * character.  Otherwise it returns NULL.
          * @param selectability The range that the morality can fall within.
          * @param enemy_list The list of enemies to check.
          * @return The character that is found as the best target.  NULL if none is found.
          */
         Character* passive_best_target(int target_id, int selectability, std::vector<Character*> enemy_list);
-        
-        
+
+
         /**
          * Gets the direction that an enemy should be spooked.
-         * Takes in a chunk and coordinates in the direction of the spooker, 
+         * Takes in a chunk and coordinates in the direction of the spooker,
          * and calculates the direction to run away from the the spooker.
          * @param abs_coords The absolute coordinates of the spook-e.
          * @param target_abs The absolute coordinates of the spooker.
@@ -308,13 +308,13 @@ class Enemy : public Character
          * The default constructor.
          */
         Enemy();
-        
+
         /**
          * The constructor for the enemy class.
          * @see Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
          */
         Enemy(int _x, int _y, int _chunk_x , int _chunk_y, int _depth, EnemyType enemy);
-        
+
         /**
          * Wrapper function for calling different types of AI.
          * Depending on the type of enemy, this function will call a different
@@ -323,7 +323,7 @@ class Enemy : public Character
          * the coordinates of the character an be converted into the coords
          * of the surroundnigs tilematrix.
          * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_chunk The chunk of the surrounding coords.
          * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
@@ -331,50 +331,50 @@ class Enemy : public Character
          * @see passive_ai(TilePointerMatrix surroundings, std::vector<character*> char_list, long delta_ms)
          */
         void run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
-        
-        /** 
+
+        /**
          * The ai for the aggressive enemies.
          * The AI searches for a target (find_best_target()) and moves towards
          * that target.  If it is next to the target, it will attack it.
          * If no target is found, it will move randomly.
          * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_chunk The chunk of the surrounding coords.
          * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
          */
         void aggressive_ai(TilePointerMatrix&, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
-        
-        /** 
+
+        /**
          * The ai for the passive enemies.
-         * The AI searches for a target (passive_best_target()) 
+         * The AI searches for a target (passive_best_target())
          * and will run away from any non-passive targets found.  As time
          * passes, it has a greater and greater chance of being un-spooked
          * and going back to grazing.
          * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords. 
+         * @param sur_chunk The chunk of the surrounding coords.
          * @param sur_coords The coordinates of the surrounding tilematrix.
          * @param char_list The list of characters the enemy can see.
          * @param delta_ms The change in millisenconds since the last time ai was called.
-         * \todo Make them find a food source and move toward that. 
+         * \todo Make them find a food source and move toward that.
          * @see spooked
          */
         void passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
-        
+
         /**
          * Public accessor for the id.
          * @return The member id.
          * @see id
          */
         int get_id();
-        
-        /** 
+
+        /**
          * Public accessor for the line of sight.
          * @return The member sight.
          * @see sight
          */
         int get_sight();
-        
+
         /**
          * A debugging function.
          * Dumps the paths to cout as they are calculated by a-star.  Only

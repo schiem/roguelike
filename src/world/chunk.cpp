@@ -214,12 +214,12 @@ IntPoint Chunk::get_down_stair(int depth) const{
     return layers[depth].down_stair;
 }
 
-vector<Item*>* Chunk::get_items(int depth) {
+vector<Item*>& Chunk::get_items(int depth) {
     return layers[depth].get_items();
 }
 
 void Chunk::remove_item(Item* item, int depth) {
-    vector<Item*>* items = get_items(depth);
+    vector<Item*>* items = &get_items(depth);
     for(int i = 0; i<items->size();i++) {
         if(items->at(i) == item) {
             items->erase(items->begin() + i);

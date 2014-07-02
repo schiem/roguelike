@@ -50,7 +50,7 @@ class Character
          */
         int moral;
 
-        /** 
+        /**
          * A vector representation of the stats of a character.
          * All of the stats of a character (health, armor, strength, etc.
          * will be held in this vector.
@@ -132,12 +132,12 @@ class Character
          * The default constructor.
          */
         Character();
-        
-        
+
+
         /**
          * The constructor for the character class.
-         * This is the constructor which is used to construct the enemy and 
-         * main character derived classes. 
+         * This is the constructor which is used to construct the enemy and
+         * main character derived classes.
          * @param _max_health The health to give the character.
          * @param _sprite The sprite of the character.
          * @param _corpse The corpse to be crated from the MiscType.
@@ -153,8 +153,8 @@ class Character
 
         /**
          * The constructor for the character class.
-         * This is the constructor which is used to construct the enemy and 
-         * main character derived classes. 
+         * This is the constructor which is used to construct the enemy and
+         * main character derived classes.
          * @param _x The x value to give the character.
          * @param _y The y value to give to the character.
          * @param _chunk_x The x coordinate of the chunk to place the character.

@@ -133,12 +133,12 @@ class Game
          * Checks if the point at (row, col) is out of the screen.
          */
         bool out_of_bounds(int row, int col);
-        
+
         /**
          * Returns whether or not the chunk is currently in the buffer.
          */
         bool in_buffer(int row, int col);
-        
+
         /**
          * Checks if one point is within a certain radius of another.
          * @param chunk The chunk of the point to check.
@@ -149,7 +149,7 @@ class Game
          * @return Whether or not the point is in range.
          */
         bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius);
-        
+
         /**
          * What does this do? I have no idea.
          */
@@ -202,7 +202,7 @@ public:
         //ENEMY Functionality
         void run_spawners();
         void run_enemies(long);
-        std::vector<Enemy*>* get_enemies();
+        std::vector<Enemy*>& get_enemies();
         //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);

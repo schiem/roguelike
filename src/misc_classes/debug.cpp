@@ -33,16 +33,16 @@ DebugConsole::DebugConsole(Game* _game)
     buffer_size = 20;
     game = _game;
     debug_message = "Input your command";
-    
+
     //Add the functions to the function map.  It has to be done here
     //as well as creating the function.
     func_map["help"] = &DebugConsole::help;
     func_map["list"] = &DebugConsole::list;
     func_map["killall"] = &DebugConsole::killall;
-    func_map["spawn"] = &DebugConsole::spawn;    
+    func_map["spawn"] = &DebugConsole::spawn;
     func_map["teleport"] = &DebugConsole::teleport;
 }
-    
+
 void DebugConsole::run_command(std::string input)
 {
     //increase the position in the buffer
@@ -60,10 +60,10 @@ void DebugConsole::run_command(std::string input)
         buffer[buffer_place] = input;
     }
     current_place = buffer_place;
-    
+
     //split the command into arguments
     std::vector<std::string> command = split_string(input, ' ');
-    
+
     //The function we should call
     std::string func = command[0];
 
@@ -71,9 +71,9 @@ void DebugConsole::run_command(std::string input)
     command = std::vector<std::string>(command.begin() + 1, command.begin() + command.size());
 
     //convert our string arguments into ints!
-    std::vector<int> args = strings_to_ints(command);    
-    
-    
+    std::vector<int> args = strings_to_ints(command);
+
+
     //call the appropriate function
     if(func_map[func])
     {
@@ -141,7 +141,7 @@ void DebugConsole::list(std::vector<std::string> command, std::vector<int> args)
 
 void DebugConsole::killall(std::vector<std::string> command, std::vector<int> args)
 {
-    std::vector<Enemy*>* enemy_list = game->get_enemies();
+    std::vector<Enemy*>* enemy_list = &game->get_enemies();
     for(int i=0;i<enemy_list->size();i++)
     {
         Enemy* temp = enemy_list->at(i);

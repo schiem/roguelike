@@ -143,7 +143,7 @@ class ChunkLayer {
          * @return a pointer to the list of item pointers on this chunk.
          * \todo why a pointer and not a reference? There could be a legit reason. -Seth
          */
-        std::vector<Item*>* get_items();
+        std::vector<Item*>& get_items();
 
         /**
          * @return a vector of the equipment on this chunk.

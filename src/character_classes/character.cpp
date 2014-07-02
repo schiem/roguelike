@@ -33,7 +33,7 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     target = NULL;
-    equipment = vector<Item*>(7);    
+    equipment = vector<Item*>(7);
 }
 
 Character::Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _attack) {

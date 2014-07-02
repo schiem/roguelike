@@ -222,10 +222,10 @@ void Game::run_enemies(long delta_ms) {
             current_chunk = chunk_map.get_chunk_abs(enem_chunk.row,enem_chunk.col);
             current_chunk->add_item(corpse, enemy->get_depth());
 
-            for(int j = 0; j < current_chunk->get_items(enemy->get_depth())->size();j++)
+            for(int j = 0; j < current_chunk->get_items(enemy->get_depth()).size();j++)
             {
-                cout<<"Item "<<current_chunk->get_items(enemy->get_depth())->at(j)->get_name();
-                cout<<"at "<<current_chunk->get_items(enemy->get_depth())->at(j)->get_coords()<<endl;
+                cout<<"Item "<<current_chunk->get_items(enemy->get_depth()).at(j)->get_name();
+                cout<<"at "<<current_chunk->get_items(enemy->get_depth()).at(j)->get_coords()<<endl;
             }
             enemy->remove_all();
             vector<Item*>* item_list = enemy->get_inventory();
@@ -252,7 +252,7 @@ void Game::run_enemies(long delta_ms) {
             TileMatrix surroundings = TileMatrix((radius + 1) * 2, std::vector<Tile>((radius + 1) * 2)); 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
             std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(enemy->get_sight(), enemy->get_sight()));
-            
+
             IntPoint buffer_chunk = IntPoint(main_char.get_chunk_y() - 1, main_char.get_chunk_x() - 1);
             enemy->run_ai(buffer, buffer_chunk, IntPoint(0, 0), nearby_enem, delta_ms);
         }
@@ -260,9 +260,8 @@ void Game::run_enemies(long delta_ms) {
 }
 
 
-std::vector<Enemy*>* Game::get_enemies()
-{
-    return &enemy_list;
+std::vector<Enemy*>& Game::get_enemies() {
+    return enemy_list;
 }
 /*--------------------Main Char Functions----------------------*/
 void Game::change_main_depth(int direction) {
@@ -336,14 +335,14 @@ void Game::move_main_char(int col_change, int row_change) {
 }
 
 
+/// \todo Make this take in a character so that other characters can call it?
 void Game::get_item()
 {
-    //make this take in a character so that other characters can call it?
     Item* temp_item = item_at_coords(IntPoint(main_char.get_y(), main_char.get_x()), main_char.get_chunk(), main_char.get_depth());
     Chunk* current_chunk = chunk_map.get_chunk_abs(main_char.get_chunk_y(), main_char.get_chunk_x());
     if(temp_item != NULL)
     {
-        //add a check if the inventory is full
+        ///\todo Add a check if the inventory is full
         main_char.add_item(temp_item);
         current_chunk->remove_item(temp_item, main_char.get_depth());
     }
@@ -378,13 +377,13 @@ void Game::set_tile(IntPoint point, Tile* tile) {
     canvas[point.row][point.col] = tile;
 }
 
-Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth)
-{
-    vector<Item*>* item_list = chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
-    for(int i=0;i<item_list->size();i++)
-    {
-        if(item_list->at(i)->get_coords() == coords)
-        {
+Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth) {
+
+    vector<Item*>* item_list = &chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
+
+    for(int i=0;i<item_list->size();i++) {
+
+        if(item_list->at(i)->get_coords() == coords) {
             return item_list->at(i);
         }
     }
@@ -505,7 +504,7 @@ void Game::show_vis_items() {
             current_chunk = chunk_map.get_chunk_abs(i,j);
 
             if(main_char.get_depth() < current_chunk->get_depth()) {
-                vector<Item*>* item_list = current_chunk->get_items(main_char.get_depth());
+                vector<Item*>* item_list = &current_chunk->get_items(main_char.get_depth());
 
                 for(int index=0; index < item_list->size(); index++) {
                     IntPoint chunk = IntPoint(i, j);

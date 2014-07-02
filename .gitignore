@@ -25,3 +25,4 @@ Makefile
 missing
 stamp-h1
 makescript.sh
+gmon.out
