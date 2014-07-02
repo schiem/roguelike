@@ -34,7 +34,7 @@
 
 /**
  * Holds the different stats of the character.
- * The enum acts as an index in the stats and current stats, 
+ * The enum acts as an index in the stats and current stats,
  * so current_stats[HEALTH] corresponds to character's current
  * health.
  * @see Character::current_stats, Character::stats
@@ -63,39 +63,39 @@ struct Tile {
      * included in the lib/ folder.
      */
     int char_count;
-    
+
     /**
      * A sequential id assigned to tiles for accessing them.
      */
     int tile_id;
-     
+
      /**
      * The color of the tile.
      * An integer which corresponds to the color of the tile.  It is a 24 bit
      * binary number where each 8 bits represents, R, G, or B which has been
      * converted into decimal.
      */
-    int color;       
-    
+    int color;
+
     /**
      * Whether or not a character can move through the tile.
      */
     bool can_be_moved_through;
-    
+
     /**
      * If the tile is currently visible.
      * Tiles will be marked as visible if they can currently be seen by the
      * main character.  Otherwise, this will be false.
      */
     bool visible;
-    
+
     /**
      * True if light can pass through the tile.
      * This value is used by the lighting system to determine whether or not
      * a particular tile should have light pass through it.
      */
     bool opaque;
-    
+
     /**
      * True if the main character has, at some point, seen the tile.
      * If this is true, then the tile will be grayed out when it is
@@ -103,7 +103,7 @@ struct Tile {
      * instead of the tile.
      */
     bool seen;
-    
+
     /**
      * The comparison operator for tiles.
      */
@@ -157,33 +157,33 @@ struct MapTile {
      * included in the lib/ folder.
      */
     int char_count;
- 
+
     /**
      * The color of the tile.
      * An integer which corresponds to the color of the tile.  It is a 24 bit
      * binary number where each 8 bits represents, R, G, or B which has been
      * converted into decimal.
      */
-    int color;   
-    
+    int color;
+
     /**
      * A sequential id assigned to tiles for accessing them.
      */
     int id;
-    
+
     /**
-     * True if the tile spawns any mobs. 
+     * True if the tile spawns any mobs.
      * \todo Change this so that it is a list of the mobs to spawn
      */
     bool does_spawn;
-    
+
     /**
      * Comparison operator for MapTiles.
      */
     bool operator==(const MapTile& rhs) const {
         return this->id == rhs.id;
     }
-    
+
     /**
      * != operator for MapTiles.
      */
@@ -222,22 +222,22 @@ struct EquipType
      * The tile which will be used to graphically represent the item.
      */
     Tile sprite;
-    
+
     /**
      * The name of the item.
      */
     std::string name;
-    
+
     /**
      * A description of the item.
      */
     std::string description;
-    
+
     /**
      * How likely it is tha the item will appear.
      */
     int rarity;
-    
+
     /**
      * The body part which the equipment goes on.
      * The indexes correspond as follows:
@@ -251,34 +251,34 @@ struct EquipType
      * \todo Put this in an enum.
      */
     int body_part;
-    
+
     /**
      * The type of equipment.
-     * The different types of equipment are as follows: 
-     * 0 - light 
-     * 1 - medium 
+     * The different types of equipment are as follows:
+     * 0 - light
+     * 1 - medium
      * 3 - heavy.
      * Each type of armor has a type ofweapon that will deal more
      * damage against it.
      * \todo Put this in an enum.
      */
     int type;
-    
+
     /**
      * How much the character's armor will increase by.
      * \todo FIGURE OUT THE DAMN ARMOR SYSTEM.
      */
     int armor_class;
-    
+
     /**
      * True if the item has a use beyond increasing armor.
      */
     bool use;
-    
+
     /**
      * Comparitor operator for equipment.
      */
-    bool operator==(const EquipType& rhs) const 
+    bool operator==(const EquipType& rhs) const
     {
         return this->name==rhs.name;
     }
@@ -301,31 +301,31 @@ struct WeaponType
      * The tile which will be used to graphically represent the item.
      */
     Tile sprite;
-    
+
     /**
      * The name of the item.
      */
     std::string name;
-    
+
     /**
      * A description of the item.
      */
     std::string description;
-    
+
     /**
      * how likely it is tha the item will appear.
      */
     int rarity;
-    
+
     /**
      * The amount of damage the weapon will deal when equipped.
-     */ 
+     */
     int damage;
-    
+
     /**
      * The type of weapons.
-     * The different types of weapons are as follows: 
-     * 0 - piercing 
+     * The different types of weapons are as follows:
+     * 0 - piercing
      * 1 - slashing
      * 3 - bludgeoning.
      * Each type of armor has a type of weapon that will deal more
@@ -339,16 +339,16 @@ struct WeaponType
      * \todo Make this do something.
      */
     int range;
-    
+
     /**
      * True if the item has a use beyond changing attack.
      */
     bool use;
-    
+
     /**
      * Comparitor operator for weapon.
      */
-    bool operator==(const WeaponType& rhs) const 
+    bool operator==(const WeaponType& rhs) const
     {
         return this->name==rhs.name;
     }
@@ -371,27 +371,27 @@ struct ConsumableType
      * The tile which will be used to graphically represent the item.
      */
     Tile sprite;
-    
+
     /**
      * The name of the item.
      */
     std::string name;
-    
+
     /**
      * A description of the item.
      */
     std::string description;
-    
+
     /**
      * True if the item has a use beyond changing attack.
      */
     bool use;
-    
+
     /**
      * How likely it is tha the item will appear.
      */
     int rarity;
-    
+
     /**
      * The stat that the item modifies.
      * This corresponds to an index in the character's stats
@@ -400,12 +400,12 @@ struct ConsumableType
      * @see STATS
      */
     int stat;
-    
+
     /**
      * How much the stat is being modified by.
      */
     int value;
-    
+
     /**
      * The type of modification the stat will perform.
      * This corresponds to an enum containing the different
@@ -413,11 +413,11 @@ struct ConsumableType
      * @see ConsumableTypes
      */
     int type;
-    
+
     /**
      * Comparitor for consumables.
      */
-    bool operator==(const ConsumableType& rhs) const 
+    bool operator==(const ConsumableType& rhs) const
     {
         return this->name==rhs.name;
     }
@@ -440,27 +440,27 @@ struct MiscType
      * The tile which will be used to graphically represent the item.
      */
     Tile sprite;
-    
+
     /**
      * The name of the item.
      */
     std::string name;
-    
+
     /**
      * A description of the item.
      */
     std::string description;
-    
+
     /**
      * True if the item has a use beyond changing attack.
      */
     bool use;
-    
+
     /**
      * How likely it is tha the item will appear.
      */
     int rarity;
-    
+
     /**
      * The stat that the item modifies.
      * This corresponds to an index in the character's stats
@@ -532,12 +532,12 @@ struct EnemyType
      * The attribute to assign the member variable stats[HEALTH] for enemies.
      */
     int max_health;
-        
+
      /**
      * The attribute to assign the member variable stats[ATTACK] for enemies.
      */
     int base_attack;
-    
+
      /**
      * The attribute to assign the member variable stats[ARMOR] for enemies.
      */
@@ -557,20 +557,20 @@ struct EnemyType
      * The attribute to assign the member variable speed for enemies.
      */
     int speed;
-    
+
      /**
      * The attribute to assign the member variable name for enemies.
-     */   
+     */
     std::string name;
-    
+
      /**
      * The attribute to assign the member variable sprite for enemies.
-     */ 
+     */
     Tile sprite;
 
      /**
      * The attribute used to create the member varaible corpse for enemies.
-     */ 
+     */
     MiscType corpse;
 
     /**
@@ -578,13 +578,13 @@ struct EnemyType
      * @see Enemy::generate_equipment()
      */
     std::vector<EquipType> eq;
-    
+
     /**
      * A list of possible weapons that enemies can have.
      * @see Enemy::generate_weapon()
      */
     std::vector<WeaponType> wep;
-    
+
     /**
      * Comparison operator for EnemyType.
      */

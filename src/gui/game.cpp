@@ -67,10 +67,8 @@ Game::Game() {
     paused = false;
 }
 
-Game::~Game()
-{
-    for(int i=0;i<enemy_list.size();i++)
-    {
+Game::~Game() {
+    for(int i=0;i<enemy_list.size();i++) {
         delete enemy_list[i];
     }
 }
@@ -86,7 +84,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, -1, 0, 10);
+    main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 10);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
     canvas = TilePointerMatrix(SCREEN_HEIGHT, vector<Tile*>(SCREEN_WIDTH));
@@ -669,8 +667,7 @@ void Game::undo_visibility() {
 /*-----------------------------------DEBUG FUNCTIONS----------------------*/
 
 
-void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type)
-{
+void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type) {
         Enemy* temp = new Enemy(x, y, chunk_x, chunk_y, depth, ENEMY_LIST[type]);
             enemy_list.push_back(temp);
 }

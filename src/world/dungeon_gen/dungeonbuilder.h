@@ -33,7 +33,7 @@
 #include <int_point.h>
 #include <room.h>
 #include <defs.h>
-#include <dungeon.h>
+#include <chunk_layer.h>
 #include <ASCII_Lib.h>
 
 using namespace std;
@@ -88,9 +88,9 @@ class DungeonBuilder
          * The dungeon object that this instance of DungeonBuilder will twerk
          * on.
          *
-         * @see Dungeon
+         * @see ChunkLayer
          */
-        Dungeon main_dungeon;
+        ChunkLayer main_dungeon;
 
         /**
          * Has an n% chance of returning 'true', where n is the given number.
@@ -180,7 +180,7 @@ class DungeonBuilder
         void set_wall_if_not_path(int row, int col);
 
     public:
-        Dungeon* get_dungeon();
+        ChunkLayer* get_dungeon();
 };
 
 #endif

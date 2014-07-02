@@ -39,7 +39,7 @@ ProcedurallyBlindDB::ProcedurallyBlindDB(int _width, int _height) {
     num_rooms = 0;
 
 
-    main_dungeon = Dungeon(width, height);
+    main_dungeon = ChunkLayer(width, height);
 }
 
 void ProcedurallyBlindDB::build_start_room() {
@@ -251,7 +251,7 @@ void ProcedurallyBlindDB::build_dungeon(int target) {
         build_dungeon_recursive(target);
         if (num_rooms < (target - 3)) {
             dungeon_is_awesome = false;
-            main_dungeon = Dungeon(width, height);
+            main_dungeon = ChunkLayer(width, height);
             num_rooms = 0;
             main_dungeon.num_rooms = 0;
             build_start_room();

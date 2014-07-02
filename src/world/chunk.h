@@ -37,6 +37,7 @@
 #include <procedurally_blind_db.h>
 #include <corruptible_pblind_db.h>
 #include <chunk_layer.h>
+#include <overworld_gen.h>
 #include <defs.h>
 #include <ctime>
 #include <iostream>
@@ -162,6 +163,11 @@ class Chunk{
          * @see MapTile
          */
         void init(MapTile tile_type, int _world_row, int _world_col);
+
+        /**
+         * \todo this documentation
+         */
+        bool build_chunk_with_dungeons();
 
         /**
          * Builds a chunk with dirt, trees, and dungeons.

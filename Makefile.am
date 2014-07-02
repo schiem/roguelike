@@ -61,6 +61,7 @@ roguelike_SOURCES = \
 	src/world/chunk.cpp\
 	src/world/chunk_layer.cpp\
 	src/world/chunk_matrix.cpp\
+	src/world/overworld_gen.cpp\
 	src/world/world_map.cpp\
 	src/world/dungeon_gen/procedurally_blind_db.cpp\
 	src/world/dungeon_gen/room.cpp\
@@ -94,6 +95,7 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/room.h\
 	src/world/dungeon_gen/procedurally_blind_db.h\
 	src/world/dungeon_gen/corruptible_pblind_db.h\
+	src/world/overworld_gen.h\
 	src/world/world_map.h\
     src/items/item.h\
 	lib/SDL-ASCII-Template/color_def.h\

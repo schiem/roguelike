@@ -198,9 +198,9 @@ void DungeonBuilder::set_wall_if_not_path(int row, int col)  {
 
 void DungeonBuilder::reset() {
     num_rooms = 0;
-    main_dungeon = Dungeon(width, height);
+    main_dungeon = ChunkLayer(width, height);
 }
 
-Dungeon* DungeonBuilder::get_dungeon(){
+ChunkLayer* DungeonBuilder::get_dungeon(){
     return &main_dungeon;
 }

@@ -27,11 +27,9 @@
 #include <chunk.h>
 #include <chunk_matrix.h>
 #include <constants.h>
-#include <overworld.h>
+#include <overworld_gen.h>
 #include <bresenham.h>
 #include <enemy.h>
-#include <dungeonbuilder.h>
-#include <dungeon.h>
 #include <defs.h>
 #include <character.h>
 #include <world_map.h>
@@ -56,7 +54,7 @@ class Game
          * Whether or not the game has been initialized.
          */
         bool initialized;
-        
+
         /**
          * If the game is currently paused.
          * This isn't a game state because things still need to
@@ -69,16 +67,16 @@ class Game
          * @see MapTile
          */
         MapTileMatrix world_map;
-        
+
         /**
          * A two dimentsional vector containing the chunks.
-         * This is the core of how the game doesn't run out of 
+         * This is the core of how the game doesn't run out of
          * memory.  It's broken up into chunks, which are then
          * serialized/deserialized as the player moves about.
          * @see Chunk
          */
         ChunkMatrix chunk_map;
-        
+
         /**
          * Is this still here?
          * \todo Do something else with this...
@@ -92,7 +90,7 @@ class Game
          * @param col The column of the point.
          */
         void point_assertions(int row, int col);
-        
+
         /**
          * Sets the point in the canvas at row, col to Tile
          * @param row The row of the canvas to set the tile.
@@ -100,14 +98,14 @@ class Game
          * @param tile The tile to set row, col to.
          */
         void set_tile(int row, int col, Tile* tile);
-        
+
         /**
          * Sets the point in the canvas at IntPoint to tile.
          * @param point The point of the canvas to set the tile.
          * @param tile The tile to set the IntPoint of the canvas to.
          */
         void set_tile(IntPoint point, Tile* tile);
-        
+
         /**
          * Gets the item at the specific coordinates.
          * @param coords The coordinates in the chunk.
@@ -125,12 +123,12 @@ class Game
          * Public accessor for the tile at canvas[point.row][point.col].
          */
         Tile* get_tile(IntPoint point);
-        
+
         /**
          * Checks if the point at (point.row, point.col) is out of the screen.
          */
         bool out_of_bounds(IntPoint point);
-        
+
         /**
          * Checks if the point at (row, col) is out of the screen.
          */
@@ -158,7 +156,7 @@ class Game
         void update_main_char_chunk();
         IntPoint get_canvas_coords(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
-        std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint); 
+        std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint);
         Character* enemy_at_loc(IntPoint, IntPoint);
 
         //RENDERING Data/Models
@@ -208,7 +206,7 @@ public:
         //MAIN CHAR Functionality
         void change_main_depth(int);
         void move_main_char(int, int);
-        void get_item(); 
+        void get_item();
         void drop_item(Item*);
 
         //DEBUG FUNCTIONS
