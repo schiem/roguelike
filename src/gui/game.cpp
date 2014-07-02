@@ -248,13 +248,13 @@ void Game::run_enemies(long delta_ms) {
         } else if(enemy->get_depth() == main_char.get_depth()) {
             //if the enemy is at the same depth as the main character,
             //run its ai
-            TileMatrix surroundings = get_surroundings(enem_chunk, enem_coords, enemy->get_depth(),
-                    IntPoint(enemy->get_sight(), enemy->get_sight()));
-
+            int radius = enemy->get_sight();
+            TileMatrix surroundings = TileMatrix((radius + 1) * 2, std::vector<Tile>((radius + 1) * 2)); 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
             std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(enemy->get_sight(), enemy->get_sight()));
-
-            enemy->run_ai(surroundings, nearby_enem, delta_ms);
+            
+            IntPoint buffer_chunk = IntPoint(main_char.get_chunk_y() - 1, main_char.get_chunk_x() - 1);
+            enemy->run_ai(buffer, buffer_chunk, IntPoint(0, 0), nearby_enem, delta_ms);
         }
     }
 }
@@ -441,12 +441,6 @@ bool Game::in_buffer(int row, int col) {
     return chunk_map.out_of_bounds(IntPoint(row, col));
 }
 
-/*
- * PRE: Takes an IntPoint representing chunk coordinates, and an IntPoint
- * representing coordinates within that chunk.
- * POST: Returns whether or not that chunk is within the visible range of the
- * character (if it is within the canvas).
- */
 bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius) {
     IntPoint abs = get_abs(chunk, coords);
     IntPoint tl_abs = get_abs(range_chunk,
@@ -473,37 +467,6 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
     IntPoint tl_buffer = get_abs(IntPoint(main_char.get_chunk().row-1, main_char.get_chunk().col-1), IntPoint(0, 0));
     IntPoint abs = get_abs(chunk, coords);
     return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
-}
-
-/* PRE:  Takes in an IntPoint representing chunk coordinates, an InPoint
- * representing coordinates within that chunk, and a depth.
- * POST: Returns a TileMatrix containing the area (20x20) surrounding
- * the coordinates given.
- */
-Game::TileMatrix Game::get_surroundings(IntPoint _chunk, IntPoint _coords, int depth, IntPoint radius) {
-    radius = IntPoint(radius.row+1, radius.col+1);
-    TileMatrix surroundings = TileMatrix(radius.row * 2, std::vector<Tile>(radius.col * 2));
-    Tile new_tile;
-    IntPoint buffer_coords = get_buffer_coords(_chunk, _coords);
-    IntPoint sur_coords;
-    for(int row=(buffer_coords.row - radius.row);row<(buffer_coords.row + radius.row);row++) {
-        for(int col=(buffer_coords.col-radius.col);col<(buffer_coords.col + radius.col);col++) {
-            sur_coords = IntPoint(row+radius.row - buffer_coords.row, col + radius.col - buffer_coords.col);
-
-            //TODO Where do the 4 and 3 in the following line come from? -SAY 4/10/2014
-            if(row < 0 || row >= CHUNK_HEIGHT * 3 || col < 0 || col >= CHUNK_WIDTH * 3) {
-                new_tile = EMPTY;
-            } else if (sur_coords.row == 0 || sur_coords.col == 0 ||
-                    sur_coords.row == (radius.row*2-1) || sur_coords.col == radius.col*2 - 1) {
-                new_tile = BLOCK_WALL;
-            } else {
-                new_tile = *buffer[row][col];
-            }
-            surroundings[sur_coords.row][sur_coords.col] = new_tile;
-        }
-    }
-
-    return surroundings;
 }
 
 std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, IntPoint threshold) {

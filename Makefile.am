@@ -8,13 +8,15 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/items\
               -Isrc/menu\
               -Isrc/\
+              -pg\
               $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
 			 $(BOOST_SYSTEM_LDFLAGS)\
 			 $(BOOST_FILESYSTEM_LDFLAGS)\
 			 $(BOOST_DATE_TIME_LDFLAGS)\
-			 $(SDL_LDFLAGS)
+			 $(SDL_LDFLAGS)\
+             -pg
 
 localdatadir=data
 

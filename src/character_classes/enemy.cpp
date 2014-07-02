@@ -52,29 +52,27 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     vector<Equipment*> equip_list = generate_equipment(enemy.eq);
     for(int i = 0;i<equip_list.size();i++)
     {
-        cout<<"I have an item, and it's "<<equip_list[i]->get_name()<<endl;
         inventory.push_back(equip_list[i]);
     }
     Weapon* weapon = generate_weapon(vector<WeaponType>(enemy.wep));
     if(weapon != NULL)
     {
-        cout<<"I have a weapon, and it's "<<weapon->get_name()<<endl;
         inventory.push_back(weapon);
     }
 
 }
 
-void Enemy::run_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+void Enemy::run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
 {
     switch(id)
     {
         case 0:
             //kobolds
-            aggressive_ai(surroundings, char_list, delta_ms);
+            aggressive_ai(surroundings, sur_chunk, sur_coords, char_list, delta_ms);
             break;
         case 1:
             //rabbits
-            passive_ai(surroundings, char_list, delta_ms);
+            passive_ai(surroundings, sur_chunk, sur_coords, char_list, delta_ms);
             break;
         default:
             break;
@@ -118,27 +116,29 @@ int Enemy::get_sight()
     return sight;
 }
 
-IntPoint Enemy::get_sur_coords(IntPoint _chunk, IntPoint _coords)
+IntPoint Enemy::get_sur_coords(IntPoint sur_chunk, IntPoint sur_coords, IntPoint _chunk, IntPoint _coords)
 {
-    IntPoint tl = get_abs(chunk, IntPoint(y-(sight+1), x-(sight+1)));
+    IntPoint tl = get_abs(sur_chunk, sur_coords);
     IntPoint new_coords = get_abs(_chunk, _coords);
     return IntPoint(new_coords.row-tl.row, new_coords.col-tl.col);
 }
 
-IntPoint Enemy::get_next_step(IntPoint goal, TileMatrix& surroundings)
+IntPoint Enemy::get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords)
 {
-    std::vector<IntPoint> path = a_star(IntPoint(sight+1, sight+1), goal, surroundings);
+    std::vector<IntPoint> path = a_star(cur_coords, goal, surroundings);
     if(path.size()>0)
     {
-        return path[path.size()-1];
+        IntPoint buffer_step = path[path.size() - 1];
+        IntPoint next_step = IntPoint(buffer_step.row - cur_coords.row, buffer_step.col - cur_coords.col);
+        return next_step;
     }
     else
     {
-        return IntPoint(sight+1, sight+1);
+        return IntPoint(0, 0);
     }
 }
 
-std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& surroundings)
+std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
 {
     std::vector<ATile> open;
     std::vector<ATile> closed;
@@ -147,13 +147,12 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
      * on the open list to point to.  Each tile's parent is
      * an int which corresponds to an index value for any tile
      * which has at some point been the "current tile"
-     */
-    std::vector<ATile> current_list;
+     */ 
+     std::vector<ATile> current_list;
 
     //The first tile is added to the open list
     open.push_back(ATile(-1, start));
     int cur_index;
-
     //while the goal hasn't been found
     while(is_in(goal, open) == -1)
     {
@@ -162,10 +161,8 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
             //if the open list is empty, stop
             break;
         }
-
         //set the current to the smallest f value
         int current_i = get_smallest_f(open);
-
         //set the "parent" index to the index of the current on the current_lsit
         cur_index = current_list.size();
         current_list.push_back(open[current_i]);
@@ -184,26 +181,31 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
                 {
                     //check if this point is on the open list
                     int open_index = is_in(IntPoint(i, j), open);
-
-                    //check if this point can be moved through, isn't on the open list, and isn't on the closed list
-                    if(surroundings[i][j].can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
+                    
+                    int y_move = (i-start.row) >= 0 ? (i-start.row) : ((i-start.row) * -1);
+                    int x_move = (j-start.col) >= 0 ? (j-start.col) : ((j-start.col) * -1);
+                    bool in_range = y_move <= sight && x_move <= sight;
+                    bool is_good = i>=0 && j>=0 && i < surroundings.size() && j < surroundings[i].size();
+                    //check if this point can be moved through, isn't on the open list, and isn't on the closed list and isn't out of range
+                    if(in_range && is_good && surroundings[i][j]->can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         ATile temp = ATile(cur_index, IntPoint(i, j));
-                        temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) &&
-                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
-                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
+                        temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
+                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i - 
+                            current_list[cur_index].coords.row == 0) || (j - current_list[cur_index].coords.col == 0)));
 
                         temp.h = manhattan(IntPoint(i, j), goal);
                         temp.f = temp.h + temp.g;
                         open.push_back(temp);
+                        
                     }
                     //check if it can be moved through, is on the open list, and isn't on the closed list
-                    else if(surroundings[i][j].can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
+                    else if(surroundings[i][j]->can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         //recalculate g to give a new f
-                        int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0)
-                            && (j - current_list[cur_index].coords.col != 0))) + (10 * ((i -
-                            current_list[cur_index].coords.col == 0) || (j - current_list[cur_index].coords.col == 0)));
+                        int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
+                            (j - current_list[cur_index].coords.col != 0))) + (10 * ((i - 
+                            current_list[cur_index].coords.row == 0) || (j - current_list[cur_index].coords.col == 0)));
 
                         //if the new g is lower, replace the old parent
                         if(new_g<open[open_index].g)
@@ -229,30 +231,22 @@ std::vector<IntPoint> Enemy::a_star(IntPoint start, IntPoint goal, TileMatrix& s
         ATile current = open[index];
         while(current.parent != -1)
         {
-            if(DEBUG == 1)
-            {
-                //surroundings[current.coords.row][current.coords.col] = EMPTY;
-            }
             path.push_back(current.coords);
             current = current_list[current.parent];
 
         }
     }
-    if(DEBUG == 1)
-    {
-        //dump_matrix(surroundings);
-    }
     return path;
 }
 
-void Enemy::dump_matrix(TileMatrix& map)
+void Enemy::dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br)
 {
     int tile;
-    for(int i=0; i<map.size();i++)
+    for(int i=tl.row; i<br.row;i++)
     {
-        for(int j=0; j<map[i].size();j++)
+        for(int j=tl.col; j<br.col;j++)
         {
-            tile = map[i][j].tile_id;
+            tile = map[i][j]->tile_id;
             switch(tile){
                 case 1:
                     cout<<".";
@@ -267,22 +261,31 @@ void Enemy::dump_matrix(TileMatrix& map)
                     cout<<"P";
                     break;
                 case 6:
-                    cout<<".";
+                    cout<<"M";
                     break;
-                case 11:
+                case 10:
                     cout<<"T";
                     break;
-                case 12:
+                case 11:
                     cout<<"#";
                     break;
-                case 13:
+                case 12:
                     cout<<"d";
                     break;
-                case 14:
+                case 13:
                     cout<<"u";
                     break;
-                case 16:
+                case 15:
                     cout<<"S";
+                    break;
+                case 16:
+                    cout<<"~";
+                    break;
+                case 20:
+                    cout<<"t";
+                    break;
+                case 21:
+                    cout<<".";
                     break;
                 default:
                     cout<<"0";
@@ -361,9 +364,10 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
  *   AI FUNCTIONS
  ------------------------------*/
 
-void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
 {
     timer += delta_ms;
+    IntPoint this_coords = get_sur_coords(sur_chunk, sur_coords, chunk, IntPoint(y, x));
     //If the timer > speed, then it is okay to act.
     while(timer > speed) {
         timer -= speed;
@@ -373,13 +377,14 @@ void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_
         if(target != NULL)
         {
             //if we found a target, find the next step to get to it
-            IntPoint target_coords = get_sur_coords(target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
-            IntPoint next_step = get_next_step(target_coords, surroundings);
+            IntPoint target_coords = get_sur_coords(sur_chunk, sur_coords, target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
+            IntPoint move_amount = get_next_step(target_coords, surroundings, this_coords);
+            IntPoint next_step = IntPoint(this_coords.row + move_amount.row, this_coords.col + move_amount.col);
             if(next_step != target_coords)
             {
                 //if we're not next to the target, step towards it
                 if(rand() % 3 != 0) {
-                    move(next_step.col-(sight+1), next_step.row-(sight+1));
+                    move(move_amount.col, move_amount.row);
                 }
             }
             else
@@ -394,7 +399,10 @@ void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_
             int will_move = rand() % 5;
             int x_change = rand() % 3 - 1;
             int y_change = rand() % 3 - 1;
-            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+            int y_place = y_change + this_coords.row;
+            int x_place = x_change + this_coords.col;
+            bool in_range = y_place >= 0 && x_place >= 0 && y_place < surroundings.size() && x_place < surroundings[y_place].size();
+            if(in_range && surroundings[y_change + this_coords.row][x_change + this_coords.col]->can_be_moved_through && will_move==0)
             {
                 move(x_change, y_change);
             }
@@ -404,7 +412,7 @@ void Enemy::aggressive_ai(TileMatrix surroundings, std::vector<Character*> char_
 
 
 
-void Enemy::passive_ai(TileMatrix surroundings, std::vector<Character*> char_list, long delta_ms)
+void Enemy::passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
 {
     timer += delta_ms;
     //If the timer > speed, then it is okay to act.
@@ -441,7 +449,7 @@ void Enemy::passive_ai(TileMatrix surroundings, std::vector<Character*> char_lis
                 direction_spooked.row = direction_spooked.row + (((rand() % 3) - 1) * (direction_spooked.row == 0)); 
                 direction_spooked.col = direction_spooked.col + (((rand() % 3) - 1) * (direction_spooked.col == 0));
             }
-            if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1].can_be_moved_through)
+            if(surroundings[direction_spooked.row + sight + 1][direction_spooked.col + sight + 1]->can_be_moved_through)
             {
                 move(direction_spooked.col, direction_spooked.row);
             }
@@ -452,7 +460,7 @@ void Enemy::passive_ai(TileMatrix surroundings, std::vector<Character*> char_lis
             int will_move = rand() % 5;
             int x_change = rand() % 3 - 1;
             int y_change = rand() % 3 - 1;
-            if(surroundings[y_change + sight+1][x_change+sight+1].can_be_moved_through && will_move==0)
+            if(surroundings[y_change + sight+1][x_change+sight+1]->can_be_moved_through && will_move==0)
             {
                 move(x_change, y_change);
             }

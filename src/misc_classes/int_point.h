@@ -35,6 +35,10 @@ class IntPoint
         IntPoint(int _row, int _col);
         bool operator==(const IntPoint&);
         bool operator!=(const IntPoint&);
+        IntPoint operator+(const int&);
+        IntPoint operator+(const IntPoint&);
+        IntPoint operator-(const int&);
+        IntPoint operator-(const IntPoint&);
 };
 
 #endif
