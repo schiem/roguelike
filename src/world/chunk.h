@@ -36,8 +36,7 @@
 #include <constants.h>
 #include <procedurally_blind_db.h>
 #include <corruptible_pblind_db.h>
-#include <dungeon.h>
-#include <overworld.h>
+#include <chunk_layer.h>
 #include <defs.h>
 #include <ctime>
 #include <iostream>
@@ -95,16 +94,10 @@ class Chunk{
         MapTile chunk_type;
 
         /**
-         * A vector containing the dungeons underneath the overworld on this
-         * chunk. Generally this is the main data chokepoint in the Chunk class.
+         * A vector containing the layers of this chunk. Generally this is the
+         * main data chokepoint in the Chunk class.
          */
-        vector<Dungeon> dungeon_floors;
-
-        /**
-         * The overworld for this chunk.
-         * @see Overworld
-         */
-        Overworld overworld;
+        std::vector<ChunkLayer> layers;
 
         /**
          * The entry point for deserialization. Will attempt to find an
@@ -114,7 +107,7 @@ class Chunk{
          *
          * @param row - The world row of the chunk to find.
          * @param col - The world column of the chunk to find.
-         * @return whether or not 
+         * @return whether or not a serialized chunk was found.
          * @see deserialize
          */
         bool find_serialized_chunk(int row, int col);

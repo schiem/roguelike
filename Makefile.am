@@ -58,11 +58,10 @@ roguelike_SOURCES = \
     src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
-	src/world/overworld.cpp\
 	src/world/chunk.cpp\
+	src/world/chunk_layer.cpp\
 	src/world/chunk_matrix.cpp\
 	src/world/world_map.cpp\
-	src/world/dungeon_gen/dungeon.cpp\
 	src/world/dungeon_gen/procedurally_blind_db.cpp\
 	src/world/dungeon_gen/room.cpp\
 	src/world/dungeon_gen/corruptible_pblind_db.cpp\
@@ -89,13 +88,12 @@ roguelike_SOURCES = \
     src/menu/menu.h\
 	src/gui/world_map_gui.h\
 	src/world/chunk.h\
+	src/world/chunk_layer.h\
 	src/world/chunk_matrix.h\
 	src/world/dungeon_gen/dungeonbuilder.h\
 	src/world/dungeon_gen/room.h\
-	src/world/dungeon_gen/dungeon.h\
 	src/world/dungeon_gen/procedurally_blind_db.h\
 	src/world/dungeon_gen/corruptible_pblind_db.h\
-	src/world/overworld.h\
 	src/world/world_map.h\
     src/items/item.h\
 	lib/SDL-ASCII-Template/color_def.h\

@@ -26,9 +26,9 @@
 #include <iostream>
 #include <defs.h>
 
-/** 
+/**
  * A class responsible for creating enemies.
- * This class spawns enemies at a given location.  
+ * This class spawns enemies at a given location.
  * Each spawner only spawns one type of enemy.
  */
 
@@ -39,17 +39,17 @@ class Spawner
          * X coordinate of the spawner.
          */
         int x;
-        
+
         /**
          * Y coordinate of the spawner.
          */
         int y;
-        
+
         /**
          * Depth of the spawner in the chunk.
          */
         int depth;
-        
+
         /**
          * The type of enemy to spawn.
          */
@@ -60,12 +60,12 @@ class Spawner
          * The default constructor.
          */
         Spawner();
-        
+
         /*
          * The constructor for the spanwer.
          */
         Spawner(int, int, int,  EnemyType);
-        
+
         /*
          * Determines whether or not an enemy should spawn.
          * Currently based entireliy on a 1/100 random chance of spawning/
@@ -81,7 +81,7 @@ class Spawner
          * @return A new enemy based on the EnemyType.
          */
         Enemy* spawn_creep(int chunk_x, int chunk_y);
-        
+
         /**
          * Public accessor for the member x.
          */
@@ -91,7 +91,7 @@ class Spawner
          * Public accessor for the member y.
          */
         int get_y();
-        
+
         /**
          * Public accessor for the depth.
          */
