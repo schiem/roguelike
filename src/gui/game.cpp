@@ -222,11 +222,6 @@ void Game::run_enemies(long delta_ms) {
             current_chunk = chunk_map.get_chunk_abs(enem_chunk.row,enem_chunk.col);
             current_chunk->add_item(corpse, enemy->get_depth());
 
-            for(int j = 0; j < current_chunk->get_items(enemy->get_depth()).size();j++)
-            {
-                cout<<"Item "<<current_chunk->get_items(enemy->get_depth()).at(j)->get_name();
-                cout<<"at "<<current_chunk->get_items(enemy->get_depth()).at(j)->get_coords()<<endl;
-            }
             enemy->remove_all();
             vector<Item*>* item_list = enemy->get_inventory();
             for(int j=0;j<item_list->size();j++)
@@ -236,13 +231,14 @@ void Game::run_enemies(long delta_ms) {
                 item->set_coords(IntPoint(enemy->get_y(), enemy->get_x()));
                 current_chunk->add_item(item, enemy->get_depth());
             }
-
+            remove_targets(enemy_list[i]);
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         }
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
 
             //delete the enemy if it's not in the buffer
+            remove_targets(enemy_list[i]);
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
         } else if(enemy->get_depth() == main_char.get_depth()) {
@@ -259,6 +255,22 @@ void Game::run_enemies(long delta_ms) {
     }
 }
 
+
+void Game::remove_targets(Character* enem)
+{
+    //let's make some race conditions
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        if(enemy_list[i]->get_target() == enem)
+        {
+            enemy_list[i]->set_target(NULL);
+        }
+    }
+    if(main_char.get_target() == enem)
+    {
+        main_char.set_target(NULL);
+    }
+}
 
 std::vector<Enemy*>& Game::get_enemies() {
     return enemy_list;
@@ -331,6 +343,7 @@ void Game::move_main_char(int col_change, int row_change) {
         }
     } else if(enem != NULL) {
         main_char.attack(enem);
+        main_char.set_target(enem);
     }
 }
 

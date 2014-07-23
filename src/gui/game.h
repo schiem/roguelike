@@ -202,6 +202,7 @@ public:
         //ENEMY Functionality
         void run_spawners();
         void run_enemies(long);
+        void remove_targets(Character* enem);
         std::vector<Enemy*>& get_enemies();
         //MAIN CHAR Functionality
         void change_main_depth(int);

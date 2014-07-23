@@ -54,8 +54,10 @@ namespace tiledef {
     Tile SWORD = {47, 26, GRAY, true, false, false, false};
     Tile POTATO = {7, 27, BROWN, true, false, false, false};
     Tile PLANT = {6, 28, GREEN, true, false, false, false};
+    Tile WOOD_WALL = {176, 29, TAN, false, false, true, false};
+    Tile WOOD_FLOOR = {47, 30, TAN, true, false, false, false};
 
-    Tile TILE_INDEX[29] = { //THIS MUST CORRESPOND TO TILE IDS
+    Tile TILE_INDEX[31] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
         OVERWORLD_DIRT, //ID 1
         DIRT,           //ID 2
@@ -84,7 +86,9 @@ namespace tiledef {
         RABBIT_CORPSE,
         SWORD,
         POTATO,
-        PLANT
+        PLANT,
+        WOOD_WALL,
+        WOOD_FLOOR
     };
 }
 
@@ -154,7 +158,7 @@ std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 
 namespace enemies
 {
-    EnemyType kobold = {5, 20, 2, 0, 0, 20, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
+    EnemyType kobold = {5, 100, 2, 0, 0, 20, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
     EnemyType rabbit = {3, 10, 0, 0, 1, 15, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>()}; 
     EnemyType ENEMY_LIST[2] = {kobold, rabbit};
     int NUM_ENEMIES = 2; 
