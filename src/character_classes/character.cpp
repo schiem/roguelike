@@ -191,6 +191,10 @@ int Character::get_y() {
     return y;
 }
 
+IntPoint Character::get_coords(){
+    return IntPoint(y, x);
+}
+
 int Character::get_chunk_x()
 {
     return chunk.col;

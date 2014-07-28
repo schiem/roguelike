@@ -18,6 +18,7 @@
  */
 
 #include <bresenham.h>
+
 /*
  * A Bresenham's line algorithm for plotting lines in discrete space.
  *
@@ -112,4 +113,57 @@ std::vector<IntPoint> bresenham_circle(IntPoint& start, int radius) {
     }
 
     return points;
+}
+
+std::vector<IntPoint> bresenham_arc(IntPoint& start, int radius, IntPoint bounds)
+{
+    
+    //establish the bounds
+    double upper_bounds = perc_to_rad(bounds.row);
+    double lower_bounds = perc_to_rad(bounds.col);
+    
+    //draw a circle
+    std::vector<IntPoint> points = std::vector<IntPoint>();
+    std::vector<IntPoint> temp_points = std::vector<IntPoint>();
+    int x0 = start.row;
+    int y0 = start.col;
+
+    int x = radius;
+    int y = 0;
+    int radius_error = 1 - x;
+
+    while(x >= y) {
+        
+
+        temp_points.push_back(IntPoint(x + x0, y + y0));
+        temp_points.push_back(IntPoint(y + x0, x + y0));
+        temp_points.push_back(IntPoint(-x + x0, y + y0));
+        temp_points.push_back(IntPoint(-y + x0, x + y0));
+        temp_points.push_back(IntPoint(-x + x0, -y + y0));
+        temp_points.push_back(IntPoint(-y + x0, -x + y0));
+        temp_points.push_back(IntPoint(x + x0, -y + y0));
+        temp_points.push_back(IntPoint(y + x0, -x + y0));
+        for(int i=0;i<temp_points.size();i++)
+        {
+            IntPoint point = temp_points[i];
+            IntPoint difference = point - start;
+            double rads = coords_to_rad(difference);
+            if(rads <= upper_bounds && rads >= lower_bounds)
+            {
+                points.push_back(point);
+            }
+        }
+        temp_points.clear();
+        y++;
+        if(radius_error < 0) {
+            radius_error += (2*y + 1);
+        } else {
+            x--;
+            radius_error += (2*(y-x + 1));
+        }
+    }
+
+    return points;
+
+
 }

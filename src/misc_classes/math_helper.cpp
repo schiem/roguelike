@@ -1,5 +1,5 @@
 /**
- *  BRESENHAM.H
+ *  MATH_HELPER.CPP
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,13 +17,26 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <int_point.h>
-#include <algorithm>
-#include <math.h>
 #include <math_helper.h>
-#include <stdlib.h>
-#include <vector>
 
-std::vector<IntPoint> bresenham_line(IntPoint&, IntPoint&);
-std::vector<IntPoint> bresenham_circle(IntPoint&, int);
-std::vector<IntPoint> bresenham_arc(IntPoint& start, int radius, IntPoint bounds);
+double perc_to_rad(int percent)
+{
+    return 2 * (PI/100) * percent;
+}
+
+
+double coords_to_rad(IntPoint coords)
+{
+   return atan2((double)coords.row, (double)coords.col);
+}
+
+int coords_to_perc(IntPoint coords)
+{
+    return rad_to_perc(coords_to_rad(coords));
+}
+
+int rad_to_perc(double rad)
+{
+    double perc = (rad/(2 * PI)) * 100;
+    return (int)perc;
+}

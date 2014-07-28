@@ -274,6 +274,12 @@ class Character
         int get_y();
 
         /**
+         * Public accessor or the coordinates.
+         * @return IntPoint containing y, x.
+         */
+        IntPoint get_coords();
+        
+        /**
          * Public accessor for the chunk coordinates.
          * @return Member variable chunk.
          * @see chunk

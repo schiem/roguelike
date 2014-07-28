@@ -28,6 +28,8 @@
 #include <vector>
 #include <helper.h>
 #include <constants.h>
+#include <math_helper.h>
+#include <bresenham.h>
 
 using namespace enemies;
 
@@ -120,6 +122,18 @@ class Enemy : public Character
          */
         int sight;
 
+        /**
+         * Member variable to hold where the enemy is looking.
+         * This is 0-100, where 0 (and 100) are directly right.
+         */
+        int direction;
+
+        /**
+         * Member variable to hold the enemies field of view.
+         * This is a percentage of the field of view (1-100).
+         */
+        int view;
+        
         /**
          * How quickly the enemy moves.
          * Represents the threshold for how many milliseconds must pass before
@@ -303,6 +317,27 @@ class Enemy : public Character
          * @see spooked
          */
         IntPoint get_spooked(IntPoint abs_coords, IntPoint target_abs);
+        
+        /**
+         * Checks to see if the enemy can see something.
+         * Looks at a point/chunk to see if it it's within the enemies
+         * slice of view.  Assumes that the enemy can't see everything,
+         * as having the upper and lower bounds being the same will make
+         * everything pretty wonky.
+         * @parameter coords The coordinates of the target.
+         * @parameter chunk The chunk of the target.
+         * @return True if the coords/chunk can be seen.
+         */
+        bool in_sight(IntPoint coords, IntPoint chunk);
+        
+        /**
+         * Turns the enemy.
+         * @parameter coords The difference between the target coords and current coords.
+         * @todo Implement a max turn amount.
+         */
+        void turn(IntPoint coords);
+
+    
     public:
         /**
          * The default constructor.
@@ -333,6 +368,12 @@ class Enemy : public Character
         void run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
 
         /**
+         * Ensures that the target is still within the view.
+         */
+        bool validate_target();
+        
+        
+        /**
          * The ai for the aggressive enemies.
          * The AI searches for a target (find_best_target()) and moves towards
          * that target.  If it is next to the target, it will attack it.
@@ -362,18 +403,17 @@ class Enemy : public Character
         void passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
 
         /**
+         * Public accessor for the sight.
+         * @return The member variable sight.
+         */
+        int get_sight();
+
+        /**
          * Public accessor for the id.
          * @return The member id.
          * @see id
          */
         int get_id();
-
-        /**
-         * Public accessor for the line of sight.
-         * @return The member sight.
-         * @see sight
-         */
-        int get_sight();
 
         /**
          * A debugging function.
@@ -386,6 +426,13 @@ class Enemy : public Character
          * @param br The bottom right corner of the area to dump.
          */
         void dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br);
+
+        /**
+         * Gets all the coordinates that the enemy can currently see.
+         * @return A list of coords the enemy can see.
+         */
+        std::vector<IntPoint> sight_tiles();
 };
+
 
 #endif

@@ -556,6 +556,11 @@ struct EnemyType
     int sight;
 
     /**
+     * The attribute to asisgn to the member variable view for enemies.
+     */
+    int view;
+
+    /**
      * The attribute to assign the member variable speed for enemies.
      */
     int speed;

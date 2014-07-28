@@ -39,6 +39,8 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     id = enemy.id;
     name = enemy.name;
     sight = enemy.sight;
+    view = enemy.view;
+    direction = 0;
     speed = enemy.speed;
     sprite = enemy.sprite;
     corpse = new Misc(IntPoint(x, y), enemy.corpse); 
@@ -106,14 +108,14 @@ void Enemy::move(int x_change, int y_change)
 }
 
 
-int Enemy::get_id()
-{
-    return id;
-}
-
 int Enemy::get_sight()
 {
     return sight;
+}
+
+int Enemy::get_id()
+{
+    return id;
 }
 
 IntPoint Enemy::get_sur_coords(IntPoint sur_chunk, IntPoint sur_coords, IntPoint _chunk, IntPoint _coords)
@@ -364,6 +366,11 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
  *   AI FUNCTIONS
  ------------------------------*/
 
+bool Enemy::validate_target()
+{
+   return target != NULL && in_sight(target->get_coords(), target->get_chunk());
+}
+
 void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
 {
     timer += delta_ms;
@@ -372,12 +379,15 @@ void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, I
     while(timer > speed) {
         timer -= speed;
         //get a target
-        target = find_best_target(0, 1, char_list);
-
+        if(validate_target() == false)
+        {
+            target = find_best_target(0, 1, char_list);
+        }
         if(target != NULL)
         {
             //if we found a target, find the next step to get to it
             IntPoint target_coords = get_sur_coords(sur_chunk, sur_coords, target->get_chunk(), IntPoint(target->get_y(), target->get_x()));
+            turn(target_coords - this_coords);
             IntPoint move_amount = get_next_step(target_coords, surroundings, this_coords);
             IntPoint next_step = IntPoint(this_coords.row + move_amount.row, this_coords.col + move_amount.col);
             if(next_step != target_coords)
@@ -428,7 +438,7 @@ void Enemy::passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntP
        //look for a nearby scary thing
         //if one is noticed, spook for the next turn
         target = passive_best_target(0, 1, char_list);
-        if(target != NULL && rand() % 2 == 0)
+        if(target != NULL && rand() % 5 == 0)
         {
             spooked = true;
             time_spooked = 0;
@@ -526,6 +536,10 @@ IntPoint Enemy::get_spooked(IntPoint abs_coords, IntPoint target_abs)
     float unsigned_slope = slope * (-1 * (slope < 0));
     int x_change = 0;
     int y_change = 0;
+
+    //i just realized that I have no idea what this line does..
+    //I think it was supposed to avoid a divide by 0 error, but clearly
+    //does not.
     if(run == 0)
     {
         unsigned_slope = 2;
@@ -545,3 +559,56 @@ IntPoint Enemy::get_spooked(IntPoint abs_coords, IntPoint target_abs)
     }
     return IntPoint(y_change, x_change);
 }
+
+bool Enemy::in_sight(IntPoint coords, IntPoint chunk)
+{
+    IntPoint point = get_abs(coords, chunk);
+    IntPoint center = get_abs(get_coords(), chunk);
+
+    //get the distance.  sign matters
+    IntPoint distance = point - center;
+    
+    //flag to check if it's in the distance
+    bool in_distance = (distance.row * distance.row) + (distance.col * distance.col) <= sight*sight;
+
+    //uses the direction the enemy is pointed and the width of the field of view
+    //to establish the two angles that represent the upper and lower limits of what
+    //the enemy can see
+    IntPoint view_field = IntPoint(direction + (.5 * view), direction - (.5 * view));
+    
+    //convert them to rads
+    double upper_bound = perc_to_rad(view_field.col);
+    double lower_bound = perc_to_rad(view_field.row);
+
+    //get the direction of the target
+    double target_rads = coords_to_rad(distance);
+
+    //check if the target's angle is in the acceptable range
+    bool in_arc =  target_rads <= upper_bound && target_rads >= lower_bound;
+    
+    return in_arc && in_distance;
+}
+
+void Enemy::turn(IntPoint difference)
+{
+    int new_perc = coords_to_perc(difference);
+    int turn = new_perc - direction;
+    int new_direction = direction + turn;
+
+    if(new_direction > 100)
+    {
+        new_direction -= 100;
+    }
+    else if(new_direction < 0)
+    {
+        new_direction += 100;
+    }
+    direction = new_direction;
+}
+
+std::vector<IntPoint> Enemy::sight_tiles()
+{
+    IntPoint coords = get_coords();
+    return bresenham_arc(coords, sight, IntPoint(direction + (.5 * view), direction - (.5 * view)));
+}
+

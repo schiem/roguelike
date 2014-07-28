@@ -106,6 +106,18 @@ void GUI::render_enemies() {
                     current_tile.char_count, ascii, screen, current_tile.color);
         }
     }
+    if(game.main_char.get_target() != NULL)
+    {
+        Enemy* enemy = (Enemy*)game.main_char.get_target();
+        IntPoint temp_chunk = enemy->get_chunk();
+        
+        std::vector<IntPoint> sight = enemy->sight_tiles();
+        for(int i=0;i<sight.size();i++)
+        {
+            IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);
+            drawChr(point.col, point.row, tm[point.row][point.col]->char_count, ascii, screen, YELLOW);
+        }
+    }
 }
 
 void GUI::render_character() {
