@@ -609,6 +609,17 @@ void Enemy::turn(IntPoint difference)
 std::vector<IntPoint> Enemy::sight_tiles()
 {
     IntPoint coords = get_coords();
-    return bresenham_arc(coords, sight, IntPoint(direction + (.5 * view), direction - (.5 * view)));
+    std::vector<IntPoint> arc =  bresenham_arc(coords, sight, IntPoint(direction + (.5 * view), direction - (.5 * view)));
+    std::vector<IntPoint> points;
+    for(int i =0;i<arc.size();i++)
+    {
+        std::vector<IntPoint> line_points;
+        line_points = bresenham_line(coords, arc[i]);
+        for(int j=0;j<line_points.size();j++)
+        {
+            points.push_back(line_points[j]);
+        }
+    }
+    return points;
 }
 

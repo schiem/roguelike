@@ -158,7 +158,7 @@ std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 
 namespace enemies
 {
-    EnemyType kobold = {5, 100, 2, 0, 0, 20, 25, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
+    EnemyType kobold = {5, 100, 2, 0, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
     EnemyType rabbit = {3, 10, 0, 0, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>()}; 
     EnemyType ENEMY_LIST[2] = {kobold, rabbit};
     int NUM_ENEMIES = 2; 
