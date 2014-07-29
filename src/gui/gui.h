@@ -77,6 +77,7 @@ class GUI : public VirtualEvent {
         void render_interface();
         void render_menu(Menu* menu);
         void render_debug();
+        void render_target();
     public:
         GUI();
         ~GUI();

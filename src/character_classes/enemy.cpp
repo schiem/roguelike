@@ -435,7 +435,7 @@ void Enemy::passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntP
             spooked = false;
         }
        
-       //look for a nearby scary thing
+        //look for a nearby scary thing
         //if one is noticed, spook for the next turn
         target = passive_best_target(0, 1, char_list);
         if(target != NULL && rand() % 5 == 0)
@@ -485,17 +485,21 @@ Character* Enemy::find_best_target(int target_id, int selectability, std::vector
     Character* best = NULL;
     for(int i=0; i<enemy_list.size(); i++)
     {
-        if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
+        if(in_sight(enemy_list[i]->get_coords(), enemy_list[i]->get_chunk()))
         {
-            if(best == NULL)
+            cout<<"I'm getting in here with enemy "<<enemy_list[i]<<endl;
+            if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
             {
-                best = enemy_list[i];
-            }
-            else
-            {
-                if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                if(best == NULL)
                 {
                     best = enemy_list[i];
+                }
+                else
+                {
+                    if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                    {
+                        best = enemy_list[i];
+                    }
                 }
             }
         }
@@ -574,18 +578,17 @@ bool Enemy::in_sight(IntPoint coords, IntPoint chunk)
     //uses the direction the enemy is pointed and the width of the field of view
     //to establish the two angles that represent the upper and lower limits of what
     //the enemy can see
-    IntPoint view_field = IntPoint(direction + (.5 * view), direction - (.5 * view));
+    IntPoint view_field = get_fov(); 
     
-    //convert them to rads
-    double upper_bound = perc_to_rad(view_field.col);
-    double lower_bound = perc_to_rad(view_field.row);
+    //convert them to radians
+    double upper_bound = perc_to_rad(view_field.row);
+    double lower_bound = perc_to_rad(view_field.col);
 
     //get the direction of the target
     double target_rads = coords_to_rad(distance);
 
     //check if the target's angle is in the acceptable range
-    bool in_arc =  target_rads <= upper_bound && target_rads >= lower_bound;
-    
+    bool in_arc = target_rads <= upper_bound && target_rads >= lower_bound;
     return in_arc && in_distance;
 }
 
@@ -609,7 +612,7 @@ void Enemy::turn(IntPoint difference)
 std::vector<IntPoint> Enemy::sight_tiles()
 {
     IntPoint coords = get_coords();
-    std::vector<IntPoint> arc =  bresenham_arc(coords, sight, IntPoint(direction + (.5 * view), direction - (.5 * view)));
+    std::vector<IntPoint> arc =  bresenham_arc(coords, sight, get_fov());
     std::vector<IntPoint> points;
     for(int i =0;i<arc.size();i++)
     {
@@ -623,3 +626,9 @@ std::vector<IntPoint> Enemy::sight_tiles()
     return points;
 }
 
+IntPoint Enemy::get_fov()
+{
+    int upper = direction + (.5 * view);
+    int lower = direction - (.5 * view);
+    return IntPoint(upper, lower);
+}

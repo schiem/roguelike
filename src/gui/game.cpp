@@ -139,6 +139,13 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     return temp;
 }
 
+bool Game::is_vis(IntPoint coords)
+{
+    bool y = coords.row < SCREEN_HEIGHT && coords.row >= 0;
+    bool x = coords.col < SCREEN_WIDTH && coords.col >=0;
+    return x && y;
+}
+
 std::vector<Enemy*> Game::get_vis_enemies() {
     std::vector<Enemy*> temp = std::vector<Enemy*>();
     for(int i=0;i<enemy_list.size();i++) {
@@ -182,6 +189,7 @@ void Game::refresh() {
  * of spawner that it is and append it to the enemy list.
  */
 void Game::run_spawners() {
+    /*
     Spawner spawner;
     Chunk* chunk;
     IntPoint chunk_coords;
@@ -198,6 +206,7 @@ void Game::run_spawners() {
             }
         }
     }
+    */
 }
 /* PRE: None
  * POST: Iterates through the enemy list.  For each enemy, it checks to see if
@@ -247,8 +256,10 @@ void Game::run_enemies(long delta_ms) {
             int radius = enemy->get_sight();
             TileMatrix surroundings = TileMatrix((radius + 1) * 2, std::vector<Tile>((radius + 1) * 2)); 
             IntPoint main_char_point(main_char.get_y(), main_char.get_x());
-            std::vector<Character*> nearby_enem = nearby_enemies(enem_coords, enem_chunk, IntPoint(enemy->get_sight(), enemy->get_sight()));
-
+            std::vector<Character*> nearby_enem; 
+            nearby_enem.assign(enemy_list.begin(), enemy_list.end());
+            nearby_enem.push_back(&main_char);
+            cout<<"Main char: "<<&main_char<<endl;
             IntPoint buffer_chunk = IntPoint(main_char.get_chunk_y() - 1, main_char.get_chunk_x() - 1);
             enemy->run_ai(buffer, buffer_chunk, IntPoint(0, 0), nearby_enem, delta_ms);
         }
@@ -481,18 +492,6 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
     return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
 }
 
-std::vector<Character*> Game::nearby_enemies(IntPoint _coords, IntPoint _chunk, IntPoint threshold) {
-    std::vector<Character*> nearby_enem;
-    for(int i=0; i<enemy_list.size(); i++) {
-        if(in_range(enemy_list[i]->get_chunk(), IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()), _chunk, _coords, threshold)) {
-            nearby_enem.push_back(enemy_list[i]);
-        }
-    }
-    if(in_range(main_char.get_chunk(), IntPoint(main_char.get_y(), main_char.get_x()), _chunk, _coords, threshold)) {
-        nearby_enem.push_back(&main_char);
-    }
-    return nearby_enem;
-}
 
 Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
     for(int i=0;i<enemy_list.size();i++)

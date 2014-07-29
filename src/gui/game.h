@@ -156,7 +156,6 @@ class Game
         void update_main_char_chunk();
         IntPoint get_canvas_coords(IntPoint, IntPoint);
         IntPoint get_buffer_coords(IntPoint, IntPoint);
-        std::vector<Character*> nearby_enemies(IntPoint, IntPoint, IntPoint);
         Character* enemy_at_loc(IntPoint, IntPoint);
 
         //RENDERING Data/Models
@@ -197,6 +196,7 @@ public:
         IntPoint get_vis_coords(IntPoint, IntPoint);
         void show_vis_items();
         std::vector<Enemy*> get_vis_enemies();
+        bool is_vis(IntPoint coords);
         void refresh();
 
         //ENEMY Functionality

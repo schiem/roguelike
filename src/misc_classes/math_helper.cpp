@@ -21,7 +21,7 @@
 
 double perc_to_rad(int percent)
 {
-    return 2 * (PI/100) * percent;
+    return (PI * 2) * (double)percent/100;
 }
 
 

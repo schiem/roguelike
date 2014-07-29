@@ -39,6 +39,7 @@ void GUI::OnRender() {
             game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
         }
         render_canvas();
+        render_target();
         render_enemies();
         render_character();
         render_interface();
@@ -48,6 +49,7 @@ void GUI::OnRender() {
         drawStr(SCREEN_WIDTH/2 - 12, SCREEN_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
     } else if (current_screen == DEBUG_CONSOLE) {
         render_canvas();
+        render_target();
         render_enemies();
         render_character();
         render_debug();
@@ -104,18 +106,6 @@ void GUI::render_enemies() {
         if(tm[current_point.row][current_point.col]->visible) {
             drawChr(current_point.col, current_point.row,
                     current_tile.char_count, ascii, screen, current_tile.color);
-        }
-    }
-    if(game.main_char.get_target() != NULL)
-    {
-        Enemy* enemy = (Enemy*)game.main_char.get_target();
-        IntPoint temp_chunk = enemy->get_chunk();
-        
-        std::vector<IntPoint> sight = enemy->sight_tiles();
-        for(int i=0;i<sight.size();i++)
-        {
-            IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);
-            drawChr(point.col, point.row, tm[point.row][point.col]->char_count, ascii, screen, YELLOW);
         }
     }
 }
@@ -233,6 +223,26 @@ void GUI::render_menu(Menu* menu)
                 option.c_str(), ascii, screen, color);
     }
 
+}
+
+void GUI::render_target()
+{    
+    TilePointerMatrix tm = game.get_canvas();
+    if(game.main_char.get_target() != NULL)
+    {
+        Enemy* enemy = (Enemy*)game.main_char.get_target();
+        IntPoint temp_chunk = enemy->get_chunk();
+        
+        std::vector<IntPoint> sight = enemy->sight_tiles();
+        for(int i=0;i<sight.size();i++)
+        {
+            IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);
+            if(game.is_vis(point))
+            {
+                drawChr(point.col, point.row, tm[point.row][point.col]->char_count, ascii, screen, YELLOW);
+            }
+        }
+    }
 }
 
 void GUI::render_debug()

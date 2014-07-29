@@ -337,7 +337,11 @@ class Enemy : public Character
          */
         void turn(IntPoint coords);
 
-    
+        /**
+         * Calculates the upper and lower angles (from 1-100) of the field of view.
+         * @return An IntPoint containing the upper and lower bounds o the fov as angles.
+         */
+         IntPoint get_fov();
     public:
         /**
          * The default constructor.
