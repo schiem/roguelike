@@ -148,6 +148,7 @@ std::vector<IntPoint> bresenham_arc(IntPoint& start, int radius, IntPoint bounds
             IntPoint point = temp_points[i];
             IntPoint difference = point - start;
             double rads = coords_to_rad(difference);
+            cout<<"Rads: "<<rads<<", upper/lower bounds: "<<upper_bounds<<", "<<lower_bounds<<endl;
             if(rads <= upper_bounds && rads >= lower_bounds)
             {
                 points.push_back(point);
@@ -164,6 +165,4 @@ std::vector<IntPoint> bresenham_arc(IntPoint& start, int radius, IntPoint bounds
     }
 
     return points;
-
-
 }

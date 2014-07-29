@@ -27,7 +27,13 @@ double perc_to_rad(int percent)
 
 double coords_to_rad(IntPoint coords)
 {
-   return atan2((double)coords.row, (double)coords.col);
+    double rads = atan2((double)coords.row, (double)coords.col);
+    //convert rads to 0-2PI instead of -PI-PI, because that's stupid
+    if(rads < 0)
+    {
+        rads += (2 * PI);
+    }
+    return rads;
 }
 
 int coords_to_perc(IntPoint coords)
