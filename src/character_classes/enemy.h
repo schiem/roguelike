@@ -317,18 +317,28 @@ class Enemy : public Character
          * @see spooked
          */
         IntPoint get_spooked(IntPoint abs_coords, IntPoint target_abs);
-        
+       
+        /**
+         * Checks to see if a point is within the enemy's range of sight.
+         * Looks at a point/chunk to see if it it's within the enemies
+         * range of vision.  
+         * @parameter _coords The coordinates of the target.
+         * @parameter _chunk The chunk of the target.
+         * @return True if the coords/chunk can be seen.
+         */
+        bool in_sight_range(IntPoint _coords, IntPoint _chunk);
+
         /**
          * Checks to see if the enemy can see something.
          * Looks at a point/chunk to see if it it's within the enemies
          * slice of view.  Assumes that the enemy can't see everything,
          * as having the upper and lower bounds being the same will make
          * everything pretty wonky.
-         * @parameter coords The coordinates of the target.
-         * @parameter chunk The chunk of the target.
+         * @parameter _coords The coordinates of the target.
+         * @parameter _chunk The chunk of the target.
          * @return True if the coords/chunk can be seen.
          */
-        bool in_sight(IntPoint coords, IntPoint chunk);
+        bool in_sight(IntPoint _coords, IntPoint _chunk);
         
         /**
          * Turns the enemy.

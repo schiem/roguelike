@@ -368,7 +368,7 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
 
 bool Enemy::validate_target()
 {
-   return target != NULL && in_sight(target->get_coords(), target->get_chunk());
+   return target != NULL && in_sight_range(target->get_coords(), target->get_chunk());
 }
 
 void Enemy::aggressive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
@@ -487,7 +487,6 @@ Character* Enemy::find_best_target(int target_id, int selectability, std::vector
     {
         if(in_sight(enemy_list[i]->get_coords(), enemy_list[i]->get_chunk()))
         {
-            cout<<"I'm getting in here with enemy "<<enemy_list[i]<<endl;
             if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
             {
                 if(best == NULL)
@@ -564,10 +563,22 @@ IntPoint Enemy::get_spooked(IntPoint abs_coords, IntPoint target_abs)
     return IntPoint(y_change, x_change);
 }
 
-bool Enemy::in_sight(IntPoint coords, IntPoint chunk)
+bool Enemy::in_sight_range(IntPoint _coords, IntPoint _chunk)
 {
-    IntPoint point = get_abs(coords, chunk);
-    IntPoint center = get_abs(get_coords(), chunk);
+    IntPoint point = get_abs(_chunk, _coords);
+    IntPoint center = get_abs(chunk, get_coords());
+
+    //get the distance.  sign matters
+    IntPoint distance = point - center;
+    
+    //flag to check if it's in the distance
+    return (distance.row * distance.row) + (distance.col * distance.col) <= sight*sight;
+}
+
+bool Enemy::in_sight(IntPoint _coords, IntPoint _chunk)
+{
+    IntPoint point = get_abs(_chunk, _coords);
+    IntPoint center = get_abs(chunk, get_coords());
 
     //get the distance.  sign matters
     IntPoint distance = point - center;

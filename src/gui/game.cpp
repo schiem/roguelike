@@ -189,7 +189,6 @@ void Game::refresh() {
  * of spawner that it is and append it to the enemy list.
  */
 void Game::run_spawners() {
-    /*
     Spawner spawner;
     Chunk* chunk;
     IntPoint chunk_coords;
@@ -206,7 +205,6 @@ void Game::run_spawners() {
             }
         }
     }
-    */
 }
 /* PRE: None
  * POST: Iterates through the enemy list.  For each enemy, it checks to see if
@@ -259,7 +257,6 @@ void Game::run_enemies(long delta_ms) {
             std::vector<Character*> nearby_enem; 
             nearby_enem.assign(enemy_list.begin(), enemy_list.end());
             nearby_enem.push_back(&main_char);
-            cout<<"Main char: "<<&main_char<<endl;
             IntPoint buffer_chunk = IntPoint(main_char.get_chunk_y() - 1, main_char.get_chunk_x() - 1);
             enemy->run_ai(buffer, buffer_chunk, IntPoint(0, 0), nearby_enem, delta_ms);
         }
