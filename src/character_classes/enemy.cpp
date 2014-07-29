@@ -600,6 +600,10 @@ bool Enemy::in_sight(IntPoint _coords, IntPoint _chunk)
 
     //check if the target's angle is in the acceptable range
     bool in_arc = target_rads <= upper_bound && target_rads >= lower_bound;
+    
+    //check to make sure there's not something in the way
+    
+    
     return in_arc && in_distance;
 }
 

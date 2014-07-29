@@ -72,6 +72,7 @@ void Character::take_damage(int damage){
 void Character::attack(Character* _chara)
 {
     _chara->take_damage(current_stats[ATTACK]);
+    _chara->set_target(this);
 }
 
 vector<Item*>* Character::get_inventory()

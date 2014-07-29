@@ -237,7 +237,7 @@ void GUI::render_target()
         for(int i=0;i<sight.size();i++)
         {
             IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);
-            if(game.is_vis(point))
+            if(game.is_vis(point) && tm[point.row][point.col]->visible)
             {
                 drawChr(point.col, point.row, tm[point.row][point.col]->char_count, ascii, screen, YELLOW);
             }
