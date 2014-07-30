@@ -189,6 +189,21 @@ class Character
         void attack(Character* _chara);
 
         /**
+         * Determines whether or not the attack hit the character.
+         * @parameter _chara The character being attacked.
+         * @return -1 If missed, otherwise the index of the body part hit.
+         */
+        int did_hit(Character* _chara);
+
+         /**
+          * Determines the amount of damage done by the attack.
+          * @parameter _chara The character being attacked.
+          * @return The damage done.
+          */
+        int damage_dealt(Character* _chara);
+        
+        
+        /**
          * Public access function for the character's inventory.
          * @return The character's inventory.
          * @see inventory

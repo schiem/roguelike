@@ -245,6 +245,8 @@ void Game::run_enemies(long delta_ms) {
         else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
 
             //delete the enemy if it's not in the buffer
+            /** @TODO FIX THIS MEMORY LEAK!!!
+            */
             remove_targets(enemy_list[i]);
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
@@ -266,7 +268,6 @@ void Game::run_enemies(long delta_ms) {
 
 void Game::remove_targets(Character* enem)
 {
-    //let's make some race conditions
     for(int i=0;i<enemy_list.size();i++)
     {
         if(enemy_list[i]->get_target() == enem)
@@ -401,14 +402,14 @@ void Game::set_tile(IntPoint point, Tile* tile) {
 Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth) {
 
     vector<Item*>* item_list = &chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
-
+    Item* temp_item = NULL;
     for(int i=0;i<item_list->size();i++) {
 
         if(item_list->at(i)->get_coords() == coords) {
-            return item_list->at(i);
+            temp_item = item_list->at(i);
         }
     }
-    return NULL;
+    return temp_item;
 }
 
 Tile* Game::get_tile(int row, int col) {
