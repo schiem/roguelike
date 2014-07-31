@@ -44,6 +44,7 @@ Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(_coords)
     damage = wpn.damage;
     range = wpn.range;
     type = wpn.type;
+    size = wpn.size;
     can_use = wpn.use;
     can_equip = false;
     can_wield = true;

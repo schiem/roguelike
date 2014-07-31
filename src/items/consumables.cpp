@@ -46,6 +46,7 @@ Consumable::Consumable(IntPoint _coords, ConsumableType cons) : Item(_coords)
     amount_modified = cons.value;
     can_use = cons.use;
     type = cons.type;
+    size = cons.type;
     can_equip = false;
     can_wield = false;
     can_consume = true;

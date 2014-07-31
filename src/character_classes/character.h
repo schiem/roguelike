@@ -369,11 +369,16 @@ class Character
 
         /**
          * Public accessor for the armor.
-         * Armor corresponds to current_stats[ARMOR].
-         * @see current_stats
+         * Gets the hit resistance value of the armor.
          */
-        int get_armor();
+        int get_armor_hit(int body_part, int type);
 
+        /**
+         * Public accessor for the armor.
+         * Gets the damage reduction of the armor.
+         */
+        float get_armor_dam(int body_part, int type);
+        
         /**
          * Public setter for the x coordinate.
          * @param _x New x coordinate.
@@ -422,13 +427,6 @@ class Character
          * @see target
          */
         void set_target(Character* _target);
-
-        /**
-         * Public setter for the armor.
-         * @param a New armor value.
-         * @see current_stats
-         */
-        void set_armor(int a);
 
         /**
          * Consume an item based on the stats of that item.

@@ -40,6 +40,7 @@ Misc::Misc(IntPoint _coords, MiscType misc) : Item(_coords)
     description = misc.description;
     name = misc.name;
     can_use = misc.use;
+    size = misc.size;
     can_equip = false;
     can_wield = false;
     can_consume = false;

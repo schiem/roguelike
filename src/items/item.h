@@ -25,8 +25,6 @@
 #include <string>
 #include <int_point.h>
 
-class Character;
-
 /**
  * String containing the different body parts.
  * \todo Move this to defs.h
@@ -76,6 +74,15 @@ class Item
          * How likely it is that the item will appear.
          */
         int rarity; 
+
+        /**
+         * The size of the item.
+         * Will factor into what can use it and how much
+         * can be carried at a time (using a unit system
+         * that I'm going to conveniently make up whenever
+         * I feel like it).
+         */
+        int size;
 
     public:
         /**
@@ -158,6 +165,11 @@ class Item
          * Public accessor for the description.
          */
         std::string get_description();
+
+        /**
+         * Public accessor for the size.
+         */
+        int get_size();
 };
 
 /**
@@ -184,10 +196,14 @@ class Equipment : public Item
         int type;
 
         /**
-         * Determines armor bonus gained from the equipment.
+         * Determines hit bonus gained from the equipment.
          */
-        int armor_class;
-    
+        std::vector<int> to_hit;
+
+        /**
+         * Determines the damage bonus gained from the equipment.
+         */
+        std::vector<float> to_dam;
     public:
         /**
          * The constructor for the equipment.
@@ -200,7 +216,7 @@ class Equipment : public Item
          * @param t Sets the type of the equipment.
          * @param ac Sets the armor_class of the equipment.
          */
-        Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t, int ac);
+        Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t);
         
         /**
          * Constructor for the equipment.
@@ -223,9 +239,14 @@ class Equipment : public Item
         int get_body_part();
         
         /**
-         * Public accessor for armor_class.
+         * Public accessor for to_hit.
          */
-        int get_armor();
+        int get_hit(int type);
+
+        /**
+         * Public accessor for to_dam.
+         */
+        float get_dam(int type);
 };
 
 /**
@@ -293,7 +314,7 @@ class Weapon : public Item
         int get_type();
         
         /**
-         * Public accessor for the variable damage.
+         * Public accessor for the variable to_dam.
          */
         int get_damage();
 };

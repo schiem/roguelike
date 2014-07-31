@@ -24,11 +24,10 @@
 using namespace tiledef;
 using namespace equipment;
 
-Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t, int ac) : Item(_rarity, _weight, _sprite, _name, _coords)
+Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     body_part = bp;
     type = t;
-    armor_class = ac;
     can_equip = true;   
     can_use = false;
     can_wield = false;
@@ -44,7 +43,9 @@ Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
     name = eqp.name;
     body_part = eqp.body_part;
     type = eqp.type;
-    armor_class = eqp.armor_class;
+    size = eqp.size;
+    to_hit.assign(&eqp.hit[0], &eqp.hit[0] + 3);
+    to_dam.assign(eqp.dam, eqp.dam + sizeof(eqp.dam)/sizeof(eqp.dam[0]));
     can_use = eqp.use;
     can_equip = true;
     can_wield = false;
@@ -64,7 +65,12 @@ int Equipment::get_body_part()
     return body_part;
 }
 
-int Equipment::get_armor()
+int Equipment::get_hit(int type)
 {
-    return armor_class;
+    return to_hit[type];
+}
+
+float Equipment::get_dam(int type)
+{
+    return to_dam[type];
 }

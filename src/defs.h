@@ -267,15 +267,31 @@ struct EquipType
     int type;
 
     /**
-     * How much the character's armor will increase by.
-     * \todo FIGURE OUT THE DAMN ARMOR SYSTEM.
+     * How much the armor protects against getting hit.
+     * Each value corresponds to a differen type of weapon.
+     * This will be some number.  Each weapon will have a threshold.
+     * If the hit number is higher than the threshold, then the weapon
+     * will be completely blocked.  Hmm...that seems a bit OP.  Maybe
+     * I should change that.
      */
-    int armor_class;
+    int hit[3];
+
+    /**
+     * How much the armor protects against damage.
+     * Each value corresponds to a different type of weapon.
+     * This will be some a percentage of damage reduction.
+     */
+    float dam[3];
 
     /**
      * True if the item has a use beyond increasing armor.
      */
     bool use;
+
+    /**
+     * The size of the item.
+     */
+    int size;
 
     /**
      * Comparitor operator for equipment.
@@ -336,6 +352,8 @@ struct WeaponType
      */
     int type;
 
+
+
     /**
      * How far the weapon can be used.
      * \todo Make this do something.
@@ -346,6 +364,11 @@ struct WeaponType
      * True if the item has a use beyond changing attack.
      */
     bool use;
+    
+    /**
+     * The size of the item.
+     */
+    int size;
 
     /**
      * Comparitor operator for weapon.
@@ -417,6 +440,11 @@ struct ConsumableType
     int type;
 
     /**
+     * The size of the item.
+     */
+    int size;
+
+    /**
      * Comparitor for consumables.
      */
     bool operator==(const ConsumableType& rhs) const
@@ -464,12 +492,9 @@ struct MiscType
     int rarity;
 
     /**
-     * The stat that the item modifies.
-     * This corresponds to an index in the character's stats
-     * and current_stats array.
-     * @see Character
-     * @see STATS
+     * The size of the item.
      */
+    int size;
 
     /**
      * Comparitor for the MiscType.

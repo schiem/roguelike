@@ -40,7 +40,6 @@ Character::Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _co
     stats.resize(3);
 
     stats[HEALTH] = _max_health;
-    stats[ARMOR] = 0;
     stats[ATTACK] = _attack;
     current_stats = stats;
     x = _x;
@@ -74,6 +73,9 @@ void Character::attack(Character* _chara)
     _chara->take_damage(current_stats[ATTACK]);
     _chara->set_target(this);
 }
+
+
+
 
 vector<Item*>* Character::get_inventory()
 {
@@ -129,7 +131,6 @@ void Character::equip_item(Item* item)
         drop_item(item);
         remove_item(((Equipment*)item)->get_body_part());
         equipment[((Equipment*)item)->get_body_part()] = item;
-        current_stats[ARMOR] += ((Equipment*)item)->get_armor();
     }
     else if(item->can_wield)
     {
@@ -146,7 +147,6 @@ void Character::remove_item(int item)
     {
         if(item < 6)
         {
-            current_stats[ARMOR] -= ((Equipment*)equipment[item])->get_armor();
             add_item(equipment[item]);
             equipment[item] = NULL;
         }
@@ -178,11 +178,6 @@ void Character::set_y(int _y) {
 
 void Character::set_depth(int d) {
     depth = d;
-}
-
-void Character::set_armor(int a)
-{
-    current_stats[ARMOR] = a;
 }
 
 int Character::get_x() {
@@ -265,9 +260,28 @@ int Character::get_moral()
     return moral;
 }
 
-int Character::get_armor()
+int Character::get_armor_hit(int body_part, int type)
 {
-    return current_stats[ARMOR];
+    Item* item = equipment[body_part];
+    if(item != NULL)
+    {
+        return ((Equipment*)item)->get_hit(type);
+    }
+    else{
+        return 0;
+    }
+}
+
+float Character::get_armor_dam(int body_part, int type)
+{
+    Item* item = equipment[body_part];
+    if(item != NULL)
+    {
+        return ((Equipment*)item)->get_dam(type);
+    }
+    else{
+        return 0;
+    }
 }
 
 void Character::consume_item(Item* item)

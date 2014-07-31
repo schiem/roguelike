@@ -124,25 +124,25 @@ namespace map_tile {
 
 namespace equipment
 {
-    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of boots.", 0, 3, 0, 5, false};
+    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of leather boots.", 0, 3, 0, {0, 0, 0}, {.1, .1, 0}, false, 2};
 }
 
 namespace weapons
 {
-    WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false};
+    WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false, 1};
 }
 
 namespace consumables
 {
-    ConsumableType potato = {0.3, tiledef::PLANT, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, HEALTH, rand() % 2, RESTORE};
+    ConsumableType potato = {0.3, tiledef::PLANT, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, HEALTH, rand() % 2, RESTORE, 1};
     ConsumableType CONSUMABLE_LIST[NUM_CONSUMABLES] = {potato};  
 }
 
 namespace misc
 {
-    MiscType kobold_corpse = {20, tiledef::KOBOLD_CORPSE, "Kobold Corpse", "A decaying corpse of a kobold. Yum!", false, 0};
-    MiscType rabbit_corpse = {3, tiledef::RABBIT_CORPSE, "Rabbit Corpse", "The corpse of a small woodland creature that met an untimely demise.", false, 0};
-    MiscType player_corpse = {120, tiledef::MAIN_CHAR, "Your Corpse", "You seem to have died.  Interesting...", false, 0};
+    MiscType kobold_corpse = {20, tiledef::KOBOLD_CORPSE, "Kobold Corpse", "A decaying corpse of a kobold. Yum!", false, 0, 10};
+    MiscType rabbit_corpse = {3, tiledef::RABBIT_CORPSE, "Rabbit Corpse", "The corpse of a small woodland creature that met an untimely demise.", false, 0, 2};
+    MiscType player_corpse = {120, tiledef::MAIN_CHAR, "Your Corpse", "You seem to have died.  Interesting...", false, 0, 30};
 }
 
 /****************************

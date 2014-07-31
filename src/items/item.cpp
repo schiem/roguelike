@@ -65,6 +65,11 @@ int Item::get_rarity()
     return rarity;
 }
 
+int Item::get_size()
+{
+    return size;
+}
+
 std::string Item::get_description()
 {
     return description;

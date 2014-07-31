@@ -129,10 +129,7 @@ void GUI::render_interface() {
 
     stringstream ss;
     ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
-    stringstream ac;
-    ac << "Armor: " <<game.main_char.get_armor();
     drawStr(SCREEN_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
-    drawStr(SCREEN_WIDTH/2, 0, ac.str().c_str(), ascii, screen, WHITE);
 }
 
 
