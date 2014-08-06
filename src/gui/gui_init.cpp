@@ -51,7 +51,7 @@ bool GUI::OnInit() {
     SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO );
 
     //Set up screen
-    screen = SDL_SetVideoMode( SCREEN_WIDTH * 8, SCREEN_HEIGHT * 12, 32, SDL_SWSURFACE );
+    screen = SDL_SetVideoMode( SCREEN_WIDTH * 8, SCREEN_HEIGHT * 12, 32, SDL_SWSURFACE | SDL_RESIZABLE);
 
     //Load ascii characters
     load_font(font_pref);

@@ -39,7 +39,7 @@ Building::Building(&TileMatrix _build_area, IntPoint _start_point, IntPoint _siz
 
 void Building::generate(&TileMatrix area)
 {
-    lay_foundation(area);
+    //lay_foundation(area);
     make_rooms(area);
 }
 
@@ -67,7 +67,20 @@ void Building::make_rooms(&TileMatrix area)
 {
     //the area of the house
     int area = (size.row - 1) * (size.col - 1);
+    
+    //figure out how much space we're allocating for hallways
+    //if the hallways are going to take up too much space, then
+    //we just won't have a hallway
+    //hall area doesn't include the walls
+    int hall_area = area * HALLS;
+    if(hall_area < MIN_HALL_AREA)
+    {
+        hall_area = 0;
+    }
 
+    //the remaining area goes to rooms
+    //this includes the walls
+    int room_area = area - hall_area;
     //the ratio of rooms to area
     //this will be rounded down.  that's okay, it's really
     //only for giving a general idea of size/room anyway
@@ -85,17 +98,31 @@ void Building::make_rooms(&TileMatrix area)
      */
     do {
         if(num_rooms <= 0) return;
-        ratio = area/num_rooms;
+        ratio = room_area/num_rooms;
         if(ratio < MIN_ROOM_AREA)
         {
             num_rooms = num_rooms - 1;
         }
     }
     while(ratio < MIN_ROOM_AREA);
-    int outside_doors = rand() % 3;
-    //rooms will always lead to the outside, subrooms will have one
-    //door leading to a larger room.  There will be 0-1/2 * num_rooms
-    //sub_rooms
-    int sub_rooms = rand() % ((.5 * num_rooms) + 1);
+    
+    //End conditions:
+        //reach the hall area
+        //can't turn without creating an area too small for a room
+    //Turn conditions:
+        //continuing will result in an area too small for a room
+        //randomly turn sometimes, as long it won't make a room too small
 
 
+    //start corridor
+    IntPoint hall_start
+    //while !end condition
+        //go straight until turn condition
+        //turn
+    //while !num_rooms:
+        //look for a place to divide the rooms into acceptable sizes
+        //if none are found, live with it, I suppose
+    //add the doors
+    
+    //alternatively...generate rectangles until the area is all filled
+    //then piece them together.

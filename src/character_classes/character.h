@@ -123,7 +123,6 @@ class Character
          * For the main character, this will primarily be to display information about
          * the enemy or NPC that they are focused on.  For non-players characters (both
          * enemies and NPCs, this will act as a continuous representation of their focus.
-         * \todo Implement the targetting system for the main character.
          */
         Character* target;
 

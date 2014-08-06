@@ -25,8 +25,11 @@
 #include <defs.h>
 
 
-const int MIN_ROOM_SIZE = 2;
+const int MIN_ROOM_SIZE = 3;
 const int MIN_ROOM_AREA = MIN_ROOM_SIZE * MIN_ROOM_SIZE;
+const float HALLS = .2;
+const int MIN_HALL_AREA = 8;
+
 
 /**
  * The class which is responsible for making buildings.
