@@ -312,10 +312,20 @@ void Character::consume_item(Item* item)
 
 int Character::get_stat(int stat)
 {
-    return current_stats[stat];
+    return stats[stat];
 }
 
 void Character::set_stat(int stat, int amount)
+{
+    stats[stat] = amount;
+}
+
+int Character::get_current_stat(int stat)
+{
+    return current_stats[stat];
+}
+
+void Character::set_current_stat(int stat, int amount)
 {
     current_stats[stat] = amount;
 }

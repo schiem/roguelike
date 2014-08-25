@@ -23,8 +23,10 @@
 static const int CHUNK_WIDTH = 100;
 static const int CHUNK_HEIGHT = 50;
 
-static const int SCREEN_WIDTH = 100;
+static const int SCREEN_WIDTH = 120;
 static const int SCREEN_HEIGHT = 50;
+
+static const int UI_START = CHUNK_WIDTH + 1;
 
 static const int WORLD_WIDTH = 100;
 static const int WORLD_HEIGHT = 50;

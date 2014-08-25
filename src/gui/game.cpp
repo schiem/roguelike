@@ -87,7 +87,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 2);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
-    canvas = TilePointerMatrix(SCREEN_HEIGHT, vector<Tile*>(SCREEN_WIDTH));
+    canvas = TilePointerMatrix(CHUNK_HEIGHT, vector<Tile*>(CHUNK_WIDTH));
 
     //Eventually, this should be based on screen size.
     chunk_map = ChunkMatrix(3, selected_chunk, world_map);
@@ -141,8 +141,8 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
 
 bool Game::is_vis(IntPoint coords)
 {
-    bool y = coords.row < SCREEN_HEIGHT && coords.row >= 0;
-    bool x = coords.col < SCREEN_WIDTH && coords.col >=0;
+    bool y = coords.row < CHUNK_HEIGHT && coords.row >= 0;
+    bool x = coords.col < CHUNK_WIDTH && coords.col >=0;
     return x && y;
 }
 
@@ -152,7 +152,7 @@ std::vector<Enemy*> Game::get_vis_enemies() {
         IntPoint chunk = IntPoint(enemy_list[i]->get_chunk_y(), enemy_list[i]->get_chunk_x());
         IntPoint coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-        IntPoint radius  = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+        IntPoint radius  = IntPoint(SCREEN_HEIGHT/2, CHUNK_WIDTH/2);
         if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
                 enemy_list[i]->get_depth() == main_char.get_depth()) {
             temp.push_back(enemy_list[i]);
@@ -168,12 +168,12 @@ std::vector<Enemy*> Game::get_vis_enemies() {
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    for(int i = 0; i < SCREEN_HEIGHT; i++) {
-        for (int j = 0; j < SCREEN_WIDTH; j++) {
-            int buffer_tile_row = (SCREEN_HEIGHT + main_char.get_y()) -
-                (SCREEN_HEIGHT/2) + i;
-            int buffer_tile_col = (SCREEN_WIDTH + main_char.get_x()) -
-                (SCREEN_WIDTH/2) + j;
+    for(int i = 0; i < CHUNK_HEIGHT; i++) {
+        for (int j = 0; j < CHUNK_WIDTH; j++) {
+            int buffer_tile_row = (CHUNK_HEIGHT + main_char.get_y()) -
+                (CHUNK_HEIGHT/2) + i;
+            int buffer_tile_col = (CHUNK_WIDTH + main_char.get_x()) -
+                (CHUNK_WIDTH/2) + j;
             set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
     }
@@ -450,8 +450,8 @@ void Game::unpause() {
  * false otherwise.
  */
 bool Game::out_of_bounds(int row, int col) {
-    return (col < 0 || col >= SCREEN_WIDTH ||
-            row < 0 || row >= SCREEN_HEIGHT);
+    return (col < 0 || col >= CHUNK_WIDTH ||
+            row < 0 || row >= CHUNK_HEIGHT);
 }
 
 /*
@@ -621,7 +621,7 @@ void Game::update_chunk_map(IntPoint shift_dir) {
  * to true if they have been seen by the player.
  */
 void Game::draw_visibility_lines() {
-    IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+    IntPoint m_char = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -645,7 +645,7 @@ void Game::draw_visibility_lines() {
 }
 
 void Game::undo_visibility() {
-    IntPoint m_char = IntPoint(SCREEN_HEIGHT/2, SCREEN_WIDTH/2);
+    IntPoint m_char = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;

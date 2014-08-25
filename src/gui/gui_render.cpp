@@ -116,23 +116,40 @@ void GUI::render_character() {
 
 void GUI::render_interface() {
     Character* target = game.main_char.get_target();
+    int height = 0;
+    
+    drawStr(UI_START, height, std::string("Main Character").c_str(), ascii, screen, WHITE);
+
+    height = render_stats(&game.main_char, height + 1);
+    height ++;
+    
+    drawStr(UI_START, height, std::string("Target").c_str(), ascii, screen, WHITE);
+     
     if(target != NULL)
-    {
-        stringstream ss;
-        ss << "Target health: " << target->get_cur_hp() << "/" << target->get_max_hp();
-        drawStr(0, 0, ss.str().c_str(), ascii, screen, WHITE);
+    {   
+        
+        height = render_stats(target, height + 1);
     }
     else
     {
-        drawStr(0, 0, std::string("No target.").c_str(), ascii, screen, WHITE);
+        drawStr(UI_START, height + 1, std::string("None").c_str(), ascii, screen, WHITE);
     }
+}
 
-    stringstream ss;
-    ss << "Health : " << game.main_char.get_cur_hp() << "/" << game.main_char.get_max_hp();
-    drawStr(CHUNK_WIDTH/3, 0, ss.str().c_str(), ascii, screen, WHITE);
+int GUI::render_stats(Character* chara, int height)
+{
+    for(int i=0;i<NUM_STATS;i++)
+    {
+        stringstream ss;
+        ss << STAT_NAMES[i] << ": " << chara->get_current_stat(i) << "/" << chara->get_stat(i);
+        drawStr(UI_START, height, ss.str().c_str(), ascii, screen, WHITE);
+        height++;
+    }
+    return height;
 }
 
 
+//WHEN DID THIS GET SO BIG?? REFACTOR THIS!
 void GUI::render_menu(Menu* menu)
 {
 
@@ -253,3 +270,4 @@ void GUI::render_debug()
     drawStr(0, CHUNK_HEIGHT-3, debug.get_message().c_str(), ascii, screen, WHITE);
     drawStr(0, CHUNK_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }
+

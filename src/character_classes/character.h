@@ -451,6 +451,22 @@ class Character
          * @see current_stats
          */
         void set_stat(int stat, int amount);
+        
+         /**
+         * Public getter for accessing a stat value.
+         * @param stat The index value of the stat to access.
+         * @return The current value of that stat from the array current_stats.
+         * @see stats
+         */
+       int get_current_stat(int);
+        
+        /**
+         * Public setter for setting a stat value.
+         * @param stat The index value of the stat to set.
+         * @param amount The value the stat should be set to.
+         * @see stats
+         */
+        void set_current_stat(int stat, int amount);
 
 };
 

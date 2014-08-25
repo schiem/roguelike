@@ -46,6 +46,9 @@ enum STATS
     ATTACK
 };
 
+const int NUM_STATS = 3;
+
+extern std::string STAT_NAMES[NUM_STATS]; 
 
 /*--------------------------
  *   TERRAIN DEFS
