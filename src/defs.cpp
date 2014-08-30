@@ -21,7 +21,7 @@
 
 #include <defs.h>
 
-extern std::string STAT_NAMES[NUM_STATS] = {"Health", "Armor", "Attack"};
+std::string STAT_NAMES[NUM_STATS] = {"Health", "Armor", "Attack"};
 
 
 /****************************
