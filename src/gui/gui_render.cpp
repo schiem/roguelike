@@ -42,6 +42,7 @@ void GUI::OnRender() {
         render_target();
         render_enemies();
         render_character();
+        clear_area(IntPoint(CHUNK_WIDTH, CHUNK_HEIGHT), IntPoint(SCREEN_WIDTH - CHUNK_WIDTH, SCREEN_HEIGHT - CHUNK_HEIGHT));
         render_interface();
 
     } else if (current_screen == DEATH_SCREEN) {
@@ -271,3 +272,14 @@ void GUI::render_debug()
     drawStr(0, CHUNK_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }
 
+
+void GUI::clear_area(IntPoint start, IntPoint size)
+{
+    for(int i=start.col;i<size.col + start.col;i++)
+    {
+        for(int j=start.row;j<size.row + start.row;j++)
+        {
+            drawChr(i, j, BLOCK_WALL.char_count, ascii, screen, BLACK);
+        }
+    }
+}

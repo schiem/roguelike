@@ -84,7 +84,10 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    main_char = Main_Character(100, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 2);
+    
+    int main_stat_array[NUM_STATS] = {10, 2, 10, 10, 10}; 
+    std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
+    main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
     canvas = TilePointerMatrix(CHUNK_HEIGHT, vector<Tile*>(CHUNK_WIDTH));

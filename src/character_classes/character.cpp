@@ -36,11 +36,9 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     equipment = vector<Item*>(7);
 }
 
-Character::Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _attack) {
-    stats.resize(3);
+Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality) {
 
-    stats[HEALTH] = _max_health;
-    stats[ATTACK] = _attack;
+    stats = _stats;
     current_stats = stats;
     x = _x;
     y = _y;

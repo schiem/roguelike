@@ -32,9 +32,7 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     timer = 0;
     //determines if the character is good or evit, on a scale of 1-5 (5 is evil, 3 is passive)
     moral = enemy.moral;
-    stats[HEALTH] = enemy.max_health;
-    stats[ARMOR] = enemy.armor;
-    stats[ATTACK] = enemy.base_attack;
+    stats = enemy.stats;
     current_stats = stats;
     id = enemy.id;
     name = enemy.name;

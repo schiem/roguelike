@@ -21,7 +21,7 @@
 
 #include <defs.h>
 
-std::string STAT_NAMES[NUM_STATS] = {"Health", "Armor", "Attack"};
+std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Str", "Dex", "Int"};
 
 
 /****************************
@@ -152,17 +152,25 @@ namespace misc
  *   ENEMY DEFS
  ***************************/
 
+
+//Enemy Equipment
 EquipType kob_eq[] = {equipment::boots};
 std::vector<EquipType> kob_eq_vec(&kob_eq[0], &kob_eq[0] + 1);
 WeaponType kob_wep[] = {weapons::dagger};
 std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 
 
+//Enemy Stats
+int kob_stats_arr[] = {10, 2, 5, 5, 5};
+std::vector<int> kob_stats(&kob_stats_arr[0], &kob_stats_arr[0] + NUM_STATS);
+
+int rab_stats_arr[] = {2, 0, 0, 0, 0};
+std::vector<int> rab_stats(&rab_stats_arr[0], &rab_stats_arr[0] + NUM_STATS);
 
 namespace enemies
 {
-    EnemyType kobold = {5, 100, 2, 0, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
-    EnemyType rabbit = {3, 10, 0, 0, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>()}; 
+    EnemyType kobold = {5, kob_stats, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
+    EnemyType rabbit = {3, rab_stats, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>()}; 
     EnemyType ENEMY_LIST[2] = {kobold, rabbit};
     int NUM_ENEMIES = 2; 
 }

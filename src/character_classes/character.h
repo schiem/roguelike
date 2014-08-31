@@ -137,18 +137,17 @@ class Character
          * The constructor for the character class.
          * This is the constructor which is used to construct the enemy and
          * main character derived classes.
-         * @param _max_health The health to give the character.
+         * @param _stats The stats to give the character.
          * @param _sprite The sprite of the character.
          * @param _corpse The corpse to be crated from the MiscType.
          * @param _morality The morality to give the character.
-         * @param _attack The character's attack.
          * @param _x The x value to give the character.
          * @param _y The y value to give to the character.
          * @param _chunk_x The x coordinate of the chunk to place the character.
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _attack);
+        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality);
 
         /**
          * The constructor for the character class.
@@ -487,7 +486,7 @@ class Main_Character : public Character{
          * The basic constructor.
          * @see Character(int _max_health, int _x, int _y, Tile _sprite, Item* _corpse, int _chunk_y, int _chunk_y, int _depth, int _morality, int _attack)
          */
-        Main_Character(int _max_health, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _attack);
+        Main_Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality);
 };
 
 #endif

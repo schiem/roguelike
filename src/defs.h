@@ -42,11 +42,13 @@
 enum STATS
 {
     HEALTH,
-    ARMOR,
-    ATTACK
+    ATTACK,
+    STRENGTH,
+    DEXTERITY,
+    INTELLIGENCE
 };
 
-const int NUM_STATS = 3;
+const int NUM_STATS = 5;
 
 extern std::string STAT_NAMES[NUM_STATS]; 
 
@@ -558,20 +560,11 @@ struct EnemyType
      * The attribute to assign the member variable moral for enemies.
      */
     int moral;
-     /**
-     * The attribute to assign the member variable stats[HEALTH] for enemies.
+     
+    /**
+     * The attributes to assign the member variables.
      */
-    int max_health;
-
-     /**
-     * The attribute to assign the member variable stats[ATTACK] for enemies.
-     */
-    int base_attack;
-
-     /**
-     * The attribute to assign the member variable stats[ARMOR] for enemies.
-     */
-    int armor;
+    std::vector<int> stats;
 
     /**
      * The attribute to assign the member variable id for enemies.
