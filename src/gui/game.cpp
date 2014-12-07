@@ -85,7 +85,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     
-    int main_stat_array[NUM_STATS] = {10, 2, 10, 10, 10}; 
+    int main_stat_array[NUM_STATS] = {10, 2, 10, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
     main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
@@ -287,98 +287,90 @@ void Game::remove_targets(Character* enem)
 std::vector<Enemy*>& Game::get_enemies() {
     return enemy_list;
 }
-/*--------------------Main Char Functions----------------------*/
-void Game::change_main_depth(int direction) {
+
+/*--------------------Character Controller Functions----------------------*/
+
+
+void Game::change_depth(int direction, Character* chara) {
     assert(direction == -1 || direction == 1);
     Chunk * current_chunk;
     current_chunk = get_current_chunk();
-    Tile* current_tile = current_chunk->get_tile(main_char.get_depth(),
-            main_char.get_y(), main_char.get_x());
+    Tile* current_tile = current_chunk->get_tile(chara->get_depth(),
+            chara->get_y(), chara->get_x());
 
     if(direction == -1) {
-        if (main_char.get_depth()-1 >= -1) {
+        if (chara->get_depth()-1 >= -1) {
             if(*current_tile == UP_STAIR) {
-                main_char.set_depth(main_char.get_depth() - 1);
-                main_char.set_x(current_chunk->get_down_stair(main_char.get_depth()).col);
-                main_char.set_y(current_chunk->get_down_stair(main_char.get_depth()).row);
+                chara->set_depth(chara->get_depth() - 1);
+                chara->set_x(current_chunk->get_down_stair(chara->get_depth()).col);
+                chara->set_y(current_chunk->get_down_stair(chara->get_depth()).row);
             }
         }
     } else {
-        if (main_char.get_depth()+1 < current_chunk->get_depth()) {
+        if (chara->get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == DOWN_STAIR) {
-                main_char.set_depth(main_char.get_depth() + 1);
-                main_char.set_x(current_chunk->get_up_stair(main_char.get_depth()).col);
-                main_char.set_y(current_chunk->get_up_stair(main_char.get_depth()).row);
+                chara->set_depth(chara->get_depth() + 1);
+                chara->set_x(current_chunk->get_up_stair(chara->get_depth()).col);
+                chara->set_y(current_chunk->get_up_stair(chara->get_depth()).row);
             }
         }
     }
-
-    //Dungeon FOV is shorter than overworld FOV
-    update_buffer(main_char.get_chunk());
-    if(main_char.get_depth() >= 0) {
-        recalculate_visibility_lines(10);
-    }
 }
 
-void Game::move_main_char(int col_change, int row_change) {
+void Game::move_char(int col_change, int row_change, Character* chara) {
     undo_visibility();
 
-    int row = main_char.get_y();
-    int col = main_char.get_x();
-    int next_col = main_char.get_x() + col_change;
-    int next_row = main_char.get_y() + row_change;
+    int row = chara->get_y();
+    int col = chara->get_x();
+    int next_col = chara->get_x() + col_change;
+    int next_row = chara->get_y() + row_change;
 
 
-    IntPoint new_chunk = IntPoint(main_char.get_chunk_y() + (next_row >= CHUNK_HEIGHT) - (next_row<0),
-            main_char.get_chunk_x() + (next_col>=CHUNK_WIDTH) - (next_col<0));
+    IntPoint new_chunk = IntPoint(chara->get_chunk_y() + (next_row >= CHUNK_HEIGHT) - (next_row<0),
+            chara->get_chunk_x() + (next_col>=CHUNK_WIDTH) - (next_col<0));
 
     next_col = next_col +  (CHUNK_WIDTH * (next_col<0)) - (CHUNK_WIDTH * (next_col>=CHUNK_WIDTH));
     next_row = next_row +  (CHUNK_HEIGHT * (next_row<0)) - (CHUNK_HEIGHT * (next_row>=CHUNK_HEIGHT));
     IntPoint next_coords = IntPoint(next_row, next_col);
     Character* enem = enemy_at_loc(new_chunk, next_coords);
 
-    bool can_move = (chunk_map.get_chunk_abs(new_chunk)->get_tile(main_char.get_depth(), next_row, next_col)->
+    bool can_move = (chunk_map.get_chunk_abs(new_chunk)->get_tile(chara->get_depth(), next_row, next_col)->
             can_be_moved_through);
 
     if(can_move && (enem == NULL)) {
         col = next_col;
         row = next_row;
-        main_char.set_x(col);
-        main_char.set_y(row);
-        if(main_char.get_chunk() != new_chunk) {
-            IntPoint shift_dir = IntPoint(new_chunk.row - main_char.get_chunk_y(), 
-                                          new_chunk.col - main_char.get_chunk_x());
-            main_char.set_chunk(new_chunk);
-            update_chunk_map(shift_dir);
-            cout<<"Main character: "<<main_char.get_chunk()<<endl;
-            update_buffer(main_char.get_chunk());
+        chara->set_x(col);
+        chara->set_y(row);
+        if(chara->get_chunk() != new_chunk) {
+            chara->set_chunk(new_chunk);
         }
     } else if(enem != NULL) {
-        main_char.attack(enem);
-        main_char.set_target(enem);
+        chara->attack(enem);
+        chara->set_target(enem);
     }
 }
 
 
 /// \todo Make this take in a character so that other characters can call it?
-void Game::get_item()
+void Game::get_item(Character* chara)
 {
-    Item* temp_item = item_at_coords(IntPoint(main_char.get_y(), main_char.get_x()), main_char.get_chunk(), main_char.get_depth());
-    Chunk* current_chunk = chunk_map.get_chunk_abs(main_char.get_chunk_y(), main_char.get_chunk_x());
+    Item* temp_item = item_at_coords(IntPoint(chara->get_y(), chara->get_x()), chara->get_chunk(), chara->get_depth());
+    Chunk* current_chunk = chunk_map.get_chunk_abs(chara->get_chunk_y(), chara->get_chunk_x());
     if(temp_item != NULL)
     {
         ///\todo Add a check if the inventory is full
-        main_char.add_item(temp_item);
-        current_chunk->remove_item(temp_item, main_char.get_depth());
+        chara->add_item(temp_item);
+        current_chunk->remove_item(temp_item, chara->get_depth());
     }
 }
 
-void Game::drop_item(Item* item)
+void Game::drop_item(Item* item, Character* chara)
 {
-    main_char.drop_item(item);
-    item->set_coords(IntPoint(main_char.get_y(), main_char.get_x()));
-    Chunk* current_chunk = chunk_map.get_chunk_abs(main_char.get_chunk_y(), main_char.get_chunk_x());
-    current_chunk->add_item(item, main_char.get_depth());
+    chara->drop_item(item);
+    item->set_coords(IntPoint(chara->get_y(), chara->get_x()));
+    Chunk* current_chunk = chunk_map.get_chunk_abs(chara->get_chunk_y(), chara->get_chunk_x());
+    current_chunk->add_item(item, chara->get_depth());
 }
 
 /*========= PRIVATE METHODS ============*/

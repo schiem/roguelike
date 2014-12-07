@@ -96,7 +96,6 @@ void Character::drop_item(Item* item)
     {
         if(inventory[i] == item)
         {
-            cout<<"Dropping an item."<<endl;
             inventory.erase(inventory.begin() + i);
         }
     }

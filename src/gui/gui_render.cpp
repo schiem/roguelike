@@ -58,6 +58,7 @@ void GUI::OnRender() {
     if(game.is_paused()) {
         drawStr(CHUNK_WIDTH-20, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
+
     SDL_Flip(screen);
 }
 

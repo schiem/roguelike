@@ -163,13 +163,21 @@ void GUI::perform_action_press(SDLKey key) {
         case SDLK_u:
             if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
-                game.change_main_depth(-1);
+                game.change_depth(-1, &game.main_char);
+                game.update_buffer(game.main_char.get_chunk());
+                if(game.main_char.get_depth() >= 0) {
+                    game.recalculate_visibility_lines(10);
+    }
             }
             break;
         case SDLK_d:
             if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
-                game.change_main_depth(1);
+                game.change_depth(1, &game.main_char);
+                game.update_buffer(game.main_char.get_chunk());
+                if(game.main_char.get_depth() >= 0) {
+                    game.recalculate_visibility_lines(10);
+                }
             }
             break;
         case SDLK_m:
@@ -184,7 +192,7 @@ void GUI::perform_action_press(SDLKey key) {
         case SDLK_g:
             if(!game.is_paused() && current_screen == GAME_SCREEN)
             {
-                game.get_item();
+                game.get_item(&game.main_char);
             }
             break;
         case SDLK_SPACE:
@@ -229,17 +237,28 @@ void GUI::perform_action_cont() {
     } else if(current_screen == GAME_SCREEN) {
         //THIS IS IMPORTANT, as it it turns out.
         if(game.is_initialized() && game.is_paused() == false) {
+            IntPoint old_chunk = game.main_char.get_chunk(); 
             if(keystate[SDLK_LEFT]){
-                game.move_main_char(-1, 0);
+                game.move_char(-1, 0, &game.main_char);
             }
             if(keystate[SDLK_RIGHT]){
-                game.move_main_char(1, 0);
+                game.move_char(1, 0, &game.main_char);
             }
             if(keystate[SDLK_UP]){
-                game.move_main_char(0, -1);
+                game.move_char(0, -1, &game.main_char);
             }
             if(keystate[SDLK_DOWN]){
-                game.move_main_char(0, 1);
+                game.move_char(0, 1, &game.main_char);
+            }
+            IntPoint new_chunk = game.main_char.get_chunk();
+            
+            //If the main character moved chunks, then it should update
+            //things to reflect that.
+            if(old_chunk != new_chunk)
+            {
+                IntPoint shift_dir = IntPoint(new_chunk.row - old_chunk.row, new_chunk.col - old_chunk.col);
+                game.update_chunk_map(shift_dir);
+                game.update_buffer(game.main_char.get_chunk());
             }
         }
     }

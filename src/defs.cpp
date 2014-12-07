@@ -21,7 +21,7 @@
 
 #include <defs.h>
 
-std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Str", "Dex", "Int"};
+std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Endurance", "Str", "Dex", "Int"};
 
 
 /****************************
@@ -161,10 +161,11 @@ std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 
 
 //Enemy Stats
-int kob_stats_arr[] = {10, 2, 5, 5, 5};
+//There has to be a better way to do this...
+int kob_stats_arr[] = {10, 2, 10, 5, 5, 5};
 std::vector<int> kob_stats(&kob_stats_arr[0], &kob_stats_arr[0] + NUM_STATS);
 
-int rab_stats_arr[] = {2, 0, 0, 0, 0};
+int rab_stats_arr[] = {2, 0, 10, 0, 0, 0};
 std::vector<int> rab_stats(&rab_stats_arr[0], &rab_stats_arr[0] + NUM_STATS);
 
 namespace enemies

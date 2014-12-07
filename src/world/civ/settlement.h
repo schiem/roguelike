@@ -170,7 +170,6 @@ class Settlement
          * be built.  Also has an influence on the rate of fires in a town.
          */
          std::vector<Tile> building_mats;
+}
 
-        /**
-         * The potential materials to 
-        
+#endif

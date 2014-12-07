@@ -37,18 +37,20 @@
  * The enum acts as an index in the stats and current stats,
  * so current_stats[HEALTH] corresponds to character's current
  * health.
+ * @todo Why on earth is this in the defs and not the character?!
  * @see Character::current_stats, Character::stats
  */
 enum STATS
 {
     HEALTH,
     ATTACK,
+    ENDURANCE,
     STRENGTH,
     DEXTERITY,
     INTELLIGENCE
 };
 
-const int NUM_STATS = 5;
+const int NUM_STATS = 6;
 
 extern std::string STAT_NAMES[NUM_STATS]; 
 

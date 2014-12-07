@@ -163,12 +163,6 @@ class Game
         TilePointerMatrix buffer;
         std::vector<std::vector<IntPoint> > bresenham_lines;
 
-        //RENDERING Functionality
-        void recalculate_visibility_lines(int radius);
-        void update_buffer(IntPoint);
-        void update_chunk_map(IntPoint);
-        void draw_visibility_lines();
-        void undo_visibility();
 
         //ENEMY Data/Models
         std::vector<Enemy*> enemy_list;
@@ -198,6 +192,11 @@ public:
         std::vector<Enemy*> get_vis_enemies();
         bool is_vis(IntPoint coords);
         void refresh();
+        void recalculate_visibility_lines(int radius);
+        void update_buffer(IntPoint);
+        void update_chunk_map(IntPoint);
+        void draw_visibility_lines();
+        void undo_visibility();
 
         //ENEMY Functionality
         void run_spawners();
@@ -205,10 +204,10 @@ public:
         void remove_targets(Character* enem);
         std::vector<Enemy*>& get_enemies();
         //MAIN CHAR Functionality
-        void change_main_depth(int);
-        void move_main_char(int, int);
-        void get_item();
-        void drop_item(Item*);
+        void change_depth(int, Character*);
+        void move_char(int, int, Character*) ;
+        void get_item(Character*);
+        void drop_item(Item*, Character*);
 
         //DEBUG FUNCTIONS
         void spawn_enemy(int, int, int, int, int, int);

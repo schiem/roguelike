@@ -66,7 +66,7 @@ Menu* ItemMenu::make_selection()
     }
     else if(options[selection] == "Drop")
     {
-        game->drop_item(item);
+        game->drop_item(item, &game->main_char);
     }
     else if(options[selection] == "Destroy")
     {
