@@ -35,13 +35,13 @@ Building::Building(IntPoint _start_point, IntPoint _size)
 {
     top_left = _start_point;
     size = _size;
-    BSpaceTree house = BSpaceTree(size.col, size.row, 3, 8);
-    floor_plan.resize(size.row+1);
+    BSpaceTree house = BSpaceTree(size.col-1, size.row-1, 3, 8);
+    floor_plan.resize(size.row);
     floor = tiledef::WOOD_FLOOR;
     wall = tiledef::WOOD_WALL;
     for(int i=0;i<floor_plan.size();i++)
     {
-        floor_plan[i].resize(size.col+1);
+        floor_plan[i].resize(size.col);
     }
     house_from_bst(house);
 }
@@ -54,24 +54,29 @@ void Building::house_from_bst(BSpaceTree bst)
     rooms_to_floor();
     //add some doors
     add_doors(bst);
+    /**for testing**/
+    std::cout<<"New BUILDING!"<<std::endl;
+    for(int i=0;i<rooms.size();i++)
+    {
+        std::cout<<"X: "<<rooms[i].tl.row<<", Y: "<<rooms[i].tl.col<<", Height: "<<rooms[i].height<<", Width: "<<rooms[i].width<<std::endl;
+    }
+
 }
 
 void Building::rooms_from_tree(BSpaceNode* node)
 {
-    /**
     if(node->left == NULL && node->right == NULL)
     {
-        */
         rooms.push_back(Room(node->tl_x, node->tl_y, node->height, node->width));
    
-    /*}
+    }
     else
     {
-        */
-    if(node->left != NULL && node->right != NULL)
-    {
-        rooms_from_tree(node->left);
-        rooms_from_tree(node->right);
+        if(node->left != NULL && node->right != NULL)
+        {
+            rooms_from_tree(node->left);
+            rooms_from_tree(node->right);
+        }
     }
 }
 
@@ -80,11 +85,11 @@ void Building::rooms_to_floor()
     for(int i=0;i<rooms.size();i++)
     {
         Room room = rooms[i];
-        for(int j=room.tl.row;j<=room.height;j++)
+        for(int j=room.tl.row;j<=room.height + room.tl.row;j++)
         {
-            for(int k=room.tl.col;k<=room.width;k++)
+            for(int k=room.tl.col;k<=room.width + room.tl.col;k++)
             {
-                if(j == room.tl.row || j == room.height || k == room.tl.col || k == room.width)
+                if(j == room.tl.row || j == room.height+room.tl.row || k == room.tl.col || k == room.width+room.tl.col)
                 {
                     
                     floor_plan[j][k] = wall;
