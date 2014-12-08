@@ -28,11 +28,23 @@ Room::Room() {
 Room::Room(const Room& r) {
     tl = r.tl;
     br = r.br;
+    height = r.height;
+    width = r.width;
 }
 
 Room::Room(IntPoint _tl, IntPoint _br) {
     tl = _tl;
     br = _br;
+    height = br.row - tl.row;
+    width = br.row - tl.row;
+}
+
+Room::Room(int tl_x, int tl_y, int _height, int _width)
+{
+    tl = IntPoint(tl_y, tl_x);
+    br = IntPoint(tl_y + _height, tl_x + _width);
+    height = _height;
+    width = _width;
 }
 
 void Room::print() const {

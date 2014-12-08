@@ -22,13 +22,11 @@
 
 #ifndef _BUILDING_H
 #define _BUILDING_H
+
+#include <binary_space.h>
+#include <room.h>
+#include <stdlib.h>
 #include <defs.h>
-
-
-const int MIN_ROOM_SIZE = 3;
-const int MIN_ROOM_AREA = MIN_ROOM_SIZE * MIN_ROOM_SIZE;
-const float HALLS = .2;
-const int MIN_HALL_AREA = 8;
 
 
 /**
@@ -36,8 +34,8 @@ const int MIN_HALL_AREA = 8;
  */ 
 class Building
 {
-    typedef std::vector<std::vector<Tile>> TileMatrix;
-    typedef std::vector<std::vector<Tile*>> TilePointerMatrix;
+    typedef std::vector<std::vector<Tile> > TileMatrix;
+    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     private:
         /**
          * The location of the top left corner of the buildling.
@@ -50,11 +48,6 @@ class Building
         IntPoint size;
 
         /**
-         * The number of rooms in the building.
-         */
-        int num_rooms;
-
-        /**
          * The number of floors in the house.
          */
         int num_floors;
@@ -65,7 +58,7 @@ class Building
          * I can say "if(plan == PARALLEL){..." instead of 
          * needing to keep track of indexes.
          */
-        plan floor_plan;
+        //plan floor_plan;
 
         /**
          * The shape of the buildling.
@@ -74,7 +67,7 @@ class Building
          * Again, corresponds to an enum to access instead of 
          * index values.
          */
-        shape building_shape;
+        //shape building_shape;
 
         /**
          * The tile that corresponds to what the wall is made out of.
@@ -85,6 +78,45 @@ class Building
          * The tile that corresponds to what the floor is made out of.
          */
         Tile floor;
+
+        /**
+         * A list of the rooms.
+         */
+        std::vector<Room> rooms;
+
+        /**
+         * Holds the tiles of the house.
+         */
+        TileMatrix floor_plan; 
+        
+        /**
+         * Generates the rooms and floor plan from a Binary Space Tree
+         * generated in the height and width of the house.
+         * Also adds...umm...doors.  That's what they're called.  Adds
+         * Doors in between the rooms.
+         */
+        void house_from_bst(BSpaceTree bst);
+
+        /**
+         * Recursively turns the nodes stemming from a root node passed
+         * in into room objects.
+         */
+        void rooms_from_tree(BSpaceNode* node);
+
+        /**
+         * Maps the rooms into a floor plan.
+         */
+        void rooms_to_floor();
+        
+        /**
+         * Recursively adds doors in between every left-right pair of nodes.
+         */
+        void add_doors(BSpaceTree bst);
+
+        /**
+         * Actual recursive part of the add_doors() function.
+         */
+        void connect_nodes(BSpaceNode* node);
 
     public:
         /**
@@ -104,7 +136,8 @@ class Building
          * @param _rooms The number of rooms in the building.
          * \todo Once seth figures out the whole depth thing, add a number of floors
          */
-         Building(&TileMatrix _build_area, IntPoint _start_point, IntPoint _size);
+         Building(IntPoint _start_point, IntPoint _size);
+        
 };
 
 #endif

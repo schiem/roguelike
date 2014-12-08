@@ -20,6 +20,8 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <building.h>
+
 Building::Building(){
 };
 
@@ -29,100 +31,87 @@ Building::Building(){
  * no progress sitting here thinking about how to do this, and so I should
  * just sit down and actually do it.  I can always add more later.
  */
-Building::Building(&TileMatrix _build_area, IntPoint _start_point, IntPoint _size, int _rooms)
+Building::Building(IntPoint _start_point, IntPoint _size)
 {
     top_left = _start_point;
     size = _size;
-    num_rooms = _rooms;
-    generate(_build_area);
-}
-
-void Building::generate(&TileMatrix area)
-{
-    //lay_foundation(area);
-    make_rooms(area);
-}
-
-void Building::lay_foundation(&TileMatrix area)
-{
-    IntPoint bottom_right = top_left + size;
-    for(int i=top_left.row;i<bottom_right.row;i++)
+    BSpaceTree house = BSpaceTree(size.col, size.row, 3, 8);
+    floor_plan.resize(size.row);
+    floor = tiledef::WOOD_FLOOR;
+    wall = tiledef::WOOD_WALL;
+    for(int i=0;i<floor_plan.size();i++)
     {
-        for(int j=top_left.col; bottom_right.col;j++)
+        floor_plan[i].resize(size.col);
+    }
+    house_from_bst(house);
+}
+
+void Building::house_from_bst(BSpaceTree bst)
+{
+    //convert it into rooms
+    rooms_from_tree(bst.get_root());
+    //turn it into a floor_plan
+    rooms_to_floor();
+    //add some doors
+    add_doors(bst);
+}
+
+void Building::rooms_from_tree(BSpaceNode* node)
+{
+    if(node->left == NULL && node->right == NULL)
+    {
+        rooms.push_back(Room(node->tl_x, node->tl_y, node->height, node->width));
+    }
+    else
+    {
+        rooms_from_tree(node->left);
+        rooms_from_tree(node->right);
+    }
+}
+
+void Building::rooms_to_floor()
+{
+    for(int i=0;i<rooms.size();i++)
+    {
+        Room room = rooms[i];
+        for(int j=room.tl.row;j<=room.height;j++)
         {
-            bool is_wall = i==top_left.row || j==top_left.col || i == bottom_right.row - 1 || j == bottom_right.col - 1;
-            if(is_wall)
+            for(int k=room.tl.col;k<=room.width;k++)
             {
-                area[i][j] = WOOD_WALL;
-            }
-            else
-            {
-                area[i][j] = WOOD_FLOOR;
+                if(j == room.tl.row || j == room.height || k == room.tl.col || k == room.width)
+                {
+                    floor_plan[j][k] = wall;
+                }
+                else
+                {
+                    floor_plan[j][k] = floor;
+                }
             }
         }
     }
 }
 
-void Building::make_rooms(&TileMatrix area)
+void Building::add_doors(BSpaceTree bst)
 {
-    //the area of the house
-    int area = (size.row - 1) * (size.col - 1);
-    
-    //figure out how much space we're allocating for hallways
-    //if the hallways are going to take up too much space, then
-    //we just won't have a hallway
-    //hall area doesn't include the walls
-    int hall_area = area * HALLS;
-    if(hall_area < MIN_HALL_AREA)
+    connect_nodes(bst.get_root());
+}
+
+void Building::connect_nodes(BSpaceNode* node)
+{
+    if(node->left != NULL && node->right != NULL)
     {
-        hall_area = 0;
-    }
-
-    //the remaining area goes to rooms
-    //this includes the walls
-    int room_area = area - hall_area;
-    //the ratio of rooms to area
-    //this will be rounded down.  that's okay, it's really
-    //only for giving a general idea of size/room anyway
-    int ratio;
-    
-    /*
-     * If our rooms are less than they're allowed to be,
-     * remove them until they are the correct size.
-     * If we don't have any rooms, then stahp er'thang.
-     * This shouldn't happen, but I'm sure I'll end up
-     * with a whole ton of houses that are just 2x2 empty
-     * squares at some point.
-     * The reason that the return is at the beginning is to avoid
-     * /0 errors.
-     */
-    do {
-        if(num_rooms <= 0) return;
-        ratio = room_area/num_rooms;
-        if(ratio < MIN_ROOM_AREA)
+        //connect the two
+        if(node->left->tl_y + node->left->height == node->right->tl_y)
         {
-            num_rooms = num_rooms - 1;
+            int x_coord = rand() % node->left->width + node->left->tl_y;
+            floor_plan[node->right->tl_y][x_coord] = tiledef::DOOR;
         }
+        else
+        {
+            int y_coord = rand() % node->left->height + node->left->tl_x;
+            floor_plan[y_coord][node->right->tl_x] = tiledef::DOOR;
+        }
+        connect_nodes(node->left);
+        connect_nodes(node->right);
     }
-    while(ratio < MIN_ROOM_AREA);
-    
-    //End conditions:
-        //reach the hall area
-        //can't turn without creating an area too small for a room
-    //Turn conditions:
-        //continuing will result in an area too small for a room
-        //randomly turn sometimes, as long it won't make a room too small
-
-
-    //start corridor
-    IntPoint hall_start
-    //while !end condition
-        //go straight until turn condition
-        //turn
-    //while !num_rooms:
-        //look for a place to divide the rooms into acceptable sizes
-        //if none are found, live with it, I suppose
-    //add the doors
-    
-    //alternatively...generate rectangles until the area is all filled
-    //then piece them together.
+}

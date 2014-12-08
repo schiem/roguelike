@@ -1,6 +1,7 @@
 AM_CPPFLAGS = -I.\
 			  -Isrc/world/dungeon_gen\
-			  -Isrc/misc_classes\
+			  -Isrc/world/civ\
+              -Isrc/misc_classes\
 			  -Isrc/character_classes\
 			  -Isrc/world\
 			  -Ilib/SDL-ASCII-Template\
@@ -35,6 +36,7 @@ roguelike_SOURCES = \
 	src/misc_classes/helper.cpp\
     src/misc_classes/debug.cpp\
     src/misc_classes/math_helper.cpp\
+    src/misc_classes/binary_space.cpp\
     src/character_classes/main_character.cpp\
 	src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
@@ -68,6 +70,7 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/room.cpp\
 	src/world/dungeon_gen/corruptible_pblind_db.cpp\
 	src/world/dungeon_gen/dungeonbuilder.cpp\
+    src/world/civ/building.cpp\
 	src/items/item.cpp\
     src/items/equipment.cpp\
     src/items/weapon.cpp\
@@ -81,6 +84,7 @@ roguelike_SOURCES = \
 	src/misc_classes/helper.h\
     src/misc_classes/debug.h\
     src/misc_classes/math_helper.h\
+    src/misc_classes/binary_space.h\
     src/character_classes/character.h\
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\
@@ -97,6 +101,7 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/room.h\
 	src/world/dungeon_gen/procedurally_blind_db.h\
 	src/world/dungeon_gen/corruptible_pblind_db.h\
+    src/world/civ/building.h\
 	src/world/overworld_gen.h\
 	src/world/world_map.h\
     src/items/item.h\

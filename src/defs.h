@@ -120,7 +120,7 @@ struct Tile {
 };
 
 namespace tiledef {
-    extern Tile TILE_INDEX[31]; //CHANGE THIS WHEN YOU ADD TILES!
+    extern Tile TILE_INDEX[32]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
     extern Tile DUNGEON_BORDER;
@@ -154,6 +154,7 @@ namespace tiledef {
     extern Tile PLANT;
     extern Tile WOOD_WALL;
     extern Tile WOOD_FLOOR;
+    extern Tile DOOR;
 }
 
 /**

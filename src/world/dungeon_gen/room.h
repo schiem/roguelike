@@ -56,6 +56,17 @@ class Room
         IntPoint br;
 
         /**
+         * The height of the room.
+         */
+        int height;
+
+        /**
+         * The width of the room.
+         */
+        int width;
+
+
+        /**
          * Empty constructor.
          */
         Room();
@@ -74,6 +85,8 @@ class Room
          * Creates a new room.
          */
         Room(IntPoint _tl, IntPoint _br);
+        Room(int _tl_x, int _tl_y, int _height, int _width);
+    
 };
 
 #endif

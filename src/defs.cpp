@@ -59,8 +59,9 @@ namespace tiledef {
     Tile PLANT = {6, 28, GREEN, true, false, false, false};
     Tile WOOD_WALL = {176, 29, TAN, false, false, true, false};
     Tile WOOD_FLOOR = {47, 30, TAN, true, false, false, false};
+    Tile DOOR = {43, 31, TAN, true, false, false, false};
 
-    Tile TILE_INDEX[31] = { //THIS MUST CORRESPOND TO TILE IDS
+    Tile TILE_INDEX[32] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
         OVERWORLD_DIRT, //ID 1
         DIRT,           //ID 2
@@ -91,7 +92,8 @@ namespace tiledef {
         POTATO,
         PLANT,
         WOOD_WALL,
-        WOOD_FLOOR
+        WOOD_FLOOR,
+        DOOR
     };
 }
 
