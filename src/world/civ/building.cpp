@@ -116,21 +116,37 @@ void Building::connect_nodes(BSpaceNode* node)
     if(node->left != NULL && node->right != NULL)
     {
         //connect the two
+        int x_coord;
+        int y_coord;
         if(node->left->tl_y + node->left->height == node->right->tl_y)
         {
-            int x_coord = rand() % node->left->width + node->left->tl_x; 
-            floor_plan[node->right->tl_y][x_coord] = tiledef::DOOR;
+            do
+            {
+                x_coord = rand() % (node->left->width-2) + node->left->tl_x + 1; 
+                y_coord = node->right->tl_y;
+            } while(surrounding_walls(y_coord, x_coord) != 2);
         }
         else if(node->left->tl_x + node->left->width == node->right->tl_x)
         {
-            int y_coord = rand() % node->left->height + node->left->tl_y;
-            floor_plan[y_coord][node->right->tl_x] = tiledef::DOOR;
+            do
+            {
+                y_coord = rand() % (node->left->height-2) + (node->left->tl_y + 1);
+                x_coord = node->right->tl_x;
+            } while(surrounding_walls(y_coord, x_coord) != 2);
         }
+        floor_plan[y_coord][x_coord] = tiledef::DOOR;
         connect_nodes(node->left);
         connect_nodes(node->right);
     }
 }
 
+
+int Building::surrounding_walls(int y, int x)
+{
+    int wall_y = (floor_plan[y+1][x] == wall) + (floor_plan[y-1][x] == wall);
+    int wall_x = (floor_plan[y][x+1] == wall) + (floor_plan[y][x-1] == wall);
+    return wall_y + wall_x;
+}
 
 Tile Building::get_floor()
 {
