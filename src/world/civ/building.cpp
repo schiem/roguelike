@@ -109,6 +109,7 @@ void Building::rooms_to_floor()
 void Building::add_doors(BSpaceTree bst)
 {
     connect_nodes(bst.get_root());
+    add_random_door(bst.get_root());
 }
 
 void Building::connect_nodes(BSpaceNode* node)
@@ -141,8 +142,38 @@ void Building::connect_nodes(BSpaceNode* node)
 }
 
 
-int Building::surrounding_walls(int y, int x)
+void Building::add_random_door(BSpaceNode* node)
 {
+    bool rand_x = rand() % 2;
+    int x;
+    int y;
+    do
+    {
+        if(rand_x)
+        {
+            x = rand() % (size.col - 1) + 1;
+            y = rand() % 2;
+            if(y != 0)
+            {
+                y = size.row - 1;
+            }
+        }
+        else
+        {
+            y = rand() % (size.row - 1) + 1;
+            x = rand() % 2;
+            if(x != 0)
+            {
+                y = size.col - 1;
+            }
+        }
+    } while(surrounding_walls(y, x) != 2);
+    floor_plan[y][x] = tiledef::DOOR;
+}
+
+
+int Building::surrounding_walls(int y, int x)
+{   
     int wall_y = (floor_plan[y+1][x] == wall) + (floor_plan[y-1][x] == wall);
     int wall_x = (floor_plan[y][x+1] == wall) + (floor_plan[y][x-1] == wall);
     return wall_y + wall_x;

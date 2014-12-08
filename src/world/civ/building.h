@@ -119,10 +119,15 @@ class Building
         void connect_nodes(BSpaceNode* node);
 
         /**
+         * Adds a door to a random place on the outside of the node.
+         */
+        void add_random_door(BSpaceNode* node);
+
+        /**
          * Checks the number of walls surrounding a given tile.
          */
         int surrounding_walls(int y, int x);
-    
+
     public:
         /**
          * The default constructor for a building.
