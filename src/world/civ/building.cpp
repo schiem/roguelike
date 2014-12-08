@@ -36,12 +36,12 @@ Building::Building(IntPoint _start_point, IntPoint _size)
     top_left = _start_point;
     size = _size;
     BSpaceTree house = BSpaceTree(size.col, size.row, 3, 8);
-    floor_plan.resize(size.row);
+    floor_plan.resize(size.row+1);
     floor = tiledef::WOOD_FLOOR;
     wall = tiledef::WOOD_WALL;
     for(int i=0;i<floor_plan.size();i++)
     {
-        floor_plan[i].resize(size.col);
+        floor_plan[i].resize(size.col+1);
     }
     house_from_bst(house);
 }
@@ -80,11 +80,11 @@ void Building::rooms_to_floor()
     for(int i=0;i<rooms.size();i++)
     {
         Room room = rooms[i];
-        for(int j=room.tl.row;j<room.height;j++)
+        for(int j=room.tl.row;j<=room.height;j++)
         {
-            for(int k=room.tl.col;k<room.width;k++)
+            for(int k=room.tl.col;k<=room.width;k++)
             {
-                if(j == room.tl.row || j == room.height-1 || k == room.tl.col || k == room.width-1)
+                if(j == room.tl.row || j == room.height || k == room.tl.col || k == room.width)
                 {
                     
                     floor_plan[j][k] = wall;
@@ -113,12 +113,12 @@ void Building::connect_nodes(BSpaceNode* node)
         //connect the two
         if(node->left->tl_y + node->left->height == node->right->tl_y)
         {
-            int x_coord = rand() % node->left->width; 
+            int x_coord = rand() % node->left->width + node->left->tl_x; 
             floor_plan[node->right->tl_y][x_coord] = tiledef::DOOR;
         }
-        else
+        else if(node->left->tl_x + node->left->width == node->right->tl_x)
         {
-            int y_coord = rand() % node->left->height;
+            int y_coord = rand() % node->left->height + node->left->tl_y;
             floor_plan[y_coord][node->right->tl_x] = tiledef::DOOR;
         }
         connect_nodes(node->left);
