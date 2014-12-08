@@ -33,8 +33,8 @@ BSpaceNode::BSpaceNode(int _tl_x, int _tl_y, int _width, int _height)
 
 BSpaceNode::~BSpaceNode()
 {
-    delete left;
-    delete right;
+    //delete left;
+    //delete right;
 }
 
 /****************** TREES **************************/
@@ -52,7 +52,7 @@ BSpaceTree::BSpaceTree(int _height, int _width, int _min_size, int _max_size)
 
 BSpaceTree::~BSpaceTree()
 {
-    delete root;
+    //delete root;
 }
 
 void BSpaceTree::generate_tree(BSpaceNode* node)

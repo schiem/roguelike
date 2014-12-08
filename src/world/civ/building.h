@@ -28,14 +28,14 @@
 #include <stdlib.h>
 #include <defs.h>
 
+typedef std::vector<std::vector<Tile> > TileMatrix;
+typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
 
 /**
  * The class which is responsible for making buildings.
  */ 
 class Building
 {
-    typedef std::vector<std::vector<Tile> > TileMatrix;
-    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     private:
         /**
          * The location of the top left corner of the buildling.
@@ -136,8 +136,37 @@ class Building
          * @param _rooms The number of rooms in the building.
          * \todo Once seth figures out the whole depth thing, add a number of floors
          */
-         Building(IntPoint _start_point, IntPoint _size);
+        Building(IntPoint _start_point, IntPoint _size);
         
+        /**
+         * Accessor for the floor tile.
+         */
+        Tile get_floor();
+        
+        /**
+         * Accessor for the wall tile.
+         */
+        Tile get_wall();
+        
+        /**
+         * Accessor for the floor plan.
+         */
+        TileMatrix& get_floor_plan();
+ 
+        /**
+         * Accessor for the width.
+         */
+        int get_width();
+        
+        /**
+         * Accessor for the height.
+         */
+        int get_height();
+
+        /**
+         * Gets a tile at a given x and y.
+         */
+        Tile tile_at(int y, int x);
 };
 
 #endif

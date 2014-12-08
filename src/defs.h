@@ -117,6 +117,10 @@ struct Tile {
     bool operator==(const Tile& rhs) const {
         return this->tile_id == rhs.tile_id;
     }
+    
+    bool operator!=(const Tile& rhs) const{
+        return this->tile_id != rhs.tile_id;
+    }
 };
 
 namespace tiledef {

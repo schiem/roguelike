@@ -217,5 +217,17 @@ namespace overworld_gen {
 
         ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, ENEMY_LIST[to_spawn]));
         ground.set_tile(spawn_y, spawn_x, td::KOBOLD_SPAWNER);
+        /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
+        int build_x = rand() % width/2;
+        int build_y = rand() % height/2;
+        Building building = Building(IntPoint(build_y, build_x), IntPoint(20, 20));
+        for(int i=0;i<building.get_height();i++)
+        {
+            for(int j=0;j<building.get_width();j++)
+            {
+                ground.set_tile(build_y + i, build_x + j, building.tile_at(i, j));
+            }
+        }
+        
     }
 }

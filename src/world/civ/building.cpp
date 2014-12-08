@@ -58,11 +58,17 @@ void Building::house_from_bst(BSpaceTree bst)
 
 void Building::rooms_from_tree(BSpaceNode* node)
 {
+    /**
     if(node->left == NULL && node->right == NULL)
     {
+        */
         rooms.push_back(Room(node->tl_x, node->tl_y, node->height, node->width));
-    }
+   
+    /*}
     else
+    {
+        */
+    if(node->left != NULL && node->right != NULL)
     {
         rooms_from_tree(node->left);
         rooms_from_tree(node->right);
@@ -74,17 +80,21 @@ void Building::rooms_to_floor()
     for(int i=0;i<rooms.size();i++)
     {
         Room room = rooms[i];
-        for(int j=room.tl.row;j<=room.height;j++)
+        for(int j=room.tl.row;j<room.height;j++)
         {
-            for(int k=room.tl.col;k<=room.width;k++)
+            for(int k=room.tl.col;k<room.width;k++)
             {
-                if(j == room.tl.row || j == room.height || k == room.tl.col || k == room.width)
+                if(j == room.tl.row || j == room.height-1 || k == room.tl.col || k == room.width-1)
                 {
+                    
                     floor_plan[j][k] = wall;
                 }
                 else
                 {
-                    floor_plan[j][k] = floor;
+                    if(floor_plan[j][k] != wall)
+                    {
+                        floor_plan[j][k] = floor;
+                    }
                 }
             }
         }
@@ -103,15 +113,46 @@ void Building::connect_nodes(BSpaceNode* node)
         //connect the two
         if(node->left->tl_y + node->left->height == node->right->tl_y)
         {
-            int x_coord = rand() % node->left->width + node->left->tl_y;
+            int x_coord = rand() % node->left->width; 
             floor_plan[node->right->tl_y][x_coord] = tiledef::DOOR;
         }
         else
         {
-            int y_coord = rand() % node->left->height + node->left->tl_x;
+            int y_coord = rand() % node->left->height;
             floor_plan[y_coord][node->right->tl_x] = tiledef::DOOR;
         }
         connect_nodes(node->left);
         connect_nodes(node->right);
     }
+}
+
+
+Tile Building::get_floor()
+{
+    return floor;
+}
+
+Tile Building::get_wall()
+{
+    return wall;
+}
+
+TileMatrix& Building::get_floor_plan()
+{
+    return floor_plan;
+}
+
+int Building::get_width()
+{
+    return size.col;
+}
+
+int Building::get_height()
+{
+    return size.row;
+}
+
+Tile Building::tile_at(int y, int x)
+{
+    return floor_plan[y][x];
 }
