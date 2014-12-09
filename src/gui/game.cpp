@@ -623,7 +623,7 @@ void Game::draw_visibility_lines() {
     int row, col;
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
-        for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
+        for(size_t j = 1; j < bresenham_lines[i].size(); j++) {
             current_point = bresenham_lines[i][j];
             row = current_point.row + m_char.row;
             col = current_point.col + m_char.col;
