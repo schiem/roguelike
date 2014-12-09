@@ -174,9 +174,25 @@ void Building::add_random_door(BSpaceNode* node)
 
 int Building::surrounding_walls(int y, int x)
 {   
-    int wall_y = (floor_plan[y+1][x] == wall) + (floor_plan[y-1][x] == wall);
-    int wall_x = (floor_plan[y][x+1] == wall) + (floor_plan[y][x-1] == wall);
-    return wall_y + wall_x;
+    int accum = 0;
+    if(y+1 < size.row && floor_plan[y+1][x] == wall)
+    {
+        accum += 1;
+    }
+    if(y-1 >= 0 && floor_plan[y-1][x] == wall)
+    {
+        accum += 1;
+    }
+    if(x+1 < size.col && floor_plan[y][x+1] == wall)
+    {
+        accum += 1;
+    }
+    if(x-1 >= 0 && floor_plan[y][x-1] == wall)
+    {
+        accum += 1;
+    }
+
+    return accum;
 }
 
 Tile Building::get_floor()
