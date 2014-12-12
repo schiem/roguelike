@@ -39,7 +39,6 @@ class BSpaceNode
         BSpaceNode* left;
         BSpaceNode* right;
         BSpaceNode(int _tl_x, int _tl_y, int _width, int _height);
-        ~BSpaceNode();
 };
 
 /**
@@ -54,6 +53,7 @@ class BSpaceTree
         int width;
         int min_size;
         int max_size;
+        void delete_all(BSpaceNode* node);
         bool split_node(BSpaceNode* node);
         void generate_tree(BSpaceNode* node);
     public:

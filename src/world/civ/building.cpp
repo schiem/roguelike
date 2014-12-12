@@ -46,7 +46,7 @@ Building::Building(IntPoint _start_point, IntPoint _size)
     house_from_bst(house);
 }
 
-void Building::house_from_bst(BSpaceTree bst)
+void Building::house_from_bst(BSpaceTree& bst)
 {
     //convert it into rooms
     rooms_from_tree(bst.get_root());
@@ -106,7 +106,7 @@ void Building::rooms_to_floor()
     }
 }
 
-void Building::add_doors(BSpaceTree bst)
+void Building::add_doors(BSpaceTree& bst)
 {
     connect_nodes(bst.get_root());
     add_random_door(bst.get_root());

@@ -95,7 +95,7 @@ class Building
          * Also adds...umm...doors.  That's what they're called.  Adds
          * Doors in between the rooms.
          */
-        void house_from_bst(BSpaceTree bst);
+        void house_from_bst(BSpaceTree& bst);
 
         /**
          * Recursively turns the nodes stemming from a root node passed
@@ -111,7 +111,7 @@ class Building
         /**
          * Recursively adds doors in between every left-right pair of nodes.
          */
-        void add_doors(BSpaceTree bst);
+        void add_doors(BSpaceTree& bst);
 
         /**
          * Actual recursive part of the add_doors() function.
