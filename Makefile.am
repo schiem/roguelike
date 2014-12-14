@@ -8,6 +8,7 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/gui\
 			  -Isrc/items\
               -Isrc/menu\
+              -Isrc/animation\
               -Isrc/\
               -pg\
               $(BOOST_CPPFLAGS)
@@ -76,6 +77,10 @@ roguelike_SOURCES = \
     src/items/weapon.cpp\
     src/items/consumables.cpp\
     src/items/misc.cpp\
+    src/animation/animation.cpp\
+    src/animation/frame.cpp\
+    src/animation/actor.cpp\
+    src/animation/animation_defs.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/defs.h\
@@ -105,7 +110,11 @@ roguelike_SOURCES = \
 	src/world/overworld_gen.h\
 	src/world/world_map.h\
     src/items/item.h\
-	lib/SDL-ASCII-Template/color_def.h\
+    src/animation/animation.h\
+    src/animation/frame.h\
+    src/animation/actor.h\
+	src/animation/animation_defs.h\
+    lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
 dist_localdata_DATA = data/ data/chunk/

@@ -195,6 +195,13 @@ void GUI::perform_action_press(SDLKey key) {
                 game.get_item(&game.main_char);
             }
             break;
+        case SDLK_e:
+            //TESTING THING
+            if(!game.is_paused() && current_screen == GAME_SCREEN)
+            {
+                game.create_explosion(game.main_char.get_x(), game.main_char.get_y(), game.main_char.get_chunk_x(), game.main_char.get_chunk_y());
+            }
+            break;
         case SDLK_SPACE:
             if(current_screen == GAME_SCREEN)
             {

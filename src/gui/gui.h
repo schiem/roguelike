@@ -78,6 +78,7 @@ class GUI : public VirtualEvent {
         void render_menu(Menu* menu);
         void render_debug();
         void render_target();
+        void render_animations();
         void clear_area(IntPoint start, IntPoint size);
         int render_stats(Character* chara, int height);
     public:

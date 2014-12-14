@@ -118,6 +118,7 @@ bool Game::is_initialized() {
 }
 
 void Game::act(long delta_ms) {
+    tick_animations(delta_ms);
     run_enemies(delta_ms);
 }
 
@@ -143,12 +144,6 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     return temp;
 }
 
-bool Game::is_vis(IntPoint coords)
-{
-    bool y = coords.row < CHUNK_HEIGHT && coords.row >= 0;
-    bool x = coords.col < CHUNK_WIDTH && coords.col >=0;
-    return x && y;
-}
 
 std::vector<Enemy*> Game::get_vis_enemies() {
     std::vector<Enemy*> temp = std::vector<Enemy*>();
@@ -165,6 +160,30 @@ std::vector<Enemy*> Game::get_vis_enemies() {
     return temp;
 }
 
+
+bool Game::is_vis(IntPoint coords)
+{
+    bool y = coords.row < CHUNK_HEIGHT && coords.row >= 0;
+    bool x = coords.col < CHUNK_WIDTH && coords.col >=0;
+    return x && y;
+}
+
+std::vector<Animation>& Game::get_animations()
+{
+    return anim_queue;
+}
+
+void Game::tick_animations(long delta_ms)
+{
+    for(int i=0;i<anim_queue.size();i++)
+    {
+        anim_queue[i].step(delta_ms);
+        if(anim_queue[i].get_done())
+        {
+            anim_queue.erase(anim_queue.begin() + i);
+        }
+    }
+}
 
 /*
  * Updates the canvas with the area around the character in terms of buffer coordinates.
@@ -503,6 +522,8 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
 /*----------------Rendering Functions----------------*/
 
 //TODO Write PRE/POST for this function
+
+//...make the rendering system consistant.
 void Game::show_vis_items() {
     Chunk* current_chunk;
     for(int i=main_char.get_chunk().row-1; i<=main_char.get_chunk().row+1; i++) {
@@ -696,3 +717,11 @@ void Game::teleport(int chunk_x, int chunk_y, int x, int y)
     }
 
 }
+
+/*-----------------------ANIMATION FUNCTIONS---------------------------*/
+
+void Game::create_explosion(int x, int y, int chunk_x, int chunk_y)
+{
+    anim_queue.push_back(construct_explosion(x, y, chunk_x, chunk_y, 5, YELLOW));
+}
+

@@ -42,6 +42,7 @@ void GUI::OnRender() {
         render_target();
         render_enemies();
         render_character();
+        render_animations();
         clear_area(IntPoint(CHUNK_WIDTH, CHUNK_HEIGHT), IntPoint(SCREEN_WIDTH - CHUNK_WIDTH, SCREEN_HEIGHT - CHUNK_HEIGHT));
         render_interface();
 
@@ -273,6 +274,27 @@ void GUI::render_debug()
     drawStr(0, CHUNK_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }
 
+void GUI::render_animations()
+{
+    std::vector<Animation> anims = game.get_animations();
+    TilePointerMatrix tm = game.get_canvas();
+    for(int i=0;i<anims.size();i++)
+    {
+        Frame f = anims[i].get_frame();
+        IntPoint coords = IntPoint(anims[i].get_y(), anims[i].get_x());
+        IntPoint chunk = IntPoint(anims[i].get_chunk_y(), anims[i].get_chunk_x());
+        IntPoint vis = game.get_vis_coords(chunk, coords);
+        for(int j=0;j<f.get_actors().size();j++)
+        {
+            Actor a = f.actor(j);
+            coords = vis + IntPoint(a.get_y(), a.get_x());
+            if(game.is_vis(coords) && tm[coords.row][coords.col]->visible)
+            {
+                drawChr(coords.col, coords.row, a.get_char(), ascii, screen, a.get_color());
+            }
+        }
+    }
+}
 
 void GUI::clear_area(IntPoint start, IntPoint size)
 {

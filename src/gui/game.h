@@ -35,6 +35,8 @@
 #include <world_map.h>
 #include <helper.h>
 #include <item.h>
+#include <animation.h>
+#include <animation_defs.h>
 
 struct TilePoint {
     Tile tile;
@@ -82,6 +84,12 @@ class Game
          * \todo Do something else with this...
          */
         Tile block_wall_tile;
+        
+        /**
+         * Whenever a new animation needs to be performed, it
+         * should be added to this queue.
+         */
+        std::vector<Animation> anim_queue;
 
         //BASE model access functions
         /**
@@ -91,6 +99,7 @@ class Game
          */
         void point_assertions(int row, int col);
 
+        
         /**
          * Sets the point in the canvas at row, col to Tile
          * @param row The row of the canvas to set the tile.
@@ -188,8 +197,10 @@ public:
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);
-        void show_vis_items();
         std::vector<Enemy*> get_vis_enemies();
+        void show_vis_items();
+        std::vector<Animation>& get_animations();
+        void tick_animations(long delta_ms); 
         bool is_vis(IntPoint coords);
         void refresh();
         void recalculate_visibility_lines(int radius);
@@ -216,6 +227,9 @@ public:
          * Debug function to teleport the character to a new place.
          */
         void teleport(int chunk_x, int chunk_y, int x, int y);
+
+        //ANIMATION FUNCTIONS
+        void create_explosion(int x, int y, int chunk_x, int chunk_y);
 };
 
 #endif
