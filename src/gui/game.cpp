@@ -338,7 +338,6 @@ void Game::change_depth(int direction, Character* chara) {
 }
 
 void Game::move_char(int col_change, int row_change, Character* chara) {
-    undo_visibility();
 
     int row = chara->get_y();
     int col = chara->get_x();
@@ -668,7 +667,7 @@ void Game::undo_visibility() {
     int row, col;
 
     for(size_t i = 0; i < bresenham_lines.size(); i++) {
-        for(size_t j = 0; j < bresenham_lines[i].size(); j++) {
+        for(size_t j = 1; j < bresenham_lines[i].size(); j++) {
             current_point = bresenham_lines[i][j];
             row = current_point.row + m_char.row;
             col = current_point.col + m_char.col;

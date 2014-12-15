@@ -244,6 +244,7 @@ void GUI::perform_action_cont() {
     } else if(current_screen == GAME_SCREEN) {
         //THIS IS IMPORTANT, as it it turns out.
         if(game.is_initialized() && game.is_paused() == false) {
+            game.undo_visibility();
             IntPoint old_chunk = game.main_char.get_chunk(); 
             if(keystate[SDLK_LEFT]){
                 game.move_char(-1, 0, &game.main_char);

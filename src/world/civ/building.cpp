@@ -54,13 +54,6 @@ void Building::house_from_bst(BSpaceTree& bst)
     rooms_to_floor();
     //add some doors
     add_doors(bst);
-    /**for testing**/
-    std::cout<<"New BUILDING!"<<std::endl;
-    for(int i=0;i<rooms.size();i++)
-    {
-        std::cout<<"X: "<<rooms[i].tl.row<<", Y: "<<rooms[i].tl.col<<", Height: "<<rooms[i].height<<", Width: "<<rooms[i].width<<std::endl;
-    }
-
 }
 
 void Building::rooms_from_tree(BSpaceNode* node)
