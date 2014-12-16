@@ -85,9 +85,9 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     
-    int main_stat_array[NUM_STATS] = {10, 2, 10, 10, 10, 10}; 
+    int main_stat_array[NUM_STATS] = {10, 2, 100, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
-    main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0);
+    main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
@@ -120,6 +120,7 @@ bool Game::is_initialized() {
 void Game::act(long delta_ms) {
     tick_animations(delta_ms);
     run_enemies(delta_ms);
+    main_char.act(delta_ms);
 }
 
 /*---------------------Rendering Functions--------------------------*/
@@ -356,12 +357,15 @@ void Game::change_depth(int direction, Character* chara) {
 }
 
 void Game::move_char(int col_change, int row_change, Character* chara) {
-
+    
+    if(!chara->can_act())
+    {
+        return;
+    }
     int row = chara->get_y();
     int col = chara->get_x();
     int next_col = chara->get_x() + col_change;
     int next_row = chara->get_y() + row_change;
-
 
     IntPoint new_chunk = IntPoint(chara->get_chunk_y() + (next_row >= CHUNK_HEIGHT) - (next_row<0),
             chara->get_chunk_x() + (next_col>=CHUNK_WIDTH) - (next_col<0));
@@ -382,9 +386,11 @@ void Game::move_char(int col_change, int row_change, Character* chara) {
         if(chara->get_chunk() != new_chunk) {
             chara->set_chunk(new_chunk);
         }
+        chara->reduce_endurance(1);
     } else if(enem != NULL) {
         chara->attack(enem);
         chara->set_target(enem);
+        chara->reduce_endurance(2);
     }
 }
 

@@ -27,6 +27,6 @@ Main_Character::Main_Character() {
 }
 
 Main_Character::Main_Character(std::vector<int> _stats, int _x, int _y,
-                               Tile _sprite,  MiscType _corpse, int _chunk_x, int _chunk_y , int _depth, int _morality) :
-    Character(_stats, _x, _y,  _sprite, _corpse, _chunk_x, _chunk_y, _depth, _morality){
+                               Tile _sprite,  MiscType _corpse, int _chunk_x, int _chunk_y , int _depth, int _morality, int _speed) :
+    Character(_stats, _x, _y,  _sprite, _corpse, _chunk_x, _chunk_y, _depth, _morality, _speed){
 }

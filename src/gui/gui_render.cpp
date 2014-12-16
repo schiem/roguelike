@@ -302,7 +302,7 @@ void GUI::clear_area(IntPoint start, IntPoint size)
     {
         for(int j=start.row;j<size.row + start.row;j++)
         {
-            drawChr(i, j, BLOCK_WALL.char_count, ascii, screen, BLACK);
+            drawChr(j, i, BLOCK_WALL.char_count, ascii, screen, BLACK);
         }
     }
 }

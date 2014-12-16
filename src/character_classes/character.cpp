@@ -34,10 +34,12 @@ Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
     depth = _depth;
     target = NULL;
     equipment = vector<Item*>(7);
+    conscious = true;
 }
 
-Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality) {
+Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed) {
 
+    timer = 0;
     stats = _stats;
     current_stats = stats;
     x = _x;
@@ -48,11 +50,29 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     sprite = _sprite;
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
+    speed = _speed;
     target = NULL;
     equipment = vector<Item*>(7);
+    conscious = true;
 }
 
 
+void Character::act(long ms)
+{
+    timer += ms;
+    if(timer >= speed)
+    {
+        timer -= speed;
+        gain_endurance(1);
+        if(!is_conscious())
+        {
+            if(current_stats[ENDURANCE] > stats[ENDURANCE]/current_stats[ENDURANCE])
+            {
+                regain_consciousness();
+            }
+        }
+    }
+}
 
 bool Character::is_alive() const {
     if (current_stats[HEALTH] <= 0){
@@ -327,3 +347,45 @@ void Character::set_current_stat(int stat, int amount)
     current_stats[stat] = amount;
 }
 
+void Character::regain_consciousness()
+{
+    conscious = true;
+}
+
+void Character::pass_out()
+{
+    conscious = false;
+}
+
+bool Character::is_conscious()
+{
+    return conscious;
+}
+
+void Character::reduce_endurance(int factor)
+{
+    int base = 10;
+    int reduction = factor * (base/get_current_stat(STRENGTH));
+    current_stats[ENDURANCE] -= reduction;
+    if(get_current_stat(ENDURANCE) <= 0)
+    {
+        set_current_stat(ENDURANCE, 0);
+        pass_out();
+    }
+}
+
+void Character::gain_endurance(int factor)
+{
+    int base = 10;
+    int gain = factor * (base/get_current_stat(STRENGTH));
+    current_stats[ENDURANCE] += gain;
+    if(get_current_stat(ENDURANCE) > stats[ENDURANCE])
+    {
+        set_current_stat(ENDURANCE, stats[ENDURANCE]);
+    }
+}
+
+bool Character::can_act()
+{
+    return is_conscious();
+}

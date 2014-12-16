@@ -126,6 +126,24 @@ class Character
          */
         Character* target;
 
+        /**
+         * Whether or not the character is conscious.
+         */
+        bool conscious;
+
+        /**
+         * The current timer of the character.
+         */
+        long timer;
+
+        /**
+         * How quickly the character moves.
+         * Represents the threshold for how many milliseconds must pass before
+         * the character can act.
+         * @see timer
+         */
+        int speed;
+
     public:
         /**
          * The default constructor.
@@ -147,7 +165,7 @@ class Character
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality);
+        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed);
 
         /**
          * The constructor for the character class.
@@ -161,6 +179,11 @@ class Character
          */
         Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth);
 
+        /**
+         * Run the actions that happen to the character every frame.
+         */
+        void act(long ms);
+        
         /**
          * A check to see whether or not the character is alive.
          * @returns True if the character's current health is > 0, otherwise false.
@@ -438,8 +461,8 @@ class Character
         /**
          * Public getter for accessing a current stat value.
          * @param stat The index value of the stat to access.
-         * @return The current value of that stat from the array current_stats.
-         * @see current_stats
+         * @return The current value of that stat from the array stats.
+         * @see stats
          */
         int get_stat(int);
 
@@ -455,7 +478,7 @@ class Character
          * Public getter for accessing a stat value.
          * @param stat The index value of the stat to access.
          * @return The current value of that stat from the array current_stats.
-         * @see stats
+         * @see current_stats
          */
        int get_current_stat(int);
         
@@ -467,6 +490,40 @@ class Character
          */
         void set_current_stat(int stat, int amount);
 
+
+        /**
+         * Sets conscious to true.
+         */
+        void regain_consciousness();
+
+        /**
+         * Sets conscious to false.
+         */
+        void pass_out();
+
+        /**
+         * Returns whether or not the character is conscious.
+         */
+        bool is_conscious();
+
+
+        /**
+         * Reduces the current endurance of the character by a factor.
+         * The amount passed in indicates what factor the endurance
+         * should be reduced by (e.g. walking reduces the endurance by 1,
+         * which will be multiplied by something to reduce endurance).
+         */
+        void reduce_endurance(int factor);
+
+        /**
+         * Gains endurance based on the factor.
+         */
+        void gain_endurance(int factor);
+
+        /**
+         * Checks to see if the character is good to act!
+         */
+        bool can_act();
 };
 
 /**
@@ -486,7 +543,7 @@ class Main_Character : public Character{
          * The basic constructor.
          * @see Character(int _max_health, int _x, int _y, Tile _sprite, Item* _corpse, int _chunk_y, int _chunk_y, int _depth, int _morality, int _attack)
          */
-        Main_Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality);
+        Main_Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed);
 };
 
 #endif

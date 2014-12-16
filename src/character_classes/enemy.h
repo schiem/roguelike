@@ -102,14 +102,6 @@ class Enemy : public Character
     typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     protected:
         /**
-         * The game timer.
-         * The timer is so that enemies will know when to act.  At each pass,
-         * the enemies will increase timer by how much time has passed.  If the
-         * timer is above a certain threshold then the enemy will act.
-         */
-        long timer;
-
-        /**
          * The id of the enemy.
          * Each enemy type has an id, starting at 0, e.g. kobolds id=0.
          * This is to allow accessing things by index based on the id of the
@@ -134,13 +126,6 @@ class Enemy : public Character
          */
         int view;
         
-        /**
-         * How quickly the enemy moves.
-         * Represents the threshold for how many milliseconds must pass before
-         * the enemy can act.
-         * @see timer
-         */
-        int speed;
 
         /**
          * Determines whether or not the enemy will flee.
