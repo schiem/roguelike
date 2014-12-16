@@ -88,6 +88,12 @@ void BSpaceTree::generate_tree(BSpaceNode* node)
             generate_tree(node->right);
         }
     }
+    /**
+    else
+    {
+        leaves.push_back(node);
+    }
+    **/
 }
 
 
@@ -102,11 +108,11 @@ bool BSpaceTree::split_node(BSpaceNode* node)
     //check which direction we're splitting.
     //if the height and width are similar, pick one randomly.
     bool splitH = rand() % 2; 
-    if((float)node->height/(float)node->width < .5)
+    if((float)node->height/(float)node->width < .05 || (node->height<max_size && node->width>max_size))
     {
         splitH = false;
     }
-    else if((float)node->width/(float)node->height < .5)
+    else if((float)node->width/(float)node->height < .05 || (node->height>max_size && node->width<max_size))
     {
         splitH = true;
     }
@@ -114,7 +120,7 @@ bool BSpaceTree::split_node(BSpaceNode* node)
     //check to see if we have enough space to split
     int max = (splitH ? node->height : node->width) - min_size; 
     if(max <= min_size)
-    {   
+    { 
         return false;
     }
     
@@ -132,15 +138,13 @@ bool BSpaceTree::split_node(BSpaceNode* node)
         node->left = new BSpaceNode(node->tl_x, node->tl_y, split, node->height);
         node->right = new BSpaceNode(node->tl_x + split, node->tl_y, node->width - split, node->height);
     }
-
     return true;
 }
 
-std::vector<BSpaceNode*> BSpaceTree::get_leaves()
+std::vector<BSpaceNode*>& BSpaceTree::get_leaves()
 {
-    std::vector<BSpaceNode*> temp;
-    rec_get_leaves(temp, root);
-    return temp;
+    rec_get_leaves(leaves, root);
+    return leaves;
 }
     
 void BSpaceTree::rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node)
@@ -149,13 +153,10 @@ void BSpaceTree::rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node)
     {
         vec.push_back(node);
     }
-    else
+    else if(node->left != NULL && node->right != NULL)
     {
-        if(node->left != NULL && node->right != NULL)
-        {
-            rec_get_leaves(vec, node->left);
-            rec_get_leaves(vec, node->right);
-        }
+        rec_get_leaves(vec, node->left);
+        rec_get_leaves(vec, node->right);
     }
 }
 

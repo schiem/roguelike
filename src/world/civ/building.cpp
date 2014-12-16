@@ -161,8 +161,6 @@ void Building::add_random_door(BSpaceNode* node)
 
 int Building::surrounding_walls(int y, int x)
 {   
-    //FINE.  YOU DON'T LIKE WHERE THIS IS GOING ON THE STACK!?
-    //TO THE HEAP WITH YOU!
     int accum = 0;
     if(y+1 < height && floor_plan[y+1][x] == wall)
     {

@@ -52,6 +52,7 @@ class BSpaceTree
 {
     private: 
         BSpaceNode* root;
+        std::vector<BSpaceNode*> leaves;
         int height;
         int width;
         int min_size;
@@ -63,7 +64,7 @@ class BSpaceTree
         BSpaceTree(int _height, int _width, int _min_size, int _max_size);
         ~BSpaceTree();
         BSpaceNode* get_root();
-        std::vector<BSpaceNode*> get_leaves();
+        std::vector<BSpaceNode*>& get_leaves();
         void rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node);
 };    
 

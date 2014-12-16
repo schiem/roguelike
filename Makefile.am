@@ -11,7 +11,6 @@ AM_CPPFLAGS = -I.\
               -Isrc/animation\
               -Isrc/\
               -pg\
- 		      -O0\
               $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
