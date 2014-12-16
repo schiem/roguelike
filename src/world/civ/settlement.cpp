@@ -29,7 +29,7 @@ Settlement::Settlement(int chunk_x, int chunk_y, int _height, int _width)
     width = _width;
     //first thing we need to do it divide it into city blocks
     //so we can have roads running through it.
-    BSpaceTree div = BSpaceTree(height, width, height/10, height/8);
+    BSpaceTree div = BSpaceTree(height, width, 40, 100);
     settlement_from_bst(div);
 }
 

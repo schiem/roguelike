@@ -49,7 +49,7 @@ Building::Building(int x, int y, int _height, int _width)
 void Building::house_from_bst()
 {
     //convert it into rooms
-    BSpaceTree house = BSpaceTree(width-1, height-1, 3, 8);
+    BSpaceTree house = BSpaceTree(width-1, height-1, 4, 8);
     rooms_from_tree(house);
     //turn it into a floor_plan
     rooms_to_floor();

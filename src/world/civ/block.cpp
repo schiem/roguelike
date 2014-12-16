@@ -45,20 +45,22 @@ Block::Block(int tl_x, int tl_y, int _height, int _width)
 void Block::generate_buildings()
 {
     //for now, statically sized houses.  We'll revisit this later
-    BSpaceTree houses = BSpaceTree(height, width, 10, 15);
+    BSpaceTree houses = BSpaceTree(height, width, 15, 20);
     
     //just get the base leaves.
     std::vector<BSpaceNode*> house_nodes = houses.get_leaves(); 
     for(int i=0;i<house_nodes.size();i++)
     {
-        int rand_x = rand() % 3;
-        int rand_y = rand() % 3;
+        int rand_x = rand() % 5 + 1;
+        int rand_y = rand() % 4 + 1;
 
         int new_x = rand_x + house_nodes[i]->tl_x;
         int new_y = rand_y + house_nodes[i]->tl_y;
-        int new_height = house_nodes[i]->height - (rand() % 4 + rand_y);
-        int new_width = house_nodes[i]->width - (rand() % 4 + rand_x);
+        int new_height = house_nodes[i]->height - (rand() % 4 + rand_y + 1);
+        int new_width = house_nodes[i]->width - (rand() % 5 + rand_x + 1);
         buildings.push_back(Building(new_x, new_y, new_height, new_width));
+        std::cout<<"X: "<<new_x<<", Y: "<<new_y<<", Height: "<<new_height<<", Width: "<<new_width<<std::endl;
+        std::cout<<"NODE: X: "<<house_nodes[i]->tl_x<<", Y: "<<house_nodes[i]->tl_y<<", Height: "<<house_nodes[i]->height<<", Width: "<<house_nodes[i]->width<<std::endl;
     }
 }
 

@@ -220,15 +220,13 @@ namespace overworld_gen {
         /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
-        Settlement settlement = Settlement(0, 0, 700, 200); 
+        Settlement settlement = Settlement(0, 0, 700, 400); 
         std::vector<Block> blocks = settlement.get_blocks();
         for(int i=0;i<blocks.size();i++)
         {
             std::vector<Building> buildings = blocks[i].get_buildings();
             for(int j=0;j<buildings.size();j++)
             {
-                std::cout<<"X: "<<blocks[i].get_x()<<", Y: "<<blocks[i].get_y()<<", Height: "<<blocks[i].get_height()<<", Width: "<<blocks[i].get_width()<<std::endl;
-                std::cout<<"X: "<<buildings[j].get_x()<<", Y: "<<buildings[j].get_y()<<", Height: "<<buildings[j].get_height()<<", Width: "<<buildings[j].get_width()<<std::endl;
                 for(int k=0;k<buildings[j].get_height();k++)
                 {
                     for(int l=0;l<buildings[j].get_width();l++)
