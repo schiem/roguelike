@@ -101,7 +101,7 @@ class Building
          * Recursively turns the nodes stemming from a root node passed
          * in into room objects.
          */
-        void rooms_from_tree(BSpaceNode* node);
+        void rooms_from_tree(BSpaceTree& tree);
 
         /**
          * Maps the rooms into a floor plan.

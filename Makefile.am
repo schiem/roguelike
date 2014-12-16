@@ -72,6 +72,8 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/corruptible_pblind_db.cpp\
 	src/world/dungeon_gen/dungeonbuilder.cpp\
     src/world/civ/building.cpp\
+	src/world/civ/settlement.cpp\
+    src/world/civ/block.cpp\
 	src/items/item.cpp\
     src/items/equipment.cpp\
     src/items/weapon.cpp\
@@ -107,7 +109,9 @@ roguelike_SOURCES = \
 	src/world/dungeon_gen/procedurally_blind_db.h\
 	src/world/dungeon_gen/corruptible_pblind_db.h\
     src/world/civ/building.h\
-	src/world/overworld_gen.h\
+	src/world/civ/settlement.h\
+    src/world/civ/block.h\
+    src/world/overworld_gen.h\
 	src/world/world_map.h\
     src/items/item.h\
     src/animation/animation.h\

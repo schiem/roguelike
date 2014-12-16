@@ -31,6 +31,13 @@ BSpaceNode::BSpaceNode(int _tl_x, int _tl_y, int _width, int _height)
     right = NULL;
 }
 
+void BSpaceNode::resize(int new_x, int new_y, int new_width, int new_height)
+{
+    tl_x = new_x;
+    tl_y = new_y;
+    width = new_width;
+    height = new_height;
+}
 
 /****************** TREES **************************/
 
@@ -128,6 +135,32 @@ bool BSpaceTree::split_node(BSpaceNode* node)
 
     return true;
 }
+
+std::vector<BSpaceNode*> BSpaceTree::get_leaves()
+{
+    std::vector<BSpaceNode*> temp;
+    rec_get_leaves(temp, root);
+    return temp;
+}
+    
+void BSpaceTree::rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node)
+{
+    if(node->left == NULL && node->right == NULL)
+    {
+        vec.push_back(node);
+   
+    }
+    else
+    {
+        if(node->left != NULL && node->right != NULL)
+        {
+            rec_get_leaves(vec, node->left);
+            rec_get_leaves(vec, node->right);
+        }
+    }
+}
+
+
 
 BSpaceNode* BSpaceTree::get_root()
 {

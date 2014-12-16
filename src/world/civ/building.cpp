@@ -49,28 +49,20 @@ Building::Building(IntPoint _start_point, IntPoint _size)
 void Building::house_from_bst(BSpaceTree& bst)
 {
     //convert it into rooms
-    rooms_from_tree(bst.get_root());
+    rooms_from_tree(bst);
     //turn it into a floor_plan
     rooms_to_floor();
     //add some doors
     add_doors(bst);
 }
 
-void Building::rooms_from_tree(BSpaceNode* node)
+void Building::rooms_from_tree(BSpaceTree& tree)
 {
-    if(node->left == NULL && node->right == NULL)
+    std::vector<BSpaceNode*> nodes = tree.get_leaves();
+    for(int i=0; i<nodes.size();i++)
     {
-        rooms.push_back(Room(node->tl_x, node->tl_y, node->height, node->width));
-   
-    }
-    else
-    {
-        if(node->left != NULL && node->right != NULL)
-        {
-            rooms_from_tree(node->left);
-            rooms_from_tree(node->right);
-        }
-    }
+        rooms.push_back(Room(nodes[i]->tl_x, nodes[i]->tl_y, nodes[i]->height, nodes[i]->width));
+    }        
 }
 
 void Building::rooms_to_floor()

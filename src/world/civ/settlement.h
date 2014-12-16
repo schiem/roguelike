@@ -23,6 +23,10 @@
 #ifndef _SETTLEMENT_H
 #define _SETTLEMENT_H
 
+#include <int_point.h>
+#include <binary_space.h>
+#include <block.h>
+
 /**
  * The class to hold cities, towns and villages.
  * The metric for determing cities is as follows: 
@@ -59,25 +63,31 @@
 class Settlement
 {
     private:
+        
+        /**
+         * The chunk that the settlement's top left corner is in.  For now
+         * the top left corner will just be at (0, 0) of the chunk.
+         */
+        IntPoint chunk;
+
+        /**
+         * The size of the city, in terms of number of tiles.  Will eventually
+         * be determined by the number of buildings, which is in turn 
+         * determined by the number of people.  For now, I'll just assigned
+         * it a size.
+         */
+        IntPoint size;
+        
         /**
          * The number of people currently living in the settlement.
          */
         int population;
 
         /**
-         * The number of houses in the settlement.
-         * Calculated from the population.  Refers to any building where a 
-         * person permantenly resides, even if it serves another purpose (e.g. has a
-         * shop in the front).
+         * The city blocks which are present.  These also contain
+         * the houses.
          */
-        std::vector<Home*> homes;
-
-        /**
-         * The number of buildings which are used for a purpose which is not housing.
-         * This could be churches, secular office buildings, or any other
-         * building which does not serve as someone's permaent residence.
-         */
-        std::vector<Building*> other_buildings;
+        std::vector<Block> blocks;
 
         /**
          * Whether or not the settlement has walls.
@@ -170,6 +180,25 @@ class Settlement
          * be built.  Also has an influence on the rate of fires in a town.
          */
          std::vector<Tile> building_mats;
-}
+
+    public:
+        /**
+         * The constructor for settlements.  As with buildings, I'm going to end
+         * up coding it in a series of refinements by getting a simple working version
+         * and then adding complexity as I go.  In the first draft, most*
+         * of the variables will not be used.
+         */
+        Settlement(IntPoint _chunk, IntPoint _size);
+        
+        /**
+         * Makes a settlement out of a binary space partition.
+         */
+        void settlement_from_bst(BSpaceTree& bst);
+
+        /**
+         * Creates city blocks from a binary space partition.
+         */
+        void blocks_from_bst(BSpaceTree& bst);
+};
 
 #endif
