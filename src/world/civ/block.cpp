@@ -56,12 +56,8 @@ void Block::generate_buildings()
 
         int new_x = rand_x + house_nodes[i]->tl_x;
         int new_y = rand_y + house_nodes[i]->tl_y;
-        int new_height = house_nodes[i]->height - (rand() % 3 + rand_y);
-        int new_width = house_nodes[i]->width - (rand() % 3 + rand_x);
-        if(new_x > get_x() + width || new_y > get_y() + height)
-        {
-            std::cout<<"AIN'T NONE OF THAT FOOL!"<<std::endl;
-        }
+        int new_height = house_nodes[i]->height - (rand() % 4 + rand_y);
+        int new_width = house_nodes[i]->width - (rand() % 4 + rand_x);
         buildings.push_back(Building(new_x, new_y, new_height, new_width));
     }
 }
