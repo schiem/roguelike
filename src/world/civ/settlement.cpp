@@ -22,13 +22,14 @@
 
 #include <settlement.h>
 
-Settlement::Settlement(IntPoint _chunk, IntPoint _size)
+Settlement::Settlement(int chunk_x, int chunk_y, int _height, int _width)
 {
-    chunk = _chunk;
-    size = _size;
+    chunk = IntPoint(chunk_y, chunk_x);
+    height = _height;
+    width = _width;
     //first thing we need to do it divide it into city blocks
     //so we can have roads running through it.
-    BSpaceTree div = BSpaceTree(size.row, size.col, size.row/8, size.row/4);
+    BSpaceTree div = BSpaceTree(height, width, height/8, height/4);
     settlement_from_bst(div);
 }
 
@@ -48,4 +49,9 @@ void Settlement::blocks_from_bst(BSpaceTree& tree)
         int new_width = leaves[i]->width - rand() % 3;
         blocks.push_back(Block(new_x, new_y, new_height, new_width));
     }
+}
+
+std::vector<Block>& Settlement::get_blocks()
+{
+    return blocks;
 }

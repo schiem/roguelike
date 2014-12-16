@@ -28,6 +28,8 @@
 #include <chunk_layer.h>
 #include <iostream>
 #include <building.h>
+#include <settlement.h>
+#include <block.h>
 
 namespace overworld_gen {
     typedef std::vector<std::vector<Tile> > TileMatrix;

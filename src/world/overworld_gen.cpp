@@ -220,12 +220,25 @@ namespace overworld_gen {
         /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
-        Building building = Building(IntPoint(build_y, build_x), IntPoint(10, 10));
-        for(int i=0;i<building.get_height();i++)
+        Settlement settlement = Settlement(0, 0, 700, 200); 
+        std::vector<Block> blocks = settlement.get_blocks();
+        for(int i=0;i<blocks.size();i++)
         {
-            for(int j=0;j<building.get_width();j++)
+            std::vector<Building> buildings = blocks[i].get_buildings();
+            for(int j=0;j<buildings.size();j++)
             {
-                ground.set_tile(build_y + i, build_x + j, building.tile_at(i, j));
+                std::cout<<"X: "<<blocks[i].get_x()<<", Y: "<<blocks[i].get_y()<<", Height: "<<blocks[i].get_height()<<", Width: "<<blocks[i].get_width()<<std::endl;
+                std::cout<<"X: "<<buildings[j].get_x()<<", Y: "<<buildings[j].get_y()<<", Height: "<<buildings[j].get_height()<<", Width: "<<buildings[j].get_width()<<std::endl;
+                for(int k=0;k<buildings[j].get_height();k++)
+                {
+                    for(int l=0;l<buildings[j].get_width();l++)
+                    {
+                        int y = blocks[i].get_y() + k + buildings[j].get_y();
+                        int x = blocks[i].get_x() + l + buildings[j].get_x();
+                        Tile chara = buildings[j].tile_at(k, l);
+                        ground.set_tile(y, x, chara);
+                    }
+                }
             }
         }
         

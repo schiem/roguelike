@@ -148,7 +148,6 @@ void BSpaceTree::rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node)
     if(node->left == NULL && node->right == NULL)
     {
         vec.push_back(node);
-   
     }
     else
     {

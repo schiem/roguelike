@@ -38,7 +38,7 @@ and the screen is 3x3, to give us a view of:
 
 222
 2X2
-223
+222
 
 with X being the character.  If the character moves left, then we get:
 
@@ -90,7 +90,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     //What gets drawn to the screen
-    canvas = TilePointerMatrix(CHUNK_HEIGHT, vector<Tile*>(CHUNK_WIDTH));
+    canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
 
     //Eventually, this should be based on screen size.
     chunk_map = ChunkMatrix(3, selected_chunk, world_map);
@@ -136,8 +136,7 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
     IntPoint temp;
     IntPoint abs = get_abs(chunk, coords);
     //tl stands for top-left
-    //TODO I honestly have no clue if this should be CHUNK_HEIGHT or
-    //SCREEN_HEIGHT. Trying the former for now...
+    //it should be CHUNK_HEIGHT
     IntPoint tl_abs = get_abs(main_char.get_chunk(),
             IntPoint(main_char.get_y() - CHUNK_HEIGHT/2, main_char.get_x() - CHUNK_WIDTH/2));
     temp = IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
@@ -151,7 +150,7 @@ std::vector<Enemy*> Game::get_vis_enemies() {
         IntPoint chunk = IntPoint(enemy_list[i]->get_chunk_y(), enemy_list[i]->get_chunk_x());
         IntPoint coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-        IntPoint radius  = IntPoint(SCREEN_HEIGHT/2, CHUNK_WIDTH/2);
+        IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
         if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
                 enemy_list[i]->get_depth() == main_char.get_depth()) {
             temp.push_back(enemy_list[i]);
@@ -163,8 +162,8 @@ std::vector<Enemy*> Game::get_vis_enemies() {
 
 bool Game::is_vis(IntPoint coords)
 {
-    bool y = coords.row < CHUNK_HEIGHT && coords.row >= 0;
-    bool x = coords.col < CHUNK_WIDTH && coords.col >=0;
+    bool y = coords.row < GAME_HEIGHT && coords.row >= 0;
+    bool x = coords.col < GAME_WIDTH && coords.col >=0;
     return x && y;
 }
 
@@ -191,12 +190,31 @@ void Game::tick_animations(long delta_ms)
  * This is to refresh the screen whenever the character moves.
  */
 void Game::refresh() {
-    for(int i = 0; i < CHUNK_HEIGHT; i++) {
-        for (int j = 0; j < CHUNK_WIDTH; j++) {
+    for(int i = 0; i < GAME_HEIGHT; i++) {
+        for (int j = 0; j < GAME_WIDTH; j++) {
+            //aight, this needs some comments becuase ain't nobody can
+            //read this
+            
+            //if you suddenly start getting weird visual errors when you
+            //try to make the buffer hold more than 3 chunks at a time,
+            //this is why.  Right now, it assumes that you're always in
+            //the middle chunk of 3 (+ 1 chunk_height)
+
+            //Explanation for the following:
+            //Here is the buffer:
+            //123
+            //456
+            //789
+            //You are always in chunk 5, because it updates when you move.
+            //Therefore, you are always + 1 chunk_size (height or width)
+            //relative to the top  of the buffer.
+            //To get the screens coordinates, you add 1 chunk_size to
+            //your coords, then subtract half of the screen that you want
+            //to display, and then add the index.
             int buffer_tile_row = (CHUNK_HEIGHT + main_char.get_y()) -
-                (CHUNK_HEIGHT/2) + i;
+                (GAME_HEIGHT/2) + i;
             int buffer_tile_col = (CHUNK_WIDTH + main_char.get_x()) -
-                (CHUNK_WIDTH/2) + j;
+                (GAME_WIDTH/2) + j;
             set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
     }
@@ -464,8 +482,8 @@ void Game::unpause() {
  * false otherwise.
  */
 bool Game::out_of_bounds(int row, int col) {
-    return (col < 0 || col >= CHUNK_WIDTH ||
-            row < 0 || row >= CHUNK_HEIGHT);
+    return (col < 0 || col >= GAME_WIDTH ||
+            row < 0 || row >= GAME_HEIGHT);
 }
 
 /*
@@ -536,7 +554,7 @@ void Game::show_vis_items() {
                     IntPoint chunk = IntPoint(i, j);
                     IntPoint coords = item_list->at(index)->get_coords();
                     IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-                    IntPoint radius  = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
+                    IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
 
                     if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius)) {
                         IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
@@ -637,7 +655,7 @@ void Game::update_chunk_map(IntPoint shift_dir) {
  * to true if they have been seen by the player.
  */
 void Game::draw_visibility_lines() {
-    IntPoint m_char = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
+    IntPoint m_char = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -661,7 +679,7 @@ void Game::draw_visibility_lines() {
 }
 
 void Game::undo_visibility() {
-    IntPoint m_char = IntPoint(CHUNK_HEIGHT/2, CHUNK_WIDTH/2);
+    IntPoint m_char = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
     Tile* current_chunk_tile;
     IntPoint current_point;
     int row, col;
@@ -723,4 +741,3 @@ void Game::create_explosion(int x, int y, int chunk_x, int chunk_y)
 {
     anim_queue.push_back(construct_explosion(x, y, chunk_x, chunk_y, 5, YELLOW));
 }
-
