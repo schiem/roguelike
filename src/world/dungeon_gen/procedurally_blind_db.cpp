@@ -225,8 +225,6 @@ namespace pblind_db {
         dm.num_rooms = 0;
 
         dm.main_dungeon = &cl;
-        cout<<&cl<<endl;
-        cout<<&dm.main_dungeon<<endl;
         db::reset(dm);
 
         bool dungeon_is_awesome;
