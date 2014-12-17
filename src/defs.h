@@ -124,7 +124,8 @@ struct Tile {
 };
 
 namespace tiledef {
-    extern Tile TILE_INDEX[32]; //CHANGE THIS WHEN YOU ADD TILES!
+    static const int TILE_TYPE_COUNT = 32;
+    extern Tile TILE_INDEX[TILE_TYPE_COUNT]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
     extern Tile DUNGEON_BORDER;

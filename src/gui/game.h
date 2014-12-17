@@ -27,7 +27,6 @@
 #include <chunk.h>
 #include <chunk_matrix.h>
 #include <constants.h>
-#include <overworld_gen.h>
 #include <bresenham.h>
 #include <enemy.h>
 #include <defs.h>
@@ -38,10 +37,14 @@
 #include <animation.h>
 #include <animation_defs.h>
 
+/**
 struct TilePoint {
     Tile tile;
     IntPoint loc;
 };
+*/
+
+namespace td=tiledef;
 
 class Game
 {
@@ -80,10 +83,9 @@ class Game
         ChunkMatrix chunk_map;
 
         /**
-         * Is this still here?
-         * \todo Do something else with this...
+         * Holds any tiles that we need to make pointers to.
          */
-        Tile block_wall_tile;
+        Tile tile_index[td::TILE_TYPE_COUNT];
         
         /**
          * Whenever a new animation needs to be performed, it
