@@ -64,7 +64,7 @@ namespace tiledef {
     Tile HUT_WALL = {35, 33, BROWN, false, false, false, false}; 
 
 
-    Tile TILE_INDEX[32] = { //THIS MUST CORRESPOND TO TILE IDS
+    Tile TILE_INDEX[TILE_TYPE_COUNT] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
         OVERWORLD_DIRT, //ID 1
         DIRT,           //ID 2

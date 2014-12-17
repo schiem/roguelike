@@ -47,6 +47,44 @@
 using namespace std;
 namespace fs=boost::filesystem;
 
+static const int BYTES_PER_TILE = 2;
+static const int CHUNKLAYER_META_BYTES = 6; //spawner row/col, upstairs row/col, downstairs row/col
+static const int CHUNK_META_BYTES = 6; //height, width, depth, chunk_type_id, world_row, world_col
+
+struct chunk_meta {
+    /**
+     * This chunk's height in tiles (the number of rows)
+     */
+    int height;
+    /**
+     * This chunk's width in tiles (the number of columns).
+     */
+    int width;
+
+    /**
+     * An integer representing chunk depth. Chunk depth is equal to the
+     * number of dungeons beneath the overworld. This means that ocean and
+     * sand tiles have a depth of 0. If a chunk consists of a forest tile
+     * with 4 dungeons below it, the chunk has a depth of 4.
+     */
+    int depth;
+
+    /**
+     * The ID of this chunk's map type
+     */
+    int chunk_type_id;
+
+    /**
+     * The index of the chunk's row on the world map.
+     */
+    int world_row;
+
+    /**
+     * The index of the chunk's column on the world map.
+     */
+    int world_col;
+};
+
 /**
  * The Chunk class is the largest data model in the game.
  *
@@ -59,41 +97,8 @@ namespace fs=boost::filesystem;
  */
 class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
-    struct ChunkData {
-        int height;
-        int width;
-        int chunk_depth;
-        int chunk_type_id;
-        std::vector<ChunkLayer> layers;
-    };
     private:
-        /**
-         * This chunk's height in tiles (the number of rows)
-         */
-        int height;
-
-        /**
-         * This chunk's width in tiles (the number of columns).
-         */
-        int width;
-
-        /**
-         * An integer representing chunk depth. Chunk depth is equal to the
-         * number of dungeons beneath the overworld. This means that ocean and
-         * sand tiles have a depth of 0. If a chunk consists of a forest tile
-         * with 4 dungeons below it, the chunk has a depth of 4.
-         */
-        int chunk_depth;
-
-        /**
-         * The index of the chunk's row on the world map.
-         */
-        int world_row;
-
-        /**
-         * The index of the chunk's column on the world map.
-         */
-        int world_col;
+        chunk_meta cm;
 
         /**
          * The type of this chunk, found in defs.h.
@@ -118,7 +123,13 @@ class Chunk{
          * @return whether or not a serialized chunk was found.
          * @see deserialize
          */
-        bool find_serialized_chunk(int row, int col);
+        bool find_serialized_chunk();
+
+        /**
+         * Determines the size of the file that will be created for this chunk.
+         * @return integer file size in bytes.
+         */
+        int calculate_file_size(int bytes_per_tile);
 
         /**
          * Loads this chunk's information from a file. Essentially does a simple
@@ -134,7 +145,7 @@ class Chunk{
          * @param world_row - This chunk's row on the world map.
          * @param world_col - This chunk's column on the world map.
          */
-        void deserialize(string file_name, int world_row, int world_col);
+        void deserialize(string file_name);
 
     public:
         /**

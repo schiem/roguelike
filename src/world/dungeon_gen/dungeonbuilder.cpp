@@ -40,9 +40,9 @@ namespace dungeon_builder {
     }
 
     bool point_is_beyond_bounds(IntPoint point, const dungeon_meta& dm) {
-        if((point.row < 0) or (point.row >= dm.main_dungeon->height)) {
+        if((point.row < 1) or (point.row >= (dm.main_dungeon->height - 1))) {
             return true;
-        } else if((point.col < 0) or (point.col >= dm.main_dungeon->width)) {
+        } else if((point.col < 1) or (point.col >= (dm.main_dungeon->width - 1))) {
             return true;
         }
 

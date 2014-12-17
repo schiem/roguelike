@@ -24,26 +24,26 @@
 using namespace std;
 
 Chunk::Chunk() {
-    height = CHUNK_HEIGHT;
-    width = CHUNK_WIDTH;
+    cm.height = CHUNK_HEIGHT;
+    cm.width = CHUNK_WIDTH;
 }
 
-Chunk::Chunk(MapTile tile_type, int _world_row, int _world_col) {
-    height = CHUNK_HEIGHT;
-    width = CHUNK_WIDTH;
-    init(tile_type, _world_row, _world_col);
+Chunk::Chunk(MapTile tile_type, int world_row, int world_col) {
+    cm.height = CHUNK_HEIGHT;
+    cm.width = CHUNK_WIDTH;
+    init(tile_type, world_row, world_col);
 }
 
-bool Chunk::find_serialized_chunk(int world_row, int world_col) {
+bool Chunk::find_serialized_chunk() {
     fs::path chunk_dir(CHUNK_DIR);
 
     stringstream ss;
-    ss << CHUNK_DIR << "/chunk" << world_row << "_" <<world_col;
+    ss << CHUNK_DIR << "/chunk" << cm.world_row << "_" <<cm.world_col;
     string filename = ss.str();
 
     if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
         if(fs::exists(filename)) {
-            deserialize(filename, world_row, world_col);
+            deserialize(filename);
             return true;
         }
     } else {
@@ -54,7 +54,13 @@ bool Chunk::find_serialized_chunk(int world_row, int world_col) {
     return false;
 }
 
-void Chunk::deserialize(string file_name, int world_row, int world_col) {
+int Chunk::calculate_file_size(int bytes_per_tile) {
+    return (CHUNK_META_BYTES + 
+           (BYTES_PER_TILE * cm.width * cm.height * cm.depth) +
+           CHUNKLAYER_META_BYTES * cm.depth );
+}
+
+void Chunk::deserialize(string file_name) {
     //Open the data file.
     ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);
@@ -67,31 +73,32 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
     //Read the entire file into the file_data array.
     chunk_data_file.read(file_data, file_size);
 
-    int num_header_bytes=4; //Change this to stay relevant - must match
-                            //serialization functionality.
-
     /*
      * Simply reversing the serialization.
      */
-    width = file_data[0];
-    height = file_data[1];
-    chunk_depth = file_data[2];
+    cm.width = file_data[0];
+    cm.height = file_data[1];
+    cm.depth = file_data[2];
+    cm.chunk_type_id = file_data[3];
+    cm.world_row = file_data[4];
+    cm.world_col = file_data[5];
+
     /*
      * The map tile ID was stored, now we just reverse it to get the chunk type.
      */
     chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
     //Build the overworld.
-    layers = vector<ChunkLayer>(chunk_depth, ChunkLayer(width, height));
+    layers = vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
 
-    int current_byte = num_header_bytes;
+    int current_byte = CHUNK_META_BYTES;
 
     /*
      * Finding the dungeon stairs, if they have been serialized.
      */
     /**
-     * \todo still differentiating between overworld and dungeons here.
+     * TODO still differentiating between overworld and dungeons here.
      */
-    for(int i = 0; i < chunk_depth; i++) {
+    for(int i = 0; i < cm.depth; i++) {
         layers[i].spawner_loc.row = file_data[current_byte];
         layers[i].spawner_loc.col = file_data[current_byte + 1];
         //layers[i].make_spawner(i,layers[i].spawner_loc);
@@ -100,28 +107,27 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
         layers[i].down_stair.col = file_data[current_byte + 3];
         layers[i].up_stair.row = file_data[current_byte + 4];
         layers[i].up_stair.col = file_data[current_byte + 5];
-        layers[i].has_layer_below = (i < (chunk_depth - 1));
+        layers[i].has_layer_below = (i < (cm.depth - 1));
         current_byte += 6;
     }
 
-    assert(chunk_depth == (current_byte - 4) / 6);
+    assert(cm.depth == (current_byte - 4) / 6);
 
     Tile current_tile;
     unsigned int tile_id;
     bool seen;
     //Undo the serialization.
-    for(int i = 0; i < chunk_depth; i++) {
-        for(int j = 0; j < height; j++) {
-            for(int k = 0; k < width; k++) {
-                //The smallest bit will be 1 if seen = true.
-                seen = (file_data[current_byte] & 1);
-                //Then, we shift right by 1 bit to obtain the tile ID.
-                tile_id = (file_data[current_byte] >> 1);
+    for(int i = 0; i < cm.depth; i++) {
+        for(int j = 0; j < cm.height; j++) {
+            for(int k = 0; k < cm.width; k++) {
+                tile_id = (file_data[current_byte]);
+                seen = file_data[current_byte + 1];
+
                 current_tile=tiledef::TILE_INDEX[tile_id];
                 current_tile.seen = seen;
 
                 set_tile(i, j, k, current_tile);
-                current_byte++;
+                current_byte += BYTES_PER_TILE;
             }
         }
     }
@@ -133,12 +139,12 @@ void Chunk::deserialize(string file_name, int world_row, int world_col) {
     chunk_data_file.close();
 }
 
-void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
+void Chunk::init(MapTile tile_type, int world_row, int world_col) {
     chunk_type = tile_type;
-    world_row = _world_row;
-    world_col = _world_col;
+    cm.world_row = world_row;
+    cm.world_col = world_col;
 
-    bool found_chunk = find_serialized_chunk(world_row, world_col);
+    bool found_chunk = find_serialized_chunk();
     if(!found_chunk) {
         if(tile_type == map_tile::MAP_DEFAULT) {
             build_land_chunk();
@@ -153,15 +159,15 @@ void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
 }
 
 bool Chunk::build_chunk_with_dungeons() {
-    chunk_depth = rand() % 6 + 1;
-    layers = std::vector<ChunkLayer>(chunk_depth, ChunkLayer(width, height));
-    //CorruptiblePBlindDB db(width, height);
+    cm.depth = rand() % 6 + 1;
+    layers = std::vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
+    //CorruptiblePBlindDB db(cm.width, cm.height);
 
     bool has_layer_below;
     //Don't generate the top layer; it will be an overworld.
-    for (int i=1; i < chunk_depth; i++) {
-        has_layer_below = (i < chunk_depth - 1);
-        pblind_db::build_dungeon(width, height, 5, layers[i]);
+    for (int i=1; i < cm.depth; i++) {
+        has_layer_below = (i < cm.depth - 1);
+        pblind_db::build_dungeon(cm.width, cm.height, 5, layers[i]);
 
         //makes the staircases in a dungeon
         layers[i].make_stairs(has_layer_below);
@@ -182,30 +188,30 @@ void Chunk::build_forest_chunk() {
 
 
 void Chunk::build_water_chunk() {
-    chunk_depth = 1;
-    layers = std::vector<ChunkLayer>(1, ChunkLayer(width, height));
+    cm.depth = 1;
+    layers = std::vector<ChunkLayer>(1, ChunkLayer(cm.width, cm.height));
     overworld_gen::build_water_overworld(layers[0]);
 }
 
 void Chunk::build_beach_chunk() {
-    chunk_depth = 1;
-    layers = std::vector<ChunkLayer>(1, ChunkLayer(width, height));
+    cm.depth = 1;
+    layers = std::vector<ChunkLayer>(1, ChunkLayer(cm.width, cm.height));
     overworld_gen::build_beach_overworld(layers[0]);
 }
 
 IntPoint Chunk::get_world_loc() const{
-    return IntPoint(world_row, world_col);
+    return IntPoint(cm.world_row, cm.world_col);
 }
 
 IntPoint Chunk::get_up_stair(int depth) const{
     assert(depth>0);
-    assert(chunk_depth > depth);
+    assert(cm.depth > depth);
     return layers[depth].up_stair;
 }
 
 IntPoint Chunk::get_down_stair(int depth) const{
-    assert(chunk_depth > depth);
-    assert(depth < (chunk_depth - 1));
+    assert(cm.depth > depth);
+    assert(depth < (cm.depth - 1));
     return layers[depth].down_stair;
 }
 
@@ -223,7 +229,7 @@ void Chunk::remove_item(Item* item, int depth) {
 }
 
 void Chunk::add_item(Item* item,  int depth) {
-    assert(depth < chunk_depth);
+    assert(depth < cm.depth);
     layers[depth].add_item(item);
 }
 
@@ -241,13 +247,13 @@ void Chunk::set_tile(int depth, int row, int col, Tile tile){
 }
 
 int Chunk::get_depth() const {
-    return chunk_depth;
+    return cm.depth;
 }
 
 bool Chunk::out_of_bounds(int _depth, int row, int col) const {
-    return (_depth >= chunk_depth ||
-            row >= height ||
-            col >= width ||
+    return (_depth >= cm.depth ||
+            row >= cm.height ||
+            col >= cm.width ||
             _depth < 0 ||
             row < 0 ||
             col < 0);
@@ -273,33 +279,31 @@ MapTile Chunk::get_type() {
     return chunk_type;
 }
 
-
 void Chunk::serialize() {
-    if((chunk_depth < 0) || (chunk_depth > 10)) {
-        cout<<"CHUNK DEPTH: "<<chunk_depth<<endl;
+    /**
+    if((cm.depth < 0) || (cm.depth > 10)) {
+        cout<<"CHUNK DEPTH: "<<cm.depth<<endl;
     }
+    */
     stringstream ss;
-    ss<<"chunk"<<world_row<<"_"<<world_col;
-
-    int num_header_bytes = 4;
-    int bytes_per_tile = 1;
-
+    ss<<"chunk"<<cm.world_row<<"_"<<cm.world_col;
 
     //THIS MUST BE CHANGED EVERY TIME THE SERIALIZATION FUNCTION IS CHANGED.
-    int file_size = num_header_bytes //This refers to the bytes initialized above.
-                    + 6*(chunk_depth) //Every layer will have 6 bytes for spawner and stair locations.
-                    + bytes_per_tile*width*height*(chunk_depth); //The chunk itself.
+    int bytes_per_tile = 2; //tile_id and seen
+    int file_size = calculate_file_size(bytes_per_tile);
 
     char file[file_size];
 
-    file[0] = width;
-    file[1] = height;
-    file[2] = chunk_depth;
-    file[3] = chunk_type.id;
+    file[0] = cm.width;
+    file[1] = cm.height;
+    file[2] = cm.depth;
+    file[3] = cm.chunk_type_id;
+    file[4] = cm.world_row;
+    file[5] = cm.world_col;
 
-    int current_byte = num_header_bytes;
+    int current_byte = 6;
 
-    for(int i = 0; i < chunk_depth; i++) {
+    for(int i = 0; i < cm.depth; i++) {
         file[current_byte] = layers[i].spawner_loc.row;
         file[current_byte + 1] = layers[i].spawner_loc.col;
         file[current_byte + 2] = layers[i].down_stair.row;
@@ -312,24 +316,15 @@ void Chunk::serialize() {
     unsigned int tile_id, seen;
     Tile current_tile;
 
-    for(int i = 0; i < chunk_depth; i++) {
-        for(int j = 0; j < height; j++) {
-            for(int k = 0; k < width; k++) {
+    for(int i = 0; i < cm.depth; i++) {
+        for(int j = 0; j < cm.height; j++) {
+            for(int k = 0; k < cm.width; k++) {
                 current_tile = *get_tile(i, j, k);
                 tile_id = current_tile.tile_id;
                 seen = (unsigned int) current_tile.seen;
 
-                //Fewer than 128 different tile ids, so we can shift it to make
-                //room in that byte for the boolean value! Thanks for ruining my
-                //brain, x86 assembly. If the tile id is 12 and has been seen,
-                //here's what it will look like:
-                //
-                //BEFORE: 00001100
-                //AFTER: 00011001
-
-                tile_id = tile_id << 1;
-                tile_id = tile_id | seen;
                 file[current_byte] = tile_id;
+                file[current_byte+1] = seen;
 
                 current_byte += bytes_per_tile;
             }

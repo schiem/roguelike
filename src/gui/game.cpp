@@ -20,8 +20,8 @@
 #include  <game.h>
 #include <iostream>
 using namespace std;
-using namespace tiledef;
-using namespace map_tile;
+namespace td=tiledef;
+
 /*
 Explanation of how the screen works: There is a chunk map, which holds all of
 the chunks.  We need a way to go from chunk->screen.  However, since we always
@@ -65,6 +65,10 @@ taken from the buffer with the character at the center.
 Game::Game() {
     initialized = false;
     paused = false;
+
+    for(int i = 0; i < td::TILE_TYPE_COUNT; i++) {
+        tile_index[i] = td::TILE_INDEX[i];
+    }
 }
 
 Game::~Game() {
@@ -85,10 +89,12 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
     
+    //TODO get this clutter somewhere else
     int main_stat_array[NUM_STATS] = {10, 2, 100, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
-    main_char = Main_Character(main_stats, 50, 25, MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
+    main_char = Main_Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
+
     //What gets drawn to the screen
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
 
@@ -97,12 +103,6 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     update_buffer(main_char.get_chunk());
     recalculate_visibility_lines(15);
     refresh();
-
-    //TODO THIS IS A TEMPORARY HACK THAT SHOULD BE GONE BEFORE I GO TO TANZANIA,
-    //SO HELP ME GOD.
-    //lol -m, 2/5/2014
-    //...lol -m 12/7/2014
-    block_wall_tile = BLOCK_WALL;
 
     initialized = true;
 }
@@ -339,7 +339,7 @@ void Game::change_depth(int direction, Character* chara) {
 
     if(direction == -1) {
         if (chara->get_depth()-1 >= -1) {
-            if(*current_tile == UP_STAIR) {
+            if(*current_tile == td::UP_STAIR) {
                 chara->set_depth(chara->get_depth() - 1);
                 chara->set_x(current_chunk->get_down_stair(chara->get_depth()).col);
                 chara->set_y(current_chunk->get_down_stair(chara->get_depth()).row);
@@ -347,7 +347,7 @@ void Game::change_depth(int direction, Character* chara) {
         }
     } else {
         if (chara->get_depth()+1 < current_chunk->get_depth()) {
-            if(*current_tile == DOWN_STAIR) {
+            if(*current_tile == td::DOWN_STAIR) {
                 chara->set_depth(chara->get_depth() + 1);
                 chara->set_x(current_chunk->get_up_stair(chara->get_depth()).col);
                 chara->set_y(current_chunk->get_up_stair(chara->get_depth()).row);
@@ -357,11 +357,10 @@ void Game::change_depth(int direction, Character* chara) {
 }
 
 void Game::move_char(int col_change, int row_change, Character* chara) {
-    
-    if(!chara->can_act())
-    {
+    if(!chara->can_act()) {
         return;
     }
+
     int row = chara->get_y();
     int col = chara->get_x();
     int next_col = chara->get_x() + col_change;
@@ -641,7 +640,7 @@ void Game::update_buffer(IntPoint central_chunk) {
                     if(!current_chunk->out_of_bounds(main_char.get_depth(), a, b)) {
                         buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
                     } else {
-                        buffer_tile = &block_wall_tile;
+                        buffer_tile = &tile_index[11];
                     }
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
