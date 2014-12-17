@@ -78,6 +78,27 @@ class Block
          */
         std::vector<Building>& get_buildings();
 
+        /**
+         * Accessor for the height.
+         */
+        int get_height();
+
+        /**
+         * Accessor for the width.
+         */
+        int get_width();
+
+        /**
+         * Accessor for the x coord.
+         */
+        int get_x();
+
+        /**
+         * Accessor for the y coord.
+         */
+        int get_y();
+
+
 
 };
 

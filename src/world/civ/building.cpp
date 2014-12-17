@@ -31,29 +31,30 @@ Building::Building(){
  * no progress sitting here thinking about how to do this, and so I should
  * just sit down and actually do it.  I can always add more later.
  */
-Building::Building(IntPoint _start_point, IntPoint _size)
+Building::Building(int x, int y, int _height, int _width)
 {
-    top_left = _start_point;
-    size = _size;
-    BSpaceTree house = BSpaceTree(size.col-1, size.row-1, 3, 8);
-    floor_plan.resize(size.row);
+    tl = IntPoint(y, x);
+    height = _height;
+    width = _width;
+    floor_plan.resize(height);
     floor = tiledef::WOOD_FLOOR;
     wall = tiledef::WOOD_WALL;
     for(int i=0;i<floor_plan.size();i++)
     {
-        floor_plan[i].resize(size.col);
+        floor_plan[i].resize(width);
     }
-    house_from_bst(house);
+    house_from_bst();
 }
 
-void Building::house_from_bst(BSpaceTree& bst)
+void Building::house_from_bst()
 {
     //convert it into rooms
-    rooms_from_tree(bst);
+    BSpaceTree house = BSpaceTree(width-1, height-1, 4, 8);
+    rooms_from_tree(house);
     //turn it into a floor_plan
     rooms_to_floor();
     //add some doors
-    add_doors(bst);
+    bool a = add_doors(house);
 }
 
 void Building::rooms_from_tree(BSpaceTree& tree)
@@ -91,10 +92,11 @@ void Building::rooms_to_floor()
     }
 }
 
-void Building::add_doors(BSpaceTree& bst)
+bool Building::add_doors(BSpaceTree& bst)
 {
     connect_nodes(bst.get_root());
     add_random_door(bst.get_root());
+    return true;
 }
 
 void Building::connect_nodes(BSpaceNode* node)
@@ -136,20 +138,20 @@ void Building::add_random_door(BSpaceNode* node)
     {
         if(rand_x)
         {
-            x = rand() % (size.col - 1) + 1;
+            x = rand() % (width - 1) + 1;
             y = rand() % 2;
             if(y != 0)
             {
-                y = size.row - 1;
+                y = height - 1;
             }
         }
         else
         {
-            y = rand() % (size.row - 1) + 1;
+            y = rand() % (height - 1) + 1;
             x = rand() % 2;
             if(x != 0)
             {
-                y = size.col - 1;
+                x = width - 1;
             }
         }
     } while(surrounding_walls(y, x) != 2);
@@ -160,23 +162,22 @@ void Building::add_random_door(BSpaceNode* node)
 int Building::surrounding_walls(int y, int x)
 {   
     int accum = 0;
-    if(y+1 < size.row && floor_plan[y+1][x] == wall)
+    if(y+1 < height && floor_plan[y+1][x] == wall)
     {
-        accum += 1;
+        accum++;
     }
     if(y-1 >= 0 && floor_plan[y-1][x] == wall)
     {
-        accum += 1;
+        accum++;
     }
-    if(x+1 < size.col && floor_plan[y][x+1] == wall)
+    if(x+1 < width && floor_plan[y][x+1] == wall)
     {
-        accum += 1;
+        accum++;
     }
     if(x-1 >= 0 && floor_plan[y][x-1] == wall)
     {
-        accum += 1;
+        accum++;
     }
-
     return accum;
 }
 
@@ -195,14 +196,24 @@ TileMatrix& Building::get_floor_plan()
     return floor_plan;
 }
 
+int Building::get_x()
+{
+    return tl.col;
+}
+
+int Building::get_y()
+{
+    return tl.row;
+}
+
 int Building::get_width()
 {
-    return size.col;
+    return width;
 }
 
 int Building::get_height()
 {
-    return size.row;
+    return height;
 }
 
 Tile Building::tile_at(int y, int x)

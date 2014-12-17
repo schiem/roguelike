@@ -26,7 +26,13 @@ static const int CHUNK_HEIGHT = 50;
 static const int SCREEN_WIDTH = 120;
 static const int SCREEN_HEIGHT = 50;
 
-static const int UI_START = CHUNK_WIDTH + 1;
+static const int GAME_WIDTH = 100;
+static const int GAME_HEIGHT = 50;
+
+static const int UI_WIDTH = 20;
+static const int UI_HEIGHT = 50;
+
+static const int UI_START = SCREEN_WIDTH - UI_WIDTH + 1;
 
 static const int WORLD_WIDTH = 100;
 static const int WORLD_HEIGHT = 50;

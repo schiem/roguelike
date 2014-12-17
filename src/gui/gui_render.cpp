@@ -30,9 +30,9 @@ void GUI::OnRender() {
                 drawChr(j, i, map_canvas[i][j].char_count, ascii, screen, map_canvas[i][j].color);
             }
         }
-        drawStr(0, CHUNK_HEIGHT - 2, std::string("Use the arrow keys to move the cursor.").c_str(),
+        drawStr(0, GAME_HEIGHT - 2, std::string("Use the arrow keys to move the cursor.").c_str(),
                 ascii, screen, WHITE);
-        drawStr(0, CHUNK_HEIGHT - 1, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
+        drawStr(0, GAME_HEIGHT - 1, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
                 ascii, screen, WHITE);
     } else if (current_screen == GAME_SCREEN) {
         if(!game.is_initialized()) {
@@ -43,12 +43,12 @@ void GUI::OnRender() {
         render_enemies();
         render_character();
         render_animations();
-        clear_area(IntPoint(CHUNK_WIDTH, CHUNK_HEIGHT), IntPoint(SCREEN_WIDTH - CHUNK_WIDTH, SCREEN_HEIGHT - CHUNK_HEIGHT));
+        clear_area(IntPoint(UI_START, 0), IntPoint(UI_WIDTH, UI_HEIGHT));
         render_interface();
 
     } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
-        drawStr(CHUNK_WIDTH/2 - 12, CHUNK_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
+        drawStr(GAME_WIDTH/2 - 12, GAME_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);
     } else if (current_screen == DEBUG_CONSOLE) {
         render_canvas();
         render_target();
@@ -57,7 +57,7 @@ void GUI::OnRender() {
         render_debug();
     }
     if(game.is_paused()) {
-        drawStr(CHUNK_WIDTH-20, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
+        drawStr(GAME_WIDTH-20, 0, std::string("Paused").c_str(), ascii, screen, WHITE);
     }
 
     SDL_Flip(screen);
@@ -65,9 +65,9 @@ void GUI::OnRender() {
 
 void GUI::clear_screen()
 {
-    for(int i =0;i<CHUNK_WIDTH;i++)
+    for(int i =0;i<GAME_WIDTH;i++)
     {
-        for(int j=0;j<CHUNK_HEIGHT;j++)
+        for(int j=0;j<GAME_HEIGHT;j++)
         {
             drawStr(i, j, std::string(" ").c_str(), ascii, screen, WHITE);
         }
@@ -114,7 +114,7 @@ void GUI::render_enemies() {
 }
 
 void GUI::render_character() {
-    drawChr(CHUNK_WIDTH/2, CHUNK_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
+    drawChr(GAME_WIDTH/2, GAME_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
 }
 
 void GUI::render_interface() {
@@ -161,16 +161,16 @@ void GUI::render_menu(Menu* menu)
     //width is automatically 20
     int height = menu->options.size() + menu->padding;
     int width = get_max_width(menu->options) + menu->padding;
-    int start_row = (CHUNK_HEIGHT - height) / 2;
-    int start_col = (CHUNK_WIDTH - width) / 2;
-    int end_row = (CHUNK_HEIGHT + height) / 2;
-    int end_col = (CHUNK_WIDTH + width) / 2;
+    int start_row = (GAME_HEIGHT - height) / 2;
+    int start_col = (GAME_WIDTH - width) / 2;
+    int end_row = (GAME_HEIGHT + height) / 2;
+    int end_col = (GAME_WIDTH + width) / 2;
  
     int extra_row = start_row - menu->padding;
     int extra_end_row = start_row + menu->num_extra_lines() + menu->padding;
     int extra_width = get_max_width(menu->get_extra_lines()) + menu->padding; 
-    int extra_col = (CHUNK_WIDTH - extra_width)/2;
-    int extra_end_col = (CHUNK_WIDTH + extra_width)/2;
+    int extra_col = (GAME_WIDTH - extra_width)/2;
+    int extra_end_col = (GAME_WIDTH + extra_width)/2;
     
     if(menu->num_extra_lines() != 0)
     {
@@ -197,10 +197,10 @@ void GUI::render_menu(Menu* menu)
     //draw a box around the extra lines 
 
     int starting_col;
-    starting_col = (CHUNK_WIDTH - menu->title.size()) / 2;
+    starting_col = (GAME_WIDTH - menu->title.size()) / 2;
 
     //draw the title
-    drawStr(starting_col, (CHUNK_HEIGHT/4), menu->title.c_str(),
+    drawStr(starting_col, (GAME_HEIGHT/4), menu->title.c_str(),
             ascii, screen, RED);
     
     
@@ -229,7 +229,7 @@ void GUI::render_menu(Menu* menu)
         }
         
         string_size = option.size();
-        starting_col = (CHUNK_WIDTH - string_size) / 2;
+        starting_col = (GAME_WIDTH - string_size) / 2;
         if(menu->selection == i) {
             color = WHITE;
         } else {
@@ -264,14 +264,14 @@ void GUI::render_target()
 
 void GUI::render_debug()
 {
-    for(int i=0;i<CHUNK_WIDTH;i++)
+    for(int i=0;i<GAME_WIDTH;i++)
     {
-        drawChr(i, CHUNK_HEIGHT-3, BLOCK_WALL.char_count, ascii, screen, BLACK);
-        drawChr(i, CHUNK_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-3, BLOCK_WALL.char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, BLACK);
     }
-    drawChr(input.size(), CHUNK_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, WHITE);
-    drawStr(0, CHUNK_HEIGHT-3, debug.get_message().c_str(), ascii, screen, WHITE);
-    drawStr(0, CHUNK_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
+    drawChr(input.size(), GAME_HEIGHT-2, BLOCK_WALL.char_count, ascii, screen, WHITE);
+    drawStr(0, GAME_HEIGHT-3, debug.get_message().c_str(), ascii, screen, WHITE);
+    drawStr(0, GAME_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }
 
 void GUI::render_animations()
@@ -302,7 +302,7 @@ void GUI::clear_area(IntPoint start, IntPoint size)
     {
         for(int j=start.row;j<size.row + start.row;j++)
         {
-            drawChr(i, j, BLOCK_WALL.char_count, ascii, screen, BLACK);
+            drawChr(j, i, BLOCK_WALL.char_count, ascii, screen, BLACK);
         }
     }
 }

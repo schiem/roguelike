@@ -42,27 +42,48 @@ Block::Block(int tl_x, int tl_y, int _height, int _width)
     generate_buildings();
 }
 
+#pragma optimize("", off);
 void Block::generate_buildings()
 {
     //for now, statically sized houses.  We'll revisit this later
-    BSpaceTree houses = BSpaceTree(height, width, 15, 20);
+    BSpaceTree houses = BSpaceTree(height, width, 12, 18);
     
     //just get the base leaves.
     std::vector<BSpaceNode*> house_nodes = houses.get_leaves(); 
     for(int i=0;i<house_nodes.size();i++)
     {
-        int new_x = rand() % 3 + house_nodes[i]->tl_x;
-        int new_y = rand() % 3 + house_nodes[i]->tl_y;
-        int new_height = house_nodes[i]->height - rand() % 3;
-        int new_width = house_nodes[i]->width - rand() % 3;
-        //house_nodes[i]->resize(new_x, new_y, new_width, new_height);
-        //THE BUILDINGS COORDINATES ARE RELATIVE TO THE BLOCK
-        //BUILDINGS CURRENTLY HAVE A HARDCODED ROOM SIZE
-        buildings.push_back(Building(IntPoint(new_y, new_x), IntPoint(new_height, new_width)));
+        std::cout<<"House.  Height: "<<house_nodes[i]->height<<", Width: "<<house_nodes[i]->width<<", x: "<<house_nodes[i]->tl_x<<", y: "<<house_nodes[i]->tl_y<<std::endl;
+        int rand_x = rand() % 2 + 1;
+        int rand_y = rand() % 2 + 1;
+        int new_x = rand_x + house_nodes[i]->tl_x;
+        int new_y = rand_y + house_nodes[i]->tl_y;
+        int new_height = house_nodes[i]->height - (rand() % 2 + rand_y + 1);
+        int new_width = house_nodes[i]->width - (rand() % 2 + rand_x + 1);
+        buildings.push_back(Building(new_x, new_y, new_height, new_width));
     }
 }
 
 std::vector<Building>& Block::get_buildings()
 {
     return buildings;
+}
+
+int Block::get_height()
+{
+    return height;
+}
+
+int Block::get_width()
+{
+    return width;
+}
+
+int Block::get_x()
+{
+    return tl.col;
+}
+
+int Block::get_y()
+{
+    return tl.row;
 }

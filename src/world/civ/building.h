@@ -40,12 +40,17 @@ class Building
         /**
          * The location of the top left corner of the buildling.
          */
-        IntPoint top_left;
+        IntPoint tl;
 
         /**
          * The size of the building (height, width).
          */
-        IntPoint size;
+        int height;
+
+        /**
+         * The width of the building.
+         */
+        int width;
 
         /**
          * The number of floors in the house.
@@ -95,7 +100,7 @@ class Building
          * Also adds...umm...doors.  That's what they're called.  Adds
          * Doors in between the rooms.
          */
-        void house_from_bst(BSpaceTree& bst);
+        void house_from_bst();
 
         /**
          * Recursively turns the nodes stemming from a root node passed
@@ -111,7 +116,7 @@ class Building
         /**
          * Recursively adds doors in between every left-right pair of nodes.
          */
-        void add_doors(BSpaceTree& bst);
+        bool add_doors(BSpaceTree& bst);
 
         /**
          * Actual recursive part of the add_doors() function.
@@ -146,7 +151,7 @@ class Building
          * @param _rooms The number of rooms in the building.
          * \todo Once seth figures out the whole depth thing, add a number of floors
          */
-        Building(IntPoint _start_point, IntPoint _size);
+        Building(int x, int y, int _height, int _width);
         
         /**
          * Accessor for the floor tile.
@@ -163,6 +168,16 @@ class Building
          */
         TileMatrix& get_floor_plan();
  
+        /**
+         * Accessor for the x coordinate.
+         */
+        int get_x();
+
+        /**
+         * Accessor for the y coordinate.
+         */
+        int get_y();
+
         /**
          * Accessor for the width.
          */

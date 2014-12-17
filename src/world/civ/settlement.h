@@ -76,8 +76,10 @@ class Settlement
          * determined by the number of people.  For now, I'll just assigned
          * it a size.
          */
-        IntPoint size;
-        
+        int height;
+
+        int width;
+
         /**
          * The number of people currently living in the settlement.
          */
@@ -188,7 +190,7 @@ class Settlement
          * and then adding complexity as I go.  In the first draft, most*
          * of the variables will not be used.
          */
-        Settlement(IntPoint _chunk, IntPoint _size);
+        Settlement(int chunk_x, int chunk_y, int _height, int _width);
         
         /**
          * Makes a settlement out of a binary space partition.
@@ -199,6 +201,8 @@ class Settlement
          * Creates city blocks from a binary space partition.
          */
         void blocks_from_bst(BSpaceTree& bst);
+
+        std::vector<Block>& get_blocks();
 };
 
 #endif
