@@ -31,16 +31,119 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
     y = _y;
     depth = _depth;
     enemy = _enemy;
+    spawn_type = enemy.spawner;
+    num_enemy = rand() % (spawn_type.max_enemies - spawn_type.min_enemies) + spawn_type.min_enemies;
+    construct_den();
+    if(spawn_type.spawn_immediately)
+    {
+        spawn_enemy(num_enemy);
+    }
 }
+
+void Spawner::construct_den()
+{
+    switch spawn_type.den_type
+    {
+        case spawners::BURROW:
+            construct_burrow();
+            break;
+        case spawners::HUTS:
+            construct_huts();
+            break;
+        default:
+            break;
+    }
+}
+
+
+void Spawner::construct_burrow()
+{
+    spawn_points.push_back(Den(x, y, tiledef::BURROW));
+}
+
+void Spawner::construct_huts()
+{
+    //let's have statically size huts for now.  just shove
+    //enemies in there.
+    int num_huts = num_enemies/spawn_type.enemies_per_spawn;
+    TileMatrix hut = TileMatrix(6, std::vector<Tile>(6, EMPTY));
+    IntPoint start = IntPoint(3, 3);
+    std::vector<IntPoint> points = bresenham_circle(start, 3)
+    for(int i=0;i<points.size();i++)
+    {
+        hut[points[i].row][points[i].col] = tiledef::HUT_WALL;
+    }
+
+    int hut_x;
+    int hut_y;
+    for(int i=0;i<num_huts;i++)
+    {
+        int door = rand() % points.size();
+        hut[points[door].row][points[door].col] = tiledef::EMPTY;
+        do
+        {
+            hut_x = rand() % (num_huts * 6);
+            hut_y = rand() % (num_huts * 6);
+        }
+        while(overlapping_spawners(hut_x, hut_y, 3));
+        spawn_points.push_back(Den(x, y, hut));
+    }
+}
+
+bool Spawner::overlapping_spawners(int x, int y, int radius)
+{
+    for(int i=0;i<spawn_points.size();i++)
+    {
+        int added_radius = radius * 2;
+        int x_dif = spawn_points[i].get_x() - x;
+        int y_dif = spawn_points[i].get_y() - y;
+        int rad_squared = added_radius * added_radius;
+        int pyth = (x_dif * x_dif) + (y_dif * y_dif);
+
+        bool overlap = 0 <= pyth && pyth <= rad_squared;
+        if(overlap)
+        {
+            return overlap;
+        }
+    }
+    return false;
+}
+
 
 bool Spawner::should_spawn()
 {
     return (rand() % 100 == 0);
 }
 
-Enemy* Spawner::spawn_creep(int chunk_x, int chunk_y)
+void Spawner::spawn_creep(int chunk_x, int chunk_y)
 {
-    return new Enemy(x -1, y - 1, chunk_x, chunk_y, depth, enemy);
+    if(num_enemy > 0)
+    {
+        enemy_queue.push_back(new Enemy(x -1, y - 1, chunk_x, chunk_y, depth, enemy));
+        num_enemy -= 1;
+    }
+}
+
+std::vector<Enemy*>& Spawner::flush()
+{
+    return enemy_queue;
+}
+
+//THIS IS NOT MEMORY SAFE DO NOT DO THIS UNLESS
+//THESE POINTERS HAVE BEEN MOVED ELSEWHERE BY CALLING
+//FLUSH
+void Spawner::clear_queue()
+{
+    enemy_queue = std::vector<Enemy*>();
+}
+
+void Spawner::deep_clear()
+{
+    for(int i=0;i<enemy_queue.size();i++)
+    {
+        delete enemy_queue[i];
+    }
+    clear_queue();
 }
 
 int Spawner::get_x()
@@ -56,4 +159,9 @@ int Spawner::get_y()
 int Spawner::get_depth()
 {
     return depth;
+}
+
+std::vector<Den>& Spawner::get_spawn_points()
+{
+    return spawn_points;
 }

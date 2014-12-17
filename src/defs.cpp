@@ -60,6 +60,9 @@ namespace tiledef {
     Tile WOOD_WALL = {176, 29, BROWN, true, false, true, false};
     Tile WOOD_FLOOR = {47, 30, BROWN, true, false, false, false};
     Tile DOOR = {43, 31, BROWN, true, false, true, false};
+    Tile BURROW = {15, 32, BROWN, true, false, false, false};
+    Tile HUT_WALL = {35, 33, BROWN, false, false, false, false}; 
+
 
     Tile TILE_INDEX[32] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
@@ -154,6 +157,11 @@ namespace misc
  *   ENEMY DEFS
  ***************************/
 
+namespace spawners
+{
+    SpawnType kobold = {true, 5, 20, 5, HUTS};
+    SpawnType rabbit = {false, 5, 20, 20, DEN};
+}
 
 //Enemy Equipment
 EquipType kob_eq[] = {equipment::boots};
@@ -172,8 +180,8 @@ std::vector<int> rab_stats(&rab_stats_arr[0], &rab_stats_arr[0] + NUM_STATS);
 
 namespace enemies
 {
-    EnemyType kobold = {5, kob_stats, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec};
-    EnemyType rabbit = {3, rab_stats, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>()}; 
+    EnemyType kobold = {5, kob_stats, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec, spawners::kobold};
+    EnemyType rabbit = {3, rab_stats, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit}; 
     EnemyType ENEMY_LIST[2] = {kobold, rabbit};
     int NUM_ENEMIES = 2; 
 }

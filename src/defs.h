@@ -556,6 +556,51 @@ namespace misc
  -------------------------*/
 
 /**
+ * Definition for constructing a spawner.
+ */
+
+struct SpawnType
+{
+    /**
+     * Determines whether everything should spawn at once, or
+     * over time.
+     */
+    bool spawn_immediately;
+
+    /**
+     * The minimum number of enemies to spawn.
+     */
+    int min_enemies;
+    
+    /**
+     * The maximum number of enemies to spawn.
+     */
+    int max_enemies;
+
+    /**
+     * The number of enemies per point of spawning (how many enemies/
+     * hut, or whatever.
+     */
+    int enemies_per_spawn;
+
+    /**
+     * The type of den to create for the critters.
+     */
+    int den_type;
+};
+
+namespace spawners
+{
+    extern SpawnType rabbit;
+    extern SpawnType kobold;
+    enum Dens
+    {
+        BURROW,
+        HUTS
+    }
+}
+
+/**
  * The definition for the different types of enemies.
  * This defines the various attributes of enemies, and members of
  * this struct are used to construct enemies.
@@ -619,6 +664,12 @@ struct EnemyType
      * @see Enemy::generate_weapon()
      */
     std::vector<WeaponType> wep;
+
+
+    /**
+     * The spawner to use for this type of enemy.
+     */
+    SpawnType spawner;
 
     /**
      * Comparison operator for EnemyType.

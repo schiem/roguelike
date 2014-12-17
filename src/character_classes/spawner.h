@@ -19,12 +19,14 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPAWNER_H
-#define SPAWNER_H
+#ifndef _SPAWNER_H
+#define _SPAWNER_H
+
 #include <enemy.h>
 #include <ctime>
 #include <iostream>
 #include <defs.h>
+#include <den.h>
 
 /**
  * A class responsible for creating enemies.
@@ -51,9 +53,34 @@ class Spawner
         int depth;
 
         /**
+         * The number of enemies that can be spawned.
+         */
+        int num_enemy;
+
+        /**
+         * The type of spawner associated with this.  Kind of redundant.
+         */
+        SpawnType spawn_type;
+
+        /**
          * The type of enemy to spawn.
          */
         EnemyType enemy;
+
+        /**
+         * A list of the possible points that something can spawn.
+         */
+        std::vector<Den> spawn_points;
+
+        /**
+         * Queues up the enemies that have been created.
+         */
+        std::vector<Enemy*> enemy_queue;
+        
+        /**
+         * Checks to see if coordinates are overlapping with any of the dens.
+         */
+        bool overlapping_spawners(int x, int y, int radius);
 
     public:
         /*
@@ -75,12 +102,28 @@ class Spawner
          */
         bool should_spawn();
         /**
-         * Spawns a new enemy.
+         * Spawns a new enemy and adds it to the enemy queue.
          * @param chunk_x The x component of the chunk where the enemy should spawn.
          * @param chunk_y The y component of the chunk where the enemey should spawn.
-         * @return A new enemy based on the EnemyType.
          */
-        Enemy* spawn_creep(int chunk_x, int chunk_y);
+        void spawn_creep(int chunk_x, int chunk_y);
+
+        /**
+         * Returns the enemies currently in the queue.
+         */
+        std::vector<Enemy*>& flush();
+
+        /**
+         * A non-memory safe clear of the queue. Nothing is deleted,
+         * the list is just cleared.
+         */
+        void clear_queue();
+
+        /**
+         * A memory safe clear of the queue.  Everything is deleted, so
+         * they SHOULD NOT BE ELSEWHERE.
+         */
+        void deep_clear();
 
         /**
          * Public accessor for the member x.
@@ -96,6 +139,11 @@ class Spawner
          * Public accessor for the depth.
          */
         int get_depth();
+
+        /**
+         * Accessor for spawn_points.
+         */
+        std::vector<Den>& get_spawn_points();
 };
 
 #endif
