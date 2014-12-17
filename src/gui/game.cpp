@@ -357,11 +357,10 @@ void Game::change_depth(int direction, Character* chara) {
 }
 
 void Game::move_char(int col_change, int row_change, Character* chara) {
-    
-    if(!chara->can_act())
-    {
+    if(!chara->can_act()) {
         return;
     }
+
     int row = chara->get_y();
     int col = chara->get_x();
     int next_col = chara->get_x() + col_change;
