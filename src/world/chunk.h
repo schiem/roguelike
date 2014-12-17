@@ -59,6 +59,13 @@ namespace fs=boost::filesystem;
  */
 class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
+    struct ChunkData {
+        int height;
+        int width;
+        int chunk_depth;
+        int chunk_type_id;
+        std::vector<ChunkLayer> layers;
+    };
     private:
         /**
          * This chunk's height in tiles (the number of rows)

@@ -29,12 +29,14 @@
 #include <stdlib.h>
 #include <math.h> //floor, ceil
 #include <assert.h>
+#include <bitset>
 
 #include <int_point.h>
 #include <room.h>
 #include <defs.h>
 #include <chunk_layer.h>
 #include <ASCII_Lib.h>
+
 
 using namespace std;
 
@@ -47,140 +49,131 @@ using namespace std;
  * @see ProcedurallyBlindDB
  * @see CorruptiblePBlindDB
  */
-class DungeonBuilder
-{
+namespace dungeon_builder {
 
-    friend ostream& operator<<(ostream&, const DungeonBuilder&);
-    protected:
+    struct dungeon_meta {
         /**
-         * "Typical" rooms are about this large.
+         * @see ChunkLayer
          */
-        static const int STD_ROOM_WIDTH=8;
-        static const int STD_ROOM_HEIGHT=6;
-
-        static const int MAX_PATH_LENGTH=75;
-        static const int MIN_PATH_LENGTH=16;
-
-        /**
-         * Rooms can only deviate by this width and height.
-         * Keep these two numbers even.
-         */
-        static const int ROOM_WIDTH_DEV=2;
-        static const int ROOM_HEIGHT_DEV=2;
-
+        ChunkLayer* main_dungeon;
         /**
          * The width of the dungeon to be created.
          */
         int width;
-
         /**
          * The height of the dungeon to be created.
          */
         int height;
-
         /**
          * The number of rooms in this dungeon.
          * @see Room
          */
         int num_rooms;
+    };
 
-        /**
-         * The dungeon object that this instance of DungeonBuilder will twerk
-         * on.
-         *
-         * @see ChunkLayer
-         */
-        ChunkLayer main_dungeon;
+    /**
+     * "Typical" rooms are about this large.
+     */
+    static const int STD_ROOM_WIDTH=8;
+    static const int STD_ROOM_HEIGHT=6;
 
-        /**
-         * Has an n% chance of returning 'true', where n is the given number.
-         *
-         * @param given - the desired probability that this check will return
-         * true.
-         * @return True if a random roll between 1 and 100 landed below the
-         * given number.
-         */
-        bool rolled_over(int given) const;
+    static const int MAX_PATH_LENGTH=75;
+    static const int MIN_PATH_LENGTH=16;
 
-        /**
-         * Check if the given point on the dungeon model can be written over.
-         * @param point - the point to check.
-         * @return True if the given point is empty.
-         */
-        bool is_empty_space(IntPoint point) const;
+    /**
+     * Rooms can only deviate by this width and height.
+     * Keep these two numbers even.
+     */
+    static const int ROOM_WIDTH_DEV=2;
+    static const int ROOM_HEIGHT_DEV=2;
 
-        /**
-         * Determines whether or not the given point is beyond the bounds of the
-         * dungeon.
-         * @param point - the point to check
-         * @return True if the point is out of bounds.
-         */
-        bool point_is_beyond_bounds(IntPoint point) const;
+    /**
+     * Has an n% chance of returning 'true', where n is the given number.
+     *
+     * @param given - the desired probability that this check will return
+     * true.
+     * @return True if a random roll between 1 and 100 landed below the
+     * given number.
+     */
+    bool rolled_over(int given);
 
-        /**
-         * Determines whether the edges of a given room collide with another
-         * room.
-         * @param r - the room to check
-         * @return A binary string that denotes which edges of the room found
-         * collisions; the first bit is the top edge, then right, then bottom,
-         * then left.
-         *
-         * \todo maybe use a bitset here.
-         */
-        string edges_collide_with_something(Room &r) const;
+    /**
+     * Check if the given point on the dungeon model can be written over.
+     * @param point - the point to check.
+     * @return True if the given point is empty.
+     */
+    bool is_empty_space(IntPoint point, const dungeon_meta& dm);
 
+    /**
+     * Determines whether or not the given point is beyond the bounds of the
+     * dungeon.
+     * @param point - the point to check
+     * @return True if the point is out of bounds.
+     */
+    bool point_is_beyond_bounds(IntPoint point, const dungeon_meta& dm);
 
-        /**
-         * Determines which wall of a room a given point lies on.
-         * @param point - a point which has previously been determined to lie on
-         * the edge of a room wall.
-         *
-         * @return An integer denoting the wall that the given room lies on,
-         * where 0 = top, 1 = right, 2 = bottom, 3 = left.
-         */
-        int determine_which_wall(IntPoint point) const;
+    /**
+     * Determines whether the edges of a given room collide with another
+     * room.
+     * @param r - the room to check
+     * @return A binary string that denotes which edges of the room found
+     * collisions; the first bit is the top edge, then right, then bottom,
+     * then left.
+     *
+     * \todo maybe use a bitset here.
+     */
+    std::bitset<4> edges_collide_with_something(Room &r, const dungeon_meta& dm);
 
-        /**
-         * Builds a room in the dungeon with the given points.
-         * @param tl - the top-left corner of the room.
-         * @param br - the bottom-right corner of the room.
-         * @return The room that was built.
-         * @see room
-         */
-        Room build_room(IntPoint tl, IntPoint br);
+    /**
+     * Determines which wall of a room a given point lies on.
+     * @param point - a point which has previously been determined to lie on
+     * the edge of a room wall.
+     *
+     * @return An integer denoting the wall that the given room lies on,
+     * where 0 = top, 1 = right, 2 = bottom, 3 = left.
+     */
+    int determine_which_wall(IntPoint point, const dungeon_meta& dm);
 
-        /**
-         * Finds a random tile on the circumference of the given room.
-         * @param current_room - the room to use.
-         * @return A random IntPoint on the circumference of this room.
-         */
-        IntPoint rand_wall_block(const Room&);
+    /**
+     * Builds a room in the dungeon with the given points.
+     * @param tl - the top-left corner of the room.
+     * @param br - the bottom-right corner of the room.
+     * @return The room that was built.
+     * @see room
+     */
+    Room build_room(IntPoint tl, IntPoint br, dungeon_meta& dm);
 
-        /**
-         * Finds the adjacent point in the given direction
-         * @param this_point - the current point.
-         * @param direction - the direction to move, where 0 = up, 1 = right, 2 =
-         * down, and 3 = left.
-         * @return The point that was found.
-         */
-        IntPoint get_next_point(IntPoint, int) const;
+    /**
+     * Finds a random tile on the circumference of the given room.
+     * @param current_room - the room to use.
+     * @return A random IntPoint on the circumference of this room.
+     */
+    IntPoint rand_wall_block(const Room&);
 
-        /**
-         * Resets the num_rooms and main_dungeon variables, effectively clearing
-         * the dungeon. The dungeon must be initialized before calling this
-         * method.
-         */
-        virtual void reset();
-    private:
-        /**
-         * Sets the given point to a ROOM_WALL tile if it is not a PATH tile.
-         * @param row
-         * @param col
-         */
-        void set_wall_if_not_path(int row, int col);
+    /**
+     * Finds the adjacent point in the given direction
+     * @param this_point - the current point.
+     * @param direction - the direction to move, where 0 = up, 1 = right, 2 =
+     * down, and 3 = left.
+     * @return The point that was found.
+     */
+    IntPoint get_next_point(IntPoint, int);
 
-    public:
-        ChunkLayer* get_dungeon();
+    /**
+     * Resets the num_rooms and main_dungeon variables, effectively clearing
+     * the dungeon. The dungeon must be initialized before calling this
+     * method.
+     */
+
+    void reset(dungeon_meta &dm);
+    /**
+     * Sets the given point to a ROOM_WALL tile if it is not a PATH tile.
+     * @param row
+     * @param col
+     */
+    void set_wall_if_not_path(int row, int col, dungeon_meta &dm);
+
+    ChunkLayer* get_dungeon(dungeon_meta &dm);
 };
 
 #endif

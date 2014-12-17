@@ -66,6 +66,11 @@ class ChunkLayer {
         ChunkLayer(const ChunkLayer& l);
 
         /**
+         * Resets the chunk layer to its default settings.
+         */
+        void clear();
+
+        /**
          * \todo these should be gone in a few commits.
          */
         IntPoint down_stair;

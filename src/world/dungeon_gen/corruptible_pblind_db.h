@@ -25,7 +25,6 @@
 
 #include <procedurally_blind_db.h>
 
-
 /**
  * CORRUPTIBLE PROCEDURALLY-BLIND DUNGEON GENERATION
  *
@@ -34,9 +33,7 @@
  * dungeon with an algorithm that modifies cells according to their surroundings
  * and random chance.
  */
-class CorruptiblePBlindDB : public ProcedurallyBlindDB
-{
-    private:
+namespace corruptible_pblind_db {
         /**
          * Performs the following transformation to all given room corners,
          * where percentages represent the chance that a certain transformation
@@ -101,17 +98,6 @@ class CorruptiblePBlindDB : public ProcedurallyBlindDB
          */
         void corrupt_walls();
 
-    public:
-        /**
-         * Primary constructor. Will not actually design the dungeon.
-         *
-         * @param _width - the desired width of the dungeon.
-         * @param _height - the desired height of the dungeon.
-         *
-         * @see ProcedurallyBlindDB
-         */
-        CorruptiblePBlindDB(int _width, int _height);
-
         /**
          * The primary entry point for dungeon building. Overrides the parent
          * class's method of the same room, and adds a call to corrupt_walls().
@@ -119,7 +105,7 @@ class CorruptiblePBlindDB : public ProcedurallyBlindDB
          * @param target - The target number of rooms to build.
          * @see corrupt_walls()
          */
-        void build_dungeon(int target);
+        void build_dungeon(int width, int height, int target, ChunkLayer &cl );
 };
 
 #endif

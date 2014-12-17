@@ -155,18 +155,13 @@ void Chunk::init(MapTile tile_type, int _world_row, int _world_col) {
 bool Chunk::build_chunk_with_dungeons() {
     chunk_depth = rand() % 6 + 1;
     layers = std::vector<ChunkLayer>(chunk_depth, ChunkLayer(width, height));
-    ChunkLayer* temp_d;
-    ProcedurallyBlindDB db(width, height);
     //CorruptiblePBlindDB db(width, height);
 
     bool has_layer_below;
     //Don't generate the top layer; it will be an overworld.
     for (int i=1; i < chunk_depth; i++) {
         has_layer_below = (i < chunk_depth - 1);
-        db.build_dungeon(5);
-        temp_d = db.get_dungeon();
-
-        layers[i] = *temp_d;
+        pblind_db::build_dungeon(width, height, 5, layers[i]);
 
         //makes the staircases in a dungeon
         layers[i].make_stairs(has_layer_below);

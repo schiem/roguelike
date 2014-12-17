@@ -50,6 +50,20 @@ ChunkLayer& ChunkLayer::operator= (const ChunkLayer& l) {
     return *this;
 }
 
+void ChunkLayer::clear() {
+    rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
+    num_rooms=0;
+    down_stair = IntPoint(0, 0);
+    up_stair = IntPoint(0, 0);
+    items = std::vector<Item*>();
+    spawners = std::vector<Spawner>();
+    for(int i = 0; i < height; i++) {
+        for(int j = 0; j < width; j++) {
+            ground[i][j] = td::BLOCK_WALL;
+        }
+    }
+}
+
 void ChunkLayer::swap(const ChunkLayer& l) {
     ground = l.ground;
     width = l.width;
