@@ -27,7 +27,7 @@ Enemy::Enemy()
 {
 }
 
-Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType enemy) : Character(_x, _y, _chunk_x, _chunk_y, _depth)
+Enemy::Enemy(int _x, int _y, int _depth, EnemyType enemy) : Character(_x, _y, _depth)
 {
     timer = 0;
     //determines if the character is good or evit, on a scale of 1-5 (5 is evil, 3 is passive)
@@ -59,7 +59,6 @@ Enemy::Enemy(int _x, int _y, int _chunk_x, int _chunk_y, int _depth, EnemyType e
     {
         inventory.push_back(weapon);
     }
-
 }
 
 void Enemy::run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)

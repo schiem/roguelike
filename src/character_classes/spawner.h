@@ -78,6 +78,21 @@ class Spawner
         std::vector<Enemy*> enemy_queue;
         
         /**
+         * Creates the dens for the enemies to live in.
+         */
+        void construct_den();
+       
+        /**
+         * Makes some huts.
+         */
+        void construct_huts();
+
+        /**
+         * Makes a burrow.
+         */
+        void construct_burrow();
+
+        /**
          * Checks to see if coordinates are overlapping with any of the dens.
          */
         bool overlapping_spawners(int x, int y, int radius);
@@ -92,6 +107,11 @@ class Spawner
          * The constructor for the spanwer.
          */
         Spawner(int, int, int,  EnemyType);
+        
+        /**
+         * Make the spawner do it's thing.
+         */
+        void run();
 
         /*
          * Determines whether or not an enemy should spawn.
@@ -106,7 +126,7 @@ class Spawner
          * @param chunk_x The x component of the chunk where the enemy should spawn.
          * @param chunk_y The y component of the chunk where the enemey should spawn.
          */
-        void spawn_creep(int chunk_x, int chunk_y);
+        void spawn_creep(int num_creeps);
 
         /**
          * Returns the enemies currently in the queue.

@@ -211,12 +211,23 @@ namespace overworld_gen {
         if(ground.has_layer_below) {
             ground.set_tile(down_stair, td::DOWN_STAIR);
         }
-        int spawn_x = rand() % width;
-        int spawn_y = rand() % height;
-        int to_spawn = rand() % NUM_ENEMIES;
-
-        ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, ENEMY_LIST[to_spawn]));
-        ground.set_tile(spawn_y, spawn_x, td::KOBOLD_SPAWNER);
+        
+        for(int i=0;i<10;i++)
+        {
+            if(rand() % 50 == 0)
+            {
+                int spawn_x = rand() % width;
+                int spawn_y = rand() % height;
+                ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, kobold));
+            }
+            if(rand() % 10 == 0)
+            {
+                int spawn_x = rand() % width;
+                int spawn_y = rand() % height;
+                ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, rabbit));
+            }
+        }
+        
         /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
         /**
         int build_x = 0; //rand() % width/2;

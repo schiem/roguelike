@@ -177,7 +177,7 @@ class Character
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth);
+        Character(int _x, int _y, int _depth);
 
         /**
          * Run the actions that happen to the character every frame.

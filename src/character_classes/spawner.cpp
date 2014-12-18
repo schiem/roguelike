@@ -33,16 +33,17 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
     enemy = _enemy;
     spawn_type = enemy.spawner;
     num_enemy = rand() % (spawn_type.max_enemies - spawn_type.min_enemies) + spawn_type.min_enemies;
+    spawn_points = std::vector<Den>();
     construct_den();
     if(spawn_type.spawn_immediately)
     {
-        spawn_enemy(num_enemy);
+        spawn_creep(num_enemy);
     }
 }
 
 void Spawner::construct_den()
 {
-    switch spawn_type.den_type
+    switch(spawn_type.den_type)
     {
         case spawners::BURROW:
             construct_burrow();
@@ -65,12 +66,13 @@ void Spawner::construct_huts()
 {
     //let's have statically size huts for now.  just shove
     //enemies in there.
-    int num_huts = num_enemies/spawn_type.enemies_per_spawn;
-    TileMatrix hut = TileMatrix(6, std::vector<Tile>(6, EMPTY));
+    int num_huts = num_enemy/spawn_type.enemies_per_spawn;
+    TileMatrix hut = TileMatrix(7, std::vector<Tile>(7, tiledef::EMPTY));
     IntPoint start = IntPoint(3, 3);
-    std::vector<IntPoint> points = bresenham_circle(start, 3)
+    std::vector<IntPoint> points = bresenham_circle(start, 3);
     for(int i=0;i<points.size();i++)
     {
+        std::cout<<points[i].row<<", "<<points[i].col<<std::endl;
         hut[points[i].row][points[i].col] = tiledef::HUT_WALL;
     }
 
@@ -110,18 +112,26 @@ bool Spawner::overlapping_spawners(int x, int y, int radius)
 }
 
 
-bool Spawner::should_spawn()
+void Spawner::run()
 {
-    return (rand() % 100 == 0);
+    if(should_spawn())
+    {
+        spawn_creep(1);
+    }
 }
 
-void Spawner::spawn_creep(int chunk_x, int chunk_y)
+bool Spawner::should_spawn()
 {
-    if(num_enemy > 0)
-    {
-        enemy_queue.push_back(new Enemy(x -1, y - 1, chunk_x, chunk_y, depth, enemy));
+    return (num_enemy > 0) && (rand() % 100 == 0);
+}
+
+void Spawner::spawn_creep(int num_creeps)
+{
+     for(int i=0;i<num_creeps;i++)
+     {
+        enemy_queue.push_back(new Enemy(x -1, y - 1, depth, enemy));
         num_enemy -= 1;
-    }
+     }
 }
 
 std::vector<Enemy*>& Spawner::flush()

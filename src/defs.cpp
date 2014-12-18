@@ -96,7 +96,9 @@ namespace tiledef {
         PLANT,
         WOOD_WALL,
         WOOD_FLOOR,
-        DOOR
+        DOOR,
+        BURROW,
+        HUT_WALL
     };
 }
 
@@ -160,7 +162,7 @@ namespace misc
 namespace spawners
 {
     SpawnType kobold = {true, 5, 20, 5, HUTS};
-    SpawnType rabbit = {false, 5, 20, 20, DEN};
+    SpawnType rabbit = {false, 5, 20, 20, BURROW};
 }
 
 //Enemy Equipment

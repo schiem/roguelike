@@ -297,7 +297,7 @@ class Chunk{
          * @param depth
          * @return the spawner object
          */
-        Spawner get_spawner(int depth);
+        std::vector<Spawner>& get_spawners(int depth);
 
         /**
          * Prints a graphical representation of the given layer to stdout.

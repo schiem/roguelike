@@ -21,6 +21,7 @@
 
 #ifndef _DEN_H
 #define _DEN_H
+#include <defs.h>
 
 typedef std::vector<std::vector<Tile> > TileMatrix;
 
@@ -35,7 +36,7 @@ class Den
         Den(int _x, int _y, Tile sprite);
         int get_x();
         int get_y();
-        TileMatrix get_ground();
+        TileMatrix& get_ground();
 };
 
 #endif

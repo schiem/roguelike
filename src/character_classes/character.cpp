@@ -25,12 +25,12 @@ Character::Character() {
 
 }
 
-Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
+Character::Character(int _x, int _y, int _depth)
 {
     stats.resize(3);
     x = _x;
     y = _y;
-    chunk = IntPoint(_chunk_y, _chunk_x);
+    chunk = IntPoint(0, 0);
     depth = _depth;
     target = NULL;
     equipment = vector<Item*>(7);

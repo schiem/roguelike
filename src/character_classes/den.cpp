@@ -19,6 +19,8 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <den.h>
+
 Den::Den(int _x, int _y, TileMatrix _ground)
 {
     x = _x;
@@ -45,7 +47,7 @@ int Den::get_y()
     return y;
 }
 
-TileMatrix Den::get_ground()
+TileMatrix& Den::get_ground()
 {
     return ground;
 }

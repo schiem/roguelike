@@ -42,6 +42,7 @@ roguelike_SOURCES = \
 	src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
+    src/character_classes/den.cpp\
     src/gui/gui_loop.cpp\
 	src/gui/gui.cpp\
 	src/gui/virtual_event.cpp\
@@ -95,6 +96,7 @@ roguelike_SOURCES = \
     src/character_classes/character.h\
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\
+    src/character_classes/den.h\
     src/gui/virtual_event.h\
 	src/gui/gui.h\
 	src/gui/game.h\

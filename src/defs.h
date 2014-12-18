@@ -124,7 +124,7 @@ struct Tile {
 };
 
 namespace tiledef {
-    static const int TILE_TYPE_COUNT = 32;
+    static const int TILE_TYPE_COUNT = 34;
     extern Tile TILE_INDEX[TILE_TYPE_COUNT]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
@@ -160,6 +160,8 @@ namespace tiledef {
     extern Tile WOOD_WALL;
     extern Tile WOOD_FLOOR;
     extern Tile DOOR;
+    extern Tile BURROW;
+    extern Tile HUT_WALL;
 }
 
 /**
@@ -598,7 +600,7 @@ namespace spawners
     {
         BURROW,
         HUTS
-    }
+    };
 }
 
 /**

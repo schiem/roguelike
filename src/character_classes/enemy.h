@@ -344,11 +344,11 @@ class Enemy : public Character
         Enemy();
 
         /**
-         * The constructor for the enemy class.
-         * @see Character::Character(int _x, int _y, int _chunk_x, int _chunk_y, int _depth)
+         * Constructor without the chunk info.
          */
-        Enemy(int _x, int _y, int _chunk_x , int _chunk_y, int _depth, EnemyType enemy);
-
+        Enemy(int _x, int _y, int _depth, EnemyType enemy);
+        
+        
         /**
          * Wrapper function for calling different types of AI.
          * Depending on the type of enemy, this function will call a different

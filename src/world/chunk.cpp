@@ -102,7 +102,7 @@ void Chunk::deserialize(string file_name) {
         layers[i].spawner_loc.row = file_data[current_byte];
         layers[i].spawner_loc.col = file_data[current_byte + 1];
         //layers[i].make_spawner(i,layers[i].spawner_loc);
-        layers[i].make_spawner(i, IntPoint(25, 25));
+        //layers[i].make_spawner(i, IntPoint(25, 25));
         layers[i].down_stair.row = file_data[current_byte + 2];
         layers[i].down_stair.col = file_data[current_byte + 3];
         layers[i].up_stair.row = file_data[current_byte + 4];
@@ -171,7 +171,7 @@ bool Chunk::build_chunk_with_dungeons() {
 
         //makes the staircases in a dungeon
         layers[i].make_stairs(has_layer_below);
-        layers[i].make_spawner(i);
+        //layers[i].make_spawner(i);
         layers[i].has_layer_below = has_layer_below;
     }
 }
@@ -265,10 +265,9 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * But that will also have ramifications in how
  * the game will handle things.
  */
-Spawner Chunk::get_spawner(int _depth) {
+std::vector<Spawner>& Chunk::get_spawners(int _depth) {
     ChunkLayer* current = &layers[_depth];
-    std::vector<Spawner> spawners = current->get_spawners();
-    return layers[_depth].get_spawners()[0];
+    return current->get_spawners();
 }
 
 void Chunk::dungeon_dump(int _depth) {
