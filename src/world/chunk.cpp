@@ -265,7 +265,7 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
  * But that will also have ramifications in how
  * the game will handle things.
  */
-std::vector<Spawner>& Chunk::get_spawners(int _depth) {
+std::vector<Spawner>* Chunk::get_spawners(int _depth) {
     ChunkLayer* current = &layers[_depth];
     return current->get_spawners();
 }

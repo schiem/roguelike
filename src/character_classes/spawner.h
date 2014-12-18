@@ -164,6 +164,11 @@ class Spawner
          * Accessor for spawn_points.
          */
         std::vector<Den>& get_spawn_points();
+        
+        /**
+         * Accessor for a spawn points pointer.
+         */
+        Den* get_spawn_at(int i);
 };
 
 #endif

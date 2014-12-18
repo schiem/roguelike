@@ -202,7 +202,7 @@ class Game
         std::vector<Enemy*> get_vis_enemies();
         void show_vis_items();
         void show_vis_spawners();
-        void tm_to_canvas(TileMatrix tm, IntPoint tm_coords, IntPoint tm_chunk);
+        void den_to_canvas(Den* den, IntPoint tm_coords, IntPoint tm_chunk);
         std::vector<Animation>& get_animations();
         void tick_animations(long delta_ms); 
         bool is_vis(IntPoint coords);

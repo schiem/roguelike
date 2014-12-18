@@ -165,7 +165,7 @@ class ChunkLayer {
         /**
          * @return the spawners on this chunk.
          */
-        std::vector<Spawner>& get_spawners();
+        std::vector<Spawner>* get_spawners();
 
         /**
          * Adds an item to the item list for this chunk.

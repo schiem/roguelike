@@ -30,12 +30,18 @@ class Den
     private:
         int x;
         int y;
+        int height;
+        int width;
         TileMatrix ground;
     public:
-        Den(int _x, int _y, TileMatrix _ground);
+        Den(int _x, int _y, int _height, int _width, TileMatrix _ground);
         Den(int _x, int _y, Tile sprite);
         int get_x();
         int get_y();
+        int get_height();
+        int get_width();
+        Tile tile_at(int y, int x);
+        Tile* tile_pointer_at(int y, int x);
         TileMatrix& get_ground();
 };
 

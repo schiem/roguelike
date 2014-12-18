@@ -21,10 +21,12 @@
 
 #include <den.h>
 
-Den::Den(int _x, int _y, TileMatrix _ground)
+Den::Den(int _x, int _y, int _height, int _width, TileMatrix _ground)
 {
     x = _x;
     y = _y;
+    height = _height;
+    width = _width;
     ground = _ground;
 }
 
@@ -35,6 +37,8 @@ Den::Den(int _x, int _y, Tile sprite)
     ground[0][0] = sprite;
     x = _x;
     y = _y;
+    height = 1;
+    width = 1;
 }
 
 int Den::get_x()
@@ -47,7 +51,27 @@ int Den::get_y()
     return y;
 }
 
+int Den::get_height()
+{
+    return height;
+}
+
+int Den::get_width()
+{
+    return width;
+}
+
 TileMatrix& Den::get_ground()
 {
     return ground;
+}
+
+Tile Den::tile_at(int y, int x)
+{
+    return ground[y][x];
+}
+
+Tile* Den::tile_pointer_at(int y, int x)
+{
+    return &ground[y][x];
 }

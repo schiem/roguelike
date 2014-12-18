@@ -129,8 +129,8 @@ std::vector<WeaponType>& ChunkLayer::get_weapons() {
     return weapons;
 }
 
-std::vector<Spawner>& ChunkLayer::get_spawners() {
-    return spawners;
+std::vector<Spawner>* ChunkLayer::get_spawners() {
+    return &spawners;
 }
 
 void ChunkLayer::add_item(Item* item) {

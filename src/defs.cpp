@@ -61,7 +61,7 @@ namespace tiledef {
     Tile WOOD_FLOOR = {47, 30, BROWN, true, false, false, false};
     Tile DOOR = {43, 31, BROWN, true, false, true, false};
     Tile BURROW = {15, 32, BROWN, true, false, false, false};
-    Tile HUT_WALL = {35, 33, BROWN, false, false, false, false}; 
+    Tile HUT_WALL = {35, 33, BROWN, false, false, true, false}; 
 
 
     Tile TILE_INDEX[TILE_TYPE_COUNT] = { //THIS MUST CORRESPOND TO TILE IDS

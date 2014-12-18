@@ -67,12 +67,11 @@ void Spawner::construct_huts()
     //let's have statically size huts for now.  just shove
     //enemies in there.
     int num_huts = num_enemy/spawn_type.enemies_per_spawn;
-    TileMatrix hut = TileMatrix(7, std::vector<Tile>(7, tiledef::EMPTY));
-    IntPoint start = IntPoint(3, 3);
-    std::vector<IntPoint> points = bresenham_circle(start, 3);
+    TileMatrix hut = TileMatrix(5, std::vector<Tile>(5, tiledef::EMPTY));
+    IntPoint start = IntPoint(2, 2);
+    std::vector<IntPoint> points = bresenham_circle(start, 2);
     for(int i=0;i<points.size();i++)
     {
-        std::cout<<points[i].row<<", "<<points[i].col<<std::endl;
         hut[points[i].row][points[i].col] = tiledef::HUT_WALL;
     }
 
@@ -88,7 +87,7 @@ void Spawner::construct_huts()
             hut_y = rand() % (num_huts * 6);
         }
         while(overlapping_spawners(hut_x, hut_y, 3));
-        spawn_points.push_back(Den(x, y, hut));
+        spawn_points.push_back(Den(x, y, 5, 5, hut));
     }
 }
 
@@ -129,7 +128,10 @@ void Spawner::spawn_creep(int num_creeps)
 {
      for(int i=0;i<num_creeps;i++)
      {
-        enemy_queue.push_back(new Enemy(x -1, y - 1, depth, enemy));
+        int num = rand() % spawn_points.size();
+        int spawn_x = spawn_points[num].get_x() + x;
+        int spawn_y = spawn_points[num].get_y() + y;
+        enemy_queue.push_back(new Enemy(spawn_x, spawn_y, depth, enemy));
         num_enemy -= 1;
      }
 }
@@ -174,4 +176,9 @@ int Spawner::get_depth()
 std::vector<Den>& Spawner::get_spawn_points()
 {
     return spawn_points;
+}
+
+Den* Spawner::get_spawn_at(int i)
+{
+    return &spawn_points[i];
 }

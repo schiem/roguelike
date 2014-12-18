@@ -232,7 +232,7 @@ void Game::refresh() {
  * of spawner that it is and append it to the enemy list.
  */
 void Game::run_spawners() {
-    std::vector<Spawner> spawner;
+    std::vector<Spawner>* spawners;
     Chunk* chunk;
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
@@ -240,17 +240,18 @@ void Game::run_spawners() {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
 
             if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
-                spawner = chunk->get_spawners(main_char.get_depth());
-                for(int k=0;k<spawner.size();k++)
+                spawners = chunk->get_spawners(main_char.get_depth());
+                for(int k=0;k<spawners->size();k++)
                 {
-                    spawner[k].run();
-                    std::vector<Enemy*> enemies = spawner[k].flush();
+                    Spawner* spawner = &spawners->at(k);
+                    spawner->run();
+                    std::vector<Enemy*> enemies = spawner->flush();
                     for(int index=0;index<enemies.size();index++)
                     {
                         enemies[index]->set_chunk(IntPoint(i, j));
                         enemy_list.push_back(enemies[index]);
                     }
-                    spawner[k].clear_queue();
+                    spawner->clear_queue();
                 }
             }
         }
@@ -298,6 +299,7 @@ void Game::run_enemies(long delta_ms) {
             //delete the enemy if it's not in the buffer
             /** @TODO FIX THIS MEMORY LEAK!!!
             */
+            std::cout<<"I'm removing an enemy for being out of the buffer."<<std::endl;
             remove_targets(enemy_list[i]);
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
@@ -581,7 +583,7 @@ void Game::show_vis_items() {
 }
 
 void Game::show_vis_spawners() {
-    std::vector<Spawner> spawner;
+    std::vector<Spawner>* spawners;
     Chunk* chunk;
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
@@ -589,14 +591,16 @@ void Game::show_vis_spawners() {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
 
             if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
-                spawner = chunk->get_spawners(main_char.get_depth());
-                for(int index=0;index<spawner.size();index++)
+                spawners = chunk->get_spawners(main_char.get_depth());
+                for(int index=0;index<spawners->size();index++)
                 {
-                    std::vector<Den> dens = spawner[index].get_spawn_points();
+                    Spawner* spawner = &spawners->at(index);
+                    std::vector<Den> dens = spawner->get_spawn_points();
                     for(int i_s=0;i_s<dens.size();i_s++)
                     {
-                        TileMatrix tm = dens[i_s].get_ground();
-                        tm_to_canvas(tm, IntPoint(spawner[index].get_y(), spawner[index].get_x()), IntPoint(i, j));
+                        Den* den = spawner->get_spawn_at(i_s);
+                        IntPoint coords = IntPoint(spawner->get_y() + den->get_y(), spawner->get_x() + den->get_x());
+                        den_to_canvas(den, coords, IntPoint(i, j));
                     }
                 }
             }
@@ -604,13 +608,13 @@ void Game::show_vis_spawners() {
     }
 }
 
-void Game::tm_to_canvas(TileMatrix tm, IntPoint tm_coords, IntPoint tm_chunk)
+void Game::den_to_canvas(Den* den, IntPoint tm_coords, IntPoint tm_chunk)
 {
-    for(int i=0;i<tm.size();i++)
+    for(int i=0;i<den->get_height();i++)
     {
-        for(int j=0;j<tm.size();j++)
+        for(int j=0;j<den->get_width();j++)
         {
-            if(tm[i][j] != tiledef::EMPTY)
+            if(den->tile_at(i, j) != tiledef::EMPTY)
             {
                 IntPoint coords = tm_coords + IntPoint(i, j);
                 IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
@@ -618,7 +622,7 @@ void Game::tm_to_canvas(TileMatrix tm, IntPoint tm_coords, IntPoint tm_chunk)
 
                 if(in_range(tm_chunk, coords, main_char.get_chunk(), main_char_coords, radius)) {
                     IntPoint vis_coords = get_vis_coords(tm_chunk, coords);
-                    canvas[vis_coords.row][vis_coords.col] = &tm[i][j];
+                    canvas[vis_coords.row][vis_coords.col] = den->tile_pointer_at(i, j);
                 }
             }
         }
