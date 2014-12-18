@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['can_5fbe_5fmoved_5fthrough',['can_be_moved_through',['../structTile.html#a576733bc1be63b89ef24bb7973fbd2b4',1,'Tile']]],
+  ['can_5fconsume',['can_consume',['../classItem.html#a10e4b30cf64f59bf4cd3b2b914134a9f',1,'Item']]],
+  ['can_5fequip',['can_equip',['../classItem.html#a1bd6a68ef94aa0cb63ec9a6512e5f0da',1,'Item']]],
+  ['can_5fuse',['can_use',['../classItem.html#adcf35d30e117bb632667c5ad19bdc97e',1,'Item']]],
+  ['can_5fwield',['can_wield',['../classItem.html#aa4929847c36075121508c9844d9d990b',1,'Item']]],
+  ['centers',['centers',['../classSettlement.html#a548309133275beefb6900c087e3f80e7',1,'Settlement']]],
+  ['char_5fcount',['char_count',['../structTile.html#a02c4ad15751e4e861ae58ea48c962e38',1,'Tile::char_count()'],['../structMapTile.html#a7157232f732b21c7e32ed5864a7f46e5',1,'MapTile::char_count()']]],
+  ['chunk',['chunk',['../classCharacter.html#ad5a9baf4a6ae793530f2a652f42abc54',1,'Character::chunk()'],['../classSettlement.html#a7e635243bc87f77041fd69027859c507',1,'Settlement::chunk()']]],
+  ['chunk_5fmap',['chunk_map',['../classGame.html#a4dded93e0c5954e569b69abc43a7f593',1,'Game']]],
+  ['chunk_5ftype',['chunk_type',['../classChunk.html#a2e284b0073b458de75ef397db45079ee',1,'Chunk']]],
+  ['chunk_5ftype_5fid',['chunk_type_id',['../structchunk__meta.html#aa8c24791d11de950be1ed6ea3d7e865f',1,'chunk_meta']]],
+  ['chunk_5fx',['chunk_x',['../classAnimation.html#aab5b50ad32ee4b32d4e0a3b59b7f0555',1,'Animation']]],
+  ['chunk_5fy',['chunk_y',['../classAnimation.html#a4980fbc92d0f855662b031cd8da11722',1,'Animation']]],
+  ['color',['color',['../classActor.html#a0d5b45d5cee29ae368fd4f0c372c3411',1,'Actor::color()'],['../structTile.html#a905c6ef87f7373cd6eeab3ce311a6087',1,'Tile::color()'],['../structMapTile.html#a27c7221a4dc9af6ca82453bd461bf3ac',1,'MapTile::color()']]],
+  ['conscious',['conscious',['../classCharacter.html#ac0498e484c6efdc6b48d4afed5359428',1,'Character']]],
+  ['coords',['coords',['../structATile.html#a3d851db6853459286ab4622035eba236',1,'ATile::coords()'],['../classItem.html#a1671d1600dbb8e5da39ce8a0c7da5320',1,'Item::coords()']]],
+  ['corpse',['corpse',['../classCharacter.html#a2305412b23a9fd85c1c0207866c9d1ba',1,'Character::corpse()'],['../structEnemyType.html#a18565685898a9dd4b373d056d910cb68',1,'EnemyType::corpse()']]],
+  ['current_5fframe',['current_frame',['../classAnimation.html#a9e81e6ba78973f963e1f2995f89d57eb',1,'Animation']]],
+  ['current_5fms',['current_ms',['../classAnimation.html#a80ceb84cb9cbcb467bca7a7ededbcc61',1,'Animation']]],
+  ['current_5fplace',['current_place',['../classDebugConsole.html#ade164f94e50711db9a9e411371acf80d',1,'DebugConsole']]],
+  ['current_5fstats',['current_stats',['../classCharacter.html#ae9a3c518a55bc941c16bddc6c8e33e29',1,'Character']]]
+];
