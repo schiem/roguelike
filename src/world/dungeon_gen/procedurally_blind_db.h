@@ -25,6 +25,8 @@
 
 #include <dungeonbuilder.h>
 
+namespace db=dungeon_builder;
+
 /**
  * Generates dungeons in a "procedurally-blind" manner.
  *
@@ -39,11 +41,10 @@
  * 5. If the resulting dungeon does not have very many rooms, scrap it and start
  * over. This currently happens <25% of the time.
  */
-namespace db=dungeon_builder;
-
 namespace pblind_db {
     /**
      * Builds an initial room in the dungeon space.
+     * @param dm - instance of a dungeon to work on
      * @see find_viable_starting_point
      */
     void build_start_room(db::dungeon_meta& dm);
@@ -52,7 +53,7 @@ namespace pblind_db {
      * Will find and return a viable room space, and if there is no such space,
      * will return a room with coordinates (-1,-1),(-1,-1).
      *
-     *  Pseudocode for this method:
+     *  Pseudocode for this function:
      *
      *  Declare min room width and min room height; declare and define test_room
      *  based on this width and height; declare upper_bound, lower_bound,
@@ -77,6 +78,7 @@ namespace pblind_db {
      *
      * @param the_point - the point from which the function will start
      * attempting to find a room space.
+     * @param dm - instance of a dungeon to work on
      *
      * @return a room representing the discovered room space, or
      * ((-1,-1),(-1,-1)) if there is no such room.
@@ -85,9 +87,7 @@ namespace pblind_db {
 
     /**
      * Will find a starting point for the dungeon.
-     * @param std_width - The "standard" width for the dungeon.
-     * @param std_height - The "standard" height for the dungeon.
-     * \todo since std_width is a constant, do we need a parameter here?
+     * @param dm - instance of a dungeon to work on
      *
      * @return the point that was found.
      */
@@ -102,6 +102,7 @@ namespace pblind_db {
      *
      * @param start - the starting point for this path.
      * @param direction - The starting direction of the path, where 0 = up,
+     * @param dm - instance of a dungeon to work on
      * 1 = right, 2 = down, and 3 = left.
      * @return the end of the path, or (-1,-1) if the path could not be
      * built.
@@ -117,6 +118,7 @@ namespace pblind_db {
      * called again.
      *
      * @param target - The target number of rooms.
+     * @param dm - instance of a dungeon to work on
      */
     void build_dungeon_recursive(int target, db::dungeon_meta& dm);
 
@@ -124,8 +126,9 @@ namespace pblind_db {
      * The primary entry point for dungeon building.
      *
      * @param target - The target number of rooms to build.
+     * @param cl - Instance of a ChunkLayer to use.
      */
-    void build_dungeon(int width, int height, int target, ChunkLayer& dm);
+    void build_dungeon(int width, int height, int target, ChunkLayer& cl);
 };
 
 #endif
