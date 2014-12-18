@@ -31,6 +31,7 @@
 #include <vector>
 #include <cstring>
 
+
 /**
  * A class which is used to construct all characters in game.
  * This is the class that acts as the base for all enemies, NPCs,
@@ -524,6 +525,21 @@ class Character
          * Checks to see if the character is good to act!
          */
         bool can_act();
+};
+
+struct character_info {
+    int x;
+    int y;
+    int depth;
+    int morality;
+    int speed;
+    bool conscious;
+    IntPoint chunk;
+    std::vector<int> stats;
+    Tile sprite;
+    MiscType corpse;
+    Character* target;
+    vector<Item*> equipment;
 };
 
 /**

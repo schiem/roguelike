@@ -41,16 +41,19 @@
 using namespace std;
 
 /**
- * A class from which all dungeon-building classes inherit.
+ * A namespace from which all dungeon-building classes inherit.
  *
- * This class will usually not be used directly, but only through its
- * subclasses. It provides core functionality that those dungeon builders share.
+ * This provides core functionality that those dungeon builders share.
  *
  * @see ProcedurallyBlindDB
  * @see CorruptiblePBlindDB
  */
 namespace dungeon_builder {
 
+    /**
+     * Data describing a dungeon. This wraps around a ChunkLayer and provides
+     * extra information.
+     */
     struct dungeon_meta {
         /**
          * @see ChunkLayer
@@ -100,6 +103,7 @@ namespace dungeon_builder {
     /**
      * Check if the given point on the dungeon model can be written over.
      * @param point - the point to check.
+     * @param dm - instance of a dungeon to work on
      * @return True if the given point is empty.
      */
     bool is_empty_space(IntPoint point, const dungeon_meta& dm);
@@ -108,6 +112,7 @@ namespace dungeon_builder {
      * Determines whether or not the given point is beyond the bounds of the
      * dungeon.
      * @param point - the point to check
+     * @param dm - instance of a dungeon to work on
      * @return True if the point is out of bounds.
      */
     bool point_is_beyond_bounds(IntPoint point, const dungeon_meta& dm);
@@ -116,6 +121,7 @@ namespace dungeon_builder {
      * Determines whether the edges of a given room collide with another
      * room.
      * @param r - the room to check
+     * @param dm - instance of a dungeon to work on
      * @return A binary string that denotes which edges of the room found
      * collisions; the first bit is the top edge, then right, then bottom,
      * then left.
@@ -128,6 +134,7 @@ namespace dungeon_builder {
      * Determines which wall of a room a given point lies on.
      * @param point - a point which has previously been determined to lie on
      * the edge of a room wall.
+     * @param dm - instance of a dungeon to work on
      *
      * @return An integer denoting the wall that the given room lies on,
      * where 0 = top, 1 = right, 2 = bottom, 3 = left.
@@ -138,6 +145,7 @@ namespace dungeon_builder {
      * Builds a room in the dungeon with the given points.
      * @param tl - the top-left corner of the room.
      * @param br - the bottom-right corner of the room.
+     * @param dm - instance of a dungeon to work on
      * @return The room that was built.
      * @see room
      */
@@ -163,6 +171,7 @@ namespace dungeon_builder {
      * Resets the num_rooms and main_dungeon variables, effectively clearing
      * the dungeon. The dungeon must be initialized before calling this
      * method.
+     * @param dm - instance of a dungeon to work on
      */
 
     void reset(dungeon_meta &dm);
@@ -170,6 +179,7 @@ namespace dungeon_builder {
      * Sets the given point to a ROOM_WALL tile if it is not a PATH tile.
      * @param row
      * @param col
+     * @param dm - instance of a dungeon to work on
      */
     void set_wall_if_not_path(int row, int col, dungeon_meta &dm);
 

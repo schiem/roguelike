@@ -103,6 +103,7 @@ namespace corruptible_pblind_db {
          * class's method of the same room, and adds a call to corrupt_walls().
          *
          * @param target - The target number of rooms to build.
+         * @param cl - The ChunkLayer to work on
          * @see corrupt_walls()
          */
         void build_dungeon(int width, int height, int target, ChunkLayer &cl );
