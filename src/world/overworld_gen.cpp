@@ -229,29 +229,23 @@ namespace overworld_gen {
         }
         
         /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
-        /**
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
-        Settlement settlement = Settlement(0, 0, 700, 400); 
-        std::vector<Block> blocks = settlement.get_blocks();
-        for(int i=0;i<blocks.size();i++)
+        Settlement settlement = Settlement(0, 0, 80, 40);
+        std::vector<Building> buildings = settlement.get_buildings();
+        for(int j=0;j<buildings.size();j++)
         {
-            std::vector<Building> buildings = blocks[i].get_buildings();
-            for(int j=0;j<buildings.size();j++)
+            for(int k=0;k<buildings[j].get_height();k++)
             {
-                for(int k=0;k<buildings[j].get_height();k++)
+                for(int l=0;l<buildings[j].get_width();l++)
                 {
-                    for(int l=0;l<buildings[j].get_width();l++)
-                    {
-                        int y = blocks[i].get_y() + k + buildings[j].get_y();
-                        int x = blocks[i].get_x() + l + buildings[j].get_x();
-                        Tile chara = buildings[j].tile_at(k, l);
-                        ground.set_tile(y, x, chara);
-                    }
+                    int y = k + buildings[j].get_y();
+                    int x = l + buildings[j].get_x();
+                    Tile chara = buildings[j].tile_at(k, l);
+                    ground.set_tile(y, x, chara);
                 }
             }
         }
-        */
         
     }
 }

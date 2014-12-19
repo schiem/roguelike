@@ -88,12 +88,6 @@ void BSpaceTree::generate_tree(BSpaceNode* node)
             generate_tree(node->right);
         }
     }
-    /**
-    else
-    {
-        leaves.push_back(node);
-    }
-    **/
 }
 
 
@@ -108,19 +102,18 @@ bool BSpaceTree::split_node(BSpaceNode* node)
     //check which direction we're splitting.
     //if the height and width are similar, pick one randomly.
     bool splitH = rand() % 2; 
-    if((float)node->height/(float)node->width < .05 || (node->height<max_size && node->width>max_size))
+    if((float)node->height/(float)node->width < .5 || (node->height<max_size && node->width>max_size))
     {
         splitH = false;
     }
-    else if((float)node->width/(float)node->height < .05 || (node->height>max_size && node->width<max_size))
+    else if((float)node->width/(float)node->height < .5 || (node->height>max_size && node->width<max_size))
     {
         splitH = true;
     }
-
     //check to see if we have enough space to split
     int max = (splitH ? node->height : node->width) - min_size; 
     if(max <= min_size)
-    { 
+    {
         return false;
     }
     
@@ -153,13 +146,45 @@ void BSpaceTree::rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node)
     {
         vec.push_back(node);
     }
-    else if(node->left != NULL && node->right != NULL)
+    else
     {
         rec_get_leaves(vec, node->left);
         rec_get_leaves(vec, node->right);
     }
 }
 
+
+void BSpaceTree::dump_all()
+{
+    std::cout<<(print_tree(root, 0))<<std::endl;
+}
+
+std::string BSpaceTree::print_tree(BSpaceNode* node, int accum)
+{
+    std::stringstream ss;
+    for(int i=0;i<accum;i++)
+    {
+        if(i == accum - 1)
+        {
+            ss<<"  |-->";
+        }
+        else
+        {
+            ss<<"  |   ";
+        }
+    }
+    ss<<"X: "<<node->tl_x<<", Y: "<<node->tl_y<<", Height: "<<node->height<<", Width: "<<node->width<<"\n";
+    if(node->left == NULL || node->right == NULL)
+    {
+        return ss.str();
+    }
+    else
+    {
+        return ss.str() +  print_tree(node->left, accum + 1) + print_tree(node->right, accum + 1);
+    }
+}
+        
+        
 
 
 BSpaceNode* BSpaceTree::get_root()

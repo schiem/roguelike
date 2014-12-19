@@ -42,7 +42,6 @@ Block::Block(int tl_x, int tl_y, int _height, int _width)
     generate_buildings();
 }
 
-#pragma optimize("", off);
 void Block::generate_buildings()
 {
     //for now, statically sized houses.  We'll revisit this later
@@ -52,7 +51,6 @@ void Block::generate_buildings()
     std::vector<BSpaceNode*> house_nodes = houses.get_leaves(); 
     for(int i=0;i<house_nodes.size();i++)
     {
-        std::cout<<"House.  Height: "<<house_nodes[i]->height<<", Width: "<<house_nodes[i]->width<<", x: "<<house_nodes[i]->tl_x<<", y: "<<house_nodes[i]->tl_y<<std::endl;
         int rand_x = rand() % 2 + 1;
         int rand_y = rand() % 2 + 1;
         int new_x = rand_x + house_nodes[i]->tl_x;
