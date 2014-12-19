@@ -125,28 +125,6 @@ class Chunk{
          */
         bool find_serialized_chunk();
 
-        /**
-         * Determines the size of the file that will be created for this chunk.
-         * @return integer file size in bytes.
-         */
-        int calculate_file_size(int bytes_per_tile);
-
-        /**
-         * Loads this chunk's information from a file. Essentially does a simple
-         * reverse of the serialization process. The "header" bytes, which
-         * always must exist in the file, are processed one-by-one and loaded
-         * into the class member variables to restore the data. Then, data which
-         * may or may not exist (such as stair/spawner locations) is loaded
-         * based on header information. Next, the bytes of the dungeon and
-         * overworld are loaded in a triple-nested for-loop.
-         *
-         * @param file_name - The name of the file from which the chunk will be
-         * loaded.
-         * @param world_row - This chunk's row on the world map.
-         * @param world_col - This chunk's column on the world map.
-         */
-        void deserialize(string file_name);
-
     public:
         /**
          * Empty constructor. \todo check if this can be empty.
@@ -311,6 +289,51 @@ class Chunk{
         MapTile get_type();
 
         /**
+         * Will return a file name for this chunk based on its
+         * unique world location.
+         *
+         * @return a stringstream containing the file's name.
+         */
+        stringstream make_filename();
+
+        /**
+         * Determines the size of the file that will be created for this chunk.
+         * @param bytes_per_tile the number of bytes expected per tile.
+         * @return integer file size in bytes.
+         */
+        int calculate_file_size(int bytes_per_tile);
+
+        /**
+         * Serializes the file's header bytes from the chunk_meta struct.
+         * @param file the file byte array
+         * @return x the next index of the file array to write to.
+         */
+        int serialize_metadata(char* file);
+
+        /**
+         * Save metadata for each layer of this chunk.
+         * @param file the file byte array to write to.
+         * @param cb the index at which to begin writing.
+         * @return the index after the last piece of layer metadata.
+         */
+        int serialize_layer_metadata(char* file, int cb);
+
+        /**
+         * Save the chunk layers.
+         * @param file the file byte array to write to.
+         * @param cb the index at which to begin writing.
+         * @return the index after the last piece of layer metadata.
+         */
+        int serialize_layers(char* file, int cb);
+
+        /**
+         * Write to the save file in the CHUNK_DIR directory.
+         * @param file the file data to write.
+         * @param filename the name of this chunk file.
+         */
+        void save_file(char* file, string filename, int file_size);
+
+        /**
          * Saves all of the important information for this chunk in a file. The
          * file size is first carefully calculated, then a char array is created
          * with that size and populated with the dungeon data. The file is saved
@@ -321,6 +344,45 @@ class Chunk{
          * functionality.
          */
         void serialize();
+
+        /**
+         * Set Chunk attributes to those found in the file data array.
+         * @param file the data file
+         */
+        void deserialize_metadata(char* file);
+
+        /**
+         * For each layer, set layer attributes to those found in the
+         * file data array.
+         * @param file the data file
+         * @param cb the byte at which to begin reading
+         * @return index of the byte after the last metadata byte
+         */
+        int deserialize_layer_metadata(char* file, int cb);
+
+        /**
+         * Populate this chunk's layer array with data from the file array.
+         * @param file the data file
+         * @param cb the byte at which to begin reading
+         * @return index of the byte after the last metadata byte
+         */
+        int deserialize_layers(char* file, int cb);
+
+        /**
+         * Loads this chunk's information from a file. Essentially does a simple
+         * reverse of the serialization process. The "header" bytes, which
+         * always must exist in the file, are processed one-by-one and loaded
+         * into the class member variables to restore the data. Then, data which
+         * may or may not exist (such as stair/spawner locations) is loaded
+         * based on header information. Next, the bytes of the dungeon and
+         * overworld are loaded in a triple-nested for-loop.
+         *
+         * @param file_name - The name of the file from which the chunk will be
+         * loaded.
+         * @param world_row - This chunk's row on the world map.
+         * @param world_col - This chunk's column on the world map.
+         */
+        void deserialize(string file_name);
 
 };
 
