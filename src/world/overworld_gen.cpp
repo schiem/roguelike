@@ -132,18 +132,6 @@ namespace overworld_gen {
         } while (ground.get_tile(coords).can_be_moved_through == false);
 
 
-        int num_trees = (rand() % 30) + 100;
-        for(int i=0;i<num_trees;i++) {
-            int x_coord = rand() % (width-1);
-            int y_coord = rand() % (height-1);
-
-            for(int row=y_coord;row<y_coord+2;row++) {
-                for(int col=x_coord;col<x_coord+2;col++) {
-                    ground.set_tile(row, col, td::BIG_TREE);
-                }
-            }
-        }
-
         if(rand() % 10 == 0) {
            //spawn a grove!
            int radius = (rand() % 5) + 10;
@@ -156,15 +144,6 @@ namespace overworld_gen {
                    ground.set_tile(i,j,td::GRASS_DIRT);
                }
            }
-
-           std::vector<IntPoint> out_circle = bresenham_circle(start, radius);
-           for(int i=0;i<out_circle.size();i+=3) {
-                for(int row=out_circle[i].row;row<out_circle[i].row+2;row++) {
-                    for(int col=out_circle[i].col;col<out_circle[i].col+2;col++) {
-                        ground.set_tile(row, col, td::BIG_TREE);
-                    }
-                }
-            }
 
             int new_rad = radius - ((rand() % 3) + 5);
             std::vector<IntPoint> in_circle = bresenham_circle(start, new_rad);

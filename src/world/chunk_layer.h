@@ -5,6 +5,7 @@
 #include <spawner.h>
 #include <room.h>
 #include <vector>
+#include <plant.h>
 
 typedef std::vector<std::vector<Tile> > TileMatrix;
 class ChunkLayer {
@@ -32,6 +33,12 @@ class ChunkLayer {
          */
         std::vector<WeaponType> weapons;
 
+        /**
+         * The plants present in the given layer.  Shouldn't need to
+         * be a pointer.
+         */
+        std::vector<Plant> plants;
+        
         /**
          * Copies over all values from the given layer to this layer.
          * @param l - The layer from which to swap ownership.
@@ -148,7 +155,7 @@ class ChunkLayer {
          * @return a pointer to the list of item pointers on this chunk.
          * \todo why a pointer and not a reference? There could be a legit reason. -Seth
          */
-        std::vector<Item*>& get_items();
+        std::vector<Item*>* get_items();
 
         /**
          * @return a vector of the equipment on this chunk.
@@ -167,6 +174,13 @@ class ChunkLayer {
          */
         std::vector<Spawner>* get_spawners();
 
+        /**
+         * Returns the list of plants, as a reference.
+         * This is to maintain integrity with the view
+         * on the tiles getting set properly.
+         */
+        std::vector<Plant>* get_plants();
+        
         /**
          * Adds an item to the item list for this chunk.
          * @param item - a pointer to the item to add.
@@ -192,6 +206,11 @@ class ChunkLayer {
         void make_spawner(int depth);
 
         void make_spawner(int depth, IntPoint point);
+
+        /**
+         * Adds a plant to the current layer.
+         */
+        void add_plant(Plant plant);
 
         /**
          * Prints an ASCII representation of the layer to stdout.

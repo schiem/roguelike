@@ -9,6 +9,7 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/items\
               -Isrc/menu\
               -Isrc/animation\
+              -Isrc/plant\
               -Isrc/\
               -pg\
               $(BOOST_CPPFLAGS)
@@ -84,6 +85,7 @@ roguelike_SOURCES = \
     src/animation/frame.cpp\
     src/animation/actor.cpp\
     src/animation/animation_defs.cpp\
+    src/plant/plant.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/defs.h\
@@ -120,6 +122,7 @@ roguelike_SOURCES = \
     src/animation/frame.h\
     src/animation/actor.h\
 	src/animation/animation_defs.h\
+    src/plant/plant.h\
     lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 

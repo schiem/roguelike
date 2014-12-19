@@ -183,3 +183,19 @@ Den* Spawner::get_spawn_at(int i)
 {
     return &spawn_points[i];
 }
+
+bool Spawner::point_in_spawner(int _x, int _y)
+{
+    for(int i=0;i<spawn_points.size();i++)
+    {
+        Den* den = &spawn_points[i];
+        int den_x = x + den->get_x();
+        int den_y = y + den->get_y();
+        if((den_x <= _x && _x <= den_x + den->get_width()) &&
+           (den_y <= _y && _y <= den_y + den->get_height()))
+        {
+            return true;
+        }
+    }
+    return false;
+}

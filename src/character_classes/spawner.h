@@ -170,6 +170,11 @@ class Spawner
          * Accessor for a spawn points pointer.
          */
         Den* get_spawn_at(int i);
+
+        /**
+         * Check if a given point is inside the spawner.
+         */
+        bool point_in_spawner(int _x, int _y);
 };
 
 #endif

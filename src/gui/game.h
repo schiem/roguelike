@@ -149,7 +149,14 @@ class Game
          * Returns whether or not the chunk is currently in the buffer.
          */
         bool in_buffer(int row, int col);
+        
+        /**
+         * Checks whether a set of coordinates (relative to the buffer)
+         * is inside the buffer.
+         */
+        bool coords_in_buffer(int row, int col);
 
+    
         /**
          * Checks if one point is within a certain radius of another.
          * @param chunk The chunk of the point to check.
@@ -200,9 +207,36 @@ class Game
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);
         std::vector<Enemy*> get_vis_enemies();
-        void show_vis_items();
-        void show_vis_spawners();
-        void den_to_canvas(Den* den, IntPoint tm_coords, IntPoint tm_chunk);
+        
+        
+        /**
+         * The function that writes objects from the chunk (items, 
+         * plants, etc.) into the buffer to be rendered.
+         */
+        void show_chunk_objects(); 
+        
+        /**
+         * Writes a list of items into the buffer at a given chunk 
+         * location.
+         */
+        void items_to_buffer(std::vector<Item*>* items, IntPoint chunk);
+
+        /**
+         * Writes a list of spawners into the buffer at a given chunk 
+         * location.
+         */
+        void spawners_to_buffer(std::vector<Spawner>* spawners, IntPoint chunk);
+        
+        /**
+         * Writes the tiles in a den into the buffer.
+         */
+        void den_to_buffer(Den* den, IntPoint chunk, IntPoint coords);
+        
+        /**
+         * Writes plants to the buffer.
+         */
+        void plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk);
+        
         std::vector<Animation>& get_animations();
         void tick_animations(long delta_ms); 
         bool is_vis(IntPoint coords);

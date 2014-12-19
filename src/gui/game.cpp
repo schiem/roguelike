@@ -219,8 +219,6 @@ void Game::refresh() {
             set_tile(i, j, buffer[buffer_tile_row][buffer_tile_col]);
         }
     }
-    show_vis_items();
-    show_vis_spawners();
     draw_visibility_lines();
 }
 
@@ -385,8 +383,8 @@ void Game::move_char(int col_change, int row_change, Character* chara) {
     IntPoint next_coords = IntPoint(next_row, next_col);
     Character* enem = enemy_at_loc(new_chunk, next_coords);
 
-    bool can_move = (chunk_map.get_chunk_abs(new_chunk)->get_tile(chara->get_depth(), next_row, next_col)->
-            can_be_moved_through);
+    IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));
+    bool can_move = buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
 
     if(can_move && (enem == NULL)) {
         col = next_col;
@@ -449,7 +447,7 @@ void Game::set_tile(IntPoint point, Tile* tile) {
 
 Item* Game::item_at_coords(IntPoint coords, IntPoint chunk, int depth) {
 
-    vector<Item*>* item_list = &chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
+    vector<Item*>* item_list = chunk_map.get_chunk_abs(chunk.row,chunk.col)->get_items(depth);
     Item* temp_item = NULL;
     for(int i=0;i<item_list->size();i++) {
 
@@ -510,6 +508,15 @@ bool Game::in_buffer(int row, int col) {
     return chunk_map.out_of_bounds(IntPoint(row, col));
 }
 
+bool Game::coords_in_buffer(int row, int col)
+{
+    bool is_in = row < buffer.size() && row >= 0 && col < buffer[row].size() && col >= 0;
+    if(!is_in)
+    {
+    }
+    return is_in;
+}
+
 bool Game::in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius) {
     IntPoint abs = get_abs(chunk, coords);
     IntPoint tl_abs = get_abs(range_chunk,
@@ -556,59 +563,81 @@ Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
 
 //TODO Write PRE/POST for this function
 
-//...make the rendering system consistant.
-void Game::show_vis_items() {
-    Chunk* current_chunk;
-    for(int i=main_char.get_chunk().row-1; i<=main_char.get_chunk().row+1; i++) {
-        for(int j=main_char.get_chunk().col-1; j<=main_char.get_chunk().col+1; j++) {
-            current_chunk = chunk_map.get_chunk_abs(i,j);
+/**
+ * There are two ways that things get rendered.  The first is that
+ * they get written to the buffer.  The second is that they get passed
+ * into the rendering function.  Essentially: things that move should
+ * get passed into gui_render, because they might change every time.
+ * Things that don't move can be written to the buffer.
+ */
 
-            if(main_char.get_depth() < current_chunk->get_depth()) {
-                vector<Item*>* item_list = &current_chunk->get_items(main_char.get_depth());
 
-                for(int index=0; index < item_list->size(); index++) {
-                    IntPoint chunk = IntPoint(i, j);
-                    IntPoint coords = item_list->at(index)->get_coords();
-                    IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-                    IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
-
-                    if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius)) {
-                        IntPoint vis_coords = get_vis_coords(IntPoint(i, j), item_list->at(index)->get_coords());
-                        canvas[vis_coords.row][vis_coords.col] = item_list->at(index)->get_sprite();
-                    }
-                }
-            }
-        }
-    }
-}
-
-void Game::show_vis_spawners() {
+void Game::show_chunk_objects() {
     std::vector<Spawner>* spawners;
+    std::vector<Item*>* items;
+    std::vector<Plant>* plants;
+    
     Chunk* chunk;
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++) {
+            
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
-
-            if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
+            IntPoint chunk_coords = IntPoint(i, j);
+            
+            if(chunk->get_depth()>main_char.get_depth()) {
                 spawners = chunk->get_spawners(main_char.get_depth());
-                for(int index=0;index<spawners->size();index++)
-                {
-                    Spawner* spawner = &spawners->at(index);
-                    std::vector<Den> dens = spawner->get_spawn_points();
-                    for(int i_s=0;i_s<dens.size();i_s++)
-                    {
-                        Den* den = spawner->get_spawn_at(i_s);
-                        IntPoint coords = IntPoint(spawner->get_y() + den->get_y(), spawner->get_x() + den->get_x());
-                        den_to_canvas(den, coords, IntPoint(i, j));
-                    }
-                }
+                items    = chunk->get_items(main_char.get_depth());
+                plants   = chunk->get_plants(main_char.get_depth()); 
+                
+                plants_to_buffer(plants, chunk_coords);
+                items_to_buffer(items, chunk_coords);
+                spawners_to_buffer(spawners, chunk_coords);
             }
         }
     }
 }
 
-void Game::den_to_canvas(Den* den, IntPoint tm_coords, IntPoint tm_chunk)
+void Game::items_to_buffer(std::vector<Item*>* items, IntPoint chunk)
+{
+    for(int i=0;i<items->size();i++)
+    {
+        IntPoint buffer_coords = get_buffer_coords(chunk, items->at(i)->get_coords());
+        if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+        {
+            buffer[buffer_coords.row][buffer_coords.col] = items->at(i)->get_sprite();
+        }
+    }
+}
+
+void Game::spawners_to_buffer(std::vector<Spawner>* spawners, IntPoint chunk)
+{
+    for(int index=0;index<spawners->size();index++)
+    {
+        Spawner* spawner = &spawners->at(index);
+        std::vector<Den> dens = spawner->get_spawn_points();
+        for(int i=0;i<dens.size();i++)
+        {
+            Den* den = spawner->get_spawn_at(i);
+            IntPoint coords = IntPoint(spawner->get_y() + den->get_y(), spawner->get_x() + den->get_x());
+            den_to_buffer(den, chunk, coords);
+        }
+    }
+}
+
+void Game::plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk)
+{
+    for(int i=0;i<plants->size();i++)
+    {
+        IntPoint buffer_coords = get_buffer_coords(chunk, plants->at(i).get_coords());
+        if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+        {
+            buffer[buffer_coords.row][buffer_coords.col] = plants->at(i).get_sprite();
+        }
+    }
+}
+
+void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
 {
     for(int i=0;i<den->get_height();i++)
     {
@@ -616,13 +645,11 @@ void Game::den_to_canvas(Den* den, IntPoint tm_coords, IntPoint tm_chunk)
         {
             if(den->tile_at(i, j) != tiledef::EMPTY)
             {
-                IntPoint coords = tm_coords + IntPoint(i, j);
-                IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
-                IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
-
-                if(in_range(tm_chunk, coords, main_char.get_chunk(), main_char_coords, radius)) {
-                    IntPoint vis_coords = get_vis_coords(tm_chunk, coords);
-                    canvas[vis_coords.row][vis_coords.col] = den->tile_pointer_at(i, j);
+                IntPoint p_coords = coords + IntPoint(i, j);
+                IntPoint buffer_coords = get_buffer_coords(chunk, p_coords);
+                if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+                {
+                    buffer[buffer_coords.row][buffer_coords.col] = den->tile_pointer_at(i, j);
                 }
             }
         }
@@ -705,6 +732,7 @@ void Game::update_buffer(IntPoint central_chunk) {
             }
         }
     }
+    show_chunk_objects();
     refresh();
 }
 

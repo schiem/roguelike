@@ -17,6 +17,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     up_stair = IntPoint(0, 0);
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
+    plants = std::vector<Plant>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -34,6 +35,7 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     up_stair = IntPoint(0, 0);
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
+    plants = std::vector<Plant>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -57,6 +59,7 @@ void ChunkLayer::clear() {
     up_stair = IntPoint(0, 0);
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
+    plants = std::vector<Plant>();
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -77,6 +80,7 @@ void ChunkLayer::swap(const ChunkLayer& l) {
     num_rooms = l.num_rooms;
     spawners = l.spawners;
     items = l.items;
+    plants = l.plants;
     for(int i = 0; i < l.num_rooms; i++) {
         this->rooms[i] = l.rooms[i];
     }
@@ -117,8 +121,8 @@ TileMatrix& ChunkLayer::get_ground() {
     return ground;
 }
 
-std::vector<Item*>& ChunkLayer::get_items() {
-    return items;
+std::vector<Item*>* ChunkLayer::get_items() {
+    return &items;
 }
 
 std::vector<EquipType>& ChunkLayer::get_equipment() {
@@ -131,6 +135,11 @@ std::vector<WeaponType>& ChunkLayer::get_weapons() {
 
 std::vector<Spawner>* ChunkLayer::get_spawners() {
     return &spawners;
+}
+
+std::vector<Plant>* ChunkLayer::get_plants()
+{
+    return &plants;
 }
 
 void ChunkLayer::add_item(Item* item) {
@@ -178,6 +187,11 @@ void ChunkLayer::make_spawner(int depth) {
 
 void ChunkLayer::make_spawner(int depth, IntPoint point) {
     spawners.push_back(Spawner(point.col, point.row, depth, kobold));
+}
+
+void ChunkLayer::add_plant(Plant plant)
+{
+    plants.push_back(plant);
 }
 
 void ChunkLayer::layer_dump() {
