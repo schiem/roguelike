@@ -20,6 +20,11 @@
  */
 
 #include "menu.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+#include <sstream>
+
+using namespace boost::posix_time;
 
 StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
@@ -52,5 +57,10 @@ Menu* StartMenu::make_selection() {
 }
 
 void StartMenu::create_save_folder() {
-        
+    stringstream ss;
+
+    time_facet *facet = new time_facet("%Y%m%d%H%M%S");
+    ss.imbue(locale(cout.getloc(), facet));
+    ss<<second_clock::local_time();
+    cout<<ss.str()<<endl;
 }

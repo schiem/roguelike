@@ -126,28 +126,6 @@ class Chunk{
          */
         bool find_serialized_chunk();
 
-        /**
-         * Determines the size of the file that will be created for this chunk.
-         * @return integer file size in bytes.
-         */
-        int calculate_file_size(int bytes_per_tile);
-
-        /**
-         * Loads this chunk's information from a file. Essentially does a simple
-         * reverse of the serialization process. The "header" bytes, which
-         * always must exist in the file, are processed one-by-one and loaded
-         * into the class member variables to restore the data. Then, data which
-         * may or may not exist (such as stair/spawner locations) is loaded
-         * based on header information. Next, the bytes of the dungeon and
-         * overworld are loaded in a triple-nested for-loop.
-         *
-         * @param file_name - The name of the file from which the chunk will be
-         * loaded.
-         * @param world_row - This chunk's row on the world map.
-         * @param world_col - This chunk's column on the world map.
-         */
-        void deserialize(string file_name);
-
     public:
         /**
          * Empty constructor. \todo check if this can be empty.
