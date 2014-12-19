@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <vector>
 #define DEBUG 1
+#define SAVE_DIR DATADIR "/save"
 
 /**
  * Holds the different stats of the character.

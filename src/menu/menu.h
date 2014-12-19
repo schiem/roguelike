@@ -208,6 +208,8 @@ class Menu {
 class StartMenu : public Menu
 {
     public:
+        Game* game;
+        WorldMapGUI* world_map_gui;
         /**
          * Constructor for the start_menu.
          * @param _padding Sets the padding for the menu.
@@ -216,8 +218,7 @@ class StartMenu : public Menu
         StartMenu(int _padding, Tile _border, Game &g, WorldMapGUI &wmg);
         Menu* make_selection();
 
-        Game* game;
-        WorldMapGUI* world_map_gui;
+        void create_save_folder();
 };
 
 class LoadMenu : public Menu

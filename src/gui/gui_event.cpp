@@ -211,6 +211,7 @@ void GUI::perform_action_press(SDLKey key) {
             }
             break;
         case SDLK_q:
+            //game_loader::save_game(game, world_map_gui);
             running=false;
             break;
         default:

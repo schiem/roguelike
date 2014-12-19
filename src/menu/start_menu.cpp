@@ -27,7 +27,7 @@ StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Men
     world_map_gui = &wmg;
     id = menu_id::START_MENU;
     next_screen = MAP_SCREEN;
-    title = "POOPBUTTS: THE RECKONING";
+    title = "We need to actually think of a title.";
     options.push_back("New Game");
     options.push_back("Continue");
 }
@@ -36,6 +36,7 @@ Menu* StartMenu::make_selection() {
     switch(selection) {
         case 0:
             toggle_exit();
+            create_save_folder();
             next_screen = MAP_SCREEN;
             return this;
             break;
@@ -48,4 +49,8 @@ Menu* StartMenu::make_selection() {
             return this;
             break;
     }
+}
+
+void StartMenu::create_save_folder() {
+        
 }

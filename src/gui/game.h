@@ -61,6 +61,13 @@ class Game
         bool initialized;
 
         /**
+         * The name of this saved game. Maybe eventually it will be based on a
+         * randomly-generated world name, but for now it is generated based on
+         * the date and time.
+         */
+        string name;
+
+        /**
          * If the game is currently paused.
          * This isn't a game state because things still need to
          * be happening in other game states while the game is paused.
@@ -190,6 +197,7 @@ class Game
 
         //BASE Model access
         Chunk* get_current_chunk();
+        string get_name();
         bool is_initialized();
         void act(long);
         bool is_paused();

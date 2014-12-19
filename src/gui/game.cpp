@@ -112,6 +112,9 @@ Chunk* Game::get_current_chunk() {
     //return &chunk_map[main_char.get_chunk().row][main_char.get_chunk().col];
 }
 
+string Game::get_name() {
+    return name;
+}
 
 bool Game::is_initialized() {
     return initialized;
