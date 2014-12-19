@@ -195,9 +195,6 @@ MapTile Chunk::get_type() {
 
 //===========SERIALIZATION/DESERIALIZATION=========
 
-stringstream Chunk::make_filename() {
-}
-
 int Chunk::calculate_file_size(int bytes_per_tile) {
     return (CHUNK_META_BYTES + 
            (BYTES_PER_TILE * cm.width * cm.height * cm.depth) +
