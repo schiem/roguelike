@@ -41,6 +41,7 @@ Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
     }
 }
 
+
 void Spawner::construct_den()
 {
     switch(spawn_type.den_type)

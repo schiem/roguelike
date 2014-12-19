@@ -61,6 +61,20 @@ Enemy::Enemy(int _x, int _y, int _depth, EnemyType enemy) : Character(_x, _y, _d
     }
 }
 
+Enemy::~Enemy()
+{
+    for(int i=0;i<inventory.size();i++)
+    {
+        delete inventory[i];
+    }
+    for(int i=0;i<equipment.size();i++)
+    {
+        delete equipment[i];
+    }
+
+    delete corpse;
+}
+
 void Enemy::run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)
 {
     switch(id)

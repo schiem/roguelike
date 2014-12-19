@@ -108,6 +108,7 @@ class Spawner
          */
         Spawner(int, int, int,  EnemyType);
         
+        
         /**
          * Make the spawner do it's thing.
          */

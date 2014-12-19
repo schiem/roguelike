@@ -179,6 +179,7 @@ class Character
          * @param _depth The depth in the chunk to place the charcter.
          */
         Character(int _x, int _y, int _depth);
+        
 
         /**
          * Run the actions that happen to the character every frame.
@@ -554,12 +555,18 @@ class Main_Character : public Character{
          * The default constructor.
          */
         Main_Character();
+        
+        /**
+         * Kill it.
+         */
+        ~Main_Character();
 
         /**
          * The basic constructor.
          * @see Character(int _max_health, int _x, int _y, Tile _sprite, Item* _corpse, int _chunk_y, int _chunk_y, int _depth, int _morality, int _attack)
          */
         Main_Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed);
+
 };
 
 #endif
