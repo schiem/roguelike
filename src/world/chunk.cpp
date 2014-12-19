@@ -196,9 +196,17 @@ MapTile Chunk::get_type() {
 //===========SERIALIZATION/DESERIALIZATION=========
 
 int Chunk::calculate_file_size(int bytes_per_tile) {
-    return (CHUNK_META_BYTES + 
-           (BYTES_PER_TILE * cm.width * cm.height * cm.depth) +
-           CHUNKLAYER_META_BYTES * cm.depth );
+    int bytes_per_layer = 0;
+    for(int i = 0; i < cm.depth; i++) {
+        for(int j = 0; j < layers[i].spawners.size(); j++) {
+            bytes_per_layer += 3;
+        }
+        bytes_per_layer += 5;
+    }
+
+    bytes_per_layer += (BYTES_PER_TILE * cm.width * cm.height * cm.depth);
+
+    return (CHUNK_META_BYTES + bytes_per_layer);
 }
 
 int Chunk::serialize_metadata(char* file) {
@@ -214,14 +222,21 @@ int Chunk::serialize_metadata(char* file) {
 
 int Chunk::serialize_layer_metadata(char file[], int cb) {
     int current_byte=cb;
+
     for(int i = 0; i < cm.depth; i++) {
-        file[current_byte] = layers[i].spawner_loc.row;
-        file[current_byte + 1] = layers[i].spawner_loc.col;
-        file[current_byte + 2] = layers[i].down_stair.row;
-        file[current_byte + 3] = layers[i].down_stair.col;
-        file[current_byte + 4] = layers[i].up_stair.row;
-        file[current_byte + 5] = layers[i].up_stair.col;
-        current_byte += 6;
+        file[current_byte + 0] = layers[i].spawners.size();
+        current_byte += 1;
+        for(int j = 0; j < layers[i].spawners.size(); j++) {
+            file[current_byte + 0] = layers[i].spawners[j].get_y();
+            file[current_byte + 1] = layers[i].spawners[j].get_x();
+            file[current_byte + 2] = layers[i].spawners[j].get_enemy_type_id();
+            current_byte += 3;
+        }
+        file[current_byte + 0] = layers[i].down_stair.row;
+        file[current_byte + 1] = layers[i].down_stair.col;
+        file[current_byte + 2] = layers[i].up_stair.row;
+        file[current_byte + 3] = layers[i].up_stair.col;
+        current_byte += 4;
     }
 
     return current_byte;
@@ -300,18 +315,28 @@ void Chunk::deserialize_metadata(char file_data[]) {
 }
 
 int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
+    char num_spawners, spawner_row, spawner_col;
+    EnemyType enemy_type;
     int current_byte = cb;
+
     for(int i = 0; i < cm.depth; i++) {
-        layers[i].spawner_loc.row = file_data[current_byte];
-        layers[i].spawner_loc.col = file_data[current_byte + 1];
-        //layers[i].make_spawner(i,layers[i].spawner_loc);
-        //layers[i].make_spawner(i, IntPoint(25, 25));
-        layers[i].down_stair.row = file_data[current_byte + 2];
-        layers[i].down_stair.col = file_data[current_byte + 3];
-        layers[i].up_stair.row = file_data[current_byte + 4];
-        layers[i].up_stair.col = file_data[current_byte + 5];
+        num_spawners = file_data[current_byte + 0];
+        current_byte += 1;
+
+        for(int j = 0; j < num_spawners; j++) {
+            spawner_row = file_data[current_byte + 0];
+            spawner_col = file_data[current_byte + 1];
+            enemy_type = enemies::ENEMY_LIST[file_data[current_byte+2]];
+            layers[i].make_spawner(i, IntPoint(spawner_row, spawner_col), enemy_type);
+            current_byte += 3;
+        }
+
+        layers[i].down_stair.row = file_data[current_byte + 0];
+        layers[i].down_stair.col = file_data[current_byte + 1];
+        layers[i].up_stair.row = file_data[current_byte + 2];
+        layers[i].up_stair.col = file_data[current_byte + 3];
         layers[i].has_layer_below = (i < (cm.depth - 1));
-        current_byte += 6;
+        current_byte += 4;
     }
 
     return current_byte;
@@ -361,7 +386,7 @@ void Chunk::deserialize(string file_name) {
     layers = vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
 
     current_byte = deserialize_layer_metadata(file_data, current_byte);
-    assert(cm.depth == (current_byte - 4) / 6);
+    //assert(cm.depth == (current_byte - 4) / 6); Unfortunately it's not this simple anymore.
 
     current_byte = deserialize_layers(file_data, current_byte);
     assert(current_byte == file_size);

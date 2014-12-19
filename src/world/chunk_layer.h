@@ -193,6 +193,8 @@ class ChunkLayer {
 
         void make_spawner(int depth, IntPoint point);
 
+        void make_spawner(int depth, IntPoint point, EnemyType enemy);
+
         /**
          * Prints an ASCII representation of the layer to stdout.
          */
