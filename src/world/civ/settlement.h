@@ -181,7 +181,7 @@ class Settlement
          * ability of the city and nation, and determines how high buildings can
          * be built.  Also has an influence on the rate of fires in a town.
          */
-         std::vector<Tile> building_mats;
+        std::vector<Tile> building_mats;
 
     public:
         /**
@@ -203,6 +203,7 @@ class Settlement
         void blocks_from_bst(BSpaceTree& bst);
 
         std::vector<Block>& get_blocks();
+
 };
 
 #endif

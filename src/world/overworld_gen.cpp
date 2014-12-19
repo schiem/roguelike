@@ -132,18 +132,6 @@ namespace overworld_gen {
         } while (ground.get_tile(coords).can_be_moved_through == false);
 
 
-        int num_trees = (rand() % 30) + 100;
-        for(int i=0;i<num_trees;i++) {
-            int x_coord = rand() % (width-1);
-            int y_coord = rand() % (height-1);
-
-            for(int row=y_coord;row<y_coord+2;row++) {
-                for(int col=x_coord;col<x_coord+2;col++) {
-                    ground.set_tile(row, col, td::BIG_TREE);
-                }
-            }
-        }
-
         if(rand() % 10 == 0) {
            //spawn a grove!
            int radius = (rand() % 5) + 10;
@@ -156,15 +144,6 @@ namespace overworld_gen {
                    ground.set_tile(i,j,td::GRASS_DIRT);
                }
            }
-
-           std::vector<IntPoint> out_circle = bresenham_circle(start, radius);
-           for(int i=0;i<out_circle.size();i+=3) {
-                for(int row=out_circle[i].row;row<out_circle[i].row+2;row++) {
-                    for(int col=out_circle[i].col;col<out_circle[i].col+2;col++) {
-                        ground.set_tile(row, col, td::BIG_TREE);
-                    }
-                }
-            }
 
             int new_rad = radius - ((rand() % 3) + 5);
             std::vector<IntPoint> in_circle = bresenham_circle(start, new_rad);
@@ -232,26 +211,21 @@ namespace overworld_gen {
         /**
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
-        Settlement settlement = Settlement(0, 0, 700, 400); 
-        std::vector<Block> blocks = settlement.get_blocks();
-        for(int i=0;i<blocks.size();i++)
+        Settlement settlement = Settlement(0, 0, 80, 40);
+        std::vector<Building> buildings = settlement.get_buildings();
+        for(int j=0;j<buildings.size();j++)
         {
-            std::vector<Building> buildings = blocks[i].get_buildings();
-            for(int j=0;j<buildings.size();j++)
+            for(int k=0;k<buildings[j].get_height();k++)
             {
-                for(int k=0;k<buildings[j].get_height();k++)
+                for(int l=0;l<buildings[j].get_width();l++)
                 {
-                    for(int l=0;l<buildings[j].get_width();l++)
-                    {
-                        int y = blocks[i].get_y() + k + buildings[j].get_y();
-                        int x = blocks[i].get_x() + l + buildings[j].get_x();
-                        Tile chara = buildings[j].tile_at(k, l);
-                        ground.set_tile(y, x, chara);
-                    }
+                    int y = k + buildings[j].get_y();
+                    int x = l + buildings[j].get_x();
+                    Tile chara = buildings[j].tile_at(k, l);
+                    ground.set_tile(y, x, chara);
                 }
             }
         }
         */
-        
     }
 }

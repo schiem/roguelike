@@ -60,12 +60,15 @@ class BSpaceTree
         void delete_all(BSpaceNode* node);
         bool split_node(BSpaceNode* node);
         void generate_tree(BSpaceNode* node);
+        std::string print_tree(BSpaceNode* node, int accum);
     public:
         BSpaceTree(int _height, int _width, int _min_size, int _max_size);
         ~BSpaceTree();
         BSpaceNode* get_root();
         std::vector<BSpaceNode*>& get_leaves();
         void rec_get_leaves(std::vector<BSpaceNode*>& vec, BSpaceNode* node);
+        void dump_all(); 
+
 };    
 
 #endif

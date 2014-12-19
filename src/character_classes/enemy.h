@@ -348,7 +348,11 @@ class Enemy : public Character
          */
         Enemy(int _x, int _y, int _depth, EnemyType enemy);
         
-        
+        /**
+         * The destructoid!
+         */
+        ~Enemy();
+
         /**
          * Wrapper function for calling different types of AI.
          * Depending on the type of enemy, this function will call a different

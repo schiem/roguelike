@@ -1,10 +1,10 @@
 /**
- *  @file MAIN_CHARACTER.CPP
+ *  @file PLANT.CPP
  *  @author Michael Yoder
  *
- * @section LICENSE
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
- *
+ *`
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -19,28 +19,35 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <character.h>
-#include <iostream>
+#include <plant.h>
 
-Main_Character::Main_Character() {
-
-}
-
-Main_Character::Main_Character(std::vector<int> _stats, int _x, int _y,
-                               Tile _sprite,  MiscType _corpse, int _chunk_x, int _chunk_y , int _depth, int _morality, int _speed) :
-    Character(_stats, _x, _y,  _sprite, _corpse, _chunk_x, _chunk_y, _depth, _morality, _speed){
-}
-
-Main_Character::~Main_Character()
+Plant::Plant(int _x, int _y, Tile _sprite)
 {
-    for(int i=0;i<inventory.size();i++)
-    {
-        delete inventory[i];
-        inventory[i] = NULL;
-    }
-    for(int i=0;i<equipment.size();i++)
-    {
-        delete equipment[i];
-        equipment[i] = NULL;
-    }
+    x = _x;
+    y = _y;
+    sprite = _sprite;
+}
+
+Plant::Plant()
+{
+}
+
+int Plant::get_x()
+{
+    return x;
+}
+
+int Plant::get_y()
+{
+    return y;
+}
+
+Tile* Plant::get_sprite()
+{
+    return &sprite;
+}
+
+IntPoint Plant::get_coords()
+{
+    return IntPoint(y, x);
 }

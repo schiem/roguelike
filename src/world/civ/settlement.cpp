@@ -52,7 +52,10 @@ void Settlement::blocks_from_bst(BSpaceTree& tree)
     }
 }
 
+
+
 std::vector<Block>& Settlement::get_blocks()
 {
     return blocks;
 }
+

@@ -99,6 +99,9 @@ void Chunk::build_land_chunk() {
 void Chunk::build_forest_chunk() {
     build_chunk_with_dungeons();
     overworld_gen::build_forest_overworld(layers[0]);
+    
+    //TODO: probably rename this
+    build_some_dank_trees();
 }
 
 
@@ -114,6 +117,51 @@ void Chunk::build_beach_chunk() {
     overworld_gen::build_beach_overworld(layers[0]);
 }
 
+
+void Chunk::build_some_dank_trees()
+{
+    //erm...let's have a tree density
+    //(that's trees/tile sq)
+    float TREE_DENSITY = .1;
+    int num_trees = (cm.width * cm.height) * TREE_DENSITY;
+    for(int i=0;i<num_trees;i++)
+    {
+        int x;
+        int y;
+        do {
+            x = rand() % cm.width;
+            y = rand() % cm.height;
+        } while(can_build(x, y) == false);
+        layers[0].add_plant(Plant(x, y, tiledef::BIG_TREE));
+    }
+}
+
+/**
+ * MAKE THIS GENERALIZED FOR ALL CHUNKS.
+ */
+bool Chunk::can_build(int x, int y)
+{
+    //Should we even be putting a tree here?
+    bool good_tile = layers[0].get_tile(y, x).can_be_moved_through;
+    
+    //Is it in a spawner?
+    bool in_spawner = false;
+    std::vector<Spawner>* spawners = get_spawners(0);
+    for(int i=0;i<spawners->size();i++)
+    {
+        if(spawners->at(i).point_in_spawner(x, y))
+        {
+            in_spawner = true;
+        }
+    }
+
+    //Is it on the stairs?
+    IntPoint stair = get_down_stair(0);
+    bool is_stair = (x == stair.col) && (y == stair.row);
+    
+    return good_tile && !in_spawner && !is_stair;
+}
+
 IntPoint Chunk::get_world_loc() const{
     return IntPoint(cm.world_row, cm.world_col);
 }
@@ -126,16 +174,15 @@ IntPoint Chunk::get_up_stair(int depth) const{
 
 IntPoint Chunk::get_down_stair(int depth) const{
     assert(cm.depth > depth);
-    assert(depth < (cm.depth - 1));
     return layers[depth].down_stair;
 }
 
-vector<Item*>& Chunk::get_items(int depth) {
+std::vector<Item*>* Chunk::get_items(int depth) {
     return layers[depth].get_items();
 }
 
 void Chunk::remove_item(Item* item, int depth) {
-    vector<Item*>* items = &get_items(depth);
+    vector<Item*>* items = get_items(depth);
     for(int i = 0; i<items->size();i++) {
         if(items->at(i) == item) {
             items->erase(items->begin() + i);
@@ -183,6 +230,11 @@ bool Chunk::out_of_bounds(int _depth, int row, int col) const {
 std::vector<Spawner>* Chunk::get_spawners(int _depth) {
     ChunkLayer* current = &layers[_depth];
     return current->get_spawners();
+}
+
+std::vector<Plant>* Chunk::get_plants(int _depth) {
+    ChunkLayer* current = &layers[_depth];
+    return current->get_plants();
 }
 
 void Chunk::dungeon_dump(int _depth) {

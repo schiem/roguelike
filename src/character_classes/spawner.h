@@ -108,6 +108,7 @@ class Spawner
          */
         Spawner(int, int, int,  EnemyType);
         
+        
         /**
          * Make the spawner do it's thing.
          */
@@ -174,6 +175,11 @@ class Spawner
          * Accessor for a spawn points pointer.
          */
         Den* get_spawn_at(int i);
+
+        /**
+         * Check if a given point is inside the spawner.
+         */
+        bool point_in_spawner(int _x, int _y);
 };
 
 #endif

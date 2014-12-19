@@ -43,6 +43,7 @@
 #include <iostream>
 #include <spawner.h>
 #include <int_point.h>
+#include <plant.h>
 
 using namespace std;
 namespace fs=boost::filesystem;
@@ -125,6 +126,28 @@ class Chunk{
          */
         bool find_serialized_chunk();
 
+        /**
+         * Determines the size of the file that will be created for this chunk.
+         * @return integer file size in bytes.
+         */
+        int calculate_file_size(int bytes_per_tile);
+
+        /**
+         * Loads this chunk's information from a file. Essentially does a simple
+         * reverse of the serialization process. The "header" bytes, which
+         * always must exist in the file, are processed one-by-one and loaded
+         * into the class member variables to restore the data. Then, data which
+         * may or may not exist (such as stair/spawner locations) is loaded
+         * based on header information. Next, the bytes of the dungeon and
+         * overworld are loaded in a triple-nested for-loop.
+         *
+         * @param file_name - The name of the file from which the chunk will be
+         * loaded.
+         * @param world_row - This chunk's row on the world map.
+         * @param world_col - This chunk's column on the world map.
+         */
+        void deserialize(string file_name);
+
     public:
         /**
          * Empty constructor. \todo check if this can be empty.
@@ -187,6 +210,16 @@ class Chunk{
         void build_beach_chunk();
 
         /**
+         * Adds some dank trees to the current chunk.
+         */
+        void build_some_dank_trees();
+       
+        /**
+         * Check to see if something can be built at a point in the chunk.
+         */
+        bool can_build(int x, int y);
+
+        /**
          * Returns an IntPoint representing the chunk's location on the world
          * map.
          * \todo Just use an IntPoint to store world location in general.
@@ -214,7 +247,7 @@ class Chunk{
          * @return a pointer to a vector of items in the chunk.
          * \todo should this return a reference instead of a pointer?
          */
-        std::vector<Item*>& get_items(int depth);
+        std::vector<Item*>* get_items(int depth);
 
         /**
          * Will remove the given item from the chunk.
@@ -276,6 +309,11 @@ class Chunk{
          * @return the spawner object
          */
         std::vector<Spawner>* get_spawners(int depth);
+
+        /**
+         * Returns the plants at a given depth.
+         */
+        std::vector<Plant>* get_plants(int depth);
 
         /**
          * Prints a graphical representation of the given layer to stdout.

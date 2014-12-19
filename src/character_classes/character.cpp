@@ -57,6 +57,8 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
 }
 
 
+
+
 void Character::act(long ms)
 {
     timer += ms;
