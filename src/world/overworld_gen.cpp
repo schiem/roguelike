@@ -229,6 +229,7 @@ namespace overworld_gen {
         }
         
         /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
+        /**
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
         Settlement settlement = Settlement(0, 0, 80, 40);
@@ -246,6 +247,6 @@ namespace overworld_gen {
                 }
             }
         }
-        
+        */
     }
 }

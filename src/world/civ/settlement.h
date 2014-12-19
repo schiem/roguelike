@@ -183,9 +183,6 @@ class Settlement
          */
         std::vector<Tile> building_mats;
 
-        std::vector<Building> buildings;
-        void generate_buildings();
-
     public:
         /**
          * The constructor for settlements.  As with buildings, I'm going to end
@@ -207,7 +204,6 @@ class Settlement
 
         std::vector<Block>& get_blocks();
 
-        std::vector<Building>& get_buildings();
 };
 
 #endif

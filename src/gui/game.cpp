@@ -235,8 +235,8 @@ void Game::run_spawners() {
     std::vector<Spawner>* spawners;
     Chunk* chunk;
     IntPoint chunk_coords;
-    for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
-        for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
+    for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
+        for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++) {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
 
             if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
@@ -586,8 +586,8 @@ void Game::show_vis_spawners() {
     std::vector<Spawner>* spawners;
     Chunk* chunk;
     IntPoint chunk_coords;
-    for(int i=main_char.get_chunk().row-1;i<main_char.get_chunk().row+1;i++) {
-        for(int j=main_char.get_chunk().col-1;j<main_char.get_chunk().col+1;j++) {
+    for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
+        for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++) {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
 
             if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
