@@ -100,9 +100,6 @@ void GUI::OnExit() {
 
 
 void GUI::perform_action_press(SDLKey key) {
-    //This is a pointer to a const value. The pointer can be modified, but the
-    //value at the pointer cannot be modified from this name. Future Seth:
-    //remember that 'const' is left-binding.
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
@@ -140,6 +137,9 @@ void GUI::perform_action_press(SDLKey key) {
                 //switch the screen from the map to the game (should only happen at
                 //the beginnig of the game
                 current_screen = GAME_SCREEN;
+                if(!game.is_initialized()) {
+                    game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
+                }
             }
 
             //render the canvas to clear away any old menus that might be lingering

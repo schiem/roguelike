@@ -21,9 +21,11 @@
 
 #include "menu.h"
 
-LoadMenu::LoadMenu(int padding, Tile _border) : Menu(padding, _border)
+LoadMenu::LoadMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
     id = menu_id::LOAD_MENU;
+    game = &g;
+    world_map_gui = &wmg;
     next_screen = GAME_SCREEN;
     options.push_back("Nothing.");
     title="    Load something    ";
@@ -31,10 +33,13 @@ LoadMenu::LoadMenu(int padding, Tile _border) : Menu(padding, _border)
 
 Menu* LoadMenu::make_selection()
 {
+    string filename;
     switch (selection)
     {
         case 0:
             toggle_exit();
+            filename = options[0];
+            game_loader::init_loaded_game(*game, *world_map_gui, filename);
             return this;
             break;
         default:

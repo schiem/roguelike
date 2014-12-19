@@ -21,8 +21,10 @@
 
 #include "menu.h"
 
-StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
+StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
+    game = &g;
+    world_map_gui = &wmg;
     id = menu_id::START_MENU;
     next_screen = MAP_SCREEN;
     title = "POOPBUTTS: THE RECKONING";
@@ -34,10 +36,12 @@ Menu* StartMenu::make_selection() {
     switch(selection) {
         case 0:
             toggle_exit();
+            next_screen = MAP_SCREEN;
             return this;
             break;
         case 1:
-            return new LoadMenu(1, BLOCK_WALL);
+            next_screen = GAME_SCREEN;
+            return new LoadMenu(1, BLOCK_WALL, *game, *world_map_gui);
             break;
         default:
             toggle_exit();

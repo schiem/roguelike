@@ -43,12 +43,6 @@ roguelike_SOURCES = \
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
     src/character_classes/den.cpp\
-    src/gui/gui_loop.cpp\
-	src/gui/gui.cpp\
-	src/gui/virtual_event.cpp\
-	src/gui/gui_event.cpp\
-	src/gui/gui_init.cpp\
-	src/gui/game.cpp\
     src/menu/menu.cpp\
 	src/menu/start_menu.cpp\
     src/menu/main_menu.cpp\
@@ -64,6 +58,13 @@ roguelike_SOURCES = \
     src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\
+    src/gui/gui_loop.cpp\
+	src/gui/gui.cpp\
+	src/gui/virtual_event.cpp\
+	src/gui/gui_event.cpp\
+	src/gui/gui_init.cpp\
+	src/gui/game.cpp\
+	src/gui/game_loader.cpp\
 	src/world/chunk.cpp\
 	src/world/chunk_layer.cpp\
 	src/world/chunk_matrix.cpp\
@@ -102,8 +103,9 @@ roguelike_SOURCES = \
 	src/gui/gui.h\
 	src/gui/game.h\
 	src/gui/game_states.h\
-    src/menu/menu.h\
 	src/gui/world_map_gui.h\
+	src/gui/game_loader.h\
+    src/menu/menu.h\
 	src/world/chunk.h\
 	src/world/chunk_layer.h\
 	src/world/chunk_matrix.h\

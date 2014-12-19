@@ -30,6 +30,8 @@
 #include <game_states.h>
 #include <item.h>
 #include <game.h>
+#include <world_map_gui.h>
+#include <game_loader.h>
 #include <character.h>
 #include <helper.h>
 
@@ -211,8 +213,11 @@ class StartMenu : public Menu
          * @param _padding Sets the padding for the menu.
          * @param _border Sets the border for the menu.
          */
-        StartMenu(int _padding, Tile _border);
+        StartMenu(int _padding, Tile _border, Game &g, WorldMapGUI &wmg);
         Menu* make_selection();
+
+        Game* game;
+        WorldMapGUI* world_map_gui;
 };
 
 class LoadMenu : public Menu
@@ -224,8 +229,11 @@ class LoadMenu : public Menu
          * @param _border Sets the border for the menu.
          */
 
-        LoadMenu(int _padding, Tile _border);
+        LoadMenu(int _padding, Tile _border, Game &g, WorldMapGUI &wmg);
         Menu* make_selection();
+
+        Game* game;
+        WorldMapGUI* world_map_gui;
 };
 
 /**
