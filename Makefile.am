@@ -60,6 +60,7 @@ roguelike_SOURCES = \
     src/menu/escape_menu.cpp\
     src/menu/audio_menu.cpp\
     src/menu/info_menu.cpp\
+	src/menu/load_menu.cpp\
     src/gui/gui_cleanup.cpp\
 	src/gui/gui_render.cpp\
 	src/gui/world_map_gui.cpp\

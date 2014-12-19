@@ -36,6 +36,23 @@
 using namespace tiledef;
 using namespace std;
 
+namespace menu_id {
+    enum Menu_ID {
+        NOTHING,
+        AUDIO_MENU,
+        EQUIP_ITEM,
+        EQUIPMENT_MENU,
+        ESCAPE_MENU,
+        FONT_MENU,
+        INVENTORY_MENU,
+        ITEM_MENU,
+        MAIN_MENU,
+        START_MENU,
+        INFO_MENU,
+        LOAD_MENU
+    };
+}
+
 /**
  * The basis of the menuing system for the roguelike.
  * Each different type of menu is going to be a subclass that overloads the make_selection() function 
@@ -196,7 +213,19 @@ class StartMenu : public Menu
          */
         StartMenu(int _padding, Tile _border);
         Menu* make_selection();
-        
+};
+
+class LoadMenu : public Menu
+{
+    public:
+        /**
+         * Constructor for the load menu.
+         * @param _padding Sets the padding for the menu.
+         * @param _border Sets the border for the menu.
+         */
+
+        LoadMenu(int _padding, Tile _border);
+        Menu* make_selection();
 };
 
 /**

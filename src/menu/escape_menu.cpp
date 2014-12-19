@@ -23,7 +23,7 @@
 
 EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    id = 4;
+    id = menu_id::ESCAPE_MENU;
     game = _game;
     next_screen = GAME_SCREEN;
     options.push_back("Resume");

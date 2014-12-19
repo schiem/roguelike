@@ -23,7 +23,7 @@
 
 InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
-    id = 10;
+    id = menu_id::INFO_MENU;
     game = _game;
     item = _item;
     next_screen = GAME_SCREEN;

@@ -23,7 +23,7 @@
 
 InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    id = 6;
+    id = menu_id::INVENTORY_MENU;
     game = _game;
     next_screen = GAME_SCREEN;
     items = game->main_char.get_inventory();

@@ -23,16 +23,25 @@
 
 StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
 {
-    id = 9;
+    id = menu_id::START_MENU;
     next_screen = MAP_SCREEN;
     title = "POOPBUTTS: THE RECKONING";
     options.push_back("New Game");
     options.push_back("Continue");
 }
 
-Menu* StartMenu::make_selection()
-{
-   toggle_exit();
-   return this;
+Menu* StartMenu::make_selection() {
+    switch(selection) {
+        case 0:
+            toggle_exit();
+            return this;
+            break;
+        case 1:
+            return new LoadMenu(1, BLOCK_WALL);
+            break;
+        default:
+            toggle_exit();
+            return this;
+            break;
+    }
 }
-

@@ -113,15 +113,17 @@ void GUI::perform_action_press(SDLKey key) {
                 if(menu == NULL)
                 {
                     running = false;
-                    menu = new EscapeMenu(1, BLOCK_WALL, &game);
+                    menu = new EscapeMenu(1, BLOCK_WALL, &game); //wat
                     current_screen = menu->get_screen();
                 }
 
                 //if the menu is the font menu, then we should change the font
-                if(menu->get_id() == 5)
+                if(menu->get_id() == menu_id::FONT_MENU)
                 {
                     //only change the font if a font has been selected (i.e. they didn't
                     //push back
+                    //hoohoohoo! Casting to a subclass! Dirty and dangerous!
+                    //(But it works fine here imo)
                     if(((FontMenu*)menu)->get_font() != "")
                     {
                         load_font(((FontMenu*)menu)->get_font());
