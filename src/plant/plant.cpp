@@ -20,12 +20,19 @@
  */
 
 #include <plant.h>
-
+/**
 Plant::Plant(int _x, int _y, Tile _sprite)
 {
     x = _x;
     y = _y;
     sprite = _sprite;
+}
+*/
+Plant::Plant(int _x, int _y, PlantType plant)
+{
+    x = _x;
+    y = _y;
+    sprites = plant.sprites;
 }
 
 Plant::Plant()
@@ -42,9 +49,14 @@ int Plant::get_y()
     return y;
 }
 
-Tile* Plant::get_sprite()
+Tile* Plant::get_sprite(int y, int x)
 {
-    return &sprite;
+    return &sprites[y][x];
+}
+
+TileMatrix* Plant::get_sprites()
+{
+    return &sprites;
 }
 
 IntPoint Plant::get_coords()

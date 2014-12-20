@@ -632,10 +632,18 @@ void Game::plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk)
 {
     for(int i=0;i<plants->size();i++)
     {
-        IntPoint buffer_coords = get_buffer_coords(chunk, plants->at(i).get_coords());
-        if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+        TileMatrix* plant_sprites = plants->at(i).get_sprites();
+        for(int j=0;j<plant_sprites->size();j++)
         {
-            buffer[buffer_coords.row][buffer_coords.col] = plants->at(i).get_sprite();
+            for(int k=0;k<plant_sprites->at(j).size();k++)
+            {
+                IntPoint coords = plants->at(i).get_coords() + IntPoint(j, k);
+                IntPoint buffer_coords = get_buffer_coords(chunk, coords);
+                if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+                {
+                    buffer[buffer_coords.row][buffer_coords.col] = plants->at(i).get_sprite(j, k);
+                }
+            }
         }
     }
 }

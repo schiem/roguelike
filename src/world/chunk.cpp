@@ -54,95 +54,7 @@ bool Chunk::find_serialized_chunk() {
     return false;
 }
 
-<<<<<<< HEAD
-int Chunk::calculate_file_size(int bytes_per_tile) {
-    return (CHUNK_META_BYTES + 
-           (BYTES_PER_TILE * cm.width * cm.height * cm.depth) +
-           CHUNKLAYER_META_BYTES * cm.depth );
-}
 
-void Chunk::deserialize(string file_name) {
-    //Open the data file.
-    ifstream chunk_data_file(file_name.c_str(),
-            std::ifstream::in | std::ifstream::binary);
-
-    //Stat the file to get the file size easily.
-    int file_size = fs::file_size(file_name);
-    //Initialize an array for the file data.
-    /** \todo does this have to be dynamically allocated? */
-    //Not if you declare file sized const.
-    char * file_data = new char[file_size];
-    //Read the entire file into the file_data array.
-    chunk_data_file.read(file_data, file_size);
-
-    /*
-     * Simply reversing the serialization.
-     */
-    cm.width = file_data[0];
-    cm.height = file_data[1];
-    cm.depth = file_data[2];
-    cm.chunk_type_id = file_data[3];
-    cm.world_row = file_data[4];
-    cm.world_col = file_data[5];
-
-    /*
-     * The map tile ID was stored, now we just reverse it to get the chunk type.
-     */
-    chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
-    //Build the overworld.
-    layers = vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
-
-    int current_byte = CHUNK_META_BYTES;
-
-    /*
-     * Finding the dungeon stairs, if they have been serialized.
-     */
-    /**
-     * TODO still differentiating between overworld and dungeons here.
-     */
-    for(int i = 0; i < cm.depth; i++) {
-        layers[i].spawner_loc.row = file_data[current_byte];
-        layers[i].spawner_loc.col = file_data[current_byte + 1];
-        //layers[i].make_spawner(i,layers[i].spawner_loc);
-        //layers[i].make_spawner(i, IntPoint(25, 25));
-        layers[i].down_stair.row = file_data[current_byte + 2];
-        layers[i].down_stair.col = file_data[current_byte + 3];
-        layers[i].up_stair.row = file_data[current_byte + 4];
-        layers[i].up_stair.col = file_data[current_byte + 5];
-        layers[i].has_layer_below = (i < (cm.depth - 1));
-        current_byte += 6;
-    }
-
-    assert(cm.depth == (current_byte - 4) / 6);
-
-    Tile current_tile;
-    unsigned int tile_id;
-    bool seen;
-    //Undo the serialization.
-    for(int i = 0; i < cm.depth; i++) {
-        for(int j = 0; j < cm.height; j++) {
-            for(int k = 0; k < cm.width; k++) {
-                tile_id = (file_data[current_byte]);
-                seen = file_data[current_byte + 1];
-
-                current_tile=tiledef::TILE_INDEX[tile_id];
-                current_tile.seen = seen;
-
-                set_tile(i, j, k, current_tile);
-                current_byte += BYTES_PER_TILE;
-            }
-        }
-    }
-
-    assert(current_byte == file_size);
-
-    //Cleaning up.
-    delete [] file_data;
-    chunk_data_file.close();
-}
-
-=======
->>>>>>> 201bf24da2d643525f3a5b6357d86569ab1b3bab
 void Chunk::init(MapTile tile_type, int world_row, int world_col) {
     chunk_type = tile_type;
     cm.world_row = world_row;
@@ -211,7 +123,7 @@ void Chunk::build_some_dank_trees()
 {
     //erm...let's have a tree density
     //(that's trees/tile sq)
-    float TREE_DENSITY = .1;
+    float TREE_DENSITY = .01;
     int num_trees = (cm.width * cm.height) * TREE_DENSITY;
     for(int i=0;i<num_trees;i++)
     {
@@ -221,7 +133,7 @@ void Chunk::build_some_dank_trees()
             x = rand() % cm.width;
             y = rand() % cm.height;
         } while(can_build(x, y) == false);
-        layers[0].add_plant(Plant(x, y, tiledef::BIG_TREE));
+        layers[0].add_plant(Plant(x, y, plants::tree));
     }
 }
 

@@ -30,6 +30,8 @@
  * whatnot.
  */
 
+typedef std::vector<std::vector<Tile> > TileMatrix;
+
 class Plant
 {
     private:
@@ -48,14 +50,19 @@ class Plant
          * TODO: Make this a 2d vector so that plants
          * can be as biiiiig as we want them to be.
          */
-        Tile sprite;
+        TileMatrix sprites;
     public:
         
         /**
          * Basic constructor.
          */
-        Plant(int _x, int _y, Tile _sprite);
+        //Plant(int _x, int _y, Tile _sprite);
         
+        /**
+         * Constructor taking in a plant type.
+         */
+        Plant(int _x, int _y, PlantType plant);
+
         /**
          * Empty constructor.
          */
@@ -74,7 +81,12 @@ class Plant
         /**
          *  Public accessor for the sprite.
          */
-        Tile* get_sprite();
+        Tile* get_sprite(int y, int x);
+
+        /**
+         * Public accessor for tilematrix.
+         */
+        TileMatrix* get_sprites();
 
         /**
          * Returns the coordinates as an IntPoint.

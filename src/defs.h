@@ -692,4 +692,21 @@ namespace enemies
     extern int NUM_ENEMIES;
 }
 
+/**
+ * Holds the information for the plant prototypes.
+ * for now, it's really not much to look at.
+ */
+struct PlantType
+{
+    std::vector<std::vector<Tile> > sprites;
+};
+
+namespace plants
+{
+    extern PlantType tree;
+}
+
+
+std::vector<std::vector<Tile> > construct_big_trees();
+
 #endif

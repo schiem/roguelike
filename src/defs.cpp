@@ -187,3 +187,25 @@ namespace enemies
     EnemyType ENEMY_LIST[2] = {kobold, rabbit};
     int NUM_ENEMIES = 2; 
 }
+
+namespace plants
+{
+    PlantType tree = {construct_big_trees()};
+}
+
+/**************************CONSTRUCTION FUNCTIONS********************/
+std::vector<std::vector<Tile> > construct_big_trees()
+{
+    std::vector<std::vector<Tile> > tree;
+    tree.resize(2);
+    for(int i=0;i<2;i++)
+    {
+        tree[i].resize(2);
+        for(int j=0;j<2;j++)
+        {
+            tree[i][j] = tiledef::BIG_TREE;
+        }
+    }
+    return tree;
+}
+
