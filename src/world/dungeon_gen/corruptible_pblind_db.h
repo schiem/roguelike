@@ -24,6 +24,8 @@
 #define _CORRUPTIBLE_PBLIND_DB_H
 
 #include <procedurally_blind_db.h>
+#include <int_point.h>
+#include <vector>
 
 /**
  * CORRUPTIBLE PROCEDURALLY-BLIND DUNGEON GENERATION

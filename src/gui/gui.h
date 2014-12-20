@@ -26,18 +26,19 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <chunk.h>
 #include <virtual_event.h>
 #include <game.h>
 #include <defs.h>
-#include <world_map.h>
 #include <world_map_gui.h>
 #include <color_def.h>
-#include <menu.h>
 #include <game_states.h>
 #include <stdio.h>
 #include <fstream>
 #include <debug.h>
+
+//forward declarations
+class Menu;
+
 
 namespace pt = boost::posix_time; 
 class GUI : public VirtualEvent {

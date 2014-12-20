@@ -22,7 +22,6 @@
 #ifndef ROOM_H
 #define ROOM_H
 #include <int_point.h>
-#include <iostream>
 
 /**
  * A representation of a room in a dungeon. Used most often to place objects in

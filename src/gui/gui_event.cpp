@@ -21,6 +21,7 @@
  */
 
 #include <gui.h>
+#include <menu.h>
 
 /**
  * \todo find a better way to do key input; currently we're using polling, which

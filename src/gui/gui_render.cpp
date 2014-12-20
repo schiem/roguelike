@@ -19,6 +19,7 @@
 
 #include <gui.h>
 #include <animation.h>
+#include <menu.h>
 
 
 void GUI::OnRender() {

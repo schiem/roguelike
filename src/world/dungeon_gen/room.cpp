@@ -20,6 +20,7 @@
  */
 
 #include <room.h>
+#include <iostream>
 
 Room::Room() {
 

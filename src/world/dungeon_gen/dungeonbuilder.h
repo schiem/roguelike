@@ -24,18 +24,13 @@
 #define DUNGEONBUILDER_H
 
 
-#include <iostream>
-#include <string>
-#include <stdlib.h>
-#include <math.h> //floor, ceil
-#include <assert.h>
 #include <bitset>
-
-#include <int_point.h>
-#include <room.h>
-#include <defs.h>
-#include <chunk_layer.h>
 #include <ASCII_Lib.h>
+
+//forward declarations
+class IntPoint;
+class ChunkLayer;
+class Room;
 
 
 using namespace std;

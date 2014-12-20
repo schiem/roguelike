@@ -21,6 +21,14 @@
  */
 
 #include <dungeonbuilder.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <math.h> 
+#include <assert.h>
+#include <room.h>
+#include <defs.h>
+#include <chunk_layer.h>
 
 namespace td=tiledef;
 

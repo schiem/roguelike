@@ -21,6 +21,7 @@
  */
 
 #include <corruptible_pblind_db.h>
+#include <chunk_layer.h>
 
 using namespace std;
 namespace td=tiledef;

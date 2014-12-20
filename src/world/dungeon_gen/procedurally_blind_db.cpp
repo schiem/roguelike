@@ -21,6 +21,7 @@
  */
 
 #include <procedurally_blind_db.h>
+#include <chunk_layer.h>
 
 namespace td=tiledef;
 namespace db=dungeon_builder;

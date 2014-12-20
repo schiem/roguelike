@@ -18,6 +18,7 @@
  */
 
 #include <gui.h>
+#include <menu.h>
 
 //this is for backward compatibility with c98 standard
 //gross...

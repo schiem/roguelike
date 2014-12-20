@@ -27,8 +27,8 @@
 
 #include <int_point.h>
 #include <world_map.h>
+#include <chunk.h>
 
-class Chunk;
 
 /**
  * The primary data model and memory-loading bottleneck.
