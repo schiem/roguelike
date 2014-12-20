@@ -69,6 +69,7 @@ void Chunk::deserialize(string file_name) {
     int file_size = fs::file_size(file_name);
     //Initialize an array for the file data.
     /** \todo does this have to be dynamically allocated? */
+    //Not if you declare file sized const.
     char * file_data = new char[file_size];
     //Read the entire file into the file_data array.
     chunk_data_file.read(file_data, file_size);
