@@ -222,7 +222,13 @@ class Game
          * plants, etc.) into the buffer to be rendered.
          */
         void show_chunk_objects(); 
-        
+       
+        /**
+         * Adds a tile to the buffer at the given coordinates, after
+         * checking if the tile is in the buffer.
+         */
+        void add_tile_to_buffer(IntPoint coords, IntPoint chunk, Tile* tile);
+
         /**
          * Writes a list of items into the buffer at a given chunk 
          * location.

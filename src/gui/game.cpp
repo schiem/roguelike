@@ -287,9 +287,7 @@ void Game::run_enemies(long delta_ms) {
             for(int j=0;j<item_list->size();j++)
             {
                 Item* item = item_list->at(j);
-                enemy->drop_item(item);
-                item->set_coords(IntPoint(enemy->get_y(), enemy->get_x()));
-                current_chunk->add_item(item, enemy->get_depth());
+                drop_item(item, enemy);
             }
             remove_targets(enemy_list[i]);
             delete enemy_list[i];
@@ -421,10 +419,16 @@ void Game::get_item(Character* chara)
 
 void Game::drop_item(Item* item, Character* chara)
 {
+    IntPoint coords = IntPoint(chara->get_y(), chara->get_x());
+    IntPoint chunk = IntPoint(chara->get_chunk_y(), chara->get_chunk_x());
+    Chunk* current_chunk = chunk_map.get_chunk_abs(chunk.row, chunk.col);
+    
     chara->drop_item(item);
-    item->set_coords(IntPoint(chara->get_y(), chara->get_x()));
-    Chunk* current_chunk = chunk_map.get_chunk_abs(chara->get_chunk_y(), chara->get_chunk_x());
+    item->set_coords(coords);
+    
     current_chunk->add_item(item, chara->get_depth());
+    
+    add_tile_to_buffer(chunk, coords, item->get_sprite());
 }
 
 /*========= PRIVATE METHODS ============*/
@@ -601,15 +605,21 @@ void Game::show_chunk_objects() {
     }
 }
 
+void Game::add_tile_to_buffer(IntPoint chunk, IntPoint coords, Tile* tile)
+{
+    IntPoint buffer_coords = get_buffer_coords(chunk, coords);
+    if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+    {
+        buffer[buffer_coords.row][buffer_coords.col] = tile;
+    }
+}
+
+
 void Game::items_to_buffer(std::vector<Item*>* items, IntPoint chunk)
 {
     for(int i=0;i<items->size();i++)
     {
-        IntPoint buffer_coords = get_buffer_coords(chunk, items->at(i)->get_coords());
-        if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
-        {
-            buffer[buffer_coords.row][buffer_coords.col] = items->at(i)->get_sprite();
-        }
+        add_tile_to_buffer(chunk, items->at(i)->get_coords(), items->at(i)->get_sprite());
     }
 }
 
@@ -638,11 +648,7 @@ void Game::plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk)
             for(int k=0;k<plant_sprites->at(j).size();k++)
             {
                 IntPoint coords = plants->at(i).get_coords() + IntPoint(j, k);
-                IntPoint buffer_coords = get_buffer_coords(chunk, coords);
-                if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
-                {
-                    buffer[buffer_coords.row][buffer_coords.col] = plants->at(i).get_sprite(j, k);
-                }
+                add_tile_to_buffer(chunk, coords, plants->at(i).get_sprite(j, k));
             }
         }
     }
@@ -657,11 +663,7 @@ void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
             if(den->tile_at(i, j) != tiledef::EMPTY)
             {
                 IntPoint p_coords = coords + IntPoint(i, j);
-                IntPoint buffer_coords = get_buffer_coords(chunk, p_coords);
-                if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
-                {
-                    buffer[buffer_coords.row][buffer_coords.col] = den->tile_pointer_at(i, j);
-                }
+                add_tile_to_buffer(chunk, p_coords, den->tile_pointer_at(i, j));
             }
         }
     }
