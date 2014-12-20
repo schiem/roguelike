@@ -73,6 +73,7 @@ void GUI::clear_screen()
 
 void GUI::render_canvas()
 {
+    clear_screen();
     TilePointerMatrix tm = game.get_canvas();
     for(size_t i = 0; i < tm.size(); i++) {
         for(size_t j = 0; j < tm[i].size(); j++) {
