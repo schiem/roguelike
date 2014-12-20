@@ -90,7 +90,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //This is the "starting" chunk (arbitrary).
     
     //TODO get this clutter somewhere else
-    int main_stat_array[NUM_STATS] = {10, 2, 100, 10, 10, 10}; 
+    int main_stat_array[NUM_STATS] = {100, 2, 100, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
     main_char = Main_Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
@@ -112,6 +112,9 @@ Chunk* Game::get_current_chunk() {
     //return &chunk_map[main_char.get_chunk().row][main_char.get_chunk().col];
 }
 
+string Game::get_name() {
+    return name;
+}
 
 bool Game::is_initialized() {
     return initialized;

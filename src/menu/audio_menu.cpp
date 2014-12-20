@@ -23,7 +23,7 @@
 
 AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    id = 1;
+    id = menu_id::AUDIO_MENU;
     game = _game;
     next_screen = GAME_SCREEN;
     title = "Silly, there's no audio yet.  Maybe Seth can compose something later...";

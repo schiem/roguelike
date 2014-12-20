@@ -100,9 +100,6 @@ void GUI::OnExit() {
 
 
 void GUI::perform_action_press(SDLKey key) {
-    //This is a pointer to a const value. The pointer can be modified, but the
-    //value at the pointer cannot be modified from this name. Future Seth:
-    //remember that 'const' is left-binding.
     switch (key) {
         case SDLK_RETURN:
             if(current_screen == MENU_SCREEN) {
@@ -113,15 +110,17 @@ void GUI::perform_action_press(SDLKey key) {
                 if(menu == NULL)
                 {
                     running = false;
-                    menu = new EscapeMenu(1, BLOCK_WALL, &game);
+                    menu = new EscapeMenu(1, BLOCK_WALL, &game); //wat
                     current_screen = menu->get_screen();
                 }
 
                 //if the menu is the font menu, then we should change the font
-                if(menu->get_id() == 5)
+                if(menu->get_id() == menu_id::FONT_MENU)
                 {
                     //only change the font if a font has been selected (i.e. they didn't
                     //push back
+                    //hoohoohoo! Casting to a subclass! Dirty and dangerous!
+                    //(But it works fine here imo)
                     if(((FontMenu*)menu)->get_font() != "")
                     {
                         load_font(((FontMenu*)menu)->get_font());
@@ -138,6 +137,9 @@ void GUI::perform_action_press(SDLKey key) {
                 //switch the screen from the map to the game (should only happen at
                 //the beginnig of the game
                 current_screen = GAME_SCREEN;
+                if(!game.is_initialized()) {
+                    game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
+                }
             }
 
             //render the canvas to clear away any old menus that might be lingering
@@ -209,6 +211,7 @@ void GUI::perform_action_press(SDLKey key) {
             }
             break;
         case SDLK_q:
+            //game_loader::save_game(game, world_map_gui);
             running=false;
             break;
         default:

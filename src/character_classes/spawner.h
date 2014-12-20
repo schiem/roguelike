@@ -162,6 +162,11 @@ class Spawner
         int get_depth();
 
         /**
+         * Public accessor for enemy type.
+         */
+        int get_enemy_type_id();
+
+        /**
          * Accessor for spawn_points.
          */
         std::vector<Den>& get_spawn_points();

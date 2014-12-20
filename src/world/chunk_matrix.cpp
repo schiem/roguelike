@@ -54,13 +54,13 @@ void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_m
 
 void ChunkMatrix::pretty_print() {
     for(int row = 0; row < diameter; row++) {
-        cout<<endl<<"--------------------------"<<endl;
+        cout<<endl<<"----------------------------"<<endl;
         for(int col = 0; col<diameter; col++) {
             cout<<"|"<<model[row][col].get_world_loc();
         }
         cout<<"|";
     }
-    cout<<endl<<"--------------------------"<<endl;
+    cout<<endl<<"----------------------------"<<endl;
 }
 
 bool ChunkMatrix::out_of_bounds(IntPoint local_chunk_point) {
@@ -208,7 +208,6 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     offset.row += directions.row;
     offset.col += directions.col;
     cout<<"New offset: "<<offset.row<<", "<<offset.col<<endl;
-    pretty_print();
 }
 
 void ChunkMatrix::serialize_all()
@@ -221,4 +220,3 @@ void ChunkMatrix::serialize_all()
         }
     }
 }
-

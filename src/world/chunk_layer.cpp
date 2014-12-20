@@ -181,12 +181,16 @@ void ChunkLayer::make_spawner(int depth) {
     } while(spawn==down_stair || spawn == up_stair);
 
     spawner_loc = spawn;
-    spawners.push_back(Spawner(spawn.col, spawn.row, depth, kobold));
+    spawners.push_back(Spawner(spawn.col, spawn.row, depth, enemies::kobold));
     ground[spawn.row][spawn.col] = td::KOBOLD_SPAWNER;
 }
 
 void ChunkLayer::make_spawner(int depth, IntPoint point) {
-    spawners.push_back(Spawner(point.col, point.row, depth, kobold));
+    spawners.push_back(Spawner(point.col, point.row, depth, enemies::kobold));
+}
+
+void ChunkLayer::make_spawner(int depth, IntPoint point, EnemyType enemy) {
+    spawners.push_back(Spawner(point.col, point.row, depth, enemy));
 }
 
 void ChunkLayer::add_plant(Plant plant)

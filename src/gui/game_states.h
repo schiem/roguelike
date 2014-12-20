@@ -21,17 +21,16 @@
 #define _GAME_STATES_H
 
 enum Screen {
-            MAP_SCREEN,
-            GAME_SCREEN,
-            DEATH_SCREEN,
-            MENU_SCREEN,
-            DEBUG_CONSOLE
-        };
+    MAP_SCREEN,
+    GAME_SCREEN,
+    DEATH_SCREEN,
+    MENU_SCREEN,
+    DEBUG_CONSOLE
+};
 
 enum KeyState {
-            GAME,
-            TEXT
+    GAME,
+    TEXT
 };
+
 #endif
-
-

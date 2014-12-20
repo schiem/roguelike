@@ -20,19 +20,47 @@
  */
 
 #include "menu.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+#include <sstream>
 
-StartMenu::StartMenu(int padding, Tile _border) : Menu(padding, _border)
+using namespace boost::posix_time;
+
+StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
-    id = 9;
+    game = &g;
+    world_map_gui = &wmg;
+    id = menu_id::START_MENU;
     next_screen = MAP_SCREEN;
-    title = "POOPBUTTS: THE RECKONING";
+    title = "We need to actually think of a title.";
     options.push_back("New Game");
     options.push_back("Continue");
 }
 
-Menu* StartMenu::make_selection()
-{
-   toggle_exit();
-   return this;
+Menu* StartMenu::make_selection() {
+    switch(selection) {
+        case 0:
+            toggle_exit();
+            create_save_folder();
+            next_screen = MAP_SCREEN;
+            return this;
+            break;
+        case 1:
+            next_screen = GAME_SCREEN;
+            return new LoadMenu(1, BLOCK_WALL, *game, *world_map_gui);
+            break;
+        default:
+            toggle_exit();
+            return this;
+            break;
+    }
 }
 
+void StartMenu::create_save_folder() {
+    stringstream ss;
+
+    time_facet *facet = new time_facet("%Y%m%d%H%M%S");
+    ss.imbue(locale(cout.getloc(), facet));
+    ss<<second_clock::local_time();
+    cout<<ss.str()<<endl;
+}

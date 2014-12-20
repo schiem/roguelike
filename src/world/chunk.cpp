@@ -54,6 +54,7 @@ bool Chunk::find_serialized_chunk() {
     return false;
 }
 
+<<<<<<< HEAD
 int Chunk::calculate_file_size(int bytes_per_tile) {
     return (CHUNK_META_BYTES + 
            (BYTES_PER_TILE * cm.width * cm.height * cm.depth) +
@@ -140,6 +141,8 @@ void Chunk::deserialize(string file_name) {
     chunk_data_file.close();
 }
 
+=======
+>>>>>>> 201bf24da2d643525f3a5b6357d86569ab1b3bab
 void Chunk::init(MapTile tile_type, int world_row, int world_col) {
     chunk_type = tile_type;
     cm.world_row = world_row;
@@ -331,21 +334,23 @@ MapTile Chunk::get_type() {
     return chunk_type;
 }
 
-void Chunk::serialize() {
-    /**
-    if((cm.depth < 0) || (cm.depth > 10)) {
-        cout<<"CHUNK DEPTH: "<<cm.depth<<endl;
+//===========SERIALIZATION/DESERIALIZATION=========
+
+int Chunk::calculate_file_size(int bytes_per_tile) {
+    int bytes_per_layer = 0;
+    for(int i = 0; i < cm.depth; i++) {
+        for(int j = 0; j < layers[i].spawners.size(); j++) {
+            bytes_per_layer += 3;
+        }
+        bytes_per_layer += 5;
     }
-    */
-    stringstream ss;
-    ss<<"chunk"<<cm.world_row<<"_"<<cm.world_col;
 
-    //THIS MUST BE CHANGED EVERY TIME THE SERIALIZATION FUNCTION IS CHANGED.
-    int bytes_per_tile = 2; //tile_id and seen
-    int file_size = calculate_file_size(bytes_per_tile);
+    bytes_per_layer += (BYTES_PER_TILE * cm.width * cm.height * cm.depth);
 
-    char file[file_size];
+    return (CHUNK_META_BYTES + bytes_per_layer);
+}
 
+int Chunk::serialize_metadata(char* file) {
     file[0] = cm.width;
     file[1] = cm.height;
     file[2] = cm.depth;
@@ -353,52 +358,182 @@ void Chunk::serialize() {
     file[4] = cm.world_row;
     file[5] = cm.world_col;
 
-    int current_byte = 6;
+    return 6;
+}
+
+int Chunk::serialize_layer_metadata(char file[], int cb) {
+    int current_byte=cb;
 
     for(int i = 0; i < cm.depth; i++) {
-        file[current_byte] = layers[i].spawner_loc.row;
-        file[current_byte + 1] = layers[i].spawner_loc.col;
-        file[current_byte + 2] = layers[i].down_stair.row;
-        file[current_byte + 3] = layers[i].down_stair.col;
-        file[current_byte + 4] = layers[i].up_stair.row;
-        file[current_byte + 5] = layers[i].up_stair.col;
-        current_byte += 6;
+        file[current_byte + 0] = layers[i].spawners.size();
+        current_byte += 1;
+        for(int j = 0; j < layers[i].spawners.size(); j++) {
+            file[current_byte + 0] = layers[i].spawners[j].get_y();
+            file[current_byte + 1] = layers[i].spawners[j].get_x();
+            file[current_byte + 2] = layers[i].spawners[j].get_enemy_type_id();
+            current_byte += 3;
+        }
+        file[current_byte + 0] = layers[i].down_stair.row;
+        file[current_byte + 1] = layers[i].down_stair.col;
+        file[current_byte + 2] = layers[i].up_stair.row;
+        file[current_byte + 3] = layers[i].up_stair.col;
+        current_byte += 4;
     }
 
-    unsigned int tile_id, seen;
+    return current_byte;
+}
+
+int Chunk::serialize_layers(char file[], int cb) {
+    int current_byte=cb;
+
+    char tile_id, seen;
     Tile current_tile;
 
     for(int i = 0; i < cm.depth; i++) {
         for(int j = 0; j < cm.height; j++) {
             for(int k = 0; k < cm.width; k++) {
                 current_tile = *get_tile(i, j, k);
-                tile_id = current_tile.tile_id;
-                seen = (unsigned int) current_tile.seen;
+                tile_id = (char) current_tile.tile_id;
+                seen = (char) current_tile.seen;
 
                 file[current_byte] = tile_id;
                 file[current_byte+1] = seen;
 
-                current_byte += bytes_per_tile;
+                current_byte += BYTES_PER_TILE;
             }
         }
     }
-    assert(current_byte == file_size);
 
-    string file_name = std::string(CHUNK_DIR) + std::string("/") + ss.str();
+    return current_byte;
+}
+
+
+void Chunk::save_file(char file[], string filename, int file_size) {
+    string full_path = std::string(CHUNK_DIR) + std::string("/") + filename;
     ofstream chunk_data_file;
 
-    chunk_data_file.open(file_name.c_str(), std::ofstream::out | std::ofstream::binary);
+    //TODO Valgrind complains about the following line.
+    chunk_data_file.open(full_path.c_str(), std::ofstream::out | std::ofstream::binary);
 
     for(int i = 0; i < file_size; i++) {
-        /*
-        if((i > 8180) && (i < 8200)) {
-            cerr<< (int) file[i] <<endl;
-        }
-        */
+        //TODO Valgrind complains about the following line.
         chunk_data_file<<file[i];
     }
-    //cerr<<endl;
 
+    chunk_data_file.close();
+}
+
+
+void Chunk::serialize() {
+    stringstream ss;
+    ss<<"chunk"<<cm.world_row<<"_"<<cm.world_col;
+
+    int file_size = calculate_file_size(BYTES_PER_TILE);
+
+    //Set up the file array to write to
+    char file[file_size];
+    int current_byte = serialize_metadata(file);
+    current_byte = serialize_layer_metadata(file, current_byte);
+    current_byte = serialize_layers(file, current_byte);
+    assert(current_byte == file_size);
+
+    save_file(file, ss.str(), file_size);
+}
+
+void Chunk::deserialize_metadata(char file_data[]) {
+    cm.width = file_data[0];
+    cm.height = file_data[1];
+    cm.depth = file_data[2];
+    cm.chunk_type_id = file_data[3];
+    cm.world_row = file_data[4];
+    cm.world_col = file_data[5];
+
+    /*
+     * The map tile ID was stored, now we just reverse it to get the chunk type.
+     */
+    chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
+    //TODO return 6
+}
+
+int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
+    char num_spawners, spawner_row, spawner_col;
+    EnemyType enemy_type;
+    int current_byte = cb;
+
+    for(int i = 0; i < cm.depth; i++) {
+        num_spawners = file_data[current_byte + 0];
+        current_byte += 1;
+
+        for(int j = 0; j < num_spawners; j++) {
+            spawner_row = file_data[current_byte + 0];
+            spawner_col = file_data[current_byte + 1];
+            enemy_type = enemies::ENEMY_LIST[file_data[current_byte+2]];
+            layers[i].make_spawner(i, IntPoint(spawner_row, spawner_col), enemy_type);
+            current_byte += 3;
+        }
+
+        layers[i].down_stair.row = file_data[current_byte + 0];
+        layers[i].down_stair.col = file_data[current_byte + 1];
+        layers[i].up_stair.row = file_data[current_byte + 2];
+        layers[i].up_stair.col = file_data[current_byte + 3];
+        layers[i].has_layer_below = (i < (cm.depth - 1));
+        current_byte += 4;
+    }
+
+    return current_byte;
+}
+
+int Chunk::deserialize_layers(char file_data[], int cb) {
+    int current_byte = cb;
+
+    Tile current_tile;
+    unsigned int tile_id;
+    bool seen;
+    //Undo the serialization.
+    for(int i = 0; i < cm.depth; i++) {
+        for(int j = 0; j < cm.height; j++) {
+            for(int k = 0; k < cm.width; k++) {
+                tile_id = (file_data[current_byte]);
+                seen = file_data[current_byte + 1];
+                current_tile=tiledef::TILE_INDEX[tile_id];
+                current_tile.seen = seen;
+
+                set_tile(i, j, k, current_tile);
+                current_byte += BYTES_PER_TILE;
+            }
+        }
+    }
+
+    return current_byte;
+}
+
+void Chunk::deserialize(string file_name) {
+    //Open the data file.
+    ifstream chunk_data_file(file_name.c_str(),
+            std::ifstream::in | std::ifstream::binary);
+    //Stat the file to get the file size easily.
+    int file_size = fs::file_size(file_name);
+
+    //Initialize an array for the file data.
+    /** \todo does this have to be dynamically allocated? */
+    char * file_data = new char[file_size];
+
+    //Read the entire file into the file_data array.
+    chunk_data_file.read(file_data, file_size);
+
+    deserialize_metadata(file_data);
+
+    int current_byte=CHUNK_META_BYTES;
+    layers = vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
+
+    current_byte = deserialize_layer_metadata(file_data, current_byte);
+    //assert(cm.depth == (current_byte - 4) / 6); Unfortunately it's not this simple anymore.
+
+    current_byte = deserialize_layers(file_data, current_byte);
+    assert(current_byte == file_size);
+
+    //Cleaning up.
+    delete [] file_data;
     chunk_data_file.close();
 }
 

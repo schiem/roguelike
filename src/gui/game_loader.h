@@ -1,8 +1,6 @@
 /**
- *  @file EQUIP_ITEM.CPP
- *  @author Michael Yoder
+ *  GAME_LOADER.H
  *
- *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -19,24 +17,14 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "menu.h"
+#ifndef GAME_LOADER_H
+#define GAME_LOADER_H
 
-EquipMenu::EquipMenu(int padding, Tile _border, Game* _game, int _item) : Menu(padding, _border)
-{
-    id = menu_id::EQUIP_ITEM;
-    game = _game;
-    item = _item;
-    next_screen = GAME_SCREEN;
-    options.push_back("Remove");
-    options.push_back("Back");
-    title = "Equip Menu";
+#include <game.h>
+#include <world_map_gui.h>
+
+namespace game_loader {
+    void init_loaded_game(Game &game, WorldMapGUI &world_map_gui, string filename);
 }
 
-Menu* EquipMenu::make_selection()
-{
-    if(options[selection] == "Remove")
-    {
-        game->main_char.remove_item(item);
-    }
-    return new EquipmentMenu(1, BLOCK_WALL, game);
-}
+#endif

@@ -35,9 +35,6 @@ void GUI::OnRender() {
         drawStr(0, GAME_HEIGHT - 1, std::string("Press ENTER to spawn on the selected map tile.").c_str(),
                 ascii, screen, WHITE);
     } else if (current_screen == GAME_SCREEN) {
-        if(!game.is_initialized()) {
-            game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
-        }
         render_canvas();
         render_target();
         render_enemies();

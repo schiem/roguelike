@@ -207,6 +207,8 @@ class ChunkLayer {
 
         void make_spawner(int depth, IntPoint point);
 
+        void make_spawner(int depth, IntPoint point, EnemyType enemy);
+
         /**
          * Adds a plant to the current layer.
          */

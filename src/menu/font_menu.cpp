@@ -25,7 +25,7 @@
 FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     font = "";
-    id = 5;
+    id = menu_id::FONT_MENU;
     game = _game;
     next_screen = GAME_SCREEN;
     options = all_files_of_type(FONTDIR, ".bmp");

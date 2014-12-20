@@ -30,11 +30,30 @@
 #include <game_states.h>
 #include <item.h>
 #include <game.h>
+#include <world_map_gui.h>
+#include <game_loader.h>
 #include <character.h>
 #include <helper.h>
 
 using namespace tiledef;
 using namespace std;
+
+namespace menu_id {
+    enum Menu_ID {
+        NOTHING,
+        AUDIO_MENU,
+        EQUIP_ITEM,
+        EQUIPMENT_MENU,
+        ESCAPE_MENU,
+        FONT_MENU,
+        INVENTORY_MENU,
+        ITEM_MENU,
+        MAIN_MENU,
+        START_MENU,
+        INFO_MENU,
+        LOAD_MENU
+    };
+}
 
 /**
  * The basis of the menuing system for the roguelike.
@@ -189,14 +208,33 @@ class Menu {
 class StartMenu : public Menu
 {
     public:
+        Game* game;
+        WorldMapGUI* world_map_gui;
         /**
          * Constructor for the start_menu.
          * @param _padding Sets the padding for the menu.
          * @param _border Sets the border for the menu.
          */
-        StartMenu(int _padding, Tile _border);
+        StartMenu(int _padding, Tile _border, Game &g, WorldMapGUI &wmg);
         Menu* make_selection();
-        
+
+        void create_save_folder();
+};
+
+class LoadMenu : public Menu
+{
+    public:
+        /**
+         * Constructor for the load menu.
+         * @param _padding Sets the padding for the menu.
+         * @param _border Sets the border for the menu.
+         */
+
+        LoadMenu(int _padding, Tile _border, Game &g, WorldMapGUI &wmg);
+        Menu* make_selection();
+
+        Game* game;
+        WorldMapGUI* world_map_gui;
 };
 
 /**

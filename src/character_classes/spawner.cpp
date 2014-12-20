@@ -23,7 +23,8 @@
 using namespace std;
 Spawner::Spawner()
 {
-    }
+
+}
 
 Spawner::Spawner(int _x, int _y, int _depth,  EnemyType _enemy)
 {
@@ -172,6 +173,11 @@ int Spawner::get_y()
 int Spawner::get_depth()
 {
     return depth;
+}
+
+int Spawner::get_enemy_type_id()
+{
+    return enemy.id;
 }
 
 std::vector<Den>& Spawner::get_spawn_points()

@@ -23,7 +23,7 @@
 
 MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    id = 8;
+    id = menu_id::MAIN_MENU;
     next_screen = GAME_SCREEN;
     game = _game;
     options.push_back("Equipment");

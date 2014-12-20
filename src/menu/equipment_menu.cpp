@@ -23,7 +23,7 @@
 
 EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
-    id = 3;
+    id = menu_id::EQUIPMENT_MENU;
     game = _game;
     vector<Item*>* items = game->main_char.get_equipment();
     for(int i=0;i<items->size();i++)

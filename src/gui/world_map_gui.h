@@ -17,6 +17,9 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef WORLD_MAP_GUI
+#define WORLD_MAP_GUI
+
 #include <vector>
 #include <stdlib.h>
 #include <iostream>
@@ -53,3 +56,5 @@ class WorldMapGUI {
 
         void add_layers();
 };
+
+#endif
