@@ -20,6 +20,8 @@
  */
 
 #include <chunk_matrix.h>
+#include <constants.h>
+#include <chunk.h>
 
 
 ChunkMatrix::ChunkMatrix() {

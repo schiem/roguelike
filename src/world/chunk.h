@@ -34,16 +34,13 @@
 #include <assert.h>
 
 #include <constants.h>
-#include <procedurally_blind_db.h>
-#include <corruptible_pblind_db.h>
 #include <chunk_layer.h>
-#include <overworld_gen.h>
 #include <defs.h>
 #include <ctime>
-#include <iostream>
-#include <spawner.h>
-#include <int_point.h>
-#include <plant.h>
+
+class Plant;
+class Spawner;
+class IntPoint;
 
 using namespace std;
 namespace fs=boost::filesystem;

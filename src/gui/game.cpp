@@ -17,8 +17,12 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include  <game.h>
+#include <game.h>
+#include <defs.h>
 #include <iostream>
+#include <chunk.h>
+#include <character.h>
+
 using namespace std;
 namespace td=tiledef;
 

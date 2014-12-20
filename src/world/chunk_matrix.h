@@ -25,10 +25,10 @@
 #include <stdlib.h>
 #include <vector>
 
-#include <chunk.h>
-#include <constants.h>
 #include <int_point.h>
 #include <world_map.h>
+
+class Chunk;
 
 /**
  * The primary data model and memory-loading bottleneck.

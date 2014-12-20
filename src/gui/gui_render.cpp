@@ -18,6 +18,7 @@
  */
 
 #include <gui.h>
+#include <animation.h>
 
 
 void GUI::OnRender() {

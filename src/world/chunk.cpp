@@ -20,6 +20,14 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+#include <procedurally_blind_db.h>
+#include <corruptible_pblind_db.h>
+#include <overworld_gen.h>
+#include <spawner.h>
+#include <plant.h>
+#include <int_point.h>
+
 #include <chunk.h>
 using namespace std;
 

@@ -23,26 +23,25 @@
 #include <stdlib.h>
 #include <vector>
 #include <assert.h>
-
-#include <chunk.h>
 #include <chunk_matrix.h>
 #include <constants.h>
 #include <bresenham.h>
 #include <enemy.h>
-#include <defs.h>
-#include <character.h>
 #include <world_map.h>
 #include <helper.h>
 #include <item.h>
 #include <animation.h>
 #include <animation_defs.h>
 
-/**
-struct TilePoint {
-    Tile tile;
-    IntPoint loc;
-};
-*/
+//Forward declarations
+struct Tile;
+struct Item;
+
+class Chunk;
+class Character;
+class Spawner;
+class Den;
+class Plant;
 
 namespace td=tiledef;
 
