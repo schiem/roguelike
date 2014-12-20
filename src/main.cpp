@@ -25,10 +25,12 @@ namespace fs=boost::filesystem;
 
 int main(int argc, char* args[]) {
 
+    /*
     fs::path chunk_dir(CHUNK_DIR);
     for(fs::directory_iterator end, it(chunk_dir); it != end; it++) {
         remove(it->path());
     }
+    */
 
     //cout<<"Testing boost with /etc/fstab file size: "<<fs::file_size("/etc/fstab")<<endl;
 

@@ -99,7 +99,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
 
     //Eventually, this should be based on screen size.
-    chunk_map = ChunkMatrix(3, selected_chunk, world_map);
+    chunk_map = ChunkMatrix(3, selected_chunk, world_map, name);
     update_buffer(main_char.get_chunk());
     recalculate_visibility_lines(15);
     refresh();
@@ -114,6 +114,10 @@ Chunk* Game::get_current_chunk() {
 
 string Game::get_name() {
     return name;
+}
+
+void Game::set_name(string n) {
+    name = n;
 }
 
 bool Game::is_initialized() {

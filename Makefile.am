@@ -129,5 +129,5 @@ roguelike_SOURCES = \
     lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 
-dist_localdata_DATA = data/ data/chunk/
-localdata_DATA = data/ data/chunk/
+dist_localdata_DATA = data/ data/save
+localdata_DATA = data/ data/save

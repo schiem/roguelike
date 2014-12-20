@@ -68,10 +68,12 @@ class ChunkMatrix
          */
         IntPoint offset;
 
+        string save_folder;
+
         
     public:
         ChunkMatrix();
-        ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix &world_map);
+        ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix &world_map, string _save_folder);
 
         /**
          * Populates the chunk matrix initially, affecting the internal model.

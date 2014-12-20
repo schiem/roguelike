@@ -23,7 +23,7 @@
 #ifndef _CHUNK_H
 #define _CHUNK_H
 
-#define CHUNK_DIR DATADIR "/chunk"
+#define CHUNK_DIR DATADIR "/save"
 
 #include <vector>
 #include <stdlib.h>
@@ -99,6 +99,15 @@ struct chunk_meta {
 class Chunk{
     typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
+
+        /**
+         * Full path to the directory that this chunk will be saved in.
+         */
+        string save_folder;
+
+        /**
+         * \todo
+         */
         chunk_meta cm;
 
         /**
@@ -145,7 +154,7 @@ class Chunk{
          *
          * @see MapTile
          */
-        Chunk(MapTile tile_type, int _world_row, int _world_col);
+        Chunk(MapTile tile_type, int _world_row, int _world_col, string _save_folder);
 
         /**
          * Resets all important information in the chunk, deserializing as
@@ -159,7 +168,7 @@ class Chunk{
          * @see deserialize
          * @see MapTile
          */
-        void init(MapTile tile_type, int _world_row, int _world_col);
+        void init(MapTile tile_type, int _world_row, int _world_col, string save_folder);
 
         /**
          * \todo this documentation

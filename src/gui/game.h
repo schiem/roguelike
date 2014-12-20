@@ -205,6 +205,7 @@ class Game
         //BASE Model access
         Chunk* get_current_chunk();
         string get_name();
+        void set_name(string n);
         bool is_initialized();
         void act(long);
         bool is_paused();

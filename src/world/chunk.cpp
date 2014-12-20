@@ -28,17 +28,17 @@ Chunk::Chunk() {
     cm.width = CHUNK_WIDTH;
 }
 
-Chunk::Chunk(MapTile tile_type, int world_row, int world_col) {
+Chunk::Chunk(MapTile tile_type, int world_row, int world_col, string _save_folder) {
     cm.height = CHUNK_HEIGHT;
     cm.width = CHUNK_WIDTH;
-    init(tile_type, world_row, world_col);
+    init(tile_type, world_row, world_col, _save_folder);
 }
 
 bool Chunk::find_serialized_chunk() {
-    fs::path chunk_dir(CHUNK_DIR);
+    fs::path chunk_dir(save_folder);
 
     stringstream ss;
-    ss << CHUNK_DIR << "/chunk" << cm.world_row << "_" <<cm.world_col;
+    ss << save_folder << "/chunk" << cm.world_row << "_" <<cm.world_col;
     string filename = ss.str();
 
     if(fs::exists(chunk_dir) && fs::is_directory(chunk_dir)) {
@@ -54,8 +54,8 @@ bool Chunk::find_serialized_chunk() {
     return false;
 }
 
-
-void Chunk::init(MapTile tile_type, int world_row, int world_col) {
+void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_folder) {
+    save_folder = _save_folder;
     chunk_type = tile_type;
     cm.world_row = world_row;
     cm.world_col = world_col;
@@ -321,7 +321,7 @@ int Chunk::serialize_layers(char file[], int cb) {
 
 
 void Chunk::save_file(char file[], string filename, int file_size) {
-    string full_path = std::string(CHUNK_DIR) + std::string("/") + filename;
+    string full_path = save_folder + std::string("/") + filename;
     ofstream chunk_data_file;
 
     //TODO Valgrind complains about the following line.

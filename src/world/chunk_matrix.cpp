@@ -26,7 +26,8 @@ ChunkMatrix::ChunkMatrix() {
 
 }
 
-ChunkMatrix::ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix& world_map) {
+ChunkMatrix::ChunkMatrix(int _diameter, IntPoint center_chunk, MapTileMatrix& world_map, string _save_folder) {
+    save_folder = _save_folder;
     diameter = _diameter;
     assert(diameter%2 != 0);
 
@@ -46,7 +47,7 @@ void ChunkMatrix::populate_initial(IntPoint center_chunk, MapTileMatrix& world_m
         for(int col = 0; col < diameter; col++) {
             world_col = col + offset.col;
             model[row][col].init(world_map[world_row][world_col],
-                                world_row, world_col);
+                                world_row, world_col, save_folder);
         }
     }
     pretty_print();
@@ -127,7 +128,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
             model[row][col].init(world_map[world_row][world_col],
-                                 world_row, world_col);
+                                 world_row, world_col, save_folder);
         }
 
     } else if (directions.row == -1) {
@@ -151,7 +152,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         for(int col = 0; col < diameter; col++) {
             world_col = offset.col + col;
             model[0][col].init(world_map[world_row][world_col],
-                                 world_row, world_col);
+                                 world_row, world_col, save_folder);
         }
     }
 
@@ -177,7 +178,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
             model[row][col].init(world_map[world_row][world_col],
-                                 world_row, world_col);
+                                 world_row, world_col, save_folder);
         }
     } else if (directions.col == -1) {
         assert(offset.col > 0);
@@ -201,7 +202,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         for(int row = 0; row < diameter; row++) {
             world_row = offset.row + row;
             model[row][0].init(world_map[world_row][world_col],
-                                 world_row, world_col);
+                                 world_row, world_col, save_folder);
         }
     }
 
