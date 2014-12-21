@@ -57,6 +57,7 @@ namespace overworld_gen {
      * thick trees, and tree-lined oases.
      */
     void build_forest_overworld(ChunkLayer& ground);
+
 }
 
 #endif

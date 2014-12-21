@@ -16,12 +16,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <iostream>
+#include <assert.h>
+#include <stdlib.h>
 
 #include <game.h>
 #include <defs.h>
-#include <iostream>
 #include <chunk.h>
 #include <character.h>
+#include <bresenham.h>
 
 using namespace std;
 namespace td=tiledef;

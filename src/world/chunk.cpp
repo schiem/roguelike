@@ -26,9 +26,9 @@
 #include <overworld_gen.h>
 #include <spawner.h>
 #include <plant.h>
-#include <int_point.h>
 
 #include <chunk.h>
+
 using namespace std;
 
 Chunk::Chunk() {
@@ -94,7 +94,8 @@ bool Chunk::build_chunk_with_dungeons() {
         pblind_db::build_dungeon(cm.width, cm.height, 5, layers[i]);
 
         //makes the staircases in a dungeon
-        layers[i].make_stairs(has_layer_below);
+        dungeon_builder::make_stairs(layers[i], has_layer_below);
+        //layers[i].make_stairs(has_layer_below);
         //layers[i].make_spawner(i);
         layers[i].has_layer_below = has_layer_below;
     }

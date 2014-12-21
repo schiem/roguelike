@@ -20,12 +20,9 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
-#include <stdlib.h>
 #include <vector>
-#include <assert.h>
 #include <chunk_matrix.h>
 #include <constants.h>
-#include <bresenham.h>
 #include <enemy.h>
 #include <world_map.h>
 #include <helper.h>
@@ -80,7 +77,7 @@ class Game
         MapTileMatrix world_map;
 
         /**
-         * A two dimentsional vector containing the chunks.
+         * A two dimensional vector containing the chunks.
          * This is the core of how the game doesn't run out of
          * memory.  It's broken up into chunks, which are then
          * serialized/deserialized as the player moves about.

@@ -21,31 +21,6 @@
  */
 
 #include <overworld_gen.h>
-/*
-Overworld::Overworld(int _width, int _height, bool _has_layer_below, MapTile tile_type) {
-    width = _width;
-    height = _height;
-    has_layer_below = _has_layer_below;
-    ground = TileMatrix(height, std::vector<Tile>(width, EMPTY));
-
-
-
-    if (tile_type == map_tile::MAP_DEFAULT) {
-        build_land_overworld();
-        equipment.push_back(equipment::boots);
-        weapons.push_back(weapons::dagger);
-    } else if (tile_type == map_tile::MAP_WATER) {
-        build_water_overworld();
-    } else if (tile_type == map_tile::MAP_BEACH) {
-        build_beach_overworld();
-    } else if (tile_type == map_tile::MAP_FOREST) {
-        build_forest_overworld();
-        equipment.push_back(equipment::boots);
-        weapons.push_back(weapons::dagger);
-    }
-
-}
-*/
 
 namespace td=tiledef;
 

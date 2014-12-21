@@ -21,6 +21,7 @@
 
 #include <chunk_matrix.h>
 #include <constants.h>
+#include <stdlib.h>
 
 
 ChunkMatrix::ChunkMatrix() {

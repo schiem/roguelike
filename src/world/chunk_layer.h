@@ -187,14 +187,6 @@ class ChunkLayer {
          */
         void add_item(Item* item);
 
-        /**
-         * @param has_layer_below a bool denoting whether or not there is a
-         * layer below this dungeon.
-         *
-         * Create an "up stair" in a random room and a "down stair" in a
-         * random room (if there is a chunk below).
-         * \todo This should be in dungeon generation.
-         */
         void make_stairs(bool has_layer_below);
 
         /**

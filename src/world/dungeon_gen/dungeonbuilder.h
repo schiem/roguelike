@@ -179,6 +179,15 @@ namespace dungeon_builder {
     void set_wall_if_not_path(int row, int col, dungeon_meta &dm);
 
     ChunkLayer* get_dungeon(dungeon_meta &dm);
+
+    /**
+     * @param has_layer_below a bool denoting whether or not there is a
+     * layer below this dungeon.
+     *
+     * Create an "up stair" in a random room and a "down stair" in a
+     * random room (if there is a chunk below).
+     */
+    void make_stairs(ChunkLayer& cl, bool has_layer_below);
 };
 
 #endif

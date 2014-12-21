@@ -22,7 +22,6 @@
 #ifndef _CHUNK_MATRIX_H
 #define _CHUNK_MATRIX_H
 
-#include <stdlib.h>
 #include <vector>
 
 #include <int_point.h>
@@ -33,7 +32,7 @@
 /**
  * The primary data model and memory-loading bottleneck.
  *
- * The Chunk Matrix s a square matrix with a diameter that is given at
+ * The Chunk Matrix is a square matrix with a diameter that is given at
  * construction. The matrix is initialized using populate_initial, given central
  * chunk coordinates on the world map and a reference to the world map.
  *
@@ -64,7 +63,8 @@ class ChunkMatrix
         vector<vector<Chunk> > model;
 
         /**
-         * The amount by which the top left corner of the matrix is offset from the world.
+         * The amount by which the top left corner of the matrix is offset from
+         * that of the world.
          */
         IntPoint offset;
 
@@ -77,8 +77,10 @@ class ChunkMatrix
 
         /**
          * Populates the chunk matrix initially, affecting the internal model.
-         * @param[in] center_chunk An IntPoint representing the central chunk in the matrix
-         * @param[in] world_map The world map, passed by reference here to avoid copying.
+         * @param[in] center_chunk An IntPoint representing the central chunk in
+         *                         the matrix
+         * @param[in] world_map The world map, passed by reference here to avoid
+         *                      copying.
          */
         void populate_initial(IntPoint center_chunk, MapTileMatrix &world_map);
 
