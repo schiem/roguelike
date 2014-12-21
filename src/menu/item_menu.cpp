@@ -20,6 +20,12 @@
  */
 
 #include "menu.h"
+#include <item.h>
+#include <game.h>
+#include <defs.h>
+
+
+namespace td=tiledef;
 
 ItemMenu::ItemMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
@@ -62,7 +68,7 @@ Menu* ItemMenu::make_selection()
     }
     else if(options[selection] == "Info")
     {
-        return new InfoMenu(1, BLOCK_WALL, game, item);
+        return new InfoMenu(1, td::BLOCK_WALL, game, item);
     }
     else if(options[selection] == "Drop")
     {
@@ -72,6 +78,6 @@ Menu* ItemMenu::make_selection()
     {
         game->main_char.destroy_item(item);
     }
-    return new InventoryMenu(1, BLOCK_WALL,  game);
+    return new InventoryMenu(1, td::BLOCK_WALL,  game);
 }
 

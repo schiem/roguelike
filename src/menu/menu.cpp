@@ -18,6 +18,8 @@
  */
 
 #include "menu.h"
+#include <defs.h>
+
 
 
 Menu::Menu(int _padding, Tile _border) {

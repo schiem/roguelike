@@ -28,14 +28,18 @@
 #include <ASCII_Lib.h>
 #include <defs.h>
 #include <game_states.h>
-#include <item.h>
-#include <game.h>
-#include <world_map_gui.h>
+//#include <item.h>
+//#include <game.h>
+//#include <world_map_gui.h>
 #include <game_loader.h>
-#include <character.h>
+//#include <character.h>
 #include <helper.h>
 
-using namespace tiledef;
+//forward declarations
+class Item;
+class Game;
+class WorldMapGUI;
+
 using namespace std;
 
 namespace menu_id {

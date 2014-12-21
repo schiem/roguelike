@@ -20,6 +20,12 @@
  */
 
 #include "menu.h"
+#include <item.h>
+#include <game.h>
+#include <defs.h>
+
+
+namespace td=tiledef;
 
 InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
@@ -34,6 +40,6 @@ InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(p
 
 Menu* InfoMenu::make_selection()
 {
-    return new ItemMenu(1, BLOCK_WALL,  game, item);
+    return new ItemMenu(1, td::BLOCK_WALL,  game, item);
 }
 

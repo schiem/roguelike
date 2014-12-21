@@ -20,6 +20,11 @@
  */
 
 #include "menu.h"
+#include <game.h>
+#include <defs.h>
+
+
+namespace td=tiledef;
 
 EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
@@ -42,11 +47,11 @@ Menu* EscapeMenu::make_selection()
     }
     else if(options[selection] == "Audio")
     {
-        return new AudioMenu(1, BLOCK_WALL, game);
+        return new AudioMenu(1, td::BLOCK_WALL, game);
     }
     else if(options[selection] == "Font")
     {
-        return new FontMenu(1, BLOCK_WALL, game);
+        return new FontMenu(1, td::BLOCK_WALL, game);
     }
     else if(options[selection] == "Quit")
     {

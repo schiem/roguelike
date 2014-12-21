@@ -23,10 +23,13 @@
 //this is for backward compatibility with c98 standard
 //gross...
 
+
+namespace td=tiledef;
+
 GUI::GUI() {
     world_map_gui = WorldMapGUI();
     game = Game();
-    menu = new StartMenu(1, BLOCK_WALL, game, world_map_gui);
+    menu = new StartMenu(1, td::BLOCK_WALL, game, world_map_gui);
     current_screen = MENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;

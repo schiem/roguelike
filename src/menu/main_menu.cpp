@@ -20,6 +20,11 @@
  */
 
 #include "menu.h"
+#include <game.h>
+#include <defs.h>
+
+
+namespace td=tiledef;
 
 MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
@@ -38,10 +43,10 @@ Menu* MainMenu::make_selection()
     switch (selection)
     {
         case 0:
-            return new EquipmentMenu(1, BLOCK_WALL, game);
+            return new EquipmentMenu(1, td::BLOCK_WALL, game);
             break;
         case 1:
-            return new InventoryMenu(1, BLOCK_WALL, game);
+            return new InventoryMenu(1, td::BLOCK_WALL, game);
             break;
         case 2:
             return this;

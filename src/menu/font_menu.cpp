@@ -20,7 +20,12 @@
  */
 
 #include "menu.h"
+#include <game.h>
+#include <defs.h>
+
+
 #define FONTDIR DATADIR "/font/"
+namespace td=tiledef;
 
 FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
@@ -41,7 +46,7 @@ Menu* FontMenu::make_selection()
         cout<<typeid(font).name()<<endl;
         return this;
     }
-    return new EscapeMenu(1, BLOCK_WALL, game);
+    return new EscapeMenu(1, td::BLOCK_WALL, game);
 }
 
 

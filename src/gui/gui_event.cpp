@@ -28,6 +28,9 @@
  * feels really weird if you press a key in-between frames.
  * \todo Clean this up so it's actually readable code.
  */
+
+namespace td=tiledef;
+
 void GUI::OnEvent(SDL_Event* Event) {
     VirtualEvent::OnEvent(Event);
 }
@@ -111,7 +114,7 @@ void GUI::perform_action_press(SDLKey key) {
                 if(menu == NULL)
                 {
                     running = false;
-                    menu = new EscapeMenu(1, BLOCK_WALL, &game); //wat
+                    menu = new EscapeMenu(1, td::BLOCK_WALL, &game); //wat
                     current_screen = menu->get_screen();
                 }
 
@@ -154,7 +157,7 @@ void GUI::perform_action_press(SDLKey key) {
                 //delete the old one
                 current_screen = MENU_SCREEN;
                 delete menu;
-                menu = new EscapeMenu(1, BLOCK_WALL, &game);
+                menu = new EscapeMenu(1, td::BLOCK_WALL, &game);
                 game.pause();
             }
             else if (current_screen == MENU_SCREEN)
@@ -188,7 +191,7 @@ void GUI::perform_action_press(SDLKey key) {
             {
                 current_screen = MENU_SCREEN;
                 delete menu;
-                menu = new MainMenu(1, BLOCK_WALL, &game);
+                menu = new MainMenu(1, td::BLOCK_WALL, &game);
                 //game.pause();
             }
             break;

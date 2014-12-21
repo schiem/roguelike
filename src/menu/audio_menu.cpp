@@ -20,6 +20,11 @@
  */
 
 #include "menu.h"
+#include <game.h>
+#include <defs.h>
+
+
+namespace td=tiledef;
 
 AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
@@ -33,5 +38,5 @@ AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bo
 Menu* AudioMenu::make_selection()
 {
 
-    return new EscapeMenu(1, BLOCK_WALL, game);
+    return new EscapeMenu(1, td::BLOCK_WALL, game);
 }
