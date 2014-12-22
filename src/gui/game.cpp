@@ -673,7 +673,7 @@ void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
         {
             if(den->tile_at(i, j) != tiledef::EMPTY)
             {
-                IntPoint p_coords = coords + IntPoint(i, j);
+                IntPoint p_coords = coords + IntPoint(i - den->get_height()/2, j - den->get_width()/2);
                 add_tile_to_buffer(chunk, p_coords, den->tile_pointer_at(i, j));
             }
         }
