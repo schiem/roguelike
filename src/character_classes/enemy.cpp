@@ -72,7 +72,7 @@ Enemy::~Enemy()
         delete equipment[i];
     }
 
-    delete corpse;
+    //delete corpse;
 }
 
 void Enemy::run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms)

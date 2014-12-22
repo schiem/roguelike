@@ -27,6 +27,7 @@ std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Endurance", "Str", "De
 /****************************
  *   TERRAIN DEFS
  ***************************/
+//{int char_count, int tile_id, int color, bool can_be_moved_through, bool visible, bool opaque, bool seen, bool can_build_overtop} `
 namespace tiledef {
     Tile  EMPTY           =  {0,    0,   0,             1,  0,  0,  0,  0};
     Tile  OVERWORLD_DIRT  =  {250,  1,   BROWN,         1,  0,  0,  0,  1};
@@ -35,14 +36,14 @@ namespace tiledef {
     Tile  ROOM_WALL       =  {219,  4,   GRAY,          0,  0,  1,  0,  0};
     Tile  PATH            =  {250,  5,   BROWN,         1,  0,  0,  0,  1};
     Tile  MAIN_CHAR       =  {1,    6,   DARK_RED,      1,  1,  0,  0,  0};
-    Tile  MAIN_CHAR2      =  {1,    7,   DARK_GREEN,    1,  1,  0,  0,  0};
+    Tile  MAIN_CHAR2      =  {1,    7,   DARKER_GREEN,  1,  1,  0,  0,  0};
     Tile  MAIN_CHAR3      =  {1,    8,   BROWN,         1,  1,  0,  0,  0};
     Tile  MAIN_CHAR4      =  {1,    9,   GRAY,          1,  1,  0,  0,  0};
     Tile  TREE            =  {84,   10,  DARK_GREEN,    0,  0,  1,  0,  0};
     Tile  BLOCK_WALL      =  {219,  11,  GRAY,          0,  0,  1,  0,  0};
     Tile  DOWN_STAIR      =  {31,   12,  GRAY,          1,  0,  0,  0,  0};
     Tile  UP_STAIR        =  {30,   13,  GRAY,          1,  0,  0,  0,  0};
-    Tile  KOBOLD          =  {107,  14,  RED,           0,  1,  0,  0,  0};
+    Tile  KOBOLD          =  {107,  14,  DARK_GREEN,    0,  1,  0,  0,  0};
     Tile  KOBOLD_SPAWNER  =  {21,   15,  GREEN,         0,  0,  1,  0,  0};
     Tile  WATER           =  {247,  16,  BLUE,          0,  0,  0,  0,  0};
     Tile  LIGHT_WATER     =  {126,  17,  BLUE,          0,  0,  0,  0,  0};

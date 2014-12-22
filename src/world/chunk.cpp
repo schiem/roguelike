@@ -109,7 +109,6 @@ void Chunk::build_forest_chunk() {
     overworld_gen::build_forest_overworld(layers[0]);
     
     //TODO: probably rename this
-    //TODO: You better fucking not
     build_some_dank_trees();
 }
 
@@ -131,34 +130,54 @@ void Chunk::build_some_dank_trees()
 {
     //erm...let's have a tree density
     //(that's trees/tile sq)
-    float TREE_DENSITY = .03;
-    int num_trees = (cm.width * cm.height) * TREE_DENSITY;
-    for(int i=0;i<num_trees;i++)
+    int min = 1;
+    int max = 10;
+    int dist_between_trees = (min+max)/2;
+    int padding = 0;
+    int tree_size = 2;
+    
+    int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size) + 1;
+    int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size) + 1;
+    
+    IntPoint trees_per_side = IntPoint(y_trees, x_trees);
+    SpringMatrix mat = SpringMatrix(trees_per_side, tree_size, min, max, padding);
+
+    mat.deform_matrix(1);
+    std::vector<SpringPoint*> points = mat.get_matrix();
+    for(int i=0;i<points.size();i++)
     {
-        int x;
-        int y;
-        do {
-            x = rand() % cm.width;
-            y = rand() % cm.height;
-        } while(can_build(0, x, y) == false);
-        layers[0].add_plant(Plant(x, y, plants::tree));
+        int x = points[i]->get_x();
+        int y = points[i]->get_y();
+        if(can_build(0, x, y))
+        {
+            layers[0].add_plant(Plant(x, y, plants::tree));
+        }
     }
 }
 
+/**
+ * MAKE THIS GENERALIZED FOR ALL CHUNKS/LAYERS.
+ */
 bool Chunk::can_build(int depth, int x, int y)
 {
-    return layers[depth].get_tile(y, x).can_build_overtop;
-
+    if(!layers[depth].in_layer(x, y))
+    {
+        return false;
+    }
+    bool can_build = layers[depth].get_tile(y, x).can_build_overtop;
+    
     //lols checkout this line count tradeoff: the above line versus the rest of
     //this function. Keeping this here so i can brag about it -SAY 12/21/2014
 
-    /*
-    //Should we even be putting a tree here?
-    bool good_tile = layers[0].get_tile(y, x).can_be_moved_through;
+    //Actually...this won't work.  The spawners aren't in the ground anymore. 
+    //Plus, the spawners aren't a single tile, they're a matrix, so we don't want it
+    //building in the middle.  Also plus, this doesn't do what I was going to add next,
+    //which was check whether or not the x and y are even in the tile matrix.
+    //-MJY 12/21/2014 (slightly later)
     
     //Is it in a spawner?
     bool in_spawner = false;
-    std::vector<Spawner>* spawners = get_spawners(0);
+    std::vector<Spawner>* spawners = get_spawners(depth);
     for(int i=0;i<spawners->size();i++)
     {
         if(spawners->at(i).point_in_spawner(x, y))
@@ -166,13 +185,8 @@ bool Chunk::can_build(int depth, int x, int y)
             in_spawner = true;
         }
     }
-
-    //Is it on the stairs?
-    IntPoint stair = get_down_stair(0);
-    bool is_stair = (x == stair.col) && (y == stair.row);
     
-    return good_tile && !in_spawner && !is_stair;
-    */
+    return  can_build && !in_spawner;
 }
 
 IntPoint Chunk::get_world_loc() const{

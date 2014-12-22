@@ -37,6 +37,7 @@
 #include <chunk_layer.h>
 #include <defs.h>
 #include <ctime>
+#include <spring_matrix.h>
 
 class Plant;
 class Spawner;
