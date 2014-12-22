@@ -191,19 +191,17 @@ namespace enemies
 
 namespace plants
 {
-    PlantType tree = {construct_big_trees()};
+    PlantType tree = {0, construct_big_trees()};
+    PlantType PLANT_LIST[1] = {tree};
 }
 
 /**************************CONSTRUCTION FUNCTIONS********************/
 std::vector<std::vector<Tile> > construct_big_trees()
 {
-    std::vector<std::vector<Tile> > tree;
-    tree.resize(2);
-    for(int i=0;i<2;i++)
-    {
-        tree[i].resize(2);
-        for(int j=0;j<2;j++)
-        {
+    std::vector<std::vector<Tile> > tree(2, std::vector<Tile>(2));
+    for(int i=0;i<2;i++) {
+
+        for(int j=0;j<2;j++) {
             tree[i][j] = tiledef::BIG_TREE;
         }
     }

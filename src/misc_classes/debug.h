@@ -171,6 +171,13 @@ class DebugConsole
          * @param args The list of int arguments for the function.
          */ 
         void teleport(std::vector<std::string> command, std::vector<int> args);
+
+        /**
+         * Toggles the visibility system on and off.
+         * @param command The list of string arguments for the function.
+         * @param args The list of int arguments for the function.
+         */
+        void togglevis(std::vector<std::string> command, std::vector<int> args);
 };
 
 #endif

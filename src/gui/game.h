@@ -208,6 +208,7 @@ class Game
         void pause();
         void unpause();
         void toggle_pause();
+        bool visibility_on;
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);

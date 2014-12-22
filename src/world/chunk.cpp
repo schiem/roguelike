@@ -274,10 +274,35 @@ MapTile Chunk::get_type() {
 
 //===========SERIALIZATION/DESERIALIZATION=========
 
+
+int Chunk::pack_int_into_char_array(int num, char* file, int index) {
+    unsigned int n = (unsigned int) num;
+    file[index] = (unsigned char)   ((n & 0xff000000) >> 24);
+    file[index+1] = (unsigned char) ((n & 0x00ff0000) >> 16);
+    file[index+2] = (unsigned char) ((n & 0x0000ff00) >> 8);
+    file[index+3] = (unsigned char)  (n & 0x000000ff);
+
+    return index + 4;
+}
+
+int Chunk::char_array_to_int(char* file, int& the_index) {
+    int index = the_index;
+
+    int num = (((unsigned char) file[index]) << 24) | 
+              (((unsigned char) file[index+1]) << 16) | 
+              (((unsigned char) file[index+2]) << 8) | 
+              ((unsigned char) file[index+3]);
+    assert(num >= 0);
+
+    the_index += 4;
+    return num;
+}
+
 int Chunk::calculate_file_size(int bytes_per_tile) {
     int bytes_per_layer = 0;
     for(int i = 0; i < cm.depth; i++) {
         bytes_per_layer += 3; //num_spawners, num_*_stairs
+        bytes_per_layer += 4; //num_plants
         for(int j = 0; j < layers[i].spawners.size(); j++) {
             bytes_per_layer += 3;
         }
@@ -286,6 +311,16 @@ int Chunk::calculate_file_size(int bytes_per_tile) {
         }
         for(int j = 0; j < layers[i].up_stairs.size(); j++) {
             bytes_per_layer += 2;
+        }
+        for(int j = 0; j < layers[i].get_plants()->size(); j++) {
+            bytes_per_layer += 4;
+            Plant* current_plant = &(*(layers[i].get_plants()))[j];
+            
+            for(int k = 0; k < current_plant->get_sprites()->size(); k++) {
+                for(int l = 0; l < (*(current_plant->get_sprites()))[k].size(); l++) {
+                    bytes_per_layer += 2;
+                }
+            }
         }
     }
 
@@ -305,6 +340,33 @@ int Chunk::serialize_metadata(char* file) {
     return 6;
 }
 
+int Chunk::serialize_plants(char file[], int layer, int current_byte) {
+    int cb = current_byte;
+    Plant* this_plant;
+    std::vector<std::vector<Tile> >* plant_tiles;
+    std::vector<Plant>* plants = layers[layer].get_plants();
+
+    for(int i = 0; i < plants->size(); i++) {
+        this_plant = &(*plants)[i]; //lol wat
+        plant_tiles = this_plant->get_sprites();
+        file[cb + 0] = this_plant->get_y();
+        file[cb + 1] = this_plant->get_x();
+        file[cb + 2] = plant_tiles->size();
+        file[cb + 3] = plant_tiles[0].size();
+        cb += 4;
+
+        for(int j = 0; j < plant_tiles->size(); j++) {
+            for(int k = 0; k < ((*plant_tiles)[j]).size(); k++) {
+                file[cb + 0] = ((*plant_tiles)[j])[k].tile_id;
+                file[cb + 1] = ((*plant_tiles)[j])[k].seen;
+                cb += 2;
+            }
+        }
+    }
+
+    return cb;
+}
+
 int Chunk::serialize_layer_metadata(char file[], int cb) {
     int current_byte=cb;
 
@@ -315,6 +377,12 @@ int Chunk::serialize_layer_metadata(char file[], int cb) {
         file[current_byte + 1] = layers[i].down_stairs.size();
         file[current_byte + 2] = layers[i].up_stairs.size();
         current_byte += 3;
+
+        current_byte = pack_int_into_char_array(layers[i].get_plants()->size(), file, current_byte);
+
+        current_byte = serialize_plants(file, i, current_byte);
+        //cout<<"SERIALIZING: Chunk "<<cm.world_row<<", "<<cm.world_col<<", "<<i<<" : "<<current_byte<<endl;
+
         for(int j = 0; j < layers[i].spawners.size(); j++) {
             file[current_byte + 0] = layers[i].spawners[j].get_y();
             file[current_byte + 1] = layers[i].spawners[j].get_x();
@@ -410,10 +478,43 @@ void Chunk::deserialize_metadata(char file_data[]) {
     //TODO return 6
 }
 
+int Chunk::deserialize_plants(char file[], int layer, int current_byte, int num_plants) {
+    int cb = current_byte;
+    int tiles_rows, tiles_cols;
+    Plant this_plant;
+    std::vector<std::vector<Tile> > plant_tiles;
+
+    for(int i = 0; i < num_plants; i++) {
+        this_plant.set_y(file[cb + 0]);
+        this_plant.set_x(file[cb + 1]);
+        tiles_rows = file[cb + 2];
+        tiles_cols = file[cb + 3];
+        plant_tiles = std::vector<std::vector<Tile> >(tiles_rows, std::vector<Tile>(tiles_cols));
+
+        cb += 4;
+
+        for(int j = 0; j < tiles_rows; j++) {
+            for(int k = 0; k < tiles_cols; k++) {
+                plant_tiles[j][k] = td::TILE_INDEX[file[cb]];
+                plant_tiles[j][k].seen = file[cb + 1];
+                cb += 2;
+            }
+        }
+
+        this_plant.set_sprites(plant_tiles);
+
+        layers[layer].add_plant(this_plant);
+    }
+
+    return cb;
+}
+
 int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
     char num_spawners, spawner_row, spawner_col, num_down_stairs, num_up_stairs;
     EnemyType enemy_type;
     int current_byte = cb;
+    int enemy_list_index;
+    int num_plants;
 
     for(int i = 0; i < cm.depth; i++) {
         num_spawners = file_data[current_byte + 0];
@@ -421,10 +522,20 @@ int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
         num_up_stairs = file_data[current_byte + 2];
         current_byte += 3;
 
+        //current_byte gets updated because it is passed by reference.
+        cout<<endl;
+        num_plants = char_array_to_int(file_data, current_byte);
+        //cout<<"NUM_PLANTS: "<<num_plants<<endl;
+
+        current_byte = deserialize_plants(file_data, i, current_byte, num_plants);
+        //cout<<"DESERIALIZING: Chunk "<<cm.world_row<<", "<<cm.world_col<<", "<<i<<" : "<<current_byte<<endl;
+        
+
         for(int j = 0; j < num_spawners; j++) {
             spawner_row = file_data[current_byte + 0];
             spawner_col = file_data[current_byte + 1];
-            enemy_type = enemies::ENEMY_LIST[file_data[current_byte+2]];
+            enemy_list_index = file_data[current_byte + 2];
+            enemy_type = enemies::ENEMY_LIST[enemy_list_index];
             layers[i].make_spawner(i, IntPoint(spawner_row, spawner_col), enemy_type);
             current_byte += 3;
         }
@@ -477,7 +588,9 @@ void Chunk::deserialize(string file_name) {
     int file_size = fs::file_size(file_name);
 
     //Initialize an array for the file data.
-    /** \todo does this have to be dynamically allocated? */
+    /** \todo does this have to be dynamically allocated? 
+     *   Yeah; we don't know its size at compile time.
+     */
     char * file_data = new char[file_size];
 
     //Read the entire file into the file_data array.
@@ -489,7 +602,6 @@ void Chunk::deserialize(string file_name) {
     layers = vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
 
     current_byte = deserialize_layer_metadata(file_data, current_byte);
-    //assert(cm.depth == (current_byte - 4) / 6); Unfortunately it's not this simple anymore.
 
     current_byte = deserialize_layers(file_data, current_byte);
     assert(current_byte == file_size);

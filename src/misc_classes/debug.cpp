@@ -41,6 +41,7 @@ DebugConsole::DebugConsole(Game* _game)
     func_map["killall"] = &DebugConsole::killall;
     func_map["spawn"] = &DebugConsole::spawn;
     func_map["teleport"] = &DebugConsole::teleport;
+    func_map["togglevis"] = &DebugConsole::togglevis;
 }
 
 void DebugConsole::run_command(std::string input)
@@ -177,10 +178,19 @@ void DebugConsole::teleport(std::vector<std::string> command, std::vector<int> a
     }
 }
 
+void DebugConsole::togglevis(std::vector<std::string> command, std::vector<int> args) {
+    if(game->visibility_on) {
+        game->visibility_on = false;
+    } else {
+        game->visibility_on = true;
+    }
+}
+
 std::string DebugConsole::get_message()
 {
     return debug_message;
 }
+
 std::string DebugConsole::input_from_buffer(int direction)
 {
     if(buffer.size() == 0)
