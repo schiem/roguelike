@@ -59,6 +59,24 @@ TileMatrix* Plant::get_sprites()
     return &sprites;
 }
 
+// \todo can i pass by reference???
+void Plant::set_sprites(TileMatrix tm) {
+    sprites = TileMatrix(tm.size(), std::vector<Tile>(tm[0].size()));
+    for(int i = 0; i < tm.size(); i++) {
+        for(int j = 0; j < tm[i].size(); j++) {
+            sprites[i][j] = tm[i][j];
+        }
+    }
+}
+
+void Plant::set_x(int _x) {
+    x = _x;
+}
+
+void Plant::set_y(int _y) {
+    y = _y;
+}
+
 IntPoint Plant::get_coords()
 {
     return IntPoint(y, x);

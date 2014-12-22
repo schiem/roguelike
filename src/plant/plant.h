@@ -92,6 +92,14 @@ class Plant
          * Returns the coordinates as an IntPoint.
          */
         IntPoint get_coords();
+
+        /**
+         * Pass in a tilematrix to use as the sprites for this plant.
+         */
+        void set_sprites(TileMatrix tm);
+
+        void set_x(int _x);
+        void set_y(int _y);
 };
 
 #endif

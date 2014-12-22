@@ -76,7 +76,11 @@ void ChunkLayer::swap(const ChunkLayer& l) {
     num_rooms = l.num_rooms;
     spawners = l.spawners;
     items = l.items;
-    plants = l.plants;
+    /// \todo There was a segfault here. This may have fixed it, but maybe not.
+    plants = std::vector<Plant>(l.plants.size());
+    for(int i = 0; i < l.plants.size(); i++) {
+        plants[i] = l.plants[i];
+    }
     for(int i = 0; i < l.num_rooms; i++) {
         this->rooms[i] = l.rooms[i];
     }
@@ -206,8 +210,7 @@ void ChunkLayer::make_spawner(int depth, IntPoint point, EnemyType enemy) {
     spawners.push_back(Spawner(point.col, point.row, depth, enemy));
 }
 
-void ChunkLayer::add_plant(Plant plant)
-{
+void ChunkLayer::add_plant(Plant plant) {
     plants.push_back(plant);
 }
 

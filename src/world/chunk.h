@@ -318,6 +318,28 @@ class Chunk{
         stringstream make_filename();
 
         /**
+         * Given an int, will assume it is no more than 4 bytes long and pack it
+         * into a char array at a given index.
+         * 
+         * @param num the number to pack
+         * @param file the char array to pack into
+         * @param index the index to start at
+         *
+         * @return the new current index at the end of the sequence of 4 bytes.
+         */
+        int pack_int_into_char_array(int num, char* file, int index);
+
+        /**
+         * Given a char array and an index, will unpack 4 bytes into an int.
+         *
+         * @param file the char array
+         * @param the_index index at which the sequence of 4 bytes begins
+         *
+         * @return the unpacked integer.
+         */
+        int char_array_to_int(char* file, int& the_index);
+
+        /**
          * Determines the size of the file that will be created for this chunk.
          * @param bytes_per_tile the number of bytes expected per tile.
          * @return integer file size in bytes.
@@ -330,6 +352,14 @@ class Chunk{
          * @return x the next index of the file array to write to.
          */
         int serialize_metadata(char* file);
+
+        /**
+         * Serialize all the plants in a layer.
+         * @param file the file byte array
+         * @param layer the layer to work on
+         * @current_byte the current byte in the file array.
+         */
+        int serialize_plants(char* file, int layer, int current_byte);
 
         /**
          * Save metadata for each layer of this chunk.
@@ -380,6 +410,16 @@ class Chunk{
          * @return index of the byte after the last metadata byte
          */
         int deserialize_layer_metadata(char* file, int cb);
+
+        /**
+         * Deserialize all the plants in a layer.
+         *
+         * @param file the data file array
+         * @param layer the layer to work on
+         * @param cb the current byte in the file array
+         * @param num_plants the number of plants in this layer.
+         */
+        int deserialize_plants(char* file, int layer, int cb, int num_plants);
 
         /**
          * Populate this chunk's layer array with data from the file array.

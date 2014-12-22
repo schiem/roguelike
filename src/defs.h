@@ -704,12 +704,14 @@ namespace enemies
  */
 struct PlantType
 {
+    int id;
     std::vector<std::vector<Tile> > sprites;
 };
 
 namespace plants
 {
     extern PlantType tree;
+    extern PlantType PLANT_LIST[1];
 }
 
 
