@@ -113,6 +113,12 @@ struct Tile {
     bool seen;
 
     /**
+     * True if this tile is at the floor level - this is used to determine if a
+     * spawner or stairs can be placed here.
+     */
+    bool can_build_overtop;
+
+    /**
      * The comparison operator for tiles.
      */
     bool operator==(const Tile& rhs) const {

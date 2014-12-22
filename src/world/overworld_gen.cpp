@@ -44,10 +44,10 @@ namespace overworld_gen {
                 }
             }
         }
-        ground.down_stair.col = rand() % ground.width;
-        ground.down_stair.row = rand() % ground.height;
+        ground.down_stairs[0].col = rand() % ground.width;
+        ground.down_stairs[0].row = rand() % ground.height;
         if(ground.has_layer_below) {
-            ground.set_tile(ground.down_stair, td::DOWN_STAIR);
+            ground.set_tile(ground.down_stairs[0], td::DOWN_STAIR);
         }
         IntPoint spawn = IntPoint(rand() % ground.height, rand() % ground.width);
         ground.spawners.push_back(Spawner(spawn.col, spawn.row, 0, rabbit));
@@ -160,7 +160,7 @@ namespace overworld_gen {
         IntPoint down_stair;
         down_stair.col = rand() % width;
         down_stair.row = rand() % height;
-        ground.down_stair = down_stair;
+        ground.down_stairs.push_back(down_stair);
 
         if(ground.has_layer_below) {
             ground.set_tile(down_stair, td::DOWN_STAIR);

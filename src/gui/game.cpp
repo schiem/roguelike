@@ -362,16 +362,16 @@ void Game::change_depth(int direction, Character* chara) {
         if (chara->get_depth()-1 >= -1) {
             if(*current_tile == td::UP_STAIR) {
                 chara->set_depth(chara->get_depth() - 1);
-                chara->set_x(current_chunk->get_down_stair(chara->get_depth()).col);
-                chara->set_y(current_chunk->get_down_stair(chara->get_depth()).row);
+                chara->set_x(current_chunk->get_down_stairs(chara->get_depth())[0].col);
+                chara->set_y(current_chunk->get_down_stairs(chara->get_depth())[0].row);
             }
         }
     } else {
         if (chara->get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == td::DOWN_STAIR) {
                 chara->set_depth(chara->get_depth() + 1);
-                chara->set_x(current_chunk->get_up_stair(chara->get_depth()).col);
-                chara->set_y(current_chunk->get_up_stair(chara->get_depth()).row);
+                chara->set_x(current_chunk->get_up_stairs(chara->get_depth())[0].col);
+                chara->set_y(current_chunk->get_up_stairs(chara->get_depth())[0].row);
             }
         }
     }
