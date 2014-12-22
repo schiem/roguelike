@@ -131,18 +131,18 @@ void Chunk::build_some_dank_trees()
     //erm...let's have a tree density
     //(that's trees/tile sq)
     int min = 1;
-    int max = 5;
+    int max = 10;
     int dist_between_trees = (min+max)/2;
     int padding = 0;
     int tree_size = 2;
     
-    int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size);
-    int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size);
+    int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size) + 1;
+    int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size) + 1;
     
     IntPoint trees_per_side = IntPoint(y_trees, x_trees);
     SpringMatrix mat = SpringMatrix(trees_per_side, tree_size, min, max, padding);
 
-    mat.deform_matrix(3);
+    mat.deform_matrix(1);
     std::vector<SpringPoint*> points = mat.get_matrix();
     for(int i=0;i<points.size();i++)
     {
