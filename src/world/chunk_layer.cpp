@@ -13,8 +13,6 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     ground = TileMatrix(height, std::vector<Tile>(width, td::EMPTY));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
-    down_stair = IntPoint(0, 0);
-    up_stair = IntPoint(0, 0);
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
@@ -31,8 +29,6 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     ground = TileMatrix(height, std::vector<Tile>(width, td::EMPTY));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
-    down_stair = IntPoint(0, 0);
-    up_stair = IntPoint(0, 0);
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
@@ -55,8 +51,8 @@ ChunkLayer& ChunkLayer::operator= (const ChunkLayer& l) {
 void ChunkLayer::clear() {
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms=0;
-    down_stair = IntPoint(0, 0);
-    up_stair = IntPoint(0, 0);
+    down_stairs = std::vector<IntPoint>();
+    up_stairs = std::vector<IntPoint>();
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
@@ -71,8 +67,8 @@ void ChunkLayer::swap(const ChunkLayer& l) {
     ground = l.ground;
     width = l.width;
     height = l.height;
-    down_stair = l.down_stair;
-    up_stair = l.up_stair;
+    down_stairs = l.down_stairs;
+    up_stairs = l.up_stairs;
     /**
      * \todo this is weird as balls
      */
@@ -146,6 +142,46 @@ void ChunkLayer::add_item(Item* item) {
     items.push_back(item);
 }
 
+void ChunkLayer::make_stairs(bool has_layer_below) {
+    assert(num_rooms > 0);
+
+    Room up_room = rooms[rand() % num_rooms];
+    Room down_room = rooms[rand() % num_rooms];
+
+    IntPoint down_stair, up_stair;
+
+    //Find the locations of up/down stairs.
+    up_stair.col = 1 + up_room.tl.col + rand() % ((up_room.br.col - 1) - (up_room.tl.col + 1));
+    up_stair.row = 1 + up_room.tl.row + rand() % ((up_room.br.row - 1) - (up_room.tl.row + 1));
+
+    if(has_layer_below) {
+        do{
+            down_stair.col = 1 + down_room.tl.col +
+                (rand() % ((down_room.br.col - 1) - (down_room.tl.col + 1)));
+            down_stair.row = 1 + down_room.tl.row +
+                (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
+        }
+        while(down_stair == up_stair);
+        ground[down_stair.row][down_stair.col] = td::DOWN_STAIR;
+    }
+    ground[up_stair.row][up_stair.col] = td::UP_STAIR;
+
+    down_stairs.push_back(down_stair);
+    up_stairs.push_back(up_stair);
+}
+
+void ChunkLayer::make_stairs_at_coords(int row, int col, Tile stair_type) {
+    bool youre_a_dumbass;
+    if (stair_type == td::DOWN_STAIR) {
+        down_stairs.push_back(IntPoint(row, col));
+    } else if (stair_type == td::UP_STAIR) {
+        up_stairs.push_back(IntPoint(row, col));
+    } else {
+        youre_a_dumbass = true;
+        assert(youre_a_dumbass);
+    }
+}
+
 void ChunkLayer::make_spawner(int depth) {
     Room spawn_room;
     do {
@@ -154,10 +190,10 @@ void ChunkLayer::make_spawner(int depth) {
 
     IntPoint spawn;
     do {
+        //this line though
         spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
-    } while(spawn==down_stair || spawn == up_stair);
+    } while(!ground[spawn.row][spawn.col].can_build_overtop);
 
-    spawner_loc = spawn;
     spawners.push_back(Spawner(spawn.col, spawn.row, depth, enemies::kobold));
     ground[spawn.row][spawn.col] = td::KOBOLD_SPAWNER;
 }

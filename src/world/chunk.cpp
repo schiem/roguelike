@@ -29,7 +29,7 @@
 
 #include <chunk.h>
 
-using namespace std;
+namespace td=tiledef;
 
 Chunk::Chunk() {
     cm.height = CHUNK_HEIGHT;
@@ -94,9 +94,7 @@ bool Chunk::build_chunk_with_dungeons() {
         pblind_db::build_dungeon(cm.width, cm.height, 5, layers[i]);
 
         //makes the staircases in a dungeon
-        dungeon_builder::make_stairs(layers[i], has_layer_below);
-        //layers[i].make_stairs(has_layer_below);
-        //layers[i].make_spawner(i);
+        layers[i].make_stairs(has_layer_below);
         layers[i].has_layer_below = has_layer_below;
     }
 }
@@ -136,7 +134,7 @@ void Chunk::build_some_dank_trees()
     int max = 7;
     int dist_between_trees = (min+max)/2;
     int padding = 5;
-    int tree_size = 2;
+    nt tree_size = 2;
     
     int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size);
     int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size);
@@ -161,9 +159,34 @@ void Chunk::build_some_dank_trees()
  * MAKE THIS GENERALIZED FOR ALL CHUNKS/LAYERS.
  */
 bool Chunk::can_build(int x, int y)
+    float TREE_DENSITY = .03;
+    int num_trees = (cm.width * cm.height) * TREE_DENSITY;
+    for(int i=0;i<num_trees;i++)
+    {
+        int x;
+        int y;
+        do {
+            x = rand() % cm.width;
+            y = rand() % cm.height;
+        } while(can_build(0, x, y) == false);
+        layers[0].add_plant(Plant(x, y, plants::tree));
+    }
+}
+
+bool Chunk::can_build(int depth, int x, int y)
 {
-    //Should we even be putting a tree here?
+    //return layers[depth].get_tile(y, x).can_build_overtop;
+
+    //lols checkout this line count tradeoff: the above line versus the rest of
+    //this function. Keeping this here so i can brag about it -SAY 12/21/2014
+
+    //Actually...this won't work.  The spawners aren't in the ground anymore. 
+    //Plus, the spawners aren't a single tile, they're a matrix, so we don't want it
+    //building in the middle.  Also plus, this doesn't do what I was going to add next,
+    //which was check whether or not the x and y are even in the tile matrix.
+    //-MJY 12/21/2014 (slightly later)
     
+    //Should we even be putting a tree here?
     bool good_tile = layers[0].get_tile(y, x).can_be_moved_through;
     
     //Is it in a spawner?
@@ -188,15 +211,15 @@ IntPoint Chunk::get_world_loc() const{
     return IntPoint(cm.world_row, cm.world_col);
 }
 
-IntPoint Chunk::get_up_stair(int depth) const{
+std::vector<IntPoint> Chunk::get_up_stairs(int depth) const{
     assert(depth>0);
     assert(cm.depth > depth);
-    return layers[depth].up_stair;
+    return layers[depth].up_stairs;
 }
 
-IntPoint Chunk::get_down_stair(int depth) const{
+std::vector<IntPoint> Chunk::get_down_stairs(int depth) const{
     assert(cm.depth > depth);
-    return layers[depth].down_stair;
+    return layers[depth].down_stairs;
 }
 
 std::vector<Item*>* Chunk::get_items(int depth) {
@@ -272,10 +295,16 @@ MapTile Chunk::get_type() {
 int Chunk::calculate_file_size(int bytes_per_tile) {
     int bytes_per_layer = 0;
     for(int i = 0; i < cm.depth; i++) {
+        bytes_per_layer += 3; //num_spawners, num_*_stairs
         for(int j = 0; j < layers[i].spawners.size(); j++) {
             bytes_per_layer += 3;
         }
-        bytes_per_layer += 5;
+        for(int j = 0; j < layers[i].down_stairs.size(); j++) {
+            bytes_per_layer += 2;
+        }
+        for(int j = 0; j < layers[i].up_stairs.size(); j++) {
+            bytes_per_layer += 2;
+        }
     }
 
     bytes_per_layer += (BYTES_PER_TILE * cm.width * cm.height * cm.depth);
@@ -298,19 +327,30 @@ int Chunk::serialize_layer_metadata(char file[], int cb) {
     int current_byte=cb;
 
     for(int i = 0; i < cm.depth; i++) {
+        //IMPORTANT: These lines store how many spawners, down_stairs, and up_stairs
+        //           to expect when deserializing.
         file[current_byte + 0] = layers[i].spawners.size();
-        current_byte += 1;
+        file[current_byte + 1] = layers[i].down_stairs.size();
+        file[current_byte + 2] = layers[i].up_stairs.size();
+        current_byte += 3;
         for(int j = 0; j < layers[i].spawners.size(); j++) {
             file[current_byte + 0] = layers[i].spawners[j].get_y();
             file[current_byte + 1] = layers[i].spawners[j].get_x();
             file[current_byte + 2] = layers[i].spawners[j].get_enemy_type_id();
             current_byte += 3;
         }
-        file[current_byte + 0] = layers[i].down_stair.row;
-        file[current_byte + 1] = layers[i].down_stair.col;
-        file[current_byte + 2] = layers[i].up_stair.row;
-        file[current_byte + 3] = layers[i].up_stair.col;
-        current_byte += 4;
+
+        for(int j = 0; j < layers[i].down_stairs.size(); j++) {
+            file[current_byte + 0] = layers[i].down_stairs[j].row;
+            file[current_byte + 1] = layers[i].down_stairs[j].col;
+            current_byte += 2;
+        }
+
+        for(int j = 0; j < layers[i].up_stairs.size(); j++) {
+            file[current_byte + 0] = layers[i].up_stairs[j].row;
+            file[current_byte + 1] = layers[i].up_stairs[j].col;
+            current_byte += 2;
+        }
     }
 
     return current_byte;
@@ -389,13 +429,15 @@ void Chunk::deserialize_metadata(char file_data[]) {
 }
 
 int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
-    char num_spawners, spawner_row, spawner_col;
+    char num_spawners, spawner_row, spawner_col, num_down_stairs, num_up_stairs;
     EnemyType enemy_type;
     int current_byte = cb;
 
     for(int i = 0; i < cm.depth; i++) {
         num_spawners = file_data[current_byte + 0];
-        current_byte += 1;
+        num_down_stairs = file_data[current_byte + 1];
+        num_up_stairs = file_data[current_byte + 2];
+        current_byte += 3;
 
         for(int j = 0; j < num_spawners; j++) {
             spawner_row = file_data[current_byte + 0];
@@ -405,12 +447,17 @@ int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
             current_byte += 3;
         }
 
-        layers[i].down_stair.row = file_data[current_byte + 0];
-        layers[i].down_stair.col = file_data[current_byte + 1];
-        layers[i].up_stair.row = file_data[current_byte + 2];
-        layers[i].up_stair.col = file_data[current_byte + 3];
+        for(int j = 0; j < num_down_stairs; j++) {
+            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], td::DOWN_STAIR);
+            current_byte += 2;
+        }
+
+        for(int j = 0; j < num_up_stairs; j++) {
+            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], td::UP_STAIR);
+            current_byte += 2;
+        }
+
         layers[i].has_layer_below = (i < (cm.depth - 1));
-        current_byte += 4;
     }
 
     return current_byte;

@@ -53,19 +53,6 @@ class ChunkLayer {
          */
         void tile_assertions(int row, int col) const;
 
-        /**
-         * A vector of IntPoints representing the location of down stairs on
-         * this chunk.
-         */
-        std::vector<IntPoint> down_stairs;
-
-        /**
-         * The coordinates of the stair leading to the layer above this one, if
-         * such a layer exists.
-         */
-        std::vector<IntPoint> up_stairs;
-
-
     public:
         ChunkLayer();
         ChunkLayer(int _width, int _height);
@@ -78,11 +65,16 @@ class ChunkLayer {
         void clear();
 
         /**
-         * \todo these should be gone in a few commits.
+         * A vector of IntPoints representing the location of down stairs on
+         * this chunk.
          */
-        IntPoint down_stair;
-        IntPoint up_stair;
-        IntPoint spawner_loc;
+        std::vector<IntPoint> down_stairs;
+
+        /**
+         * The coordinates of the stair leading to the layer above this one, if
+         * such a layer exists.
+         */
+        std::vector<IntPoint> up_stairs;
 
         /**
          * The width of this layer.
@@ -187,8 +179,23 @@ class ChunkLayer {
          */
         void add_item(Item* item);
 
+        /**
+         * @param has_layer_below a bool denoting whether or not there is a
+         * layer below this dungeon.
+         *
+         * Create an "up stair" in a random room and a "down stair" in a
+         * random room (if there is a chunk below).
+         */
         void make_stairs(bool has_layer_below);
 
+        /**
+         * @param row obvious
+         * @param col obvious
+         * @param tile is it an up_stair or a down_stair?
+         *
+         * Make stairs at given coordinates.
+         */
+        void make_stairs_at_coords(int row, int col, Tile stair_type);
         /**
          * @param depth the depth at which to build a spawner
          *

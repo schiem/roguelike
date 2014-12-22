@@ -43,7 +43,6 @@ class Plant;
 class Spawner;
 class IntPoint;
 
-using namespace std;
 namespace fs=boost::filesystem;
 
 static const int BYTES_PER_TILE = 2;
@@ -202,7 +201,7 @@ class Chunk{
         /**
          * Check to see if something can be built at a point in the chunk.
          */
-        bool can_build(int x, int y);
+        bool can_build(int depth, int x, int y);
 
         /**
          * Returns an IntPoint representing the chunk's location on the world
@@ -217,14 +216,14 @@ class Chunk{
          *
          * @param depth - the depth of this chunk.
          */
-        IntPoint get_up_stair(int depth) const;
+        std::vector<IntPoint> get_up_stairs(int depth) const;
 
         /**
          * Returns the location of the down stair in the chunk as an IntPoint.
          *
          * @param depth - the depth of this chunk.
          */
-        IntPoint get_down_stair(int depth) const;
+        std::vector<IntPoint> get_down_stairs(int depth) const;
 
         /**
          * Returns a vector of all the items on the ground in this chunk.
