@@ -94,9 +94,7 @@ bool Chunk::build_chunk_with_dungeons() {
         pblind_db::build_dungeon(cm.width, cm.height, 5, layers[i]);
 
         //makes the staircases in a dungeon
-        dungeon_builder::make_stairs(layers[i], has_layer_below);
-        //layers[i].make_stairs(has_layer_below);
-        //layers[i].make_spawner(i);
+        layers[i].make_stairs(has_layer_below);
         layers[i].has_layer_below = has_layer_below;
     }
 }
@@ -111,6 +109,7 @@ void Chunk::build_forest_chunk() {
     overworld_gen::build_forest_overworld(layers[0]);
     
     //TODO: probably rename this
+    //TODO: You better fucking not
     build_some_dank_trees();
 }
 
@@ -132,7 +131,7 @@ void Chunk::build_some_dank_trees()
 {
     //erm...let's have a tree density
     //(that's trees/tile sq)
-    float TREE_DENSITY = .01;
+    float TREE_DENSITY = .03;
     int num_trees = (cm.width * cm.height) * TREE_DENSITY;
     for(int i=0;i<num_trees;i++)
     {

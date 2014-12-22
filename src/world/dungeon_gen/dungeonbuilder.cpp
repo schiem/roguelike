@@ -201,7 +201,6 @@ namespace dungeon_builder {
     }
 
     void set_wall_if_not_path(int row, int col, dungeon_meta &dm)  {
-        //TODO check that this is working 12/16/2014
         if(!(dm.main_dungeon->get_tile(row, col) == td::PATH)) {
             dm.main_dungeon->set_tile(row, col, td::ROOM_WALL);
         }
@@ -214,29 +213,5 @@ namespace dungeon_builder {
 
     ChunkLayer* get_dungeon(dungeon_meta &dm){
         return dm.main_dungeon;
-    }
-
-    void make_stairs(ChunkLayer& cl, bool has_layer_below) {
-        assert(cl.num_rooms > 0);
-
-        Room up_room = cl.rooms[rand() % cl.num_rooms];
-        Room down_room = cl.rooms[rand() % cl.num_rooms];
-
-        //Find the locations of up/down stairs.
-        cl.up_stair.col = 1 + up_room.tl.col + rand() % ((up_room.br.col - 1) - (up_room.tl.col + 1));
-        cl.up_stair.row = 1 + up_room.tl.row + rand() % ((up_room.br.row - 1) - (up_room.tl.row + 1));
-
-        if(has_layer_below) {
-            do{
-                cl.down_stair.col = 1 + down_room.tl.col +
-                    (rand() % ((down_room.br.col - 1) - (down_room.tl.col + 1)));
-                cl.down_stair.row = 1 + down_room.tl.row +
-                    (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
-            }
-            while(cl.down_stair == cl.up_stair);
-            cl.get_ground()[cl.down_stair.row][cl.down_stair.col] = td::DOWN_STAIR;
-        }
-        cl.get_ground()[cl.up_stair.row][cl.up_stair.col] = td::UP_STAIR;
-
     }
 }

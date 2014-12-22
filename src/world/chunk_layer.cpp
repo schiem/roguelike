@@ -146,6 +146,30 @@ void ChunkLayer::add_item(Item* item) {
     items.push_back(item);
 }
 
+void ChunkLayer::make_stairs(bool has_layer_below) {
+    assert(num_rooms > 0);
+
+    Room up_room = rooms[rand() % num_rooms];
+    Room down_room = rooms[rand() % num_rooms];
+
+    //Find the locations of up/down stairs.
+    up_stair.col = 1 + up_room.tl.col + rand() % ((up_room.br.col - 1) - (up_room.tl.col + 1));
+    up_stair.row = 1 + up_room.tl.row + rand() % ((up_room.br.row - 1) - (up_room.tl.row + 1));
+
+    if(has_layer_below) {
+        do{
+            down_stair.col = 1 + down_room.tl.col +
+                (rand() % ((down_room.br.col - 1) - (down_room.tl.col + 1)));
+            down_stair.row = 1 + down_room.tl.row +
+                (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
+        }
+        while(down_stair == up_stair);
+        get_ground()[down_stair.row][down_stair.col] = td::DOWN_STAIR;
+    }
+    get_ground()[up_stair.row][up_stair.col] = td::UP_STAIR;
+
+}
+
 void ChunkLayer::make_spawner(int depth) {
     Room spawn_room;
     do {
@@ -157,7 +181,6 @@ void ChunkLayer::make_spawner(int depth) {
         spawn = IntPoint(2 + spawn_room.tl.row + rand() % ((spawn_room.br.row - 2) - (spawn_room.tl.row + 2)), 2 + spawn_room.tl.col + rand() % ((spawn_room.br.col - 2) - (spawn_room.tl.col + 2)));
     } while(spawn==down_stair || spawn == up_stair);
 
-    spawner_loc = spawn;
     spawners.push_back(Spawner(spawn.col, spawn.row, depth, enemies::kobold));
     ground[spawn.row][spawn.col] = td::KOBOLD_SPAWNER;
 }
