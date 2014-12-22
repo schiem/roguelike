@@ -264,6 +264,10 @@ std::vector<Plant>* Chunk::get_plants(int _depth) {
     return current->get_plants();
 }
 
+std::vector<std::vector<int> >* Chunk::get_heightmap() {
+    return &heightmap;
+}
+
 void Chunk::dungeon_dump(int _depth) {
     layers[_depth].layer_dump();
 }
@@ -523,7 +527,6 @@ int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
         current_byte += 3;
 
         //current_byte gets updated because it is passed by reference.
-        cout<<endl;
         num_plants = char_array_to_int(file_data, current_byte);
         //cout<<"NUM_PLANTS: "<<num_plants<<endl;
 
