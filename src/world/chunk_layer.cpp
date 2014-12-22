@@ -211,6 +211,11 @@ void ChunkLayer::add_plant(Plant plant)
     plants.push_back(plant);
 }
 
+bool ChunkLayer::in_layer(int x, int y)
+{
+    return y<ground.size() && y>=0 && x<ground[y].size() && x>=0;
+}
+
 void ChunkLayer::layer_dump() {
     //dungeon dump
     Tile tile;

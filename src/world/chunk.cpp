@@ -131,9 +131,9 @@ void Chunk::build_some_dank_trees()
     //erm...let's have a tree density
     //(that's trees/tile sq)
     int min = 1;
-    int max = 7;
+    int max = 5;
     int dist_between_trees = (min+max)/2;
-    int padding = 5;
+    int padding = 0;
     int tree_size = 2;
     
     int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size);
@@ -142,7 +142,7 @@ void Chunk::build_some_dank_trees()
     IntPoint trees_per_side = IntPoint(y_trees, x_trees);
     SpringMatrix mat = SpringMatrix(trees_per_side, tree_size, min, max, padding);
 
-    mat.deform_matrix(1);
+    mat.deform_matrix(3);
     std::vector<SpringPoint*> points = mat.get_matrix();
     for(int i=0;i<points.size();i++)
     {
@@ -160,8 +160,12 @@ void Chunk::build_some_dank_trees()
  */
 bool Chunk::can_build(int depth, int x, int y)
 {
+    if(!layers[depth].in_layer(x, y))
+    {
+        return false;
+    }
     bool can_build = layers[depth].get_tile(y, x).can_build_overtop;
-
+    
     //lols checkout this line count tradeoff: the above line versus the rest of
     //this function. Keeping this here so i can brag about it -SAY 12/21/2014
 

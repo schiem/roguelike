@@ -214,6 +214,11 @@ class ChunkLayer {
         void add_plant(Plant plant);
 
         /**
+         * Checks to see if a point is in the layer.
+         */
+        bool in_layer(int x, int y);
+
+        /**
          * Prints an ASCII representation of the layer to stdout.
          */
         void layer_dump();
