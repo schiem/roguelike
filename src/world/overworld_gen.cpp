@@ -94,7 +94,7 @@ namespace overworld_gen {
         /*TESTING ITEMS*/
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                ground.set_tile(i,j,td::GRASS_DIRT);
+                ground.set_tile(i,j,td::DIRT);
             }
         }
 
@@ -116,7 +116,7 @@ namespace overworld_gen {
 
            for(int i=start_y-radius;i<start_y+radius;i++) {
                for(int j=start_x-radius;j<start_x+radius;j++) {
-                   ground.set_tile(i,j,td::GRASS_DIRT);
+                   ground.set_tile(i,j,td::DIRT);
                }
            }
 

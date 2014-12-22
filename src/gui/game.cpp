@@ -300,6 +300,7 @@ void Game::run_enemies(long delta_ms) {
                 Item* item = item_list->at(j);
                 drop_item(item, enemy);
             }
+            drop_item(corpse, enemy);
             remove_targets(enemy_list[i]);
             delete enemy_list[i];
             enemy_list.erase(enemy_list.begin() + i);
@@ -418,6 +419,8 @@ void Game::move_char(int col_change, int row_change, Character* chara) {
 /// \todo Make this take in a character so that other characters can call it?
 void Game::get_item(Character* chara)
 {
+    IntPoint coords = chara->get_coords();
+    IntPoint chunk = chara->get_chunk();
     Item* temp_item = item_at_coords(IntPoint(chara->get_y(), chara->get_x()), chara->get_chunk(), chara->get_depth());
     Chunk* current_chunk = chunk_map.get_chunk_abs(chara->get_chunk_y(), chara->get_chunk_x());
     if(temp_item != NULL)
@@ -425,6 +428,10 @@ void Game::get_item(Character* chara)
         ///\todo Add a check if the inventory is full
         chara->add_item(temp_item);
         current_chunk->remove_item(temp_item, chara->get_depth());
+        IntPoint b_coords = get_buffer_coords(chunk, coords);
+        bool was_seen = buffer[b_coords.row][b_coords.col]->visible;
+        buffer[b_coords.row][b_coords.col] = current_chunk->get_tile(chara->get_depth(), coords.row, coords.col);
+        buffer[b_coords.row][b_coords.col]->visible = was_seen;
     }
 }
 
