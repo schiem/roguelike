@@ -134,7 +134,7 @@ void Chunk::build_some_dank_trees()
     int max = 7;
     int dist_between_trees = (min+max)/2;
     int padding = 5;
-    nt tree_size = 2;
+    int tree_size = 2;
     
     int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size);
     int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size);
@@ -148,7 +148,7 @@ void Chunk::build_some_dank_trees()
     {
         int x = points[i]->get_x();
         int y = points[i]->get_y();
-        if(can_build(x, y))
+        if(can_build(0, x, y))
         {
             layers[0].add_plant(Plant(x, y, plants::tree));
         }
@@ -158,24 +158,9 @@ void Chunk::build_some_dank_trees()
 /**
  * MAKE THIS GENERALIZED FOR ALL CHUNKS/LAYERS.
  */
-bool Chunk::can_build(int x, int y)
-    float TREE_DENSITY = .03;
-    int num_trees = (cm.width * cm.height) * TREE_DENSITY;
-    for(int i=0;i<num_trees;i++)
-    {
-        int x;
-        int y;
-        do {
-            x = rand() % cm.width;
-            y = rand() % cm.height;
-        } while(can_build(0, x, y) == false);
-        layers[0].add_plant(Plant(x, y, plants::tree));
-    }
-}
-
 bool Chunk::can_build(int depth, int x, int y)
 {
-    //return layers[depth].get_tile(y, x).can_build_overtop;
+    bool can_build = layers[depth].get_tile(y, x).can_build_overtop;
 
     //lols checkout this line count tradeoff: the above line versus the rest of
     //this function. Keeping this here so i can brag about it -SAY 12/21/2014
@@ -186,12 +171,9 @@ bool Chunk::can_build(int depth, int x, int y)
     //which was check whether or not the x and y are even in the tile matrix.
     //-MJY 12/21/2014 (slightly later)
     
-    //Should we even be putting a tree here?
-    bool good_tile = layers[0].get_tile(y, x).can_be_moved_through;
-    
     //Is it in a spawner?
     bool in_spawner = false;
-    std::vector<Spawner>* spawners = get_spawners(0);
+    std::vector<Spawner>* spawners = get_spawners(depth);
     for(int i=0;i<spawners->size();i++)
     {
         if(spawners->at(i).point_in_spawner(x, y))
@@ -199,12 +181,8 @@ bool Chunk::can_build(int depth, int x, int y)
             in_spawner = true;
         }
     }
-
-    //Is it on the stairs?
-    IntPoint stair = get_down_stair(0);
-    bool is_stair = (x == stair.col) && (y == stair.row);
     
-    return good_tile && !in_spawner && !is_stair;
+    return  can_build && !in_spawner;
 }
 
 IntPoint Chunk::get_world_loc() const{

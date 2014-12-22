@@ -155,8 +155,6 @@ void SpringMatrix::deform_matrix(int num_passes)
             int x_dif = x_current.col - x_dist;
             int cur_change = x_dif/2;
             int right_change = (x_dif - cur_change) * - 1;
-            std::cout<<"Dist: "<<x_dist<<", cur: "<<x_current<<", dif: "<<x_dif<<std::endl;
-            std::cout<<"Moving right, cur: "<<cur_change<<", right: "<<right_change<<std::endl;
             point->move(cur_change, 0);
             right->move(right_change, 0);
         }
@@ -168,8 +166,6 @@ void SpringMatrix::deform_matrix(int num_passes)
             int y_dif = y_current.row - y_dist;
             int cur_change = y_dif/2;
             int bottom_change = (y_dif - cur_change) * - 1;
-            std::cout<<"Dist: "<<y_dist<<", dif: "<<y_dif<<std::endl;
-            std::cout<<"Moving down, cur: "<<cur_change<<", bot: "<<bottom_change<<std::endl;
             point->move(0, cur_change);
             bottom->move(0, bottom_change);
         }
