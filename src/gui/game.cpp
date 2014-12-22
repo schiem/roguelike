@@ -536,9 +536,6 @@ bool Game::in_buffer(int row, int col) {
 bool Game::coords_in_buffer(int row, int col)
 {
     bool is_in = row < buffer.size() && row >= 0 && col < buffer[row].size() && col >= 0;
-    if(!is_in)
-    {
-    }
     return is_in;
 }
 
