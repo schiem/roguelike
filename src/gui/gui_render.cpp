@@ -80,23 +80,24 @@ void GUI::render_canvas()
     TilePointerMatrix tm = game.get_canvas();
     for(size_t i = 0; i < tm.size(); i++) {
         for(size_t j = 0; j < tm[i].size(); j++) {
-            drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
-            //If the tile is visible, render it fully.
-            /**
-            if(tm[i][j]->visible) {
-                drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
-            
-            //If the tile is not visible, but has been seen, render it in
-            //grey.
-            } else if(tm[i][j]->seen) {
-                drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
-                //We probably shouldn't draw the enemy layer on non-visible
-                //tiles.
+            if(game.visibility_on) {
+                //If the tile is visible, render it fully.
+                if(tm[i][j]->visible) {
+                    drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
+                
+                //If the tile is not visible, but has been seen, render it in
+                //grey.
+                } else if(tm[i][j]->seen) {
+                    drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
+                    //We probably shouldn't draw the enemy layer on non-visible
+                    //tiles.
+                } else {
+                    //Draw an empty tile
+                    drawChr(j, i, 0, ascii, screen, 0);
+                }
             } else {
-                //Draw an empty tile
-                drawChr(j, i, 0, ascii, screen, 0);
+                drawChr(j, i, tm[i][j]->char_count, ascii, screen, tm[i][j]->color);
             }
-            */
         }
     }
 }

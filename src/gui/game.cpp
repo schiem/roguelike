@@ -111,6 +111,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     recalculate_visibility_lines(15);
     refresh();
 
+    visibility_on = true;
     initialized = true;
 }
 
@@ -375,7 +376,7 @@ void Game::change_depth(int direction, Character* chara) {
                 chara->set_y(current_chunk->get_up_stairs(chara->get_depth())[0].row);
             }
         } else {
-            cout<<"DEPTH OF THIS CHUNK: "<<current_chunk->get_depth()<<endl;
+            //cout<<"DEPTH OF THIS CHUNK: "<<current_chunk->get_depth()<<endl;
         }
     }
 }
