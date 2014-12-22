@@ -132,26 +132,38 @@ void Chunk::build_some_dank_trees()
 {
     //erm...let's have a tree density
     //(that's trees/tile sq)
-    float TREE_DENSITY = .01;
-    int num_trees = (cm.width * cm.height) * TREE_DENSITY;
-    for(int i=0;i<num_trees;i++)
+    int min = 1;
+    int max = 7;
+    int dist_between_trees = (min+max)/2;
+    int padding = 5;
+    int tree_size = 2;
+    
+    int x_trees = (cm.width - padding * 2)/(dist_between_trees + tree_size);
+    int y_trees = (cm.height - padding * 2)/(dist_between_trees + tree_size);
+    
+    IntPoint trees_per_side = IntPoint(y_trees, x_trees);
+    SpringMatrix mat = SpringMatrix(trees_per_side, tree_size, min, max, padding);
+
+    mat.deform_matrix(1);
+    std::vector<SpringPoint*> points = mat.get_matrix();
+    for(int i=0;i<points.size();i++)
     {
-        int x;
-        int y;
-        do {
-            x = rand() % cm.width;
-            y = rand() % cm.height;
-        } while(can_build(x, y) == false);
-        layers[0].add_plant(Plant(x, y, plants::tree));
+        int x = points[i]->get_x();
+        int y = points[i]->get_y();
+        if(can_build(x, y))
+        {
+            layers[0].add_plant(Plant(x, y, plants::tree));
+        }
     }
 }
 
 /**
- * MAKE THIS GENERALIZED FOR ALL CHUNKS.
+ * MAKE THIS GENERALIZED FOR ALL CHUNKS/LAYERS.
  */
 bool Chunk::can_build(int x, int y)
 {
     //Should we even be putting a tree here?
+    
     bool good_tile = layers[0].get_tile(y, x).can_be_moved_through;
     
     //Is it in a spawner?
