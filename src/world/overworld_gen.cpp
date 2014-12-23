@@ -21,6 +21,14 @@
  */
 
 #include <overworld_gen.h>
+#include <chunk_layer.h>
+#include <building.h>
+#include <settlement.h>
+#include <chunk.h>
+#include <block.h>
+#include <bresenham.h>
+#include <spawner.h>
+#include <int_point.h>
 
 namespace td=tiledef;
 
@@ -182,7 +190,7 @@ namespace overworld_gen {
             }
         }
         
-        /**************** TESST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
+        /**************** TEST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
         /**
         int build_x = 0; //rand() % width/2;
         int build_y = 0; //rand() % height/2;
@@ -202,5 +210,40 @@ namespace overworld_gen {
             }
         }
         */
+    }
+
+    /**
+     * Not sure where to put these thoughts. Chunk creation will have to
+     * be kicked off by ChunkMatrix.
+     *
+     * From ChunkMatrix:
+     * When chunk x has to be newly created:
+     *     For each surrounding chunk coordinate:
+     *         If the chunk is already loaded in the ChunkMatrix:
+     *             Load heightmap vector with a pointer to its heightmap.
+     *         Else:
+     *             If a file for the chunk exists:
+     *                 Do a partial load to get the heightmap (maybe put
+     *                 this at the beginning of the save file). Delete 
+     *                 the pointer after chunk generation is finished.
+     *             Else:
+     *                 The pointer for its heightmap is NULL; we can do
+     *                 whatever we want for chunk x.
+     */
+
+    void seed_edges(Chunk& ground, int turbidity, HeightmapPtrList surrounding_chunks) {
+        return;
+    }
+
+    void create_hills(Chunk& ground, int turbidity, ChunkPtrList surrounding_chunks) {
+        HeightmapPtrList heightmaps(8);
+        for(int i = 0; i < 8; i++) {
+            if(surrounding_chunks[i] == NULL) {
+                heightmaps[i] = NULL;
+            }
+            heightmaps[i] = surrounding_chunks[i]->get_heightmap();
+        }
+        seed_edges(ground, turbidity, heightmaps);
+
     }
 }

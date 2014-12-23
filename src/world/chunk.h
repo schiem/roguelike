@@ -49,6 +49,8 @@ static const int BYTES_PER_TILE = 2;
 static const int CHUNKLAYER_META_BYTES = 6; //spawner row/col, upstairs row/col, downstairs row/col
 static const int CHUNK_META_BYTES = 6; //height, width, depth, chunk_type_id, world_row, world_col
 
+typedef std::vector<std::vector<Tile> > TileMatrix;
+
 struct chunk_meta {
     /**
      * This chunk's height in tiles (the number of rows)
@@ -94,7 +96,6 @@ struct chunk_meta {
  * calls its deserialize() method, loading it with the appropriate data.
  */
 class Chunk{
-    typedef std::vector<std::vector<Tile> > TileMatrix;
     private:
 
         /**
@@ -131,6 +132,11 @@ class Chunk{
          * @see deserialize
          */
         bool find_serialized_chunk();
+
+        /**
+         * The heightmap of this chunk.
+         */
+        std::vector<std::vector<int> > heightmap;
 
     public:
         /**
@@ -298,6 +304,11 @@ class Chunk{
          * Returns the plants at a given depth.
          */
         std::vector<Plant>* get_plants(int depth);
+
+        /**
+         * Get the heightmap for this chunk.
+         */
+        std::vector<std::vector<int> >* get_heightmap();
 
         /**
          * Prints a graphical representation of the given layer to stdout.

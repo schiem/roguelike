@@ -21,18 +21,17 @@
 #define _OVERWORLD_H
 
 #include <vector>
-#include <spawner.h>
-#include <int_point.h>
-#include <bresenham.h>
 #include <defs.h>
-#include <chunk_layer.h>
 #include <iostream>
-#include <building.h>
-#include <settlement.h>
-#include <block.h>
+
+class ChunkLayer;
+class Chunk;
+
+typedef std::vector<Chunk*> ChunkPtrList;
 
 namespace overworld_gen {
     typedef std::vector<std::vector<Tile> > TileMatrix;
+    typedef std::vector<std::vector<std::vector<int> >* > HeightmapPtrList;
     bool smoothing_pass(int threshold, Tile tile_type, int num);
 
     /**
@@ -57,6 +56,22 @@ namespace overworld_gen {
      * thick trees, and tree-lined oases.
      */
     void build_forest_overworld(ChunkLayer& ground);
+
+    /**
+     * Build the edges of this chunk's topmost layer based on the edges of the
+     * chunks surrounding it.
+     */
+    void seed_edges(Chunk& ground, int turbidity, HeightmapPtrList surrounding_chunks);
+
+    /**
+     * Vary the terrain on this chunk.
+     *
+     * @param c this chunk
+     * @param turbidity parameter that affects hill steepness
+     * @param surrounding_chunks a vector of the 8 chunks surrounding
+     *        this one, starting from the top-left and going clockwise.
+     */
+    void create_hills(Chunk& c, int turbidity, ChunkPtrList surrounding_chunks);
 
 }
 
