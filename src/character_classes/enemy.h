@@ -33,63 +33,6 @@
 
 using namespace enemies;
 
-/**
- * A rather odd way of handling linked lists.
- * This is only really used in the A-star algorithm, and is designed to
- * act as a linked list by accessing on index instead of by memory address.
- * @see Enemy::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
- */
-struct ATile
-{
-    /**
-     * The index value of the parent of this tile
-     */
-    int parent;
-
-    /**
-     * The coordinates of the tile.
-     */
-    IntPoint coords;
-
-    /**
-     * The total "score" for this tile.
-     * Made up of f + g
-     */
-    int f;
-
-    /**
-     * The distance that has passed from the origin to this tile.
-     */
-    int g;
-
-    /**
-     * The result of the Manhattan Heuristic
-     * @see Enemy::manhattan(IntPoint current, IntPoint goal)
-     */
-    int h;
-
-    /**
-     * Default constructor.
-     */
-    ATile()
-    {
-        f = -1;
-        g = -1;
-        h = -1;
-    }
-
-    /**
-     * The constructor
-     */
-    ATile(int _parent, IntPoint _coords)
-    {
-        parent = _parent;
-        coords = _coords;
-        f = 0;
-        g = 0;
-        h = 0;
-    }
-};
 
 /**
  * The enemy class. The primary antagonists of the game.
@@ -187,75 +130,7 @@ class Enemy : public Character
          */
         void move(int x_change, int y_change);
 
-        /**
-         * Determines the best next move to make to reach a goal.
-         * This function loods at the current coordinates, the coordinates of
-         * the goal, and surroundings, and decides what the next move on the
-         * shortest path is to reach that goal.
-         * @param goal THe coordinates of the goal to reach
-         * @param surroundings A matrix of the tiles surrounding the enemy.
-         * @param cur_coords The current coordinates in the surroundings matrix.
-         * @return The coordinates of the best next move.
-         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
-         */
-        IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords);
 
-        /**
-         * Determines whether the coords are in the list of Tiles.
-         * A helper function for the a_star which determines if a given
-         * set of coords already exists in a list of ATiles.
-         * @param point The point to check against.
-         * @param list The list of ATiles which may possess the point.
-         * @return The index of the location of the point in the list, or -1 if it is not in the list.
-         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
-         */
-        int is_in(IntPoint point, std::vector<ATile> list);
-
-        /**
-         * A pathfinding algorithm.
-         * This calculates the best path between two coordinates on a given array of tiles
-         * using the a* algorithm.  This is done by keeping track of an "open" and a "closed"
-         * list of tiles.  The open list represents tiles that could potentially be looked at,
-         * and the closed list is a list of tiles that have already been looked at.
-         *
-         * The current tile is the tile that is currently being considered, and every tile around
-         * it is added to the open list, assuming that those tiles can be moved through and are
-         * not on the closed list.  Each tile added to the open list is given a g, h, and f score,
-         * and the curren tile becomes the parent.
-         * G represents the distance from the start point to the tile, h (standing for heuristic)
-         * is a measure from the tile to the goal, and f = h + g.  If a tile is on the open list,
-         * then f is recalculated for the current tile.  If it is lower, then the current tile becomes
-         * the new parent.
-         *
-         * Each loop, the current tile is the one on the open list with the shortest f score.  If the
-         * goal is on the open list, or the open list is empty, then the algorithm is stopped.
-         * See the source for further documentation.
-         * @param start The starting point for the algorithm.
-         * @param goal The place the enemy is trying to get to.
-         * @param surroundings The surroundings within the sight of the enemy.
-         * @return A vector containing a list of IntPoints representing the best path, or an empty vector if there is no path.
-         */
-        std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TilePointerMatrix &surroundings);
-
-        /**
-         * A heuristic to estimate the distance from a point to the goal.
-         * A helper function for the a-star algorithm, it calculates the
-         * distance as the x_change + y_change between a point and the goal.
-         * @param current The current point.
-         * @param goal The goal the enemy is trying to reach.
-         * @return The evaluated value.
-         * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix&surroundings)
-         */
-        int manhattan(IntPoint, IntPoint);
-
-        /**
-         * Returns the ATile with the smallest f value.
-         * A helper fucntion for the a-star algorithm which finds the smallest
-         * f-value.
-         * @param A reference to a list of ATiles.
-         * @return The index of the smallest f value found in the list.
-         */
-        int get_smallest_f(std::vector<ATile>& list);
 
         /**
          * Converts chunk/coords into the enemies surroundings coordinates.
@@ -270,26 +145,7 @@ class Enemy : public Character
          */
         IntPoint get_sur_coords(IntPoint sur_chunk, IntPoint sur_coords, IntPoint _chunk, IntPoint _coords);
 
-        /**
-         * Finds a target for non-passive enemies.
-         * Finds the best target to act on by searching for the character
-         * with the closest morality to the target_id.
-         * @param target_id The target morality that the enemy is looking for.
-         * @param selectability The range that the morality can fall within.
-         * @param enemy_list The list of enemies to check.
-         * @return The character that is found as the best target.  NULL if none is found.
-         */
-        Character* find_best_target(int target_id, int selectability, std::vector<Character*> enemy_list);
 
-        /**
-         * Finds an enemy that isn't pasive.
-         * If a character is found that isn't passive, it returns that
-         * character.  Otherwise it returns NULL.
-         * @param selectability The range that the morality can fall within.
-         * @param enemy_list The list of enemies to check.
-         * @return The character that is found as the best target.  NULL if none is found.
-         */
-        Character* passive_best_target(int target_id, int selectability, std::vector<Character*> enemy_list);
 
 
         /**
@@ -352,58 +208,6 @@ class Enemy : public Character
          * The destructoid!
          */
         ~Enemy();
-
-        /**
-         * Wrapper function for calling different types of AI.
-         * Depending on the type of enemy, this function will call a different
-         * type of AI.
-         * It is necessary to pass in the sur_chunk and sur_coords so that
-         * the coordinates of the character an be converted into the coords
-         * of the surroundnigs tilematrix.
-         * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords.
-         * @param sur_coords The coordinates of the surrounding tilematrix.
-         * @param char_list The list of characters the enemy can see.
-         * @param delta_ms The change in millisenconds since the last time ai was called.
-         * @see aggressive_ai(TilePointerMatrix surroundings, std::vector<character*> char_list, long delta_ms)
-         * @see passive_ai(TilePointerMatrix surroundings, std::vector<character*> char_list, long delta_ms)
-         */
-        void run_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
-
-        /**
-         * Ensures that the target is still within the view.
-         */
-        bool validate_target();
-        
-        
-        /**
-         * The ai for the aggressive enemies.
-         * The AI searches for a target (find_best_target()) and moves towards
-         * that target.  If it is next to the target, it will attack it.
-         * If no target is found, it will move randomly.
-         * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords.
-         * @param sur_coords The coordinates of the surrounding tilematrix.
-         * @param char_list The list of characters the enemy can see.
-         * @param delta_ms The change in millisenconds since the last time ai was called.
-         */
-        void aggressive_ai(TilePointerMatrix&, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
-
-        /**
-         * The ai for the passive enemies.
-         * The AI searches for a target (passive_best_target())
-         * and will run away from any non-passive targets found.  As time
-         * passes, it has a greater and greater chance of being un-spooked
-         * and going back to grazing.
-         * @param surroundings The tiles around the enemy.
-         * @param sur_chunk The chunk of the surrounding coords.
-         * @param sur_coords The coordinates of the surrounding tilematrix.
-         * @param char_list The list of characters the enemy can see.
-         * @param delta_ms The change in millisenconds since the last time ai was called.
-         * \todo Make them find a food source and move toward that.
-         * @see spooked
-         */
-        void passive_ai(TilePointerMatrix &surroundings, IntPoint sur_chunk, IntPoint sur_coords, std::vector<Character*> char_list, long delta_ms);
 
         /**
          * Public accessor for the sight.

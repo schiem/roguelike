@@ -264,9 +264,24 @@ class Game
         void run_enemies(long);
         void remove_targets(Character* enem);
         std::vector<Enemy*>& get_enemies();
+        
+        /**
+         * Returns true if there is an enemy in range of the character.
+         * If so, sets the character's target to the enemy found.
+         */
+        bool enemy_in_range(Character* chara);
+        
+        /**
+         * Uses pathfinding to get to the point.  Note: this could be
+         * a nightmare, as enemies will currently only attempt to move
+         * to points they can see, but the pathfinding may take them on
+         * a very bizarre path involving the entire buffer.
+         */
+        int move_to_point(Character* chara, IntPoint coords, IntPoint chunk);
+
         //MAIN CHAR Functionality
         void change_depth(int, Character*);
-        void move_char(int, int, Character*) ;
+        bool move_char(int, int, Character*) ;
         void get_item(Character*);
         void drop_item(Item*, Character*);
 

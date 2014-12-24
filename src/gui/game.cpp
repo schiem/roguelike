@@ -25,6 +25,7 @@
 #include <chunk.h>
 #include <character.h>
 #include <bresenham.h>
+#include <pathfinding.h>
 
 using namespace std;
 namespace td=tiledef;
@@ -350,6 +351,74 @@ std::vector<Enemy*>& Game::get_enemies() {
     return enemy_list;
 }
 
+
+bool Game::enemy_in_range(Character* chara){ 
+    //establish the necessary variables
+    Character* current = actor->get_character();
+    std::vector<Enemy*> enemy_list = game->get_enemies();
+    Character* best = NULL;
+    int target_id = 5 - target_id;
+    int selectability = 2;
+    
+    //iterate over all the enemies
+    for(int i=0; i<enemy_list.size(); i++)
+    {
+        IntPoint coords = enemy_list[i]->get_coords();
+        IntPoint chunk = enemy_list[i]->get_chunk();
+        if(current->in_sight(coords, chunk))
+        {
+            //Check if we care about the enemy
+            if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
+            {
+                //If we don't have a target, this is the best target
+                if(best == NULL)
+                {
+                    best = enemy_list[i];
+                }
+                else
+                {
+                    //otherwise, check if this one we found is better
+                    if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                    {
+                        best = enemy_list[i];
+                    }
+                }
+            }
+        }
+    }
+    
+    if(best != NULL)
+    {
+        current->set_target(best);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
+{
+    IntPoint goal = get_buffer_coords(chunk, coords);
+    IntPoint current = get_buffer_coords(chara->get_chunk(), chara->get_coords());
+    IntPoint next_step = pathfinding::get_next_step(goal, buffer, current);
+    IntPoint movement = next_step - goal;
+    if(next_step == goal)
+    {
+        return 1; //success
+    }
+    else if(move_char(movement.col, movement.row, chara))
+    {
+        return 2; //running
+    }
+    else
+    {
+        return 0; //we failed :(
+    }
+}
+
 /*--------------------Character Controller Functions----------------------*/
 
 
@@ -381,7 +450,7 @@ void Game::change_depth(int direction, Character* chara) {
     }
 }
 
-void Game::move_char(int col_change, int row_change, Character* chara) {
+bool Game::move_char(int col_change, int row_change, Character* chara) {
     if(!chara->can_act()) {
         return;
     }
@@ -411,10 +480,16 @@ void Game::move_char(int col_change, int row_change, Character* chara) {
             chara->set_chunk(new_chunk);
         }
         chara->reduce_endurance(1);
+        return true;
+    //Hrm...TODO:schiem, do something about this
     } else if(enem != NULL) {
+        //Enemies may or may not kill each other until I fix this...
         chara->attack(enem);
         chara->set_target(enem);
         chara->reduce_endurance(2);
+        return true;
+    } else {
+        return false;
     }
 }
 
