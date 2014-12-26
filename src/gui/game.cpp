@@ -419,6 +419,40 @@ int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
     }
 }
 
+
+int Game::run_away(Character* chara, IntPoint coords, IntPoint chunk)
+{
+    IntPoint current_coords = get_abs(chara->get_chunk(), chara->get_coords());
+    IntPoint other_coords = get_abs(chunk, coords);
+    IntPoint movement = pathfinding::get_opposite(current_coords, other_coords);
+    return move_char(movement.col, movement.row, chara);
+}
+
+void Game::wander(Character* chara)
+{
+    
+    int will_move = rand() % 5;
+    int x_change = rand() % 3 - 1;
+    int y_change = rand() % 3 - 1;
+    IntPoint new_coords = IntPoint(chara->get_y() + y_change, chara->get_x() + x_change()); 
+  
+    if(point_in_buffer(chara->get_chunk(), new_coords))
+    {
+        move_char(x_change, y_change, chara);
+    }
+}
+
+bool next_to_char(Character* chara, Character* target)
+{
+    IntPoint chara_abs = get_abs(chara->get_chunk(), chara->get_coords());
+    IntPoint target_abs = get_abs(target->get_chunk(), target->get_coords());
+    IntPoint difference = chara_abs - target_abs;
+    bool x = difference.col <= 1 && difference.col >= -1;
+    bool y = difference.row <= 1 && difference.row >= -1;
+    bool same_coords = difference.col == 0 && difference.row == 0;
+    return x && y && !same_coords;
+}
+
 /*--------------------Character Controller Functions----------------------*/
 
 
@@ -481,16 +515,17 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
         }
         chara->reduce_endurance(1);
         return true;
-    //Hrm...TODO:schiem, do something about this
-    } else if(enem != NULL) {
-        //Enemies may or may not kill each other until I fix this...
-        chara->attack(enem);
-        chara->set_target(enem);
-        chara->reduce_endurance(2);
-        return true;
     } else {
         return false;
     }
+}
+
+bool attack_char(Character* chara, Character* target)
+{
+    chara->attack(target);
+    chara->set_target(target);
+    chara->reduce_endurance(2);
+    return true;
 }
 
 
@@ -707,6 +742,11 @@ void Game::add_tile_to_buffer(IntPoint chunk, IntPoint coords, Tile* tile)
     }
 }
 
+bool Game::point_in_buffer(IntPoint chunk, IntPoint coords)
+{
+    IntPoint buffer_coords = get_buffer_coords(chunk, coords);
+    return coords_in_buffer(buffer_coords.row, buffer_coords.col);
+}
 
 void Game::items_to_buffer(std::vector<Item*>* items, IntPoint chunk)
 {

@@ -225,7 +225,12 @@ class Game
          * Adds a tile to the buffer at the given coordinates, after
          * checking if the tile is in the buffer.
          */
-        void add_tile_to_buffer(IntPoint coords, IntPoint chunk, Tile* tile);
+        void add_tile_to_buffer(IntPoint chunk, IntPoint coords, Tile* tile);
+        
+        /**
+         * Checks if a point in the form of chunk, coords is in the buffer.
+         */
+        bool point_in_buffer(IntPoint chunk, IntPoint coords);
 
         /**
          * Writes a list of items into the buffer at a given chunk 
@@ -278,10 +283,30 @@ class Game
          * a very bizarre path involving the entire buffer.
          */
         int move_to_point(Character* chara, IntPoint coords, IntPoint chunk);
+    
+        /**
+         * Causes the enemy to try to run away.
+         */
+        int run_away(Character* chara, IntPoint coords, IntPoint chunk);
+
+        /**
+         * Causes a character to wander listlessly.
+         */
+        void wander(Character* chara);
+        
+        /**
+         * Checks if one character is next to another.
+         */
+        bool next_to_char(Character* chara, Character* target);
 
         //MAIN CHAR Functionality
         void change_depth(int, Character*);
-        bool move_char(int, int, Character*) ;
+        bool move_char(int, int, Character*);
+        
+        /**
+         * Causes one character to attack another.
+         */
+        bool attack_char(Character* chara, Character* target); 
         void get_item(Character*);
         void drop_item(Item*, Character*);
 

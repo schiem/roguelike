@@ -19,6 +19,7 @@
 
 #include <behavior_node.h>
 
+//---------------------------COMPOSITE NODES-----------------------//
 
 SequenceNode(std::vector<BNode*> _nodes)
 {
@@ -38,7 +39,6 @@ int SequenceNode::tick(Actor* actor, Game* game)
     }
     return SUCCESS;
 }
-
 
 
 PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
@@ -85,6 +85,8 @@ int BranchingCondition::tick(Actor* actor, Game* game)
 }
 
 
+//---------------------------DECORATOR NODES-------------------------//
+
 InverterNode::InverterNode(BNode* node)
 {
     nodes.push_back(node);
@@ -103,6 +105,8 @@ int InverterNode::tick(Actor* actor, Game* game)
     }
 }
 
+//----------------------------CONDITION NODES------------------------//
+
 int EnemyInRange::tick(Actor* actor, Game* game)
 {
     return game->enemy_in_range(actor->get_character());
@@ -113,6 +117,20 @@ int LowHealth::tick(Actor* actor, Game* game)
     Character* chara = actor->get_character();
     return (float)chara->get_cur_hp() > (.2 * (float)chara->get_max_hp());
 }
+
+int NextTo::tick(Actor* actor, Game* game)
+{
+    Character* chara = actor->get_character();
+    if(chara->get_target() == NULL)
+    {
+        return FAILURE;
+    }
+    //TODO implement this
+    return game->next_to_char(chara, chara->get_target());
+}
+    
+
+//-------------------------ACTION NODES------------------------------//
 
 int MoveTowards::tick(Actor* actor, Game* game)
 {
@@ -128,4 +146,32 @@ int MoveTowards::tick(Actor* actor, Game* game)
 
 int MoveAway::tick(Actor* actor, Game* game)
 {
+    Character* chara = actor->get_character();
+    if(chara->get_target() == NULL)
+    {
+        return FAILURE;
+    }
+    IntPoint goal_coords = chara->get_target()->get_coords();
+    IntPoint goal_chunk = chara->get_target()->get_chunk();
+    return game->run_away(actor, goal_coords, goal_chunk);
+}
+
+int Attack::tick(Actor* actor, Game* game)
+{
+    Character* chara = actor->get_character();
+    if(chara->get_target() == NULL)
+    {
+        return FAILURE;
+    }
+    //TODO implement
+    return game->attack_char(chara, chara->get_target());
+}
+
+int Wander::tick(Actor* actor, Game* game)
+{
+    Character* chara = actor->get_character();
+    game->wander(chara); 
+    //TODO implement
+    return RUNNING;
+}
 
