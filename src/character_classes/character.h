@@ -30,7 +30,9 @@
 #include <item.h>
 #include <vector>
 #include <cstring>
-
+#include <helper.h>
+#include <math_helper.h>
+#include <bresenham.h>
 
 /**
  * A class which is used to construct all characters in game.
@@ -144,6 +146,45 @@ class Character
          * @see timer
          */
         int speed;
+        
+        /**
+         * Member variable to hold how far the enemy can see.
+         */
+        int sight;
+
+        /**
+         * Member variable to hold where the enemy is looking.
+         * This is 0-100, where 0 (and 100) are directly right.
+         */
+        int direction;
+
+        /**
+         * Member variable to hold the enemies field of view.
+         * This is a percentage of the field of view (1-100).
+         */
+        int view;
+        
+
+        /**
+         * Determines whether or not the enemy will flee.
+         * If spooked is true, enemies will begin to flee from anything with a
+         * morality that is different from its own.
+         */
+        bool spooked;
+
+        /**
+         * The number of this enemy's actions which have passed since it was spooked.
+         */
+        int time_spooked;
+        
+        /**
+         * The direction that the spooked enemy will run in.
+         * Once the enemy has been spooked, the direction for it to go will be
+         * determined based on what spooked it.  direction_spooked will be an IntPoint
+         * with the possible values of +/- 1 or 0.
+         * @see get_spooked(IntPoint abs_coords, IntPoint target_abs)
+         */
+        IntPoint direction_spooked;
 
     public:
         /**
@@ -182,9 +223,10 @@ class Character
         
 
         /**
-         * Run the actions that happen to the character every frame.
+         * Run the actions that happen to the character every frame.  Returns whether
+         * or not enough time had passed to complete the action.
          */
-        void act(long ms);
+        bool act(long ms);
         
         /**
          * A check to see whether or not the character is alive.
@@ -240,6 +282,18 @@ class Character
           */
         std::vector<Item*>* get_equipment();
 
+        /**
+         * Public accessor for the sight.
+         * @return The member variable sight.
+         */
+        int get_sight();
+
+        /**
+         * Gets all the coordinates that the enemy can currently see.
+         * @return A list of coords the enemy can see.
+         */
+        std::vector<IntPoint> sight_tiles();
+        
         /**
          * Add an item to the character's inventory.
          * @param new_item The item to place in the character's inventory.
@@ -523,9 +577,39 @@ class Character
         void gain_endurance(int factor);
 
         /**
-         * Checks to see if the character is good to act!
+         * Checks to see if a point is within the enemy's range of sight.
+         * Looks at a point/chunk to see if it it's within the enemies
+         * range of vision.  
+         * @parameter _coords The coordinates of the target.
+         * @parameter _chunk The chunk of the target.
+         * @return True if the coords/chunk can be seen.
          */
-        bool can_act();
+        bool in_sight_range(IntPoint _coords, IntPoint _chunk);
+
+        /**
+         * Checks to see if the enemy can see something.
+         * Looks at a point/chunk to see if it it's within the enemies
+         * slice of view.  Assumes that the enemy can't see everything,
+         * as having the upper and lower bounds being the same will make
+         * everything pretty wonky.
+         * @parameter _coords The coordinates of the target.
+         * @parameter _chunk The chunk of the target.
+         * @return True if the coords/chunk can be seen.
+         */
+        bool in_sight(IntPoint _coords, IntPoint _chunk);
+        
+        /**
+         * Turns the enemy.
+         * @parameter coords The difference between the target coords and current coords.
+         * @todo Implement a max turn amount.
+         */
+        void turn(IntPoint coords);
+
+        /**
+         * Calculates the upper and lower angles (from 1-100) of the field of view.
+         * @return An IntPoint containing the upper and lower bounds o the fov as angles.
+         */
+         IntPoint get_fov();
 };
 
 struct character_info {
@@ -541,32 +625,6 @@ struct character_info {
     MiscType corpse;
     Character* target;
     vector<Item*> equipment;
-};
-
-/**
- * The class for the character used by the player.
- * The main character class.  I really don't know how much else there is
- * to say about it...maybe I'll think of it later.
- */
-
-class Main_Character : public Character{
-    public:
-        /**
-         * The default constructor.
-         */
-        Main_Character();
-        
-        /**
-         * Kill it.
-         */
-        ~Main_Character();
-
-        /**
-         * The basic constructor.
-         * @see Character(int _max_health, int _x, int _y, Tile _sprite, Item* _corpse, int _chunk_y, int _chunk_y, int _depth, int _morality, int _attack)
-         */
-        Main_Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed);
-
 };
 
 #endif

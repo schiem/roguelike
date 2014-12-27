@@ -20,9 +20,9 @@
 #include <pathfinding.h>
 
 //TODO clean this up and optimize it at some point.
-IntPoint pathfinding::get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords)
+IntPoint pathfinding::get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords, int sight)
 {
-    std::vector<IntPoint> path = a_star(cur_coords, goal, surroundings);
+    std::vector<IntPoint> path = a_star(cur_coords, goal, surroundings, sight);
     if(path.size()>0)
     {
         IntPoint buffer_step = path[path.size() - 1];
@@ -36,7 +36,7 @@ IntPoint pathfinding::get_next_step(IntPoint goal, TilePointerMatrix& surroundin
 }
 
 
-std::vector<IntPoint> pathfinding::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
+std::vector<IntPoint> pathfinding::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings, int sight)
 {
     std::vector<ATile> open;
     std::vector<ATile> closed;
@@ -209,4 +209,64 @@ IntPoint pathfinding::get_opposite(IntPoint abs_coords, IntPoint target_abs)
         y_change = 0 - (rise < 0) + (rise > 0);
     }
     return IntPoint(y_change, x_change);
+}
+
+
+
+void pathfinding::dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br)
+{
+    int tile;
+    for(int i=tl.row; i<br.row;i++)
+    {
+        for(int j=tl.col; j<br.col;j++)
+        {
+            tile = map[i][j]->tile_id;
+            switch(tile){
+                case 1:
+                    cout<<".";
+                    break;
+                case 2:
+                    cout<<".";
+                    break;
+                case 4:
+                    cout<<"#";
+                    break;
+                case 5:
+                    cout<<"P";
+                    break;
+                case 6:
+                    cout<<"M";
+                    break;
+                case 10:
+                    cout<<"T";
+                    break;
+                case 11:
+                    cout<<"#";
+                    break;
+                case 12:
+                    cout<<"d";
+                    break;
+                case 13:
+                    cout<<"u";
+                    break;
+                case 15:
+                    cout<<"S";
+                    break;
+                case 16:
+                    cout<<"~";
+                    break;
+                case 20:
+                    cout<<"t";
+                    break;
+                case 21:
+                    cout<<".";
+                    break;
+                default:
+                    cout<<"0";
+                    break;
+            }
+        }
+        cout<<endl;
+    }
+    cout<<"-----------------------------------------------------"<<endl;
 }

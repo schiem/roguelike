@@ -21,12 +21,12 @@
 
 //---------------------------COMPOSITE NODES-----------------------//
 
-SequenceNode(std::vector<BNode*> _nodes)
+SequenceNode::SequenceNode(std::vector<BNode*> _nodes)
 {
     nodes = _nodes;
 }
 
-int SequenceNode::tick(Actor* actor, Game* game)
+int SequenceNode::tick(BActor* actor, Game* game)
 {
     int did_succeed;
     for(int i=0;i<nodes.size();i++)
@@ -46,7 +46,7 @@ PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
     nodes = _nodes;
 }
 
-int PriorityNode::tick(Actor* actor, Game* game)
+int PriorityNode::tick(BActor* actor, Game* game)
 {
     int did_succeed;
     for(int i=0;i<nodes.size();i++)
@@ -67,7 +67,7 @@ BranchingCondition::BranchingCondition(BNode* condition, BNode* success, BNode* 
     nodes.push_back(failure);
 }
 
-int BranchingCondition::tick(Actor* actor, Game* game)
+int BranchingCondition::tick(BActor* actor, Game* game)
 {
     int did_succeed = nodes[0]->tick(actor, game);
     if(did_succeed == SUCCESS)
@@ -92,7 +92,7 @@ InverterNode::InverterNode(BNode* node)
     nodes.push_back(node);
 }
 
-int InverterNode::tick(Actor* actor, Game* game)
+int InverterNode::tick(BActor* actor, Game* game)
 {
     int did_succeed = nodes[0]->tick(actor, game);
     if(did_succeed == FAILURE || did_succeed == SUCCESS)
@@ -107,32 +107,40 @@ int InverterNode::tick(Actor* actor, Game* game)
 
 //----------------------------CONDITION NODES------------------------//
 
-int EnemyInRange::tick(Actor* actor, Game* game)
+int EnemyInRange::tick(BActor* actor, Game* game)
 {
     return game->enemy_in_range(actor->get_character());
 }
 
-int LowHealth::tick(Actor* actor, Game* game)
+int LowHealth::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     return (float)chara->get_cur_hp() > (.2 * (float)chara->get_max_hp());
 }
 
-int NextTo::tick(Actor* actor, Game* game)
+int NextTo::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     if(chara->get_target() == NULL)
     {
         return FAILURE;
     }
-    //TODO implement this
     return game->next_to_char(chara, chara->get_target());
 }
-    
+
+int HasHealth::tick(BActor* actor, Game* game)
+{
+    Character* chara = actor->get_character();
+    if(chara->get_cur_hp() <= 0)
+    {
+        return FAILURE;
+    }
+    return SUCCESS;
+}
 
 //-------------------------ACTION NODES------------------------------//
 
-int MoveTowards::tick(Actor* actor, Game* game)
+int MoveTowards::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     if(chara->get_target() == NULL)
@@ -144,7 +152,7 @@ int MoveTowards::tick(Actor* actor, Game* game)
     return game->move_to_point(chara, goal_coords, goal_chunk);
 }
 
-int MoveAway::tick(Actor* actor, Game* game)
+int MoveAway::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     if(chara->get_target() == NULL)
@@ -153,25 +161,27 @@ int MoveAway::tick(Actor* actor, Game* game)
     }
     IntPoint goal_coords = chara->get_target()->get_coords();
     IntPoint goal_chunk = chara->get_target()->get_chunk();
-    return game->run_away(actor, goal_coords, goal_chunk);
+    return game->run_away(actor->get_character(), goal_coords, goal_chunk);
 }
 
-int Attack::tick(Actor* actor, Game* game)
+int Attack::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     if(chara->get_target() == NULL)
     {
         return FAILURE;
     }
-    //TODO implement
     return game->attack_char(chara, chara->get_target());
 }
 
-int Wander::tick(Actor* actor, Game* game)
+int Wander::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     game->wander(chara); 
-    //TODO implement
     return RUNNING;
 }
 
+int Die::tick(BActor* actor, Game* game)
+{
+    return DEAD;
+}

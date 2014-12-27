@@ -192,11 +192,10 @@ class Game
 
     public:
         Game();
-        ~Game();
         void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models
-        Main_Character main_char;
+        Character main_char;
 
         //BASE Model access
         Chunk* get_current_chunk();
@@ -266,7 +265,6 @@ class Game
 
         //ENEMY Functionality
         void run_spawners();
-        void run_enemies(long);
         void remove_targets(Character* enem);
         std::vector<Enemy*>& get_enemies();
         
@@ -299,6 +297,21 @@ class Game
          */
         bool next_to_char(Character* chara, Character* target);
 
+        /**
+         * Kills a character.  DOES NOT DELETE THE POINTER.
+         */
+        void kill(Character* chara);
+        
+        /**
+         * Removes an enemy from the game. DOES NOT DELETE THE POINTER.
+         */
+        void remove_enemy(Character* chara);
+
+        /**
+         * Checks if a character is in the buffer.
+         */
+        bool character_in_range(Character* chara);
+        
         //MAIN CHAR Functionality
         void change_depth(int, Character*);
         bool move_char(int, int, Character*);

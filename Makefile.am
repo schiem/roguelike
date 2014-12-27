@@ -10,6 +10,7 @@ AM_CPPFLAGS = -I.\
               -Isrc/menu\
               -Isrc/animation\
               -Isrc/plant\
+              -Isrc/ai\
               -Isrc/\
               -pg\
               $(BOOST_CPPFLAGS)
@@ -40,8 +41,8 @@ roguelike_SOURCES = \
     src/misc_classes/math_helper.cpp\
     src/misc_classes/binary_space.cpp\
     src/misc_classes/spring_matrix.cpp\
-    src/character_classes/main_character.cpp\
-	src/character_classes/character.cpp\
+	src/misc_classes/pathfinding.cpp\
+    src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
     src/character_classes/den.cpp\
@@ -89,6 +90,9 @@ roguelike_SOURCES = \
     src/animation/actor.cpp\
     src/animation/animation_defs.cpp\
     src/plant/plant.cpp\
+    src/ai/behavior_tree.cpp\
+    src/ai/behavior_node.cpp\
+    src/ai/behavior_actor.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
     \
 	src/defs.h\
@@ -99,6 +103,7 @@ roguelike_SOURCES = \
     src/misc_classes/math_helper.h\
     src/misc_classes/binary_space.h\
     src/misc_classes/spring_matrix.h\
+    src/misc_classes/pathfinding.h\
     src/character_classes/character.h\
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\
@@ -128,6 +133,9 @@ roguelike_SOURCES = \
     src/animation/actor.h\
 	src/animation/animation_defs.h\
     src/plant/plant.h\
+    src/ai/behavior_tree.h\
+    src/ai/behavior_node.h\
+    src/ai/behavior_actor.h\
     lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
 

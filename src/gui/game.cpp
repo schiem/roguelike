@@ -79,11 +79,6 @@ Game::Game() {
     }
 }
 
-Game::~Game() {
-    for(int i=0;i<enemy_list.size();i++) {
-        delete enemy_list[i];
-    }
-}
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     world_map = _world_map;
@@ -100,7 +95,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //TODO get this clutter somewhere else
     int main_stat_array[NUM_STATS] = {100, 2, 100, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
-    main_char = Main_Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
+    main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
 
     //What gets drawn to the screen
@@ -135,7 +130,6 @@ bool Game::is_initialized() {
 
 void Game::act(long delta_ms) {
     tick_animations(delta_ms);
-    run_enemies(delta_ms);
     main_char.act(delta_ms);
 }
 
@@ -272,64 +266,6 @@ void Game::run_spawners() {
     }
 }
 
-/* PRE: None
- * POST: Iterates through the enemy list.  For each enemy, it checks to see if
- * it is in the current buffer.  If not, it deletes it.  It then checks to see if
- * it is at the current depth.  If not, it does nothing.
- */
-void Game::run_enemies(long delta_ms) {
-    Enemy* enemy;
-    Chunk* current_chunk;
-
-    //iterate through the enemies that we know about
-    for(int i=0;i<enemy_list.size();i++) {
-        enemy = enemy_list[i];
-        IntPoint enem_chunk = IntPoint(enemy->get_chunk_y(), enemy->get_chunk_x());
-        IntPoint enem_coords = IntPoint(enemy->get_y(), enemy->get_x());
-        if(!enemy->is_alive())
-        {
-
-            //if the enemy isn't alive, drop the entire inventory and then delete the enemy
-            Item* corpse = enemy->get_corpse();
-            corpse->set_coords(enem_coords);
-            current_chunk = chunk_map.get_chunk_abs(enem_chunk.row,enem_chunk.col);
-            current_chunk->add_item(corpse, enemy->get_depth());
-
-            enemy->remove_all();
-            vector<Item*>* item_list = enemy->get_inventory();
-            for(int j=0;j<item_list->size();j++)
-            {
-                Item* item = item_list->at(j);
-                drop_item(item, enemy);
-            }
-            drop_item(corpse, enemy);
-            remove_targets(enemy_list[i]);
-            delete enemy_list[i];
-            enemy_list.erase(enemy_list.begin() + i);
-        }
-        else if(!in_buffer(enemy->get_chunk_x(), enemy->get_chunk_y())) {
-
-            //delete the enemy if it's not in the buffer
-            /** @TODO FIX THIS MEMORY LEAK!!!
-            */
-            std::cout<<"I'm removing an enemy for being out of the buffer."<<std::endl;
-            remove_targets(enemy_list[i]);
-            delete enemy_list[i];
-            enemy_list.erase(enemy_list.begin() + i);
-        } else if(enemy->get_depth() == main_char.get_depth()) {
-            //if the enemy is at the same depth as the main character,
-            //run its ai
-            int radius = enemy->get_sight();
-            TileMatrix surroundings = TileMatrix((radius + 1) * 2, std::vector<Tile>((radius + 1) * 2)); 
-            IntPoint main_char_point(main_char.get_y(), main_char.get_x());
-            std::vector<Character*> nearby_enem; 
-            nearby_enem.assign(enemy_list.begin(), enemy_list.end());
-            nearby_enem.push_back(&main_char);
-            IntPoint buffer_chunk = IntPoint(main_char.get_chunk_y() - 1, main_char.get_chunk_x() - 1);
-            enemy->run_ai(buffer, buffer_chunk, IntPoint(0, 0), nearby_enem, delta_ms);
-        }
-    }
-}
 
 
 void Game::remove_targets(Character* enem)
@@ -354,8 +290,6 @@ std::vector<Enemy*>& Game::get_enemies() {
 
 bool Game::enemy_in_range(Character* chara){ 
     //establish the necessary variables
-    Character* current = actor->get_character();
-    std::vector<Enemy*> enemy_list = game->get_enemies();
     Character* best = NULL;
     int target_id = 5 - target_id;
     int selectability = 2;
@@ -365,7 +299,7 @@ bool Game::enemy_in_range(Character* chara){
     {
         IntPoint coords = enemy_list[i]->get_coords();
         IntPoint chunk = enemy_list[i]->get_chunk();
-        if(current->in_sight(coords, chunk))
+        if(chara->in_sight(coords, chunk))
         {
             //Check if we care about the enemy
             if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
@@ -389,7 +323,7 @@ bool Game::enemy_in_range(Character* chara){
     
     if(best != NULL)
     {
-        current->set_target(best);
+        chara->set_target(best);
         return true;
     }
     else
@@ -403,7 +337,7 @@ int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
 {
     IntPoint goal = get_buffer_coords(chunk, coords);
     IntPoint current = get_buffer_coords(chara->get_chunk(), chara->get_coords());
-    IntPoint next_step = pathfinding::get_next_step(goal, buffer, current);
+    IntPoint next_step = pathfinding::get_next_step(goal, buffer, current, chara->get_sight());
     IntPoint movement = next_step - goal;
     if(next_step == goal)
     {
@@ -434,7 +368,7 @@ void Game::wander(Character* chara)
     int will_move = rand() % 5;
     int x_change = rand() % 3 - 1;
     int y_change = rand() % 3 - 1;
-    IntPoint new_coords = IntPoint(chara->get_y() + y_change, chara->get_x() + x_change()); 
+    IntPoint new_coords = IntPoint(chara->get_y() + y_change, chara->get_x() + x_change); 
   
     if(point_in_buffer(chara->get_chunk(), new_coords))
     {
@@ -442,7 +376,7 @@ void Game::wander(Character* chara)
     }
 }
 
-bool next_to_char(Character* chara, Character* target)
+bool Game::next_to_char(Character* chara, Character* target)
 {
     IntPoint chara_abs = get_abs(chara->get_chunk(), chara->get_coords());
     IntPoint target_abs = get_abs(target->get_chunk(), target->get_coords());
@@ -452,6 +386,47 @@ bool next_to_char(Character* chara, Character* target)
     bool same_coords = difference.col == 0 && difference.row == 0;
     return x && y && !same_coords;
 }
+
+void Game::kill(Character* chara)
+{
+    //DELETING THE CHARACTER POINTER IS HANDLED BY THE ACTOR/AI
+    
+    IntPoint chunk = chara->get_chunk();
+    IntPoint coords = chara->get_coords();
+    Item* corpse = chara->get_corpse();
+    corpse->set_coords(coords);
+    Chunk* current_chunk = chunk_map.get_chunk_abs(chunk.row, chunk.col);
+    current_chunk->add_item(corpse, chara->get_depth());
+
+    chara->remove_all();
+    vector<Item*>* item_list = chara->get_inventory();
+    for(int j=0;j<item_list->size();j++)
+    {
+        Item* item = item_list->at(j);
+        drop_item(item, chara);
+    }
+    drop_item(corpse, chara);
+    remove_enemy(chara);
+}
+
+void Game::remove_enemy(Character* chara)
+{
+    remove_targets(chara);
+    for(int i=0;i<enemy_list.size();i++)
+    {
+        if(enemy_list[i] == chara)
+        {
+            enemy_list.erase(enemy_list.begin() + i);
+        }
+    }
+}
+
+
+bool Game::character_in_range(Character* chara)
+{
+    return in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
+}
+
 
 /*--------------------Character Controller Functions----------------------*/
 
@@ -485,8 +460,8 @@ void Game::change_depth(int direction, Character* chara) {
 }
 
 bool Game::move_char(int col_change, int row_change, Character* chara) {
-    if(!chara->can_act()) {
-        return;
+    if(!chara->is_conscious()) {
+        return false;
     }
 
     int row = chara->get_y();
@@ -520,7 +495,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     }
 }
 
-bool attack_char(Character* chara, Character* target)
+bool Game::attack_char(Character* chara, Character* target)
 {
     chara->attack(target);
     chara->set_target(target);

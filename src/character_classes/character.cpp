@@ -35,6 +35,11 @@ Character::Character(int _x, int _y, int _depth)
     target = NULL;
     equipment = vector<Item*>(7);
     conscious = true;
+    
+    //is the enemy scared? if so, what direction and for how long
+    spooked = false;
+    direction_spooked = IntPoint(0, 0);
+    time_spooked = 0;
 }
 
 Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed) {
@@ -54,12 +59,23 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     target = NULL;
     equipment = vector<Item*>(7);
     conscious = true;
+    
+    //is the enemy scared? if so, what direction and for how long
+    spooked = false;
+    direction_spooked = IntPoint(0, 0);
+    time_spooked = 0;
+
+    //These won't do anything for anyone except the enemy, for now.  But,
+    //they're here if we need them.
+    direction = 0;
+    sight = 20;
+    view = 20;
 }
 
 
 
 
-void Character::act(long ms)
+bool Character::act(long ms)
 {
     timer += ms;
     if(timer >= speed)
@@ -73,7 +89,9 @@ void Character::act(long ms)
                 regain_consciousness();
             }
         }
+        return true;
     }
+    return false;
 }
 
 bool Character::is_alive() const {
@@ -94,7 +112,10 @@ void Character::attack(Character* _chara)
     _chara->set_target(this);
 }
 
-
+int Character::get_sight()
+{
+    return sight;
+}
 
 
 vector<Item*>* Character::get_inventory()
@@ -387,7 +408,88 @@ void Character::gain_endurance(int factor)
     }
 }
 
-bool Character::can_act()
+
+bool Character::in_sight_range(IntPoint _coords, IntPoint _chunk)
 {
-    return is_conscious();
+    IntPoint point = get_abs(_chunk, _coords);
+    IntPoint center = get_abs(chunk, get_coords());
+
+    //get the distance.  sign matters
+    IntPoint distance = point - center;
+    
+    //flag to check if it's in the distance
+    return (distance.row * distance.row) + (distance.col * distance.col) <= sight*sight;
+}
+
+bool Character::in_sight(IntPoint _coords, IntPoint _chunk)
+{
+    IntPoint point = get_abs(_chunk, _coords);
+    IntPoint center = get_abs(chunk, get_coords());
+
+    //get the distance.  sign matters
+    IntPoint distance = point - center;
+    
+    //flag to check if it's in the distance
+    bool in_distance = (distance.row * distance.row) + (distance.col * distance.col) <= sight*sight;
+
+    //uses the direction the enemy is pointed and the width of the field of view
+    //to establish the two angles that represent the upper and lower limits of what
+    //the enemy can see
+    IntPoint view_field = get_fov(); 
+    
+    //convert them to radians
+    double upper_bound = perc_to_rad(view_field.row);
+    double lower_bound = perc_to_rad(view_field.col);
+
+    //get the direction of the target
+    double target_rads = coords_to_rad(distance);
+
+    //check if the target's angle is in the acceptable range
+    bool in_arc = target_rads <= upper_bound && target_rads >= lower_bound;
+    
+    //check to make sure there's not something in the way
+    
+    
+    return in_arc && in_distance;
+}
+
+void Character::turn(IntPoint difference)
+{
+    int new_perc = coords_to_perc(difference);
+    int turn = new_perc - direction;
+    int new_direction = direction + turn;
+
+    if(new_direction > 100)
+    {
+        new_direction -= 100;
+    }
+    else if(new_direction < 0)
+    {
+        new_direction += 100;
+    }
+    direction = new_direction;
+}
+
+std::vector<IntPoint> Character::sight_tiles()
+{
+    IntPoint coords = get_coords();
+    std::vector<IntPoint> arc =  bresenham_arc(coords, sight, get_fov());
+    std::vector<IntPoint> points;
+    for(int i =0;i<arc.size();i++)
+    {
+        std::vector<IntPoint> line_points;
+        line_points = bresenham_line(coords, arc[i]);
+        for(int j=0;j<line_points.size();j++)
+        {
+            points.push_back(line_points[j]);
+        }
+    }
+    return points;
+}
+
+IntPoint Character::get_fov()
+{
+    int upper = direction + (.5 * view);
+    int lower = direction - (.5 * view);
+    return IntPoint(upper, lower);
 }

@@ -1,8 +1,6 @@
 /**
- *  @file MAIN_CHARACTER.CPP
- *  @author Michael Yoder
+ *  BEHAVIOR_ACTOR.CPP
  *
- * @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -19,28 +17,27 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <character.h>
-#include <iostream>
+#include <behavior_actor.h>
 
-Main_Character::Main_Character() {
-
-}
-
-Main_Character::Main_Character(std::vector<int> _stats, int _x, int _y,
-                               Tile _sprite,  MiscType _corpse, int _chunk_x, int _chunk_y , int _depth, int _morality, int _speed) :
-    Character(_stats, _x, _y,  _sprite, _corpse, _chunk_x, _chunk_y, _depth, _morality, _speed){
-}
-
-Main_Character::~Main_Character()
+BActor::BActor(Character* _chara)
 {
-    for(int i=0;i<inventory.size();i++)
-    {
-        delete inventory[i];
-        inventory[i] = NULL;
-    }
-    for(int i=0;i<equipment.size();i++)
-    {
-        delete equipment[i];
-        equipment[i] = NULL;
-    }
+    chara = _chara;
+}
+
+BActor::~BActor()
+{
+    delete chara;
+}
+
+Character* BActor::get_character()
+{
+    return chara;
+}
+
+bool BActor::should_tick(long delta_ms)
+{
+   if(chara->act(delta_ms))
+   {
+       return true;
+   }
 }

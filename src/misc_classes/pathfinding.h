@@ -21,10 +21,12 @@
 #define _PATHFINDING_H
 
 #include <vector>
-
+#include <int_point.h>
+#include <defs.h>
 
 namespace pathfinding
 {
+    typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
     /**
      * A rather odd way of handling linked lists.
      * This is only really used in the A-star algorithm, and is designed to
@@ -95,7 +97,7 @@ namespace pathfinding
      * @return The coordinates of the best next move.
      * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
      */
-    IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords);
+    IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords, int sight);
 
     /**
      * Determines whether the coords are in the list of Tiles.
@@ -133,7 +135,7 @@ namespace pathfinding
      * @param surroundings The surroundings within the sight of the enemy.
      * @return A vector containing a list of IntPoints representing the best path, or an empty vector if there is no path.
      */
-    std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TilePointerMatrix &surroundings);
+    std::vector<IntPoint> a_star(IntPoint start, IntPoint goal, TilePointerMatrix &surroundings, int sight);
 
     /**
      * A heuristic to estimate the distance from a point to the goal.
@@ -165,4 +167,19 @@ namespace pathfinding
      * @see spooked
      */
     IntPoint get_opposite(IntPoint abs_coords, IntPoint target_abs);
-}
+
+    
+    /**
+     * A debugging function.
+     * Dumps the paths to cout as they are calculated by a-star.  Only
+     * enable if a-star is not working propery or if you like seeing the
+     * a-star algrorithm work.  Or if you like massive dumps to cout.
+     * Alternatively, you can use it to dump a different matrix.
+     * @param map The matrix to dump.
+     * @param tl The top left corner of the area to dump.
+     * @param br The bottom right corner of the area to dump.
+     */
+    void dump_matrix(TilePointerMatrix& map, IntPoint tl, IntPoint br);
+};
+
+#endif

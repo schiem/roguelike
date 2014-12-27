@@ -21,20 +21,25 @@
 #define _BEHAVIOR_NODE_H
 
 #include <vector>
+#include <game.h>
+#include <behavior_actor.h>
+
+class BActor;
 
 enum NODE_STATES
 {
-    FAILURE = 0;
-    SUCCESS = 1;
-    RUNNING = 2;
-}
+    FAILURE,
+    SUCCESS,
+    RUNNING,
+    DEAD
+};
 
 /**
  * Defines the different nodes for a behavior tree.
  */
 class BNode
 {
-    private:
+    protected:
         /**
          * The children nodes of the object.
          */
@@ -44,7 +49,7 @@ class BNode
         /**
          * Ticks the node forward once.
          */
-        virtual int tick(Actor* actor, Game* game)=0;
+        virtual int tick(BActor* actor, Game* game)=0;
 };
 
 //-------------------------COMPOSITE NODES------------------//
@@ -57,7 +62,7 @@ class SequenceNode : BNode
 {
     public:
         SequenceNode(std::vector<BNode*> _nodes);
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 /**
@@ -68,7 +73,7 @@ class PriorityNode : BNode
 {
     public:
         PriorityNode(std::vector<BNode*> nodes);
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 /**
@@ -88,7 +93,7 @@ class BranchingCondition : BNode
 {
     public:
         BranchingCondition(BNode* condition, BNode* success, BNode* failure);
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 //---------------------------DECORATOR NODES---------------------//
@@ -99,7 +104,7 @@ class InverterNode : BNode
 {
     public:
         InverterNode(BNode* node);
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 
@@ -108,45 +113,59 @@ class InverterNode : BNode
 class MoveTowards : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 class MoveAway : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 class Attack : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
         
 class Wander : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
+
+class Die : BNode
+{
+    public:
+        int tick(BActor* actor, Game* game);
+};
 //------------------------------CONDITION NODES---------------------//
 
 class LowHealth : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 class EnemyInRange : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
+        int tick(BActor* actor, Game* game);
 };
 
 class NextTo : BNode
 {
     public:
-        int tick(Actor* actor, Game* game);
-}
+        int tick(BActor* actor, Game* game);
+};
+
+class HasHealth : BNode
+{
+    public:
+        int tick(BActor* actor, Game* game);
+};
+
+
 
 #endif

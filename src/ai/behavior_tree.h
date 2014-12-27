@@ -22,13 +22,56 @@
 
 #include <vector>
 #include <behavior_node.h>
-#include <behvarior_actor.h>
+#include <behavior_actor.h>
 
 /**
  * Oh boy, let's get started on behavior trees.
+ * The way that behavior trees work is as a collection of nodes to make
+ * up a specific behavior.  For each actor in the tree, the tree is
+ * traversed, and the behavior is decided based on the traversal of nodes.
  */
 class BehaviorTree
 {
     private:
-        BehaviorNode* root;
-        std::vector<BehaviorActors> actors;
+        /**
+         * The root node of the tree.
+         */
+        BNode* root;
+        
+        /**
+         * The game that this tree should use.
+         */
+        Game* game;
+        
+        /**
+         * The actors in the tree.
+         */
+        std::vector<BActor*> actors;
+    public:
+        /**
+         * The default constructor.
+         */
+        BehaviorTree(BNode* node, Game* _game);
+        
+        /**
+         * The destructor.
+         */
+        ~BehaviorTree();
+        
+        /**
+         * Adds an actor to the tree.
+         */
+        void add_actor(BActor* actor);
+        
+        /**
+         * Runs all of the actors in the tree.
+         */
+        void run_actors(long delta_ms);
+        
+        /**
+         * Removes the actor with a particular character.
+         */
+        void remove_actor(Character* chara);
+};
+
+#endif
