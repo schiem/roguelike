@@ -49,6 +49,7 @@ PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
 int PriorityNode::tick(BActor* actor, Game* game)
 {
     int did_succeed;
+    std::cout<<"I'm prioritying."<<std::endl;
     for(int i=0;i<nodes.size();i++)
     {
         did_succeed = nodes[i]->tick(actor, game);
@@ -57,7 +58,7 @@ int PriorityNode::tick(BActor* actor, Game* game)
             return did_succeed;
         }
     }
-    return FAILURE;
+    return SUCCESS;
 }
 
 BranchingCondition::BranchingCondition(BNode* condition, BNode* success, BNode* failure)
@@ -176,6 +177,7 @@ int Attack::tick(BActor* actor, Game* game)
 
 int Wander::tick(BActor* actor, Game* game)
 {
+    std::cout<<"I'm wandering."<<std::endl;
     Character* chara = actor->get_character();
     game->wander(chara); 
     return RUNNING;

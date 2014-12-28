@@ -90,6 +90,7 @@ roguelike_SOURCES = \
     src/animation/actor.cpp\
     src/animation/animation_defs.cpp\
     src/plant/plant.cpp\
+    src/ai/ai_defs.cpp\
     src/ai/behavior_tree.cpp\
     src/ai/behavior_node.cpp\
     src/ai/behavior_actor.cpp\
@@ -133,6 +134,7 @@ roguelike_SOURCES = \
     src/animation/actor.h\
 	src/animation/animation_defs.h\
     src/plant/plant.h\
+    src/ai/ai_defs.h\
     src/ai/behavior_tree.h\
     src/ai/behavior_node.h\
     src/ai/behavior_actor.h\

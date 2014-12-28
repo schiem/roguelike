@@ -44,6 +44,11 @@ class BehaviorTree
         Game* game;
         
         /**
+         * The id of the tree.
+         */
+        int id;
+        
+        /**
          * The actors in the tree.
          */
         std::vector<BActor*> actors;
@@ -51,7 +56,7 @@ class BehaviorTree
         /**
          * The default constructor.
          */
-        BehaviorTree(BNode* node, Game* _game);
+        BehaviorTree(BNode* node, Game* _game, int _id);
         
         /**
          * The destructor.
@@ -72,6 +77,11 @@ class BehaviorTree
          * Removes the actor with a particular character.
          */
         void remove_actor(Character* chara);
+
+        /**
+         * Accessor for the id.
+         */
+        int get_id();
 };
 
 #endif

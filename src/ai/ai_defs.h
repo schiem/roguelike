@@ -1,6 +1,9 @@
 /**
- *  BEHAVIOR_ACTOR.CPP
+ *  @file AI_DEFS.H
+ *  @author Michael Yoder, Seth Yoder
  *
+ *
+ *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
  *
  *  ROGUELIKETHING is free software: you can redistribute it and/or modify
@@ -17,28 +20,18 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _AI_DEFS_H
+#define _AI_DEFS_H
+#include <behavior_tree.h>
+#include <behavior_node.h>
 #include <behavior_actor.h>
+#include <game.h>
+#include <vector>
 
-BActor::BActor(Character* _chara)
+namespace ai
 {
-    chara = _chara;
+    BehaviorTree GENERIC_AGGRESSIVE(Game* game);
+    //extern BehaviorTree GENERIC_PASSIVE;
 }
 
-BActor::~BActor()
-{
-    std::cout<<"I'm getting called and I shouldn't be!"<<std::endl;
-    delete chara;
-}
-
-Character* BActor::get_character()
-{
-    return chara;
-}
-
-bool BActor::should_tick(long delta_ms)
-{
-   if(chara->act(delta_ms))
-   {
-       return true;
-   }
-}
+#endif

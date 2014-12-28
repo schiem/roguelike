@@ -186,7 +186,9 @@ class Game
 
 
         //ENEMY Data/Models
+        //TODO get rid of the enemy_list
         std::vector<Enemy*> enemy_list;
+        std::vector<Enemy*> enemy_queue;
 
         //ENEMY Functionality
 
@@ -265,6 +267,9 @@ class Game
 
         //ENEMY Functionality
         void run_spawners();
+        void clear_enemy_queue();
+        std::vector<Enemy*> flush_enemies(); 
+        
         void remove_targets(Character* enem);
         std::vector<Enemy*>& get_enemies();
         

@@ -35,6 +35,8 @@
 #include <stdio.h>
 #include <fstream>
 #include <debug.h>
+#include <behavior_tree.h>
+#include <ai_defs.h>
 
 //forward declarations
 class Menu;
@@ -56,7 +58,7 @@ class GUI : public VirtualEvent {
         bool running;
         std::vector<std::string> messages;
         std::string input;
-        
+         
         DebugConsole debug;
         KeyState keyset;
         Screen current_screen;
@@ -64,12 +66,16 @@ class GUI : public VirtualEvent {
         WorldMapGUI world_map_gui;
         Menu* menu;
         Game game;
+        std::vector<BehaviorTree> trees;
+
 
         SDL_Event event;
         SDL_Surface* screen;
         SDL_Surface* asciiBase;
         SDL_Surface* ascii;
 
+        
+        void add_enemies(std::vector<Enemy*> enemies);
         int handle_framerate();
         void clear_screen();
         void render_canvas();

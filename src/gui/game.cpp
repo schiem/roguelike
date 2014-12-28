@@ -258,6 +258,7 @@ void Game::run_spawners() {
                     {
                         enemies[index]->set_chunk(IntPoint(i, j));
                         enemy_list.push_back(enemies[index]);
+                        enemy_queue.push_back(enemies[index]);
                     }
                     spawner->clear_queue();
                 }
@@ -267,6 +268,16 @@ void Game::run_spawners() {
 }
 
 
+void Game::clear_enemy_queue()
+{
+    enemy_queue.clear();
+}
+
+
+std::vector<Enemy*> Game::flush_enemies()
+{
+    return enemy_queue;
+}
 
 void Game::remove_targets(Character* enem)
 {

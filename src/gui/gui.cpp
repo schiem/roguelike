@@ -37,6 +37,7 @@ GUI::GUI() {
     keyset = GAME;
     running = true;
     debug = DebugConsole(&game); 
+    trees.push_back(ai::GENERIC_AGGRESSIVE(&game)); 
 }
 
 int GUI::OnExecute() {
@@ -103,4 +104,22 @@ void GUI::load_font(string font)
     //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
+}
+
+void GUI::add_enemies(std::vector<Enemy*> enemies)
+{
+    for(int i=0;i<enemies.size();i++)
+    {
+        for(int j=0;j<trees.size();j++)
+        {
+            if(enemies[i]->get_ai_id() == trees[i].get_id())
+            {
+                BActor* temp = new BActor(enemies[i]);
+                std::cout<<"Creating the actor..."<<std::endl; 
+                
+                trees[j].add_actor(temp);
+                std::cout<<"Successfully added to tree."<<std::endl;
+            }
+        }
+    }
 }

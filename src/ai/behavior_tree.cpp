@@ -19,10 +19,12 @@
 
 #include <behavior_tree.h>
 
-BehaviorTree::BehaviorTree(BNode* node, Game* _game)
+BehaviorTree::BehaviorTree(BNode* node, Game* _game, int _id)
 {
     root = node;
     game = _game;
+    id = _id;
+    actors = std::vector<BActor*>();
 }
 
 BehaviorTree::~BehaviorTree()
@@ -45,6 +47,7 @@ void BehaviorTree::run_actors(long delta_ms)
         BActor* actor = actors[i];
         if(actor->should_tick(delta_ms))
         {
+            std::cout<<"I'm running actor: "<<i<<std::endl;
             int status = root->tick(actor, game);
             if(status == DEAD)
             {
@@ -72,4 +75,9 @@ void BehaviorTree::remove_actor(Character* chara)
             actors.erase(actors.begin() + i);
         }
     }
+}
+
+int BehaviorTree::get_id()
+{
+    return id;
 }

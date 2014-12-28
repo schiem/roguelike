@@ -58,7 +58,7 @@ class BNode
  * A composite node responsible for running nodes in a sequence.
  * It will call the child nodes until one of them returns false.
  */
-class SequenceNode : BNode
+class SequenceNode : public BNode
 {
     public:
         SequenceNode(std::vector<BNode*> _nodes);
@@ -69,7 +69,7 @@ class SequenceNode : BNode
  * A composite nodes responsible for running nodes in order until
  * one returns true.
  */
-class PriorityNode : BNode
+class PriorityNode : public BNode
 {
     public:
         PriorityNode(std::vector<BNode*> nodes);
@@ -89,7 +89,7 @@ class PriorityNode : BNode
  * the first node if the condition returns success, otherwise it will
  * execute the second.
  */
-class BranchingCondition : BNode
+class BranchingCondition : public BNode
 {
     public:
         BranchingCondition(BNode* condition, BNode* success, BNode* failure);
@@ -100,7 +100,7 @@ class BranchingCondition : BNode
 /**
  * Inverts whatever is returned from the child node.
  */
-class InverterNode : BNode
+class InverterNode : public BNode
 {
     public:
         InverterNode(BNode* node);
@@ -110,57 +110,57 @@ class InverterNode : BNode
 
 //-------------------------------ACTION NODES---------------------//
 
-class MoveTowards : BNode
+class MoveTowards : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
-class MoveAway : BNode
+class MoveAway : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
-class Attack : BNode
+class Attack : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
         
-class Wander : BNode
+class Wander : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
 
-class Die : BNode
+class Die : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 //------------------------------CONDITION NODES---------------------//
 
-class LowHealth : BNode
+class LowHealth : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
-class EnemyInRange : BNode
+class EnemyInRange : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
-class NextTo : BNode
+class NextTo : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
 };
 
-class HasHealth : BNode
+class HasHealth : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);

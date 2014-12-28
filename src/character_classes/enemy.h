@@ -52,6 +52,12 @@ class Enemy : public Character
         int id;
 
         /**
+         * The id of the behavior tree that is responsible for controlling this
+         * enemy.
+         */
+        int ai_id;
+        
+        /**
          * A string of the name of the enemy.
          * This is a generic string, as in "kobold," or "rabbit."
          */
@@ -101,6 +107,11 @@ class Enemy : public Character
          * @see id
          */
         int get_id();
+
+        /*
+         * Public accessor for the ai id.
+         */
+        int get_ai_id();
 };
 
 

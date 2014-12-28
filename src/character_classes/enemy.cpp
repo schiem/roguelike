@@ -35,6 +35,7 @@ Enemy::Enemy(int _x, int _y, int _depth, EnemyType enemy) : Character(_x, _y, _d
     stats = enemy.stats;
     current_stats = stats;
     id = enemy.id;
+    ai_id = enemy.ai_id;
     name = enemy.name;
     sight = enemy.sight;
     view = enemy.view;
@@ -102,3 +103,7 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
     return NULL;
 }
 
+int Enemy::get_ai_id()
+{
+    return ai_id;
+}

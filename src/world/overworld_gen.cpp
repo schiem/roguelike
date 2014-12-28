@@ -174,9 +174,9 @@ namespace overworld_gen {
             ground.set_tile(down_stair, td::DOWN_STAIR);
         }
         
-        for(int i=0;i<10;i++)
+        for(int i=0;i<1;i++)
         {
-            if(rand() % 50 == 0)
+            if(true)//rand() % 50 == 0)
             {
                 int spawn_x = rand() % width;
                 int spawn_y = rand() % height;

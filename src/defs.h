@@ -634,6 +634,11 @@ struct EnemyType
     int id;
 
     /**
+     * The attribute to assign the member variable ai id for enemies.
+     */
+    int ai_id;
+
+    /**
      * The attribute to assign the member variable sight for enemies.
      */
     int sight;

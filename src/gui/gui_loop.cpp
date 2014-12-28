@@ -24,8 +24,14 @@ void GUI::OnLoop() {
     perform_action_cont();
     if(game.is_initialized() && game.is_paused() == false) {
         game.act(STD_MS_PER_FRAME);
+        for(int i=0;i<trees.size();i++)
+        {
+            trees[i].run_actors(STD_MS_PER_FRAME);
+        }
         game.refresh();
         game.run_spawners();
+        add_enemies(game.flush_enemies());
+        game.clear_enemy_queue();
         if(!game.main_char.is_alive())
         {
            current_screen = DEATH_SCREEN;
