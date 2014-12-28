@@ -381,7 +381,7 @@ void Game::wander(Character* chara)
     int y_change = rand() % 3 - 1;
     IntPoint new_coords = IntPoint(chara->get_y() + y_change, chara->get_x() + x_change); 
   
-    if(point_in_buffer(chara->get_chunk(), new_coords))
+    if(point_in_buffer(chara->get_chunk(), new_coords) && will_move == 0)
     {
         move_char(x_change, y_change, chara);
     }
