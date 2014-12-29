@@ -103,7 +103,3 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
     return NULL;
 }
 
-int Enemy::get_ai_id()
-{
-    return ai_id;
-}

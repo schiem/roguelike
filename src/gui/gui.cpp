@@ -106,15 +106,15 @@ void GUI::load_font(string font)
     SDL_SetColorKey( ascii, SDL_SRCCOLORKEY, colorkey );
 }
 
-void GUI::add_enemies(std::vector<Enemy*> enemies)
+void GUI::add_characters(std::vector<Character*> characters)
 {
-    for(int i=0;i<enemies.size();i++)
+    for(int i=0;i<characters.size();i++)
     {
         for(int j=0;j<trees.size();j++)
         {
-            if(enemies[i]->get_ai_id() == trees[i].get_id())
+            if(characters[i]->get_ai_id() == trees[i].get_id())
             {
-                BActor* temp = new BActor(enemies[i]);
+                BActor* temp = new BActor(characters[i]);
                 std::cout<<"Creating the actor..."<<std::endl; 
                 
                 trees[j].add_actor(temp);

@@ -185,6 +185,12 @@ class Character
          * @see get_spooked(IntPoint abs_coords, IntPoint target_abs)
          */
         IntPoint direction_spooked;
+        
+        /**
+         * The id of the behavior tree that is responsible for controlling this
+         * enemy.
+         */
+        int ai_id;
 
     public:
         /**
@@ -207,7 +213,7 @@ class Character
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed);
+        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id);
 
         /**
          * The constructor for the character class.
@@ -610,6 +616,11 @@ class Character
          * @return An IntPoint containing the upper and lower bounds o the fov as angles.
          */
          IntPoint get_fov();
+        
+        /*
+         * Public accessor for the ai id.
+         */
+        int get_ai_id();
 };
 
 struct character_info {
@@ -618,6 +629,7 @@ struct character_info {
     int depth;
     int morality;
     int speed;
+    int ai_id;
     bool conscious;
     IntPoint chunk;
     std::vector<int> stats;

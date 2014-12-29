@@ -42,7 +42,7 @@ Character::Character(int _x, int _y, int _depth)
     time_spooked = 0;
 }
 
-Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed) {
+Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id) {
 
     timer = 0;
     stats = _stats;
@@ -56,6 +56,7 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     chunk = IntPoint(_chunk_y, _chunk_x);
     depth = _depth;
     speed = _speed;
+    ai_id = _ai_id;
     target = NULL;
     equipment = vector<Item*>(7);
     conscious = true;
@@ -492,4 +493,9 @@ IntPoint Character::get_fov()
     int upper = direction + (.5 * view);
     int lower = direction - (.5 * view);
     return IntPoint(upper, lower);
+}
+
+int Character::get_ai_id()
+{
+    return ai_id;
 }

@@ -75,12 +75,12 @@ class GUI : public VirtualEvent {
         SDL_Surface* ascii;
 
         
-        void add_enemies(std::vector<Enemy*> enemies);
+        void add_characters(std::vector<Character*> characters);
         int handle_framerate();
         void clear_screen();
         void render_canvas();
-        void render_enemies();
-        void render_character();
+        void render_characters();
+        void render_main_char();
         void render_interface();
         void render_menu(Menu* menu);
         void render_debug();

@@ -142,10 +142,10 @@ void DebugConsole::list(std::vector<std::string> command, std::vector<int> args)
 
 void DebugConsole::killall(std::vector<std::string> command, std::vector<int> args)
 {
-    std::vector<Enemy*>* enemy_list = &game->get_enemies();
+    std::vector<Character*>* enemy_list = &game->get_characters();
     for(int i=0;i<enemy_list->size();i++)
     {
-        Enemy* temp = enemy_list->at(i);
+        Character* temp = enemy_list->at(i);
         temp->take_damage(temp->get_max_hp());
     }
 }

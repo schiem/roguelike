@@ -30,8 +30,8 @@ void GUI::OnLoop() {
         }
         game.refresh();
         game.run_spawners();
-        add_enemies(game.flush_enemies());
-        game.clear_enemy_queue();
+        add_characters(game.flush_characters());
+        game.clear_character_queue();
         if(!game.main_char.is_alive())
         {
            current_screen = DEATH_SCREEN;

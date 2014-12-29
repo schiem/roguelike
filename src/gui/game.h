@@ -186,9 +186,9 @@ class Game
 
 
         //ENEMY Data/Models
-        //TODO get rid of the enemy_list
-        std::vector<Enemy*> enemy_list;
-        std::vector<Enemy*> enemy_queue;
+        //TODO get rid of the character_list
+        std::vector<Character*> character_list;
+        std::vector<Character*> character_queue;
 
         //ENEMY Functionality
 
@@ -213,7 +213,7 @@ class Game
         //RENDERING Functionality
         const std::vector<std::vector<Tile*> >& get_canvas();
         IntPoint get_vis_coords(IntPoint, IntPoint);
-        std::vector<Enemy*> get_vis_enemies();
+        std::vector<Character*> get_vis_characters();
         
         
         /**
@@ -267,11 +267,11 @@ class Game
 
         //ENEMY Functionality
         void run_spawners();
-        void clear_enemy_queue();
-        std::vector<Enemy*> flush_enemies(); 
+        void clear_character_queue();
+        std::vector<Character*> flush_characters(); 
         
         void remove_targets(Character* enem);
-        std::vector<Enemy*>& get_enemies();
+        std::vector<Character*>& get_characters();
         
         /**
          * Returns true if there is an enemy in range of the character.
@@ -281,7 +281,7 @@ class Game
         
         /**
          * Uses pathfinding to get to the point.  Note: this could be
-         * a nightmare, as enemies will currently only attempt to move
+         * a nightmare, as characters will currently only attempt to move
          * to points they can see, but the pathfinding may take them on
          * a very bizarre path involving the entire buffer.
          */

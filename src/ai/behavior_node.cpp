@@ -49,7 +49,6 @@ PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
 int PriorityNode::tick(BActor* actor, Game* game)
 {
     int did_succeed;
-    std::cout<<"I'm prioritying."<<std::endl;
     for(int i=0;i<nodes.size();i++)
     {
         did_succeed = nodes[i]->tick(actor, game);
@@ -116,7 +115,7 @@ int EnemyInRange::tick(BActor* actor, Game* game)
 int LowHealth::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
-    return (float)chara->get_cur_hp() > (.2 * (float)chara->get_max_hp());
+    return (float)chara->get_cur_hp() < (.2 * (float)chara->get_max_hp());
 }
 
 int NextTo::tick(BActor* actor, Game* game)
@@ -144,6 +143,7 @@ int HasHealth::tick(BActor* actor, Game* game)
 int MoveTowards::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
+    std::cout<<"Imma getcha!"<<std::endl;
     if(chara->get_target() == NULL)
     {
         return FAILURE;
@@ -156,6 +156,7 @@ int MoveTowards::tick(BActor* actor, Game* game)
 int MoveAway::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
+    std::cout<<"I'm running the fuck away!"<<std::endl;
     if(chara->get_target() == NULL)
     {
         return FAILURE;
@@ -177,7 +178,6 @@ int Attack::tick(BActor* actor, Game* game)
 
 int Wander::tick(BActor* actor, Game* game)
 {
-    std::cout<<"I'm wandering."<<std::endl;
     Character* chara = actor->get_character();
     game->wander(chara); 
     return RUNNING;

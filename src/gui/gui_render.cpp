@@ -40,8 +40,8 @@ void GUI::OnRender() {
     } else if (current_screen == GAME_SCREEN) {
         render_canvas();
         render_target();
-        render_enemies();
-        render_character();
+        render_characters();
+        render_main_char();
         render_animations();
         clear_area(IntPoint(UI_START, 0), IntPoint(UI_WIDTH, UI_HEIGHT));
         render_interface();
@@ -52,8 +52,8 @@ void GUI::OnRender() {
     } else if (current_screen == DEBUG_CONSOLE) {
         render_canvas();
         render_target();
-        render_enemies();
-        render_character();
+        render_characters();
+        render_main_char();
         render_debug();
     }
     if(game.is_paused()) {
@@ -89,7 +89,7 @@ void GUI::render_canvas()
                 //grey.
                 } else if(tm[i][j]->seen) {
                     drawChr(j, i, tm[i][j]->char_count, ascii, screen, VERY_DARK_GRAY);
-                    //We probably shouldn't draw the enemy layer on non-visible
+                    //We probably shouldn't draw the chara layer on non-visible
                     //tiles.
                 } else {
                     //Draw an empty tile
@@ -102,11 +102,11 @@ void GUI::render_canvas()
     }
 }
 
-void GUI::render_enemies() {
+void GUI::render_characters() {
     Tile current_tile;
     IntPoint current_point;
     TilePointerMatrix tm = game.get_canvas();
-    std::vector<Enemy*> tl = game.get_vis_enemies();
+    std::vector<Character*> tl = game.get_vis_characters();
     for(size_t i = 0; i < tl.size(); i++) {
         IntPoint temp_chunk = IntPoint(tl[i]->get_chunk_y(),tl[i]->get_chunk_x());
         IntPoint temp_coords = IntPoint(tl[i]->get_y(), tl[i]->get_x());
@@ -119,7 +119,7 @@ void GUI::render_enemies() {
     }
 }
 
-void GUI::render_character() {
+void GUI::render_main_char() {
     drawChr(GAME_WIDTH/2, GAME_HEIGHT/2, game.main_char.get_char().char_count, ascii, screen, game.main_char.get_char().color);
 }
 
@@ -253,10 +253,10 @@ void GUI::render_target()
     TilePointerMatrix tm = game.get_canvas();
     if(game.main_char.get_target() != NULL)
     {
-        Enemy* enemy = (Enemy*)game.main_char.get_target();
-        IntPoint temp_chunk = enemy->get_chunk();
+        Character* chara = game.main_char.get_target();
+        IntPoint temp_chunk = chara->get_chunk();
         
-        std::vector<IntPoint> sight = enemy->sight_tiles();
+        std::vector<IntPoint> sight = chara->sight_tiles();
         for(int i=0;i<sight.size();i++)
         {
             IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);

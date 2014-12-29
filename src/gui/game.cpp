@@ -95,7 +95,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //TODO get this clutter somewhere else
     int main_stat_array[NUM_STATS] = {100, 2, 100, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
-    main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70);
+    main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
 
     //What gets drawn to the screen
@@ -155,16 +155,16 @@ IntPoint Game::get_vis_coords(IntPoint chunk, IntPoint coords) {
 }
 
 
-std::vector<Enemy*> Game::get_vis_enemies() {
-    std::vector<Enemy*> temp = std::vector<Enemy*>();
-    for(int i=0;i<enemy_list.size();i++) {
-        IntPoint chunk = IntPoint(enemy_list[i]->get_chunk_y(), enemy_list[i]->get_chunk_x());
-        IntPoint coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x());
+std::vector<Character*> Game::get_vis_characters() {
+    std::vector<Character*> temp = std::vector<Character*>();
+    for(int i=0;i<character_list.size();i++) {
+        IntPoint chunk = IntPoint(character_list[i]->get_chunk_y(), character_list[i]->get_chunk_x());
+        IntPoint coords = IntPoint(character_list[i]->get_y(), character_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
         IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
         if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
-                enemy_list[i]->get_depth() == main_char.get_depth()) {
-            temp.push_back(enemy_list[i]);
+                character_list[i]->get_depth() == main_char.get_depth()) {
+            temp.push_back(character_list[i]);
         }
     }
     return temp;
@@ -232,7 +232,7 @@ void Game::refresh() {
     draw_visibility_lines();
 }
 
-/*---------------------Enemy Helper Functions---------------------*/
+/*---------------------Character Helper Functions---------------------*/
 /* PRE: None
  * POST: Iterates through the chunks which are part of the buffer and runs any
  * spawner (TODO: make it so it will run any spawners, plural).  If the spawner
@@ -253,12 +253,12 @@ void Game::run_spawners() {
                 {
                     Spawner* spawner = &spawners->at(k);
                     spawner->run();
-                    std::vector<Enemy*> enemies = spawner->flush();
-                    for(int index=0;index<enemies.size();index++)
+                    std::vector<Character*> charas = spawner->flush();
+                    for(int index=0;index<charas.size();index++)
                     {
-                        enemies[index]->set_chunk(IntPoint(i, j));
-                        enemy_list.push_back(enemies[index]);
-                        enemy_queue.push_back(enemies[index]);
+                        charas[index]->set_chunk(IntPoint(i, j));
+                        character_list.push_back(charas[index]);
+                        character_queue.push_back(charas[index]);
                     }
                     spawner->clear_queue();
                 }
@@ -268,24 +268,24 @@ void Game::run_spawners() {
 }
 
 
-void Game::clear_enemy_queue()
+void Game::clear_character_queue()
 {
-    enemy_queue.clear();
+    character_queue.clear();
 }
 
 
-std::vector<Enemy*> Game::flush_enemies()
+std::vector<Character*> Game::flush_characters()
 {
-    return enemy_queue;
+    return character_queue;
 }
 
 void Game::remove_targets(Character* enem)
 {
-    for(int i=0;i<enemy_list.size();i++)
+    for(int i=0;i<character_list.size();i++)
     {
-        if(enemy_list[i]->get_target() == enem)
+        if(character_list[i]->get_target() == enem)
         {
-            enemy_list[i]->set_target(NULL);
+            character_list[i]->set_target(NULL);
         }
     }
     if(main_char.get_target() == enem)
@@ -294,44 +294,50 @@ void Game::remove_targets(Character* enem)
     }
 }
 
-std::vector<Enemy*>& Game::get_enemies() {
-    return enemy_list;
+std::vector<Character*>& Game::get_characters() {
+    return character_list;
 }
 
 
 bool Game::enemy_in_range(Character* chara){ 
     //establish the necessary variables
     Character* best = NULL;
-    int target_id = 5 - target_id;
+    int target_id = 5 - chara->get_moral();
     int selectability = 2;
     
+    //kind of a hack.
+    int main_char_index = character_list.size();
+    character_list.push_back(&main_char);
+    
     //iterate over all the enemies
-    for(int i=0; i<enemy_list.size(); i++)
+    for(int i=0; i<character_list.size(); i++)
     {
-        IntPoint coords = enemy_list[i]->get_coords();
-        IntPoint chunk = enemy_list[i]->get_chunk();
+        IntPoint coords = character_list[i]->get_coords();
+        IntPoint chunk = character_list[i]->get_chunk();
         if(chara->in_sight(coords, chunk))
         {
             //Check if we care about the enemy
-            if(enemy_list[i]->get_moral() > target_id - selectability && enemy_list[i]->get_moral() < target_id + selectability)
+            if(character_list[i]->get_moral() > target_id - selectability && character_list[i]->get_moral() < target_id + selectability)
             {
                 //If we don't have a target, this is the best target
                 if(best == NULL)
                 {
-                    best = enemy_list[i];
+                    best = character_list[i];
                 }
                 else
                 {
                     //otherwise, check if this one we found is better
-                    if((unsigned int)(enemy_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
+                    if((unsigned int)(character_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
                     {
-                        best = enemy_list[i];
+                        best = character_list[i];
                     }
                 }
             }
         }
     }
     
+    character_list.erase(character_list.begin() + main_char_index);
+
     if(best != NULL)
     {
         chara->set_target(best);
@@ -348,9 +354,8 @@ int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
 {
     IntPoint goal = get_buffer_coords(chunk, coords);
     IntPoint current = get_buffer_coords(chara->get_chunk(), chara->get_coords());
-    IntPoint next_step = pathfinding::get_next_step(goal, buffer, current, chara->get_sight());
-    IntPoint movement = next_step - goal;
-    if(next_step == goal)
+    IntPoint movement = pathfinding::get_next_step(goal, buffer, current, chara->get_sight());
+    if((movement + current) == goal)
     {
         return 1; //success
     }
@@ -423,11 +428,11 @@ void Game::kill(Character* chara)
 void Game::remove_enemy(Character* chara)
 {
     remove_targets(chara);
-    for(int i=0;i<enemy_list.size();i++)
+    for(int i=0;i<character_list.size();i++)
     {
-        if(enemy_list[i] == chara)
+        if(character_list[i] == chara)
         {
-            enemy_list.erase(enemy_list.begin() + i);
+            character_list.erase(character_list.begin() + i);
         }
     }
 }
@@ -668,13 +673,13 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
 
 
 Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
-    for(int i=0;i<enemy_list.size();i++)
+    for(int i=0;i<character_list.size();i++)
     {
-        IntPoint enem_chunk = enemy_list[i]->get_chunk();
-        IntPoint enem_coords = IntPoint(enemy_list[i]->get_y(), enemy_list[i]->get_x()); 
+        IntPoint enem_chunk = character_list[i]->get_chunk();
+        IntPoint enem_coords = IntPoint(character_list[i]->get_y(), character_list[i]->get_x()); 
         if(get_abs(enem_chunk, enem_coords) == get_abs(_chunk, _coords))
         {
-            return enemy_list[i];
+            return character_list[i];
         }
     }
     return NULL;
@@ -936,7 +941,7 @@ void Game::undo_visibility() {
 void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type) {
         Enemy* temp = new Enemy(x, y, depth, ENEMY_LIST[type]);
         temp->set_chunk(IntPoint(chunk_y, chunk_x));
-        enemy_list.push_back(temp);
+        character_list.push_back(temp);
 }
 
 void Game::teleport(int chunk_x, int chunk_y, int x, int y)

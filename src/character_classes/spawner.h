@@ -75,7 +75,7 @@ class Spawner
         /**
          * Queues up the enemies that have been created.
          */
-        std::vector<Enemy*> enemy_queue;
+        std::vector<Character*> enemy_queue;
         
         /**
          * Creates the dens for the enemies to live in.
@@ -132,7 +132,7 @@ class Spawner
         /**
          * Returns the enemies currently in the queue.
          */
-        std::vector<Enemy*>& flush();
+        std::vector<Character*>& flush();
 
         /**
          * A non-memory safe clear of the queue. Nothing is deleted,

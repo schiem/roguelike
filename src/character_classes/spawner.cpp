@@ -138,7 +138,7 @@ void Spawner::spawn_creep(int num_creeps)
      }
 }
 
-std::vector<Enemy*>& Spawner::flush()
+std::vector<Character*>& Spawner::flush()
 {
     return enemy_queue;
 }
@@ -148,7 +148,7 @@ std::vector<Enemy*>& Spawner::flush()
 //FLUSH
 void Spawner::clear_queue()
 {
-    enemy_queue = std::vector<Enemy*>();
+    enemy_queue = std::vector<Character*>();
 }
 
 void Spawner::deep_clear()
