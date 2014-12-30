@@ -27,13 +27,74 @@ BehaviorTree::BehaviorTree(BNode* node, Game* _game, int _id)
     actors = std::vector<BActor*>();
 }
 
+
+BehaviorTree::BehaviorTree(const BehaviorTree& tree)
+{
+    actors.resize(tree.actors.size());
+    for(int i=0;i<tree.actors.size();i++)
+    {
+        BActor* actor = new BActor;
+        *actor = *tree.actors[i];
+        actors[i] = actor;
+    }
+    root = copy_tree(tree.root);
+}
+        
+BehaviorTree& BehaviorTree::operator=(const BehaviorTree& tree)
+{
+    for(int i=0;i<actors.size();i++)
+    {
+        delete actors[i];
+    }
+    actors.resize(tree.actors.size());
+    
+    for(int i=0;i<tree.actors.size();i++)
+    {
+        BActor* actor = new BActor;
+        *actor = *tree.actors[i];
+        actors[i] = actor;
+    }
+    delete_all(root);
+    root = copy_tree(tree.root);
+}
+
+
+BNode* BehaviorTree::copy_tree(BNode* node)
+{
+    BNode* new_node = node->clone();
+    std::vector<BNode*> nodes = node->get_children();
+    for(int i=0;i<nodes.size();i++)
+    {
+        new_node->add_child(copy_tree(nodes[i]), i);
+    }
+    return new_node;
+}
+
 BehaviorTree::~BehaviorTree()
 {
     for(int i=0;i<actors.size();i++)
     {
         delete actors[i];
     }
+    delete_all(root);
 }
+
+void BehaviorTree::delete_all(BNode* node)
+{
+    std::vector<BNode*> nodes = node->get_children();
+    if(nodes.size() != 0)
+    {
+        for(int i=0;i<nodes.size();i++)
+        {
+            delete_all(nodes[i]);
+        }
+    }
+    else
+    {
+        delete node;
+    }
+}
+
 
 void BehaviorTree::add_actor(BActor* actor)
 {

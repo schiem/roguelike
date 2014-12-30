@@ -21,6 +21,17 @@
 
 //---------------------------COMPOSITE NODES-----------------------//
 
+std::vector<BNode*> BNode::get_children()
+{
+    return nodes;
+}
+
+void BNode::add_child(BNode* node, int index)
+{
+    assert(index < nodes.size());
+    nodes[index] = node;
+}
+
 SequenceNode::SequenceNode(std::vector<BNode*> _nodes)
 {
     nodes = _nodes;
@@ -40,6 +51,10 @@ int SequenceNode::tick(BActor* actor, Game* game)
     return SUCCESS;
 }
 
+SequenceNode* SequenceNode::clone()
+{
+    return new SequenceNode(*this);
+}
 
 PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
 {
@@ -59,6 +74,13 @@ int PriorityNode::tick(BActor* actor, Game* game)
     }
     return SUCCESS;
 }
+
+
+PriorityNode* PriorityNode::clone()
+{
+    return new PriorityNode(*this);
+}
+
 
 BranchingCondition::BranchingCondition(BNode* condition, BNode* success, BNode* failure)
 {
@@ -84,6 +106,10 @@ int BranchingCondition::tick(BActor* actor, Game* game)
     }
 }
 
+BranchingCondition* BranchingCondition::clone()
+{
+    return new BranchingCondition(*this);
+}
 
 //---------------------------DECORATOR NODES-------------------------//
 
@@ -105,6 +131,11 @@ int InverterNode::tick(BActor* actor, Game* game)
     }
 }
 
+InverterNode* InverterNode::clone()
+{
+    return new InverterNode(*this);
+}
+
 //----------------------------CONDITION NODES------------------------//
 
 int EnemyInRange::tick(BActor* actor, Game* game)
@@ -112,10 +143,20 @@ int EnemyInRange::tick(BActor* actor, Game* game)
     return game->enemy_in_range(actor->get_character());
 }
 
+EnemyInRange* EnemyInRange::clone()
+{
+    return new EnemyInRange(*this);
+}
+
 int LowHealth::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
     return (float)chara->get_cur_hp() < (.2 * (float)chara->get_max_hp());
+}
+
+LowHealth* LowHealth::clone()
+{
+    return new LowHealth(*this);
 }
 
 int NextTo::tick(BActor* actor, Game* game)
@@ -128,6 +169,11 @@ int NextTo::tick(BActor* actor, Game* game)
     return game->next_to_char(chara, chara->get_target());
 }
 
+NextTo* NextTo::clone()
+{
+    return new NextTo(*this);
+}
+
 int HasHealth::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
@@ -136,6 +182,11 @@ int HasHealth::tick(BActor* actor, Game* game)
         return FAILURE;
     }
     return SUCCESS;
+}
+
+HasHealth* HasHealth::clone()
+{
+    return new HasHealth(*this);
 }
 
 //-------------------------ACTION NODES------------------------------//
@@ -153,6 +204,11 @@ int MoveTowards::tick(BActor* actor, Game* game)
     return game->move_to_point(chara, goal_coords, goal_chunk);
 }
 
+MoveTowards* MoveTowards::clone()
+{
+    return new MoveTowards(*this);
+}
+
 int MoveAway::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
@@ -166,6 +222,11 @@ int MoveAway::tick(BActor* actor, Game* game)
     return game->run_away(actor->get_character(), goal_coords, goal_chunk);
 }
 
+MoveAway* MoveAway::clone()
+{
+    return new MoveAway(*this);
+}
+
 int Attack::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
@@ -176,6 +237,11 @@ int Attack::tick(BActor* actor, Game* game)
     return game->attack_char(chara, chara->get_target());
 }
 
+Attack* Attack::clone()
+{
+    return new Attack(*this);
+}
+
 int Wander::tick(BActor* actor, Game* game)
 {
     Character* chara = actor->get_character();
@@ -183,7 +249,17 @@ int Wander::tick(BActor* actor, Game* game)
     return RUNNING;
 }
 
+Wander* Wander::clone()
+{
+    return new Wander(*this);
+}
+
 int Die::tick(BActor* actor, Game* game)
 {
     return DEAD;
+}
+
+Die* Die::clone()
+{
+    return new Die(*this);
 }

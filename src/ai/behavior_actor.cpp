@@ -19,6 +19,10 @@
 
 #include <behavior_actor.h>
 
+BActor::BActor()
+{
+}
+
 BActor::BActor(Character* _chara)
 {
     chara = _chara;

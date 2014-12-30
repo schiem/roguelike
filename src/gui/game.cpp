@@ -320,6 +320,8 @@ bool Game::enemy_in_range(Character* chara){
     //iterate over all the enemies
     for(int i=0; i<character_list.size(); i++)
     {
+        std::cout<<"I'm a character, and I'm "<<character_list[i]<<std::endl;
+        std::cout<<"There are "<<character_list.size()<<" characters, and I'm "<<i<<std::endl;
         IntPoint coords = character_list[i]->get_coords();
         IntPoint chunk = character_list[i]->get_chunk();
         if(chara->in_sight(coords, chunk))

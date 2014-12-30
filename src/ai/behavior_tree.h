@@ -52,11 +52,32 @@ class BehaviorTree
          * The actors in the tree.
          */
         std::vector<BActor*> actors;
+   
+        /**
+         * Deletes the nodes in the tree.
+         */
+        void delete_all(BNode* node);
+
     public:
         /**
          * The default constructor.
          */
         BehaviorTree(BNode* node, Game* _game, int _id);
+        
+        /**
+         * The copy constructor.
+         */
+        BehaviorTree(const BehaviorTree& tree);
+        
+        /**
+         * The assignment operator.
+         */
+        BehaviorTree& operator=(const BehaviorTree& tree);
+
+        /**
+         * Deep copies the tree.
+         */
+        BNode* copy_tree(BNode* node);
         
         /**
          * The destructor.

@@ -23,6 +23,7 @@
 #include <vector>
 #include <game.h>
 #include <behavior_actor.h>
+#include <assert.h>
 
 class BActor;
 
@@ -46,10 +47,23 @@ class BNode
         std::vector<BNode*> nodes;
     public:
         
+        void add_child(BNode* node, int index);
+        
+        /**
+         * Public accessor for the children nodes.
+         */
+        std::vector<BNode*> get_children();
+        
         /**
          * Ticks the node forward once.
+         * TODO MAKE THIS VIRTUAL AGAIN
          */
         virtual int tick(BActor* actor, Game* game)=0;
+
+        /**
+         * Because wth c++.
+         */
+        virtual BNode* clone()=0;
 };
 
 //-------------------------COMPOSITE NODES------------------//
@@ -63,6 +77,7 @@ class SequenceNode : public BNode
     public:
         SequenceNode(std::vector<BNode*> _nodes);
         int tick(BActor* actor, Game* game);
+        SequenceNode* clone();
 };
 
 /**
@@ -74,6 +89,7 @@ class PriorityNode : public BNode
     public:
         PriorityNode(std::vector<BNode*> nodes);
         int tick(BActor* actor, Game* game);
+        PriorityNode* clone();
 };
 
 /**
@@ -94,6 +110,7 @@ class BranchingCondition : public BNode
     public:
         BranchingCondition(BNode* condition, BNode* success, BNode* failure);
         int tick(BActor* actor, Game* game);
+        BranchingCondition* clone();
 };
 
 //---------------------------DECORATOR NODES---------------------//
@@ -105,6 +122,7 @@ class InverterNode : public BNode
     public:
         InverterNode(BNode* node);
         int tick(BActor* actor, Game* game);
+        InverterNode* clone();
 };
 
 
@@ -114,24 +132,28 @@ class MoveTowards : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        MoveTowards* clone();
 };
 
 class MoveAway : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        MoveAway* clone();
 };
 
 class Attack : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        Attack* clone();
 };
         
 class Wander : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        Wander* clone();
 };
 
 
@@ -139,6 +161,7 @@ class Die : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        Die* clone();
 };
 //------------------------------CONDITION NODES---------------------//
 
@@ -146,24 +169,28 @@ class LowHealth : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        LowHealth* clone();
 };
 
 class EnemyInRange : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        EnemyInRange* clone();
 };
 
 class NextTo : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        NextTo* clone();
 };
 
 class HasHealth : public BNode
 {
     public:
         int tick(BActor* actor, Game* game);
+        HasHealth* clone();
 };
 
 

@@ -44,12 +44,18 @@ class BActor
        BNode* running_node;
     
     public:
+        
+        /**
+         * The empty constructor.
+         */
+        BActor();
+        
         /**
          * The default constructor.
          */
         BActor(Character* _chara);
         
-
+       
        /**
         * Accessor for the actor.
         */
