@@ -112,7 +112,7 @@ void GUI::add_characters(std::vector<Character*> characters)
     {
         for(int j=0;j<trees.size();j++)
         {
-            if(characters[i]->get_ai_id() == trees[i].get_id())
+            if(characters[i]->get_ai_id() == trees[j].get_id())
             {
                 BActor* temp = new BActor(characters[i]);
                 trees[j].add_actor(temp);
