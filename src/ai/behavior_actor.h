@@ -51,12 +51,6 @@ class BActor
         
 
        /**
-        * The destructor.
-        */
-       ~BActor();
-
-
-       /**
         * Accessor for the actor.
         */
        Character* get_character();

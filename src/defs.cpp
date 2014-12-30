@@ -162,8 +162,8 @@ namespace misc
 
 namespace spawners
 {
-    SpawnType kobold = {true, 5, 20, 5, HUTS};
-    SpawnType rabbit = {false, 5, 20, 20, BURROW};
+    SpawnType kobold = {true, 3, 10, 3, HUTS};
+    SpawnType rabbit = {false, 2, 8, 20, BURROW};
 }
 
 //Enemy Equipment

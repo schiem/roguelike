@@ -108,11 +108,16 @@ class Item
         bool can_consume;
         
         /**
+         * The blank constructor.
+         */
+        Item();
+        
+        /**
          * The basic constructor for an item.
          * @param _coords The coordinates to place the item at. 
          */
         Item(IntPoint _coords);
-
+        
         /**
          * A constructor for an item.
          * @param _rarity Sets the class member rarity.
@@ -132,13 +137,6 @@ class Item
          * Public accessor for the member variable sprite.
          */
         Tile* get_sprite();
-        
-        /**
-         * At the moment, does nothing (except make Item a virtual class).
-         * This will perform the active component of the item.
-         * \todo Do something with this.
-         */
-        virtual void perform_action()=0;
         
         /**
          * Public accessor for the coordinates.
@@ -205,6 +203,11 @@ class Equipment : public Item
          */
         std::vector<float> to_dam;
     public:
+        /**
+         * Blank constructor.
+         */
+        Equipment();
+        
         /**
          * The constructor for the equipment.
          * @param _rarity Sets the rarity of the equipment.
@@ -282,6 +285,11 @@ class Weapon : public Item
     
     public:
         /**
+         * Blank constructor.
+         */
+        Weapon();
+        
+        /**
          * The constructor for the weapon.
          * @param _rarity Sets the rarity of the weapon.
          * @param _weight Sets the weight of the weapon.
@@ -349,6 +357,11 @@ class Consumable : public Item
         int type;
     public:
         /**
+         * Blank constructor.
+         */
+        Consumable();
+        
+        /**
          * The constructor for the consumable.
          * @param _rarity Sets the rarity of the consumable.
          * @param _weight Sets the weight of the consumable.
@@ -401,6 +414,11 @@ class Consumable : public Item
 class Misc : public Item
 {
     public:
+        /**
+         * Blank constructor.
+         */
+        Misc();
+        
         /**
          * The constructor for misc items.
          * @param _rarity Sets the rarity of the misc item.

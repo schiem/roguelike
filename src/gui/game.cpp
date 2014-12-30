@@ -79,6 +79,14 @@ Game::Game() {
     }
 }
 
+Game::~Game()
+{
+    for(int i=0;i<character_list.size();i++)
+    {
+        delete character_list[i];
+    }
+}
+
 
 void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     world_map = _world_map;
@@ -435,6 +443,7 @@ void Game::remove_enemy(Character* chara)
             character_list.erase(character_list.begin() + i);
         }
     }
+    delete chara;
 }
 
 

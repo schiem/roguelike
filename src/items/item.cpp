@@ -21,6 +21,10 @@
 
 #include <item.h>
 
+Item::Item()
+{
+}
+
 Item::Item(IntPoint _coords)
 {
     coords = _coords;

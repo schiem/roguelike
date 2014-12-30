@@ -24,12 +24,6 @@ BActor::BActor(Character* _chara)
     chara = _chara;
 }
 
-BActor::~BActor()
-{
-    std::cout<<"I'm getting called and I shouldn't be!"<<std::endl;
-    delete chara;
-}
-
 Character* BActor::get_character()
 {
     return chara;

@@ -22,7 +22,7 @@
 #include <character.h>
 
 Character::Character() {
-
+    corpse = NULL;
 }
 
 Character::Character(int _x, int _y, int _depth)
@@ -73,8 +73,140 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     view = 20;
 }
 
+Character::~Character()
+{
+    for(int i=0;i<equipment.size();i++)
+    {
+        delete equipment[i];
+    }
+    for(int i=0;i<inventory.size();i++)
+    {
+        delete inventory[i];
+    }
+    delete corpse;
+}
 
+Character::Character(const Character& chara)
+{
+    timer = chara.timer;
+    stats = chara.stats;
+    current_stats = chara.current_stats;
+    x = chara.x;
+    y = chara.y;
+    moral = chara.moral;
 
+    if(chara.corpse != NULL)
+    {
+        corpse = new Misc;
+        *corpse = *chara.corpse;
+    }
+    else
+    {
+        corpse = NULL;
+    }
+    for(int i=0;i<chara.equipment.size();i++)
+    {
+        Item* eq = new Item;
+        *eq = *chara.equipment[i];
+        equipment.push_back(eq);
+    }
+    for(int i=0;i<chara.inventory.size();i++)
+    {
+        Item* inv = new Item;
+        *inv = *chara.inventory[i];
+        inventory.push_back(inv);
+    }
+    
+    //somewhat temporary
+    sprite = chara.sprite;
+    chunk = chara.chunk;
+    depth = chara.depth;
+    speed = chara.speed;
+    ai_id = chara.ai_id;
+    target = chara.target;
+    conscious = chara.conscious;
+    
+    //is the enemy scared? if so, what direction and for how long
+    spooked = chara.spooked;
+    direction_spooked = chara.direction_spooked;
+    time_spooked = chara.time_spooked;
+
+    //These won't do anything for anyone except the enemy, for now.  But,
+    //they're here if we need them.
+    direction = chara.direction;
+    sight = chara.sight;
+    view = chara.view;
+}
+
+Character& Character::operator=(const Character& chara)
+{
+    timer = chara.timer;
+    stats = chara.stats;
+    current_stats = chara.current_stats;
+    x = chara.x;
+    y = chara.y;
+    moral = chara.moral;
+    
+    delete corpse;
+    if(chara.corpse != NULL)
+    {
+        corpse = new Misc;
+        *corpse = *chara.corpse;
+    }
+    else
+    {
+        corpse = NULL;
+    }
+    for(int i=0;i<equipment.size();i++)
+    {
+        delete equipment[i];
+    }
+    for(int i=0;i<inventory.size();i++)
+    {
+        delete inventory[i];
+    }
+    equipment.resize(chara.equipment.size());
+    inventory.resize(chara.inventory.size());
+    for(int i=0;i<chara.equipment.size();i++)
+    {
+        if(chara.equipment[i] != NULL)
+        {
+            Item* eq = new Item;
+            *eq = *chara.equipment[i];
+            equipment[i] = eq;
+        }
+        else
+        {
+            equipment[i] = NULL;
+        }
+    }
+    for(int i=0;i<chara.inventory.size();i++)
+    {
+        Item* inv = new Item;
+        *inv = *chara.inventory[i];
+        inventory[i] = inv;
+    }
+    
+    //somewhat temporary
+    sprite = chara.sprite;
+    chunk = chara.chunk;
+    depth = chara.depth;
+    speed = chara.speed;
+    ai_id = chara.ai_id;
+    target = chara.target;
+    conscious = chara.conscious;
+    
+    //is the enemy scared? if so, what direction and for how long
+    spooked = chara.spooked;
+    direction_spooked = chara.direction_spooked;
+    time_spooked = chara.time_spooked;
+
+    //These won't do anything for anyone except the enemy, for now.  But,
+    //they're here if we need them.
+    direction = chara.direction;
+    sight = chara.sight;
+    view = chara.view;
+}
 
 bool Character::act(long ms)
 {

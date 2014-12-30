@@ -194,6 +194,11 @@ class Game
 
     public:
         Game();
+
+        /**
+         * The destructor, removing all of the enemies in the game.
+         */
+        ~Game();
         void init(const MapTileMatrix&, IntPoint);
 
         //BASE Data/Models

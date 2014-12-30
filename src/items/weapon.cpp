@@ -24,6 +24,9 @@
 using namespace tiledef;
 using namespace equipment;
 
+Weapon::Weapon()
+{}
+
 Weapon::Weapon(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int t,  int _dam) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     type = t;

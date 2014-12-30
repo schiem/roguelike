@@ -197,7 +197,21 @@ class Character
          * The default constructor.
          */
         Character();
+        
+        /**
+         * The destructor.
+         */
+        ~Character();
 
+        /**
+         * The copy constructor.
+         */
+        Character(const Character& chara);
+
+        /**
+         * The assignment operator.
+         */
+        Character& operator=(const Character& chara);
 
         /**
          * The constructor for the character class.

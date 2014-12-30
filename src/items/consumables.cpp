@@ -24,6 +24,9 @@
 using namespace tiledef;
 using namespace equipment;
 
+Consumable::Consumable()
+{}
+
 Consumable::Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val, int _type) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     stat_modified = stat;

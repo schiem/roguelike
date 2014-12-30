@@ -24,6 +24,9 @@
 using namespace tiledef;
 using namespace equipment;
 
+Equipment::Equipment()
+{}
+
 Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     body_part = bp;

@@ -24,6 +24,9 @@
 using namespace tiledef;
 using namespace equipment;
 
+Misc::Misc()
+{}
+
 Misc::Misc(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords) : Item(_rarity, _weight, _sprite, _name, _coords)
 {
     can_equip = false;   
