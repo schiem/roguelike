@@ -24,43 +24,30 @@ BehaviorTree::BehaviorTree(BNode* node, Game* _game, int _id)
     root = node;
     game = _game;
     id = _id;
-    actors = std::vector<BActor*>();
+    actors = std::vector<BActor>();
 }
-
 
 BehaviorTree::BehaviorTree(const BehaviorTree& tree)
 {
-    actors.resize(tree.actors.size());
-    for(int i=0;i<tree.actors.size();i++)
-    {
-        BActor* actor = new BActor;
-        *actor = *tree.actors[i];
-        actors[i] = actor;
-    }
     root = copy_tree(tree.root);
+    game = tree.game;
+    actors = tree.actors;
+    id = tree.id;
 }
-        
+       
 BehaviorTree& BehaviorTree::operator=(const BehaviorTree& tree)
 {
-    for(int i=0;i<actors.size();i++)
-    {
-        delete actors[i];
-    }
-    actors.resize(tree.actors.size());
-    
-    for(int i=0;i<tree.actors.size();i++)
-    {
-        BActor* actor = new BActor;
-        *actor = *tree.actors[i];
-        actors[i] = actor;
-    }
     delete_all(root);
     root = copy_tree(tree.root);
+    game = tree.game;
+    actors = tree.actors;
+    id = tree.id;
 }
 
 
 BNode* BehaviorTree::copy_tree(BNode* node)
 {
+    
     BNode* new_node = node->clone();
     std::vector<BNode*> nodes = node->get_children();
     for(int i=0;i<nodes.size();i++)
@@ -72,10 +59,6 @@ BNode* BehaviorTree::copy_tree(BNode* node)
 
 BehaviorTree::~BehaviorTree()
 {
-    for(int i=0;i<actors.size();i++)
-    {
-        delete actors[i];
-    }
     delete_all(root);
 }
 
@@ -89,14 +72,11 @@ void BehaviorTree::delete_all(BNode* node)
             delete_all(nodes[i]);
         }
     }
-    else
-    {
-        delete node;
-    }
+    delete node;
 }
 
 
-void BehaviorTree::add_actor(BActor* actor)
+void BehaviorTree::add_actor(BActor actor)
 {
     actors.push_back(actor);
 }
@@ -105,23 +85,21 @@ void BehaviorTree::run_actors(long delta_ms)
 {
     for(int i=0;i<actors.size();i++)
     {
-        BActor* actor = actors[i];
-        if(actor->should_tick(delta_ms))
+        BActor actor = actors[i];
+        if(actor.should_tick(delta_ms))
         {
-            std::cout<<"I'm running actor: "<<i<<std::endl;
             int status = root->tick(actor, game);
             if(status == DEAD)
             {
-                if(!game->character_in_range(actor->get_character()))
+                if(!game->character_in_range(actor.get_character()))
                 {
-                    game->remove_enemy(actor->get_character());
+                    game->remove_enemy(actor.get_character());
                 }
                 else
                 {
-                    game->kill(actor->get_character());
+                    game->kill(actor.get_character());
                 }
                 actors.erase(actors.begin() + i);
-                delete actor;
             }
         }
     }
@@ -131,7 +109,7 @@ void BehaviorTree::remove_actor(Character* chara)
 {
     for(int i=0;i<actors.size();i++)
     {
-        if(actors[i]->get_character() == chara)
+        if(actors[i].get_character() == chara)
         {
             actors.erase(actors.begin() + i);
         }

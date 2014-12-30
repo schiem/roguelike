@@ -114,7 +114,7 @@ void GUI::add_characters(std::vector<Character*> characters)
         {
             if(characters[i]->get_ai_id() == trees[j].get_id())
             {
-                BActor* temp = new BActor(characters[i]);
+                BActor temp = BActor(characters[i]);
                 trees[j].add_actor(temp);
             }
         }

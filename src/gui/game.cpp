@@ -251,6 +251,7 @@ void Game::run_spawners() {
     std::vector<Spawner>* spawners;
     Chunk* chunk;
     IntPoint chunk_coords;
+    int accum = 0;
     for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++) {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
@@ -320,8 +321,6 @@ bool Game::enemy_in_range(Character* chara){
     //iterate over all the enemies
     for(int i=0; i<character_list.size(); i++)
     {
-        std::cout<<"I'm a character, and I'm "<<character_list[i]<<std::endl;
-        std::cout<<"There are "<<character_list.size()<<" characters, and I'm "<<i<<std::endl;
         IntPoint coords = character_list[i]->get_coords();
         IntPoint chunk = character_list[i]->get_chunk();
         if(chara->in_sight(coords, chunk))

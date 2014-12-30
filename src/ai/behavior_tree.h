@@ -51,7 +51,7 @@ class BehaviorTree
         /**
          * The actors in the tree.
          */
-        std::vector<BActor*> actors;
+        std::vector<BActor> actors;
    
         /**
          * Deletes the nodes in the tree.
@@ -87,7 +87,7 @@ class BehaviorTree
         /**
          * Adds an actor to the tree.
          */
-        void add_actor(BActor* actor);
+        void add_actor(BActor actor);
         
         /**
          * Runs all of the actors in the tree.

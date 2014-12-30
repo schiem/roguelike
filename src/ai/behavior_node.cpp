@@ -37,7 +37,7 @@ SequenceNode::SequenceNode(std::vector<BNode*> _nodes)
     nodes = _nodes;
 }
 
-int SequenceNode::tick(BActor* actor, Game* game)
+int SequenceNode::tick(BActor actor, Game* game)
 {
     int did_succeed;
     for(int i=0;i<nodes.size();i++)
@@ -61,7 +61,7 @@ PriorityNode::PriorityNode(std::vector<BNode*> _nodes)
     nodes = _nodes;
 }
 
-int PriorityNode::tick(BActor* actor, Game* game)
+int PriorityNode::tick(BActor actor, Game* game)
 {
     int did_succeed;
     for(int i=0;i<nodes.size();i++)
@@ -89,7 +89,7 @@ BranchingCondition::BranchingCondition(BNode* condition, BNode* success, BNode* 
     nodes.push_back(failure);
 }
 
-int BranchingCondition::tick(BActor* actor, Game* game)
+int BranchingCondition::tick(BActor actor, Game* game)
 {
     int did_succeed = nodes[0]->tick(actor, game);
     if(did_succeed == SUCCESS)
@@ -118,7 +118,7 @@ InverterNode::InverterNode(BNode* node)
     nodes.push_back(node);
 }
 
-int InverterNode::tick(BActor* actor, Game* game)
+int InverterNode::tick(BActor actor, Game* game)
 {
     int did_succeed = nodes[0]->tick(actor, game);
     if(did_succeed == FAILURE || did_succeed == SUCCESS)
@@ -138,9 +138,9 @@ InverterNode* InverterNode::clone()
 
 //----------------------------CONDITION NODES------------------------//
 
-int EnemyInRange::tick(BActor* actor, Game* game)
+int EnemyInRange::tick(BActor actor, Game* game)
 {
-    return game->enemy_in_range(actor->get_character());
+    return game->enemy_in_range(actor.get_character());
 }
 
 EnemyInRange* EnemyInRange::clone()
@@ -148,9 +148,9 @@ EnemyInRange* EnemyInRange::clone()
     return new EnemyInRange(*this);
 }
 
-int LowHealth::tick(BActor* actor, Game* game)
+int LowHealth::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     return (float)chara->get_cur_hp() < (.2 * (float)chara->get_max_hp());
 }
 
@@ -159,9 +159,9 @@ LowHealth* LowHealth::clone()
     return new LowHealth(*this);
 }
 
-int NextTo::tick(BActor* actor, Game* game)
+int NextTo::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     if(chara->get_target() == NULL)
     {
         return FAILURE;
@@ -174,9 +174,9 @@ NextTo* NextTo::clone()
     return new NextTo(*this);
 }
 
-int HasHealth::tick(BActor* actor, Game* game)
+int HasHealth::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     if(chara->get_cur_hp() <= 0)
     {
         return FAILURE;
@@ -191,9 +191,9 @@ HasHealth* HasHealth::clone()
 
 //-------------------------ACTION NODES------------------------------//
 
-int MoveTowards::tick(BActor* actor, Game* game)
+int MoveTowards::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     std::cout<<"Imma getcha!"<<std::endl;
     if(chara->get_target() == NULL)
     {
@@ -209,9 +209,9 @@ MoveTowards* MoveTowards::clone()
     return new MoveTowards(*this);
 }
 
-int MoveAway::tick(BActor* actor, Game* game)
+int MoveAway::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     std::cout<<"I'm running the fuck away!"<<std::endl;
     if(chara->get_target() == NULL)
     {
@@ -219,7 +219,7 @@ int MoveAway::tick(BActor* actor, Game* game)
     }
     IntPoint goal_coords = chara->get_target()->get_coords();
     IntPoint goal_chunk = chara->get_target()->get_chunk();
-    return game->run_away(actor->get_character(), goal_coords, goal_chunk);
+    return game->run_away(actor.get_character(), goal_coords, goal_chunk);
 }
 
 MoveAway* MoveAway::clone()
@@ -227,9 +227,9 @@ MoveAway* MoveAway::clone()
     return new MoveAway(*this);
 }
 
-int Attack::tick(BActor* actor, Game* game)
+int Attack::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     if(chara->get_target() == NULL)
     {
         return FAILURE;
@@ -242,9 +242,9 @@ Attack* Attack::clone()
     return new Attack(*this);
 }
 
-int Wander::tick(BActor* actor, Game* game)
+int Wander::tick(BActor actor, Game* game)
 {
-    Character* chara = actor->get_character();
+    Character* chara = actor.get_character();
     game->wander(chara); 
     return RUNNING;
 }
@@ -254,7 +254,7 @@ Wander* Wander::clone()
     return new Wander(*this);
 }
 
-int Die::tick(BActor* actor, Game* game)
+int Die::tick(BActor actor, Game* game)
 {
     return DEAD;
 }

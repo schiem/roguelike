@@ -133,7 +133,8 @@ void Spawner::spawn_creep(int num_creeps)
         int num = rand() % spawn_points.size();
         int spawn_x = spawn_points[num].get_x() + x;
         int spawn_y = spawn_points[num].get_y() + y;
-        enemy_queue.push_back(new Enemy(spawn_x, spawn_y, depth, enemy));
+        Enemy* enem = new Enemy(spawn_x, spawn_y, depth, enemy);
+        enemy_queue.push_back(enem);
         num_enemy -= 1;
      }
 }
