@@ -194,7 +194,6 @@ HasHealth* HasHealth::clone()
 int MoveTowards::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
-    std::cout<<"Imma getcha!"<<std::endl;
     if(chara->get_target() == NULL)
     {
         return FAILURE;
@@ -212,7 +211,6 @@ MoveTowards* MoveTowards::clone()
 int MoveAway::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
-    std::cout<<"I'm running the fuck away!"<<std::endl;
     if(chara->get_target() == NULL)
     {
         return FAILURE;

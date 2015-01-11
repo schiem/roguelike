@@ -94,7 +94,8 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
     //The buffer is what the screen draws from.
     buffer = TilePointerMatrix(CHUNK_HEIGHT * 3, vector<Tile*>(CHUNK_WIDTH * 3));
-
+    character_index = std::vector<std::vector<Character*> >(CHUNK_HEIGHT * 3, std::vector<Character*>(CHUNK_WIDTH * 3));
+    clear_character_index();
 
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
@@ -105,6 +106,9 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
     main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
+    IntPoint buffer_coords = get_buffer_coords(main_char.get_chunk(), main_char.get_coords());
+    character_index[buffer_coords.row][buffer_coords.col] = &main_char;
+
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
@@ -268,6 +272,7 @@ void Game::run_spawners() {
                         charas[index]->set_chunk(IntPoint(i, j));
                         character_list.push_back(charas[index]);
                         character_queue.push_back(charas[index]);
+                        character_to_index(charas[index]);
                     }
                     spawner->clear_queue();
                 }
@@ -311,41 +316,40 @@ std::vector<Character*>& Game::get_characters() {
 bool Game::enemy_in_range(Character* chara){ 
     //establish the necessary variables
     Character* best = NULL;
+    Character* new_character = NULL;
     int target_id = 5 - chara->get_moral();
     int selectability = 2;
     
-    //kind of a hack.
-    int main_char_index = character_list.size();
-    character_list.push_back(&main_char);
-    
-    //iterate over all the enemies
-    for(int i=0; i<character_list.size(); i++)
+    std::vector<IntPoint> sight_tiles = chara->sight_tiles();
+    for(int i=0;i<sight_tiles.size();i++)
     {
-        IntPoint coords = character_list[i]->get_coords();
-        IntPoint chunk = character_list[i]->get_chunk();
-        if(chara->in_sight(coords, chunk))
+        IntPoint index_coords = get_buffer_coords(chara->get_chunk(), sight_tiles[i]);
+        if(coords_in_buffer(index_coords.row, index_coords.col))
         {
-            //Check if we care about the enemy
-            if(character_list[i]->get_moral() > target_id - selectability && character_list[i]->get_moral() < target_id + selectability)
+            new_character = character_index[index_coords.row][index_coords.col];
+        }
+        else{
+            new_character = NULL;
+        }
+        //Check if we care about the enemy
+        
+        if(new_character != NULL && new_character->get_moral() > target_id - selectability && new_character->get_moral() < target_id + selectability)
+        {
+            //If we don't have a target, this is the best target
+            if(best == NULL)
             {
-                //If we don't have a target, this is the best target
-                if(best == NULL)
+                best = new_character;
+            }
+            else
+            {
+                //otherwise, check if this one we found is better
+                if((unsigned int)(new_character->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
                 {
-                    best = character_list[i];
-                }
-                else
-                {
-                    //otherwise, check if this one we found is better
-                    if((unsigned int)(character_list[i]->get_moral() - target_id) < (unsigned int)(best->get_moral() - target_id))
-                    {
-                        best = character_list[i];
-                    }
+                    best = new_character;
                 }
             }
         }
     }
-    
-    character_list.erase(character_list.begin() + main_char_index);
 
     if(best != NULL)
     {
@@ -414,7 +418,6 @@ bool Game::next_to_char(Character* chara, Character* target)
 
 void Game::kill(Character* chara)
 {
-    //DELETING THE CHARACTER POINTER IS HANDLED BY THE ACTOR/AI
     
     IntPoint chunk = chara->get_chunk();
     IntPoint coords = chara->get_coords();
@@ -444,6 +447,7 @@ void Game::remove_enemy(Character* chara)
             character_list.erase(character_list.begin() + i);
         }
     }
+    remove_index_char(chara);
     delete chara;
 }
 
@@ -507,6 +511,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     bool can_move = buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
 
     if(can_move && (enem == NULL)) {
+        remove_index_char(chara);
         col = next_col;
         row = next_row;
         chara->set_x(col);
@@ -515,6 +520,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
             chara->set_chunk(new_chunk);
         }
         chara->reduce_endurance(1);
+        character_to_index(chara);
         return true;
     } else {
         return false;
@@ -683,16 +689,8 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
 
 
 Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
-    for(int i=0;i<character_list.size();i++)
-    {
-        IntPoint enem_chunk = character_list[i]->get_chunk();
-        IntPoint enem_coords = IntPoint(character_list[i]->get_y(), character_list[i]->get_x()); 
-        if(get_abs(enem_chunk, enem_coords) == get_abs(_chunk, _coords))
-        {
-            return character_list[i];
-        }
-    }
-    return NULL;
+    IntPoint coords = get_buffer_coords(_chunk, _coords);
+    return character_index[coords.row][coords.col];
 }
 
 /*----------------Rendering Functions----------------*/
@@ -880,7 +878,41 @@ void Game::update_buffer(IntPoint central_chunk) {
         }
     }
     show_chunk_objects();
+    update_character_index();
     refresh();
+}
+
+void Game::update_character_index()
+{
+    clear_character_index();
+    for(int i=0;i<character_list.size();i++)
+    {
+        character_to_index(character_list[i]);
+    }
+    character_to_index(&main_char);
+}
+
+void Game::clear_character_index()
+{
+    for(int i=0;i<character_index.size();i++)
+    {
+        for(int j=0;j<character_index[i].size();j++)
+        {
+            character_index[i][j] = NULL;
+        }
+    }
+}
+
+void Game::character_to_index(Character* chara)
+{
+    IntPoint buffer_coords = get_buffer_coords(chara->get_chunk(), chara->get_coords());
+    character_index[buffer_coords.row][buffer_coords.col] = chara;
+}
+
+void Game::remove_index_char(Character* chara)
+{
+    IntPoint buffer_coords = get_buffer_coords(chara->get_chunk(), chara->get_coords());
+    character_index[buffer_coords.row][buffer_coords.col] = NULL;
 }
 
 void Game::update_chunk_map(IntPoint shift_dir) {
@@ -951,7 +983,9 @@ void Game::undo_visibility() {
 void Game::spawn_enemy(int chunk_x, int chunk_y, int x, int y, int depth, int type) {
         Enemy* temp = new Enemy(x, y, depth, ENEMY_LIST[type]);
         temp->set_chunk(IntPoint(chunk_y, chunk_x));
+        character_queue.push_back(temp);
         character_list.push_back(temp);
+        character_to_index(temp);
 }
 
 void Game::teleport(int chunk_x, int chunk_y, int x, int y)

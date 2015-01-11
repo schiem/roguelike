@@ -178,8 +178,8 @@ namespace overworld_gen {
         {
             if(true)//rand() % 50 == 0)
             {
-                int spawn_x = rand() % width;
-                int spawn_y = rand() % height;
+                int spawn_x = rand() % (int)(width - .2 * width) + .1 * width;
+                int spawn_y = rand() % (int)(height - .2 * height) + .1 * height;
                 ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, kobold));
             }
             if(rand() % 10 == 0)

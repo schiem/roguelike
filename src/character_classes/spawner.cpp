@@ -89,7 +89,7 @@ void Spawner::construct_huts()
             hut_y = rand() % (num_huts * 6);
         }
         while(overlapping_spawners(hut_x, hut_y, 3));
-        spawn_points.push_back(Den(x, y, 5, 5, hut));
+        spawn_points.push_back(Den(0, 0, 5, 5, hut));
     }
 }
 

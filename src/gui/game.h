@@ -186,9 +186,21 @@ class Game
 
 
         //ENEMY Data/Models
-        //TODO get rid of the character_list
+        /**
+         * The list of characters in the game.
+         */
         std::vector<Character*> character_list;
+        
+        /**
+         * Any character in this list will be added to the appropriate
+         * behavior tree on the next pass of the gui.
+         */
         std::vector<Character*> character_queue;
+        
+        /**
+         * A two dimensional matrix to hold characters.
+         */
+        std::vector<std::vector<Character*> > character_index;
 
         //ENEMY Functionality
 
@@ -269,6 +281,26 @@ class Game
         void update_chunk_map(IntPoint);
         void draw_visibility_lines();
         void undo_visibility();
+
+        /**
+         * Updates the character index with the current chunk.
+         */
+        void update_character_index();
+
+        /**
+         * Sets everything in the character index to NULL.
+         */
+        void clear_character_index();
+
+        /**
+         * Adds a character to the character_index at the appropriate location.
+         */
+        void character_to_index(Character* chara);
+
+        /**
+         * Sets the characters location in the character_index to NULL.
+         */
+        void remove_index_char(Character* chara);
 
         //ENEMY Functionality
         void run_spawners();
