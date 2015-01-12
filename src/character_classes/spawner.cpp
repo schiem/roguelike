@@ -85,11 +85,11 @@ void Spawner::construct_huts()
         hut[points[door].row][points[door].col] = tiledef::EMPTY;
         do
         {
-            hut_x = rand() % (num_huts * 6);
-            hut_y = rand() % (num_huts * 6);
+            hut_x = rand() % (num_huts * 6) - (num_huts*6)/2;
+            hut_y = rand() % (num_huts * 6) - (num_huts*6)/2;
         }
         while(overlapping_spawners(hut_x, hut_y, 3));
-        spawn_points.push_back(Den(0, 0, 5, 5, hut));
+        spawn_points.push_back(Den(hut_x, hut_y, 5, 5, hut));
     }
 }
 

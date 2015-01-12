@@ -887,7 +887,16 @@ void Game::update_character_index()
     clear_character_index();
     for(int i=0;i<character_list.size();i++)
     {
-        character_to_index(character_list[i]);
+        if(point_in_buffer(character_list[i]->get_chunk(), character_list[i]->get_coords()))
+        {
+            character_to_index(character_list[i]);
+        }
+        /*
+        else
+        {
+            remove_enemy(character_list[i]);
+        }
+        */
     }
     character_to_index(&main_char);
 }
@@ -912,7 +921,10 @@ void Game::character_to_index(Character* chara)
 void Game::remove_index_char(Character* chara)
 {
     IntPoint buffer_coords = get_buffer_coords(chara->get_chunk(), chara->get_coords());
-    character_index[buffer_coords.row][buffer_coords.col] = NULL;
+    if(coords_in_buffer(buffer_coords.row, buffer_coords.col))
+    {
+        character_index[buffer_coords.row][buffer_coords.col] = NULL;
+    }
 }
 
 void Game::update_chunk_map(IntPoint shift_dir) {
