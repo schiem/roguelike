@@ -362,6 +362,22 @@ class Game
          * Causes one character to attack another.
          */
         bool attack_char(Character* chara, Character* target); 
+        
+        /**
+         * Turns the character towards another character.
+         */
+        void turn_character(Character* chara, Character* target);
+
+        /**
+         * Turns the character away from another character.
+         */
+        void turn_away(Character* chara, Character* target);
+       
+        /**
+         * Checks to see if a target is valid for a given character.
+         */
+        bool valid_target(Character* chara, Character* target); 
+
         void get_item(Character*);
         void drop_item(Item*, Character*);
 

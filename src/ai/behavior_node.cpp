@@ -261,3 +261,38 @@ Die* Die::clone()
 {
     return new Die(*this);
 }
+
+int TurnToward::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    game->turn_character(chara, chara->get_target());
+    return SUCCESS;
+}
+
+TurnToward* TurnToward::clone()
+{
+    return new TurnToward(*this);
+}
+
+int TurnAway::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    game->turn_away(chara, chara->get_target());
+    return SUCCESS;
+}
+
+TurnAway* TurnAway::clone()
+{
+    return new TurnAway(*this);
+}
+
+int ValidTarget::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    return game->valid_target(chara, chara->get_target());
+}
+
+ValidTarget* ValidTarget::clone()
+{
+    return new ValidTarget(*this);
+}

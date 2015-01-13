@@ -536,6 +536,30 @@ bool Game::attack_char(Character* chara, Character* target)
 }
 
 
+void Game::turn_character(Character* chara, Character* target)
+{
+    if(target != NULL)
+    {
+        IntPoint chara_coords = get_abs(chara->get_chunk(), chara->get_coords());
+        IntPoint target_coords = get_abs(target->get_chunk(), target->get_coords());
+        std::cout<<"Chara: "<<chara_coords<<", target: "<<target_coords<<std::endl;
+        chara->turn(target_coords - chara_coords);
+    }
+}
+
+void Game::turn_away(Character* chara, Character* target)
+{
+    if(target != NULL)
+    {
+        chara->turn(chara->get_coords() - target->get_coords());
+    }
+}
+
+bool Game::valid_target(Character* chara, Character* target)
+{
+    return target != NULL && chara->in_sight_range(target->get_coords(), target->get_chunk());
+}
+
 /// \todo Make this take in a character so that other characters can call it?
 void Game::get_item(Character* chara)
 {

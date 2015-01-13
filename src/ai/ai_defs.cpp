@@ -22,47 +22,64 @@
 #include <ai_defs.h>
 
 //Make one of these for EVERY TREE YOU MAKE.
-////////////////////////GENERIC AGGRESSIVE AI//////////////////////////
-//  
-//                * = Priority                                      
-//                > = Sequence                                      
-//                } = Branching Conditional                         
-//                                                                  
-//                                                                  
-//                                  Root*                           
-//                                   +                              
-//                                   |                              
-//         +----------------------------------------------------+   
-//         |                         |                          |   
-//         v                         v                          v   
-//       Death>                   Attack>                    Wander 
-//         +                         +                              
-//         |                         |                              
-//     +---+--+             +--------+--------+                     
-//     |      |             |                 |                     
-//     v      v             v                 v                     
-// Inverter  Die     EnemyInRange             }                     
-//     +                                      +                     
-//     |                                      |                     
-//     v                            +------------------+            
-// HasHealth                        |         |        |            
-//                                  v         v        v            
-//                              LowHealth  MoveAway    }            
-//                                                     +            
-//                                                     |            
-//                                            +----------------+    
-//                                            |        |       |    
-//                                            v        v       v    
-//                                         NextTo   Attack  MoveTowards
-//
-///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//               * = Priority                                                                           
+//               ^ = Sequence                                                                           
+//               } = Branching Conditional                                                              
+//                                                                                                      
+//                                                                                                      
+//                                 Root*                                                                
+//                                  +                                                                   
+//                                  |                                                                   
+//        +----------------------------------------------------+                                        
+//        |                         |                          |                                        
+//        v                         v                          v                                        
+//      Death^                   Attack^                    Wander                                      
+//        +                         +                                                                   
+//        |                         |                                                                   
+//    +---+--+             +--------+------------------+                                                
+//    |      |             |                           |                                                
+//    v      v             |                           v                                                
+//In^erter  Die         GetTarget*                     }                                                
+//    +                    |                           +                                                
+//    |                    |                           |                                                
+//    v             +------+------+          +-------------------------------+                          
+//HasHealth         |             |          |         |                     |                          
+//                  v             v          v         +                     +                          
+//              HasValid   EnemyInRange  LowHealth   RunAway^             Attack^                       
+//                                                     ^                     +                          
+//                                                +----+----+         +------+-------------+            
+//                                                |         |         |                    +            
+//                                                |         |         |                    }            
+//                                                v         v         v                    +            
+//                                             TurnAway Mo^eAway   TurnTowards    +----------------+    
+//                                                                                |        |       |    
+//                                                                                v        v       v    
+//                                                                             NextTo Mo^eTowards Attack
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 BehaviorTree ai::GENERIC_AGGRESSIVE(Game* game)
 {
     BranchingCondition* first = new BranchingCondition(new NextTo, new Attack, new MoveTowards);
-    BranchingCondition* second = new BranchingCondition(new LowHealth, new MoveAway, first);
+    std::vector<BNode*> attack_seq_nodes;
+    attack_seq_nodes.push_back(new TurnToward);
+    attack_seq_nodes.push_back(first);
+    SequenceNode* attack_seq = new SequenceNode(attack_seq_nodes);
+
+    std::vector<BNode*> run_seq_nodes;
+    run_seq_nodes.push_back(new TurnAway);
+    run_seq_nodes.push_back(new MoveAway);
+    SequenceNode* run_seq = new SequenceNode(run_seq_nodes);
+
+    BranchingCondition* second = new BranchingCondition(new LowHealth, run_seq, attack_seq);
     std::vector<BNode*> attack_nodes;
-    attack_nodes.push_back(new EnemyInRange);
+   
+    std::vector<BNode*> has_target;
+    has_target.push_back(new ValidTarget);
+    has_target.push_back(new EnemyInRange);
+    PriorityNode* target_node = new PriorityNode(has_target);
+
+    attack_nodes.push_back(target_node);
     attack_nodes.push_back(second);
     SequenceNode* attack = new SequenceNode(attack_nodes);
 

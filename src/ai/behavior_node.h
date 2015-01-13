@@ -163,6 +163,28 @@ class Die : public BNode
         int tick(BActor actor, Game* game);
         Die* clone();
 };
+
+class TurnToward : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        TurnToward* clone();
+};
+
+class TurnAway : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        TurnAway* clone();
+};
+
+class ValidTarget : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        ValidTarget* clone();
+};
+
 //------------------------------CONDITION NODES---------------------//
 
 class LowHealth : public BNode
