@@ -542,7 +542,6 @@ void Game::turn_character(Character* chara, Character* target)
     {
         IntPoint chara_coords = get_abs(chara->get_chunk(), chara->get_coords());
         IntPoint target_coords = get_abs(target->get_chunk(), target->get_coords());
-        std::cout<<"Chara: "<<chara_coords<<", target: "<<target_coords<<std::endl;
         chara->turn(target_coords - chara_coords);
     }
 }
