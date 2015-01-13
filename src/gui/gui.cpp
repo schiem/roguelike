@@ -38,6 +38,7 @@ GUI::GUI() {
     running = true;
     debug = DebugConsole(&game); 
     trees.push_back(ai::GENERIC_AGGRESSIVE(&game)); 
+    trees.push_back(ai::GENERIC_PASSIVE(&game));
 }
 
 int GUI::OnExecute() {

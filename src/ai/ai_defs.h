@@ -31,6 +31,7 @@
 namespace ai
 {
     BehaviorTree GENERIC_AGGRESSIVE(Game* game);
+    BehaviorTree GENERIC_PASSIVE(Game* game);
     //extern BehaviorTree GENERIC_PASSIVE;
 }
 
