@@ -178,7 +178,7 @@ std::vector<WeaponType> kob_wep_vec(&kob_wep[0], &kob_wep[0] + 1);
 int kob_stats_arr[] = {10, 2, 10, 5, 5, 5};
 std::vector<int> kob_stats(&kob_stats_arr[0], &kob_stats_arr[0] + NUM_STATS);
 
-int rab_stats_arr[] = {2, 0, 10, 0, 0, 0};
+int rab_stats_arr[] = {2, 0, 10, 1, 1, 1};
 std::vector<int> rab_stats(&rab_stats_arr[0], &rab_stats_arr[0] + NUM_STATS);
 
 namespace enemies

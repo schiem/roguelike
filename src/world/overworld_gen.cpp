@@ -186,6 +186,7 @@ namespace overworld_gen {
             {
                 int spawn_x = rand() % width;
                 int spawn_y = rand() % height;
+                std::cout<<"x: "<<spawn_x<<", y: "<<spawn_y<<std::endl;
                 ground.spawners.push_back(Spawner(spawn_x, spawn_y, 0, rabbit));
             }
         }

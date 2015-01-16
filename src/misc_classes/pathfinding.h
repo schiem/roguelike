@@ -23,6 +23,7 @@
 #include <vector>
 #include <int_point.h>
 #include <defs.h>
+#include <cmath>
 
 namespace pathfinding
 {
@@ -98,6 +99,12 @@ namespace pathfinding
      * @see a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings)
      */
     IntPoint get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords, int sight);
+
+    /**
+     * Gets the next step by simply moving towards the target.  Tries moving left/right
+     * if the first step fails.
+     */
+    IntPoint dumb_path(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords);
 
     /**
      * Determines whether the coords are in the list of Tiles.

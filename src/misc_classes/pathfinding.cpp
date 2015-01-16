@@ -22,6 +22,9 @@
 //TODO clean this up and optimize it at some point.
 IntPoint pathfinding::get_next_step(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords, int sight)
 {
+    
+    return dumb_path(goal, surroundings, cur_coords);
+    /**
     std::vector<IntPoint> path = a_star(cur_coords, goal, surroundings, sight);
     if(path.size()>0)
     {
@@ -33,8 +36,38 @@ IntPoint pathfinding::get_next_step(IntPoint goal, TilePointerMatrix& surroundin
     {
         return IntPoint(0, 0);
     }
+    */
 }
 
+
+IntPoint pathfinding::dumb_path(IntPoint goal, TilePointerMatrix& surroundings, IntPoint cur_coords)
+{
+    int y = 0 + (goal.row > cur_coords.row) - (goal.row < cur_coords.row); 
+    int x = 0 + (goal.col > cur_coords.col) - (goal.col < cur_coords.col);
+    IntPoint next = IntPoint(y, x);
+    IntPoint first_fail = IntPoint(0, 0);
+    IntPoint second_fail = IntPoint(0, 0);
+    first_fail.row = first_fail.row - (next.row == 0);
+    first_fail.col = first_fail.col - (next.col == 0) + (next.col == -1) - (next.col == 1);
+    second_fail.row = second_fail.row + (next.row == 0) - (next.row == 1) + (next.row == -1);
+    second_fail.col = second_fail.col + (next.col == 0);
+    if(surroundings[next.row + cur_coords.row][next.col + cur_coords.col]->can_be_moved_through)
+    {
+        return next;
+    }
+    else if(surroundings[first_fail.row + cur_coords.row][first_fail.col + cur_coords.col]->can_be_moved_through)
+    {
+        return first_fail;
+    }
+    else if(surroundings[second_fail.row + cur_coords.row][second_fail.col + cur_coords.col]->can_be_moved_through)
+    {
+        return second_fail;
+    }
+    else
+    {
+        return IntPoint(0, 0);
+    }
+}
 
 std::vector<IntPoint> pathfinding::a_star(IntPoint start, IntPoint goal, TilePointerMatrix& surroundings, int sight)
 {

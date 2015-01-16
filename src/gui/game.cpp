@@ -315,25 +315,40 @@ std::vector<Character*>& Game::get_characters() {
 
 bool Game::enemy_in_range(Character* chara){ 
     //establish the necessary variables
+    //the character is 'passive'
+    Character* best = NULL;
+    std::vector<Character*> characters = characters_in_range(chara); 
+    if(chara->get_moral() == 3)
+    {
+        best = passive_target(chara, characters);
+    }
+    else
+    {
+        best = normal_target(chara, characters);
+    }
+    
+    if(best != NULL)
+    {
+        chara->set_target(best);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+Character* Game::normal_target(Character* chara, std::vector<Character*> characters)
+{
     Character* best = NULL;
     Character* new_character = NULL;
     int target_id = 5 - chara->get_moral();
     int selectability = 2;
     
-    std::vector<IntPoint> sight_tiles = chara->sight_tiles();
-    for(int i=0;i<sight_tiles.size();i++)
+    for(int i=0;i<characters.size();i++)
     {
-        IntPoint index_coords = get_buffer_coords(chara->get_chunk(), sight_tiles[i]);
-        if(coords_in_buffer(index_coords.row, index_coords.col))
-        {
-            new_character = character_index[index_coords.row][index_coords.col];
-        }
-        else{
-            new_character = NULL;
-        }
-        //Check if we care about the enemy
-        
-        if(new_character != NULL && new_character->get_moral() > target_id - selectability && new_character->get_moral() < target_id + selectability)
+        new_character = characters[i];
+        if(new_character->get_moral() > target_id - selectability && new_character->get_moral() < target_id + selectability)
         {
             //If we don't have a target, this is the best target
             if(best == NULL)
@@ -350,18 +365,56 @@ bool Game::enemy_in_range(Character* chara){
             }
         }
     }
-
-    if(best != NULL)
-    {
-        chara->set_target(best);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return best;
 }
 
+Character* Game::passive_target(Character* chara, std::vector<Character*> characters)
+{
+    Character* best = NULL;
+    Character* new_character = NULL;
+    for(int i=0;i<characters.size();i++)
+    {
+        new_character = characters[i];
+        if(new_character->get_moral() != chara->get_moral())
+        {
+            //If we don't have a target, this is the best target
+            if(best == NULL)
+            {
+                best = new_character;
+            }
+            else
+            {
+                //otherwise, check if this one we found is better
+                if((unsigned int)(new_character->get_moral() - chara->get_moral()) < (unsigned int)(best->get_moral() - chara->get_moral()))
+                {
+                    best = new_character;
+                }
+            }
+        }
+    }
+    return best;
+}
+
+
+std::vector<Character*> Game::characters_in_range(Character* chara)
+{
+    std::vector<IntPoint> sight_tiles = chara->sight_tiles();
+    std::vector<Character*> temp;
+    Character* new_character;
+    for(int i=0;i<sight_tiles.size();i++)
+    {
+        IntPoint index_coords = get_buffer_coords(chara->get_chunk(), sight_tiles[i]);
+        if(coords_in_buffer(index_coords.row, index_coords.col))
+        {
+            new_character = character_index[index_coords.row][index_coords.col];
+        }
+        if(new_character != NULL)
+        {
+            temp.push_back(new_character);
+        }
+    }
+    return temp;
+}
 
 int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
 {
@@ -556,7 +609,8 @@ void Game::turn_away(Character* chara, Character* target)
 
 bool Game::valid_target(Character* chara, Character* target)
 {
-    return target != NULL && chara->in_sight_range(target->get_coords(), target->get_chunk());
+    bool ret = target != NULL && chara->in_sight_range(target->get_coords(), target->get_chunk());
+    return ret;
 }
 
 /// \todo Make this take in a character so that other characters can call it?

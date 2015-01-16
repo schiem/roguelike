@@ -61,7 +61,7 @@ void Spawner::construct_den()
 
 void Spawner::construct_burrow()
 {
-    spawn_points.push_back(Den(x, y, tiledef::BURROW));
+    spawn_points.push_back(Den(0, 0, tiledef::BURROW));
 }
 
 void Spawner::construct_huts()

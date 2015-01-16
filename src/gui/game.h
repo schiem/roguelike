@@ -315,7 +315,28 @@ class Game
          * If so, sets the character's target to the enemy found.
          */
         bool enemy_in_range(Character* chara);
-        
+       
+        /**
+         * Gets the best target for a normal character.  Takes in the
+         * character to find the target for and a list of possible
+         * characters.
+         */
+        Character* normal_target(Character* chara, std::vector<Character*> characters);
+
+        /**
+         * Gets the best target for a passive character.  Takes in the
+         * character to find the target for and a list of possible
+         * characters.
+         */
+        Character* passive_target(Character* chara, std::vector<Character*> characters);
+
+        /**
+         * Returns a list of all of the characters in range of the 
+         * character passed into the function.
+         */
+        std::vector<Character*> characters_in_range(Character* chara);
+
+
         /**
          * Uses pathfinding to get to the point.  Note: this could be
          * a nightmare, as characters will currently only attempt to move
