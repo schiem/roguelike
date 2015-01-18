@@ -348,6 +348,12 @@ class Character
         void destroy_item(Item* item);
 
         /**
+         * Sets the corpse to null so that the character doesn't still
+         * have a pointer to it.
+         */
+        void nullify_corpse();
+
+        /**
          * Moves an item from the inventory to the equipment.
          * Checks if it is possible to equip or wield the item.  If so, it checks the
          * equipment slot that item should go into and places it in that slot.  If an

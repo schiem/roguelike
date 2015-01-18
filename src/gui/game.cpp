@@ -471,22 +471,17 @@ bool Game::next_to_char(Character* chara, Character* target)
 
 void Game::kill(Character* chara)
 {
-    
-    IntPoint chunk = chara->get_chunk();
-    IntPoint coords = chara->get_coords();
-    Item* corpse = chara->get_corpse();
-    corpse->set_coords(coords);
-    Chunk* current_chunk = chunk_map.get_chunk_abs(chunk.row, chunk.col);
-    current_chunk->add_item(corpse, chara->get_depth());
-
     chara->remove_all();
     vector<Item*>* item_list = chara->get_inventory();
+    Item* corpse = chara->get_corpse();
+    drop_item(corpse, chara);
+    chara->nullify_corpse();
     for(int j=0;j<item_list->size();j++)
     {
         Item* item = item_list->at(j);
+        std::cout<<item->get_name()<<std::endl;
         drop_item(item, chara);
     }
-    drop_item(corpse, chara);
     remove_enemy(chara);
 }
 
@@ -507,7 +502,7 @@ void Game::remove_enemy(Character* chara)
 
 bool Game::character_in_range(Character* chara)
 {
-    return in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
+        return in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
 }
 
 
@@ -575,7 +570,12 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
         chara->reduce_endurance(1);
         character_to_index(chara);
         return true;
-    } else {
+    }
+    else if(can_move && (enem != NULL) && chara == &main_char)
+    {
+        attack_char(&main_char, enem);
+    }
+    else {
         return false;
     }
 }
@@ -627,7 +627,15 @@ void Game::get_item(Character* chara)
         current_chunk->remove_item(temp_item, chara->get_depth());
         IntPoint b_coords = get_buffer_coords(chunk, coords);
         bool was_seen = buffer[b_coords.row][b_coords.col]->visible;
-        buffer[b_coords.row][b_coords.col] = current_chunk->get_tile(chara->get_depth(), coords.row, coords.col);
+        Item* item = item_at_coords(IntPoint(chara->get_y(), chara->get_x()), chara->get_chunk(), chara->get_depth());
+        if(item != NULL)
+        {
+            buffer[b_coords.row][b_coords.col] = item->get_sprite();
+        }
+        else
+        {
+            buffer[b_coords.row][b_coords.col] = current_chunk->get_tile(chara->get_depth(), coords.row, coords.col);
+        }
         buffer[b_coords.row][b_coords.col]->visible = was_seen;
     }
 }
@@ -637,14 +645,15 @@ void Game::drop_item(Item* item, Character* chara)
     IntPoint coords = IntPoint(chara->get_y(), chara->get_x());
     IntPoint chunk = IntPoint(chara->get_chunk_y(), chara->get_chunk_x());
     Chunk* current_chunk = chunk_map.get_chunk_abs(chunk.row, chunk.col);
-    
+
     chara->drop_item(item);
     item->set_coords(coords);
-    
+
     current_chunk->add_item(item, chara->get_depth());
-    
+
     add_tile_to_buffer(chunk, coords, item->get_sprite());
 }
+
 
 /*========= PRIVATE METHODS ============*/
 

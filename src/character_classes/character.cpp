@@ -297,6 +297,11 @@ void Character::destroy_item(Item* item)
     }
 }
 
+void Character::nullify_corpse()
+{
+    corpse = NULL;
+}
+
 void Character::equip_item(Item* item)
 {
     if(item->can_equip)
