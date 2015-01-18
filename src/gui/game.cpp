@@ -451,7 +451,13 @@ void Game::wander(Character* chara)
     int x_change = rand() % 3 - 1;
     int y_change = rand() % 3 - 1;
     IntPoint new_coords = IntPoint(chara->get_y() + y_change, chara->get_x() + x_change); 
-  
+    
+    int turn_amount = rand() % 20 - 10;
+    if(will_move == 0)
+    {
+        chara->turn(turn_amount);
+    }
+
     if(point_in_buffer(chara->get_chunk(), new_coords) && will_move == 0)
     {
         move_char(x_change, y_change, chara);
@@ -556,7 +562,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     Character* enem = enemy_at_loc(new_chunk, next_coords);
 
     IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));
-    bool can_move = buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
+    bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
 
     if(can_move && (enem == NULL)) {
         remove_index_char(chara);

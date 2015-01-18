@@ -625,11 +625,16 @@ class Character
         bool in_sight(IntPoint _coords, IntPoint _chunk);
         
         /**
-         * Turns the enemy.
+         * Turns the enemy to face towards the coords given.
          * @parameter coords The difference between the target coords and current coords.
          * @todo Implement a max turn amount.
          */
         void turn(IntPoint coords);
+
+        /**
+         * Turns the character by an amount.
+         */
+        void turn(int turn_amount);
 
         /**
          * Calculates the upper and lower angles (from 1-100) of the field of view.

@@ -608,6 +608,19 @@ void Character::turn(IntPoint difference)
     direction = new_direction;
 }
 
+void Character::turn(int turn_amount)
+{
+    direction += turn_amount;
+    if(direction > 100)
+    {
+        direction -= 100;
+    }
+    else if(direction < 0)
+    {
+        direction += 100;
+    }
+}
+
 std::vector<IntPoint> Character::sight_tiles()
 {
     IntPoint coords = get_coords();
