@@ -72,7 +72,7 @@ int PriorityNode::tick(BActor actor, Game* game)
             return did_succeed;
         }
     }
-    return SUCCESS;
+    return FAILURE;
 }
 
 

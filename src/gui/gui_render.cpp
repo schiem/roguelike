@@ -304,11 +304,5 @@ void GUI::render_animations()
 
 void GUI::clear_area(IntPoint start, IntPoint size)
 {
-    for(int i=start.col;i<size.col + start.col;i++)
-    {
-        for(int j=start.row;j<size.row + start.row;j++)
-        {
-            drawChr(j, i, td::BLOCK_WALL.char_count, ascii, screen, BLACK);
-        }
-    }
+    clearArea(start.col, start.row, size.row, size.col, screen, BLACK);
 }

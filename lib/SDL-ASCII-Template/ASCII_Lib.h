@@ -14,4 +14,6 @@ void drawStr(int x, int y, const char stringy[], SDL_Surface* source, SDL_Surfac
 // Print a number
 void drawInt(int x, int y, int number, SDL_Surface* source, SDL_Surface* destination, Uint32 color, int size = 0);
 
+void clearArea(int x, int y, int height, int width, SDL_Surface* destination, Uint32 color);
+
 #endif
