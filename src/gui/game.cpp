@@ -782,6 +782,10 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
 
 Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
     IntPoint coords = get_buffer_coords(_chunk, _coords);
+    if(!coords_in_buffer(coords.row, coords.col))
+    {
+        std::cout<<"Coords are: "<<coords<<std::endl;
+    }
     return character_index[coords.row][coords.col];
 }
 

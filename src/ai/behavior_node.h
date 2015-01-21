@@ -178,12 +178,7 @@ class TurnAway : public BNode
         TurnAway* clone();
 };
 
-class ValidTarget : public BNode
-{
-    public:
-        int tick(BActor actor, Game* game);
-        ValidTarget* clone();
-};
+
 
 //------------------------------CONDITION NODES---------------------//
 
@@ -215,6 +210,18 @@ class HasHealth : public BNode
         HasHealth* clone();
 };
 
+class InWorld : public BNode
+{
+    public:
+        int tick(BActor actors, Game* game);
+        InWorld* clone();
+};
 
+class ValidTarget : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        ValidTarget* clone();
+};
 
 #endif

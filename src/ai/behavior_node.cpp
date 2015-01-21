@@ -189,6 +189,35 @@ HasHealth* HasHealth::clone()
     return new HasHealth(*this);
 }
 
+int ValidTarget::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    return game->valid_target(chara, chara->get_target());
+}
+
+ValidTarget* ValidTarget::clone()
+{
+    return new ValidTarget(*this);
+}
+
+int InWorld::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    if(!game->point_in_buffer(chara->get_chunk(), chara->get_coords()))
+    {
+        return FAILURE;
+    }
+    else
+    {
+        return SUCCESS;
+    }
+}
+
+InWorld* InWorld::clone()
+{
+    return new InWorld(*this);
+}
+
 //-------------------------ACTION NODES------------------------------//
 
 int MoveTowards::tick(BActor actor, Game* game)
@@ -284,15 +313,4 @@ int TurnAway::tick(BActor actor, Game* game)
 TurnAway* TurnAway::clone()
 {
     return new TurnAway(*this);
-}
-
-int ValidTarget::tick(BActor actor, Game* game)
-{
-    Character* chara = actor.get_character();
-    return game->valid_target(chara, chara->get_target());
-}
-
-ValidTarget* ValidTarget::clone()
-{
-    return new ValidTarget(*this);
 }
