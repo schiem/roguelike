@@ -29,7 +29,7 @@ Settlement::Settlement(int chunk_x, int chunk_y, int _height, int _width)
     width = _width;
     //first thing we need to do it divide it into city blocks
     //so we can have roads running through it.
-    BSpaceTree div = BSpaceTree(height, width, 100, 200);
+    BSpaceTree div = BSpaceTree(width, height, 100, 150);
     settlement_from_bst(div);
 }
 
@@ -43,16 +43,16 @@ void Settlement::blocks_from_bst(BSpaceTree& tree)
     std::vector<BSpaceNode*> leaves = tree.get_leaves();
     for(int i=0;i<leaves.size();i++)
     {        
-        
-        int new_x = rand() % 3 + leaves[i]->tl_x;
-        int new_y = rand() % 3 + leaves[i]->tl_y;
-        int new_height = leaves[i]->height - rand() % 3;
-        int new_width = leaves[i]->width - rand() % 3;
+        int rand_x = rand() % 3 + 1;
+        int rand_y = rand() % 3 + 1;
+        int new_x = rand_x + leaves[i]->tl_x;
+        int new_y = rand_y + leaves[i]->tl_y;
+        int new_height = leaves[i]->height - (rand() % 3 + rand_y + 1);
+        int new_width = leaves[i]->width - (rand() % 3 + rand_x + 1);
         blocks.push_back(Block(new_x, new_y, new_height, new_width));
+        //blocks.push_back(Block(leaves[i]->tl_x, leaves[i]->tl_y, leaves[i]->height, leaves[i]->width));
     }
 }
-
-
 
 std::vector<Block>& Settlement::get_blocks()
 {

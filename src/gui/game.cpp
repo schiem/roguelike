@@ -987,12 +987,6 @@ void Game::update_character_index()
         {
             character_to_index(character_list[i]);
         }
-        /*
-        else
-        {
-            remove_enemy(character_list[i]);
-        }
-        */
     }
     character_to_index(&main_char);
 }

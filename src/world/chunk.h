@@ -38,6 +38,7 @@
 #include <defs.h>
 #include <ctime>
 #include <spring_matrix.h>
+#include <world_map.h>
 
 class Plant;
 class Spawner;

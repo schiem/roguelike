@@ -20,8 +20,8 @@
 #ifndef _CONSTANTS_H
 #define _CONSTANTS_H
 
-static const int CHUNK_WIDTH = 100;
-static const int CHUNK_HEIGHT = 50;
+static const int CHUNK_WIDTH = 1000;
+static const int CHUNK_HEIGHT = 500;
 
 static const int SCREEN_WIDTH = 120;
 static const int SCREEN_HEIGHT = 50;

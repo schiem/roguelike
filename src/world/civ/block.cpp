@@ -38,14 +38,14 @@ Block::Block(int tl_x, int tl_y, int _height, int _width)
     tl = IntPoint(tl_y, tl_x);
     height = _height;
     width = _width;
-    
+    std::cout<<"Top Left corner x: "<<tl_x<<", y: "<<tl_y<<", height: "<<height<<", width: "<<width<<std::endl; 
     generate_buildings();
 }
 
 void Block::generate_buildings()
 {
     //for now, statically sized houses.  We'll revisit this later
-    BSpaceTree houses = BSpaceTree(height, width, 12, 18);
+    BSpaceTree houses = BSpaceTree(width, height, 10, 14);
     
     //just get the base leaves.
     std::vector<BSpaceNode*> house_nodes = houses.get_leaves(); 

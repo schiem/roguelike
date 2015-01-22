@@ -54,7 +54,7 @@ void Building::house_from_bst()
     //turn it into a floor_plan
     rooms_to_floor();
     //add some doors
-    //bool a = add_doors(house);
+    bool a = add_doors(house);
 }
 
 void Building::rooms_from_tree(BSpaceTree& tree)
