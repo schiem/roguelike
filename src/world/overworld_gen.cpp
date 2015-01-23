@@ -192,6 +192,7 @@ namespace overworld_gen {
         }
         
         /**************** TEST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
+        /**
         Settlement settlement = Settlement(0, 0, 400, 700); 
         std::vector<Block> blocks = settlement.get_blocks();
         
@@ -212,6 +213,7 @@ namespace overworld_gen {
                 }
             }
         }
+        */
     }
     /**
      * Not sure where to put these thoughts. Chunk creation will have to
