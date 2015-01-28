@@ -68,16 +68,6 @@ class WorldMap {
         int width;
 
         /**
-         * Determines whether a given row-column pair is out of bounds on the
-         * world map matrix.
-         *
-         * @param row
-         * @param col
-         * @return a boolean denoting whether the point is out of bounds.
-         */
-        bool out_of_bounds(int row, int col);
-
-        /**
          * Counts the number of occurences of the given MapTile type in the 8
          * tiles surrounding the given point.
          *
@@ -157,6 +147,21 @@ class WorldMap {
          * @return a reference to the world map.
          */
         const std::vector<std::vector<MapTile> >& get_map();
+
+        /**
+         * Determines whether a given row-column pair is out of bounds on the
+         * world map matrix.
+         *
+         * @param row
+         * @param col
+         * @return a boolean denoting whether the point is out of bounds.
+         */
+        bool out_of_bounds(int row, int col);
+
+        /**
+         * Returns the tile at a given location.
+         */
+        MapTile tile_at(int row, int col);
 };
 
 #endif

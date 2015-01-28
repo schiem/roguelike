@@ -36,10 +36,10 @@ Chunk::Chunk() {
     cm.width = CHUNK_WIDTH;
 }
 
-Chunk::Chunk(MapTile tile_type, int world_row, int world_col, string _save_folder) {
+Chunk::Chunk(MapTile tile_type, int world_row, int world_col, string _save_folder, MapTileMatrix& map) {
     cm.height = CHUNK_HEIGHT;
     cm.width = CHUNK_WIDTH;
-    init(tile_type, world_row, world_col, _save_folder);
+    init(tile_type, world_row, world_col, _save_folder, map);
 }
 
 bool Chunk::find_serialized_chunk() {
@@ -62,7 +62,7 @@ bool Chunk::find_serialized_chunk() {
     return false;
 }
 
-void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_folder) {
+void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_folder, MapTileMatrix& world_map) {
     save_folder = _save_folder;
     chunk_type = tile_type;
     cm.world_row = world_row;
@@ -79,6 +79,10 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
         } else if (tile_type == map_tile::MAP_FOREST) {
             build_forest_chunk();
         }
+        blend_chunk(world_map, -1, 0);
+        blend_chunk(world_map, 1, 0);
+        blend_chunk(world_map, 0, 1);
+        blend_chunk(world_map, 0, -1);
     }
 }
 
@@ -614,3 +618,62 @@ void Chunk::deserialize(string file_name) {
     chunk_data_file.close();
 }
 
+void Chunk::blend_chunk(MapTileMatrix& map, int row_change, int col_change)
+{
+    int new_row = cm.world_row + row_change;
+    int new_col = cm.world_col + col_change;
+    MapTile other;
+    if(new_row >= 0 && new_row < map.size() &&  new_col >= 0 && new_col < map[new_row].size())
+    {
+        other = map[new_row][new_col];
+    }
+    else
+    {
+        return;
+    }
+    
+    if(other != chunk_type)
+    {
+        if(other.blend_type == map_tile::HARD || chunk_type.blend_type == map_tile::HARD)
+        {
+            blend_hard(row_change, col_change, other);
+        }
+        else if(other.blend_type == map_tile::NORMAL || chunk_type.blend_type == map_tile::NORMAL)
+        {
+            blend_normal(row_change, col_change, other);
+        }
+    }
+}
+
+void Chunk::blend_hard(int row, int col, MapTile other)
+{
+    //Do nothing for this for now
+}
+
+void Chunk::blend_normal(int row, int col, MapTile other)
+{
+    int start_x = 0 + ((col == 1) * (CHUNK_WIDTH - 1));
+    int start_y = 0 + ((row == 1) * (CHUNK_HEIGHT - 1));
+
+    int x_range = ((CHUNK_WIDTH * .05) * (col != 0)) + (CHUNK_WIDTH * (col == 0));
+    int y_range = ((CHUNK_HEIGHT * .1) * (row != 0)) + (CHUNK_HEIGHT * (row == 0));
+
+    int x_iter = 0 + (col <= 0) - (col > 0);
+    int y_iter = 0 + (row <= 0) - (row > 0);
+
+    int x_end = start_x + (x_range * x_iter);
+    int y_end = start_y + (y_range * y_iter);
+    std::cout<<"Start x: "<<start_x<<", start y: "<<start_y<<", x range: "<<x_range<<", y range: "<<y_range<<std::endl;
+    std::cout<<" and x iter: "<<x_iter<<", and y iter: "<<y_iter<<std::endl;
+    std::cout<<" and x end: "<<x_end<<", and y end: "<<y_end<<std::endl;
+    for(int i = start_y;i != y_end;i += y_iter)
+    {
+        for(int j = start_x; j != x_end; j += x_iter)
+        {
+            if(rand() % 3 == 0)
+            {
+                layers[0].set_tile(i, j, other.base_tile);
+            }
+        }
+    }
+}

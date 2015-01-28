@@ -174,3 +174,8 @@ void WorldMap::generate_beaches() {
         }
     }
 }
+
+MapTile WorldMap::tile_at(int row, int col)
+{
+    return map[row][col];
+}

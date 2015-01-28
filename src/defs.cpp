@@ -103,12 +103,13 @@ namespace tiledef {
     };
 }
 
+
 namespace map_tile {
-    MapTile MAP_DEFAULT = {240, DARK_GREEN, 0, true};
-    MapTile MAP_WATER = {247, DARK_BLUE, 1, false};
-    MapTile MAP_BEACH = {178, TAN, 2, false};
-    MapTile MAP_FOREST = {116, DARK_GREEN, 3, true};
-    MapTile CURSOR = {88, WHITE, 4, false};
+    MapTile MAP_DEFAULT = {240, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT};
+    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER};
+    MapTile MAP_BEACH = {178, TAN, 2, false, NORMAL, tiledef::SAND1};
+    MapTile MAP_FOREST = {116, DARK_GREEN, 3, true, NORMAL, tiledef::DIRT};
+    MapTile CURSOR = {88, WHITE, 4, false, NORMAL, tiledef::EMPTY};
 
     MapTile MAP_TILE_INDEX[5] = { //THIS MUST CORRESPOND TO MAP TILE IDS
         MAP_DEFAULT, //ID 0

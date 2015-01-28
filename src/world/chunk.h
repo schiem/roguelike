@@ -38,7 +38,6 @@
 #include <defs.h>
 #include <ctime>
 #include <spring_matrix.h>
-#include <world_map.h>
 
 class Plant;
 class Spawner;
@@ -97,6 +96,7 @@ struct chunk_meta {
  * calls its deserialize() method, loading it with the appropriate data.
  */
 class Chunk{
+    typedef std::vector<std::vector<MapTile> > MapTileMatrix;
     private:
 
         /**
@@ -158,7 +158,7 @@ class Chunk{
          *
          * @see MapTile
          */
-        Chunk(MapTile tile_type, int _world_row, int _world_col, string _save_folder);
+        Chunk(MapTile tile_type, int _world_row, int _world_col, string _save_folder, MapTileMatrix& map);
 
         /**
          * Resets all important information in the chunk, deserializing as
@@ -172,7 +172,7 @@ class Chunk{
          * @see deserialize
          * @see MapTile
          */
-        void init(MapTile tile_type, int _world_row, int _world_col, string save_folder);
+        void init(MapTile tile_type, int _world_row, int _world_col, string save_folder, MapTileMatrix& world_map);
 
         /**
          * \todo this documentation
@@ -458,6 +458,28 @@ class Chunk{
          */
         void deserialize(string file_name);
 
+
+        /**
+         * Repsonsible for blending chunks of different types.  Takes
+         * in the world map, the change in chunk x/y of the chunk to
+         * blended, and then passes it to the appropriate function
+         * based on type of chunk.
+         */
+        void blend_chunk(MapTileMatrix& map, int row_change, int col_change);
+
+        /**
+         * Blends chunks that should have a "hard line" between them,
+         * e.g. water and anything else.
+         */
+        void blend_hard(int row, int col, MapTile other);
+        
+        /**
+         * Blends chunks "normally," so that each tile in a range has a
+         * 50% chance of becoming the other chunk's base tile.
+         */
+        void blend_normal(int row, int col, MapTile other);
+        
+    
 };
 
 #endif

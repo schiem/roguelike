@@ -202,6 +202,17 @@ struct MapTile {
     bool does_spawn;
 
     /**
+     * What kind of blending does this tile have?  See the corresponding
+     * enum called BLENDTYPES for this.
+     */
+     int blend_type;
+
+    /**
+     * The base tile of the chunk.
+     */
+     Tile base_tile;
+
+    /**
      * Comparison operator for MapTiles.
      */
     bool operator==(const MapTile& rhs) const {
@@ -223,6 +234,11 @@ namespace map_tile {
     extern MapTile CURSOR;
     extern MapTile MAP_FOREST;
     extern MapTile MAP_BEACH;
+    enum BLENDTYPES
+    {
+        HARD,
+        NORMAL
+    };
 }
 
 /*--------------------------
