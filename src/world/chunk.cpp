@@ -640,6 +640,15 @@ void Chunk::blend_chunk(MapTileMatrix& map, int row_change, int col_change)
         //blending will only ever happen if both chunks have NORMAL. You
         //probably knew this, but it's hard to tell from the way the code is
         //laid out. Otherwise this is freaking sweet. -SAY
+        
+        //That's actually exactly what I wanted to happen.  I forget if I made a note of
+        //this in the commit log, but there's an order of precendence--if one chunk has a
+        //"hard" blend type (e.g. water), then I want a hard line between them, regardless
+        // of the other chunks blend type.  The redundancy is due to scalability, so you just
+        //pick where you want the new blend type to take precedence and then stick it in the
+        //"else if" tree.
+        //-MJY
+
         if(other.blend_type == map_tile::HARD || chunk_type.blend_type == map_tile::HARD)
         {
             blend_hard(row_change, col_change, other);
