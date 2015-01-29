@@ -634,6 +634,12 @@ void Chunk::blend_chunk(MapTileMatrix& map, int row_change, int col_change)
     
     if(other != chunk_type)
     {
+        //Keep in mind that if you have two map tiles, one with NORMAL and one
+        //with HARD, both of these if-statements are technically valid. So
+        //there's a bit of redundancy and HARD takes precedence... so NORMAL
+        //blending will only ever happen if both chunks have NORMAL. You
+        //probably knew this, but it's hard to tell from the way the code is
+        //laid out. Otherwise this is freaking sweet. -SAY
         if(other.blend_type == map_tile::HARD || chunk_type.blend_type == map_tile::HARD)
         {
             blend_hard(row_change, col_change, other);
