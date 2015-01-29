@@ -655,22 +655,24 @@ void Chunk::blend_normal(int row, int col, MapTile other)
     int start_x = 0 + ((col == 1) * (CHUNK_WIDTH - 1));
     int start_y = 0 + ((row == 1) * (CHUNK_HEIGHT - 1));
 
-    int x_range = ((CHUNK_WIDTH * .05) * (col != 0)) + (CHUNK_WIDTH * (col == 0));
-    int y_range = ((CHUNK_HEIGHT * .1) * (row != 0)) + (CHUNK_HEIGHT * (row == 0));
+    int x_range = ((CHUNK_WIDTH * .125) * (col != 0)) + (CHUNK_WIDTH * (col == 0));
+    int y_range = ((CHUNK_HEIGHT * .25) * (row != 0)) + (CHUNK_HEIGHT * (row == 0));
 
     int x_iter = 0 + (col <= 0) - (col > 0);
     int y_iter = 0 + (row <= 0) - (row > 0);
 
     int x_end = start_x + (x_range * x_iter);
     int y_end = start_y + (y_range * y_iter);
-    std::cout<<"Start x: "<<start_x<<", start y: "<<start_y<<", x range: "<<x_range<<", y range: "<<y_range<<std::endl;
-    std::cout<<" and x iter: "<<x_iter<<", and y iter: "<<y_iter<<std::endl;
-    std::cout<<" and x end: "<<x_end<<", and y end: "<<y_end<<std::endl;
+   
+    
     for(int i = start_y;i != y_end;i += y_iter)
     {
         for(int j = start_x; j != x_end; j += x_iter)
         {
-            if(rand() % 3 == 0)
+            int y_chance = 4 + ((CHUNK_HEIGHT/2) - std::abs((CHUNK_HEIGHT/2) - i));
+            int x_chance = 4 + ((CHUNK_WIDTH/2) - std::abs((CHUNK_WIDTH/2) - j));
+            int chance = (y_chance/2 * (row != 0)) + (x_chance/2 * (col  != 0));
+            if(rand() % chance == 0)
             {
                 layers[0].set_tile(i, j, other.base_tile);
             }
