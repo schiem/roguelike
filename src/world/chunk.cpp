@@ -667,15 +667,24 @@ void Chunk::blend_hard(int row, int col, MapTile other)
 
 void Chunk::blend_normal(int row, int col, MapTile other)
 {
+    
+    //Check where we should start blending from
+    //The only time we don't want to start at a 0 point is
+    //if the change is 1.
     int start_x = 0 + ((col == 1) * (CHUNK_WIDTH - 1));
     int start_y = 0 + ((row == 1) * (CHUNK_HEIGHT - 1));
 
+    //Find the range we want to run.  If the chunk change for that
+    //coord is not zero, then that's the direction we want to blend.
+    //Otherwise, we want it to run the breadth of the chunk.
     int x_range = ((CHUNK_WIDTH * .125) * (col != 0)) + (CHUNK_WIDTH * (col == 0));
     int y_range = ((CHUNK_HEIGHT * .25) * (row != 0)) + (CHUNK_HEIGHT * (row == 0));
 
+    //Finds the direction we need to iterate in.
     int x_iter = 0 + (col <= 0) - (col > 0);
     int y_iter = 0 + (row <= 0) - (row > 0);
 
+    //Find the end coordinate for our iteration
     int x_end = start_x + (x_range * x_iter);
     int y_end = start_y + (y_range * y_iter);
    
@@ -684,6 +693,7 @@ void Chunk::blend_normal(int row, int col, MapTile other)
     {
         for(int j = start_x; j != x_end; j += x_iter)
         {
+            //Determien the chance for any tile to become the other's base tile.
             int y_chance = 4 + ((CHUNK_HEIGHT/2) - std::abs((CHUNK_HEIGHT/2) - i));
             int x_chance = 4 + ((CHUNK_WIDTH/2) - std::abs((CHUNK_WIDTH/2) - j));
             int chance = (y_chance/2 * (row != 0)) + (x_chance/2 * (col  != 0));
