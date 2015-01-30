@@ -1,6 +1,6 @@
-Rwoguelike
+Roguelike
 =========
-<img src=http://imgur.com/iEr9v8W>
+<img src=http://imgur.com/iEr9v8W.png>
 There is a currently working title...
 (Someday this will have a real name)
 
