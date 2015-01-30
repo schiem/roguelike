@@ -508,7 +508,7 @@ void Game::remove_enemy(Character* chara)
 
 bool Game::character_in_range(Character* chara)
 {
-        return in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
+        return chunk_in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
 }
 
 
@@ -741,7 +741,7 @@ bool Game::out_of_bounds(int row, int col) {
  * PRE: Takes an x and a y coordinate (chunk).
  * POST: Returns whether or not the chunk is currently in the buffer.
  */
-bool Game::in_buffer(int row, int col) {
+bool Game::chunk_in_buffer(int row, int col) {
     return chunk_map.out_of_bounds(IntPoint(row, col));
 }
 

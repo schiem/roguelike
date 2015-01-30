@@ -41,7 +41,7 @@ StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Men
     world_map_gui = &wmg;
     id = menu_id::START_MENU;
     next_screen = MAP_SCREEN;
-    title = "We need to actually think of a title.";
+    title = "Boots and Kobolds";
     options.push_back("New Game");
     options.push_back("Continue");
 }

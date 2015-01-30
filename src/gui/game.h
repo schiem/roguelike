@@ -151,7 +151,7 @@ class Game
         /**
          * Returns whether or not the chunk is currently in the buffer.
          */
-        bool in_buffer(int row, int col);
+        bool chunk_in_buffer(int row, int col);
         
         /**
          * Checks whether a set of coordinates (relative to the buffer)
