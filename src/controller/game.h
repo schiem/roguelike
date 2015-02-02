@@ -17,8 +17,8 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CANVAS_H
-#define _CANVAS_H
+#ifndef _GAME_H
+#define _GAME_H
 
 #include <vector>
 #include <chunk_matrix.h>
@@ -29,6 +29,11 @@
 #include <item.h>
 #include <animation.h>
 #include <animation_defs.h>
+#include <defs.h>
+#include <chunk.h>
+#include <character.h>
+#include <bresenham.h>
+#include <pathfinding.h>
 
 //Forward declarations
 struct Tile;
@@ -50,7 +55,8 @@ class Game
 
     private:
 
-        //BASE Data/Models
+        
+        //----------------------------------GAME DATA-----------------------------------//
         /**
          * Whether or not the game has been initialized.
          */

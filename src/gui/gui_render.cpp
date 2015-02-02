@@ -43,7 +43,7 @@ void GUI::OnRender() {
         render_characters();
         render_main_char();
         render_animations();
-        clear_area(IntPoint(UI_START, 0), IntPoint(UI_WIDTH, UI_HEIGHT));
+        clear_area(IntPoint(0, UI_START), IntPoint(UI_HEIGHT, UI_WIDTH));
         render_interface();
 
     } else if (current_screen == DEATH_SCREEN) {

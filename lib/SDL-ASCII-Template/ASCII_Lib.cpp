@@ -59,12 +59,7 @@ void drawInt(int x, int y, int number, SDL_Surface* source, SDL_Surface* destina
 void clearArea(int x, int y, int height, int width, SDL_Surface* destination, Uint32 color)
 {
 
-    SDL_Rect offset;
     SDL_Rect clip[1];
-
-    //Get offsets
-    offset.x = x*8;
-    offset.y = y*12;
 
     clip[0].x = x*8;
     clip[0].y = y*12;
