@@ -130,6 +130,11 @@ class ChunkMatrix
          * @return the central chunk in the model.
          */
         Chunk* get_center_chunk();
+        
+        /**
+         * Gets the coordinates of the center of the matrix.
+         */
+        IntPoint get_center();
 
         /**
          * Shifts the contents of the chunk matrix.
@@ -160,6 +165,12 @@ class ChunkMatrix
          * Serializes all the chunks in the chunk_map.
          */
         void serialize_all();
+
+        /**
+         * Public accessor for the diameter.
+         */
+        int get_diameter();
+
 };
 
 #endif

@@ -370,8 +370,13 @@ bool Game::out_of_bounds(int row, int col) {
  * PRE: Takes an x and a y coordinate (chunk).
  * POST: Returns whether or not the chunk is currently in the buffer.
  */
+ //umm...this operates on two different coordinate systems, fyi.  It will
+ //almost never work -MJY 2/2/15
 bool Game::chunk_in_buffer(int row, int col) {
-    return chunk_map.out_of_bounds(IntPoint(row, col));
+    IntPoint center = chunk_map.get_center();
+    int offset = (chunk_map.get_diameter() - 1)/2;
+    IntPoint buffer_chunk = IntPoint(center.row - offset - row, center.col - offset - col); 
+    return chunk_map.out_of_bounds(buffer_chunk);
 }
 
 bool Game::coords_in_buffer(int row, int col)
@@ -408,13 +413,8 @@ IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
     return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
 }
 
-
 Character* Game::enemy_at_loc(IntPoint _chunk, IntPoint _coords) {
     IntPoint coords = get_buffer_coords(_chunk, _coords);
-    if(!coords_in_buffer(coords.row, coords.col))
-    {
-        std::cout<<"Coords are: "<<coords<<std::endl;
-    }
     return character_index[coords.row][coords.col];
 }
 

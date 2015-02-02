@@ -102,9 +102,18 @@ Chunk* ChunkMatrix::get_chunk_abs(int row, int col) {
 
 Chunk* ChunkMatrix::get_center_chunk() {
     int rowcol = (diameter - 1) / 2;
-    //cout<<"Center chunk = "<<rowcol<<endl;
+    //Umm...if diameter is 3, this will give you 1, not 2
+    //If you actualy want the center, add 1 instead of subtracting
     return &model[rowcol][rowcol];
 }
+
+IntPoint ChunkMatrix::get_center()
+{
+    int rowcol = (diameter - 1) / 2;
+    Chunk* temp = &model[rowcol][rowcol];
+    return temp->get_world_loc();
+}
+
 
 void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     int world_row, world_col;
@@ -222,4 +231,10 @@ void ChunkMatrix::serialize_all()
             model[i][j].serialize();
         }
     }
+}
+
+
+int ChunkMatrix::get_diameter()
+{
+    return diameter;
 }

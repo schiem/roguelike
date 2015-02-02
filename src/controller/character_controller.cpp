@@ -284,7 +284,7 @@ void Game::remove_enemy(Character* chara)
 
 bool Game::character_in_range(Character* chara)
 {
-        return chunk_in_buffer(chara->get_chunk_x(), chara->get_chunk_y());
+        return chunk_in_buffer(chara->get_chunk_y(), chara->get_chunk_x());
 }
 
 
@@ -335,6 +335,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     next_col = next_col +  (CHUNK_WIDTH * (next_col<0)) - (CHUNK_WIDTH * (next_col>=CHUNK_WIDTH));
     next_row = next_row +  (CHUNK_HEIGHT * (next_row<0)) - (CHUNK_HEIGHT * (next_row>=CHUNK_HEIGHT));
     IntPoint next_coords = IntPoint(next_row, next_col);
+    
     Character* enem = enemy_at_loc(new_chunk, next_coords);
 
     IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));

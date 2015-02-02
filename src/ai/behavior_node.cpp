@@ -203,7 +203,7 @@ ValidTarget* ValidTarget::clone()
 int InWorld::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
-    if(!game->point_in_buffer(chara->get_chunk(), chara->get_coords()))
+    if(!game->character_in_range(chara))
     {
         return FAILURE;
     }
