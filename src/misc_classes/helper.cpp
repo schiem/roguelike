@@ -127,3 +127,18 @@ std::vector<int> strings_to_ints(std::vector<std::string> strings)
     }
     return int_vec;
 }
+
+bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius) {
+    IntPoint abs = get_abs(chunk, coords);
+    IntPoint tl_abs = get_abs(range_chunk,
+            IntPoint(center.row - radius.row,
+                center.col - radius.col));
+
+    IntPoint br_abs = get_abs(range_chunk,
+            IntPoint(center.row + radius.row,
+                center.col + radius.col));
+
+    bool is_x = (abs.col>=tl_abs.col && abs.col<br_abs.col);
+    bool is_y = (abs.row>=tl_abs.row && abs.row<br_abs.row);
+    return (is_x && is_y);
+}

@@ -56,7 +56,9 @@ class Game
     private:
 
         
-        //----------------------------------GAME DATA-----------------------------------//
+//----------------------------------GAME DATA-----------------------------------//
+//src/controller/game.cpp
+        
         /**
          * Whether or not the game has been initialized.
          */
@@ -75,7 +77,12 @@ class Game
          * be happening in other game states while the game is paused.
          */
         bool paused;
-
+        
+        /**
+         * Holds any tiles that we need to make pointers to.
+         */
+        Tile tile_index[td::TILE_TYPE_COUNT];
+        
         /**
          * The map of the world.
          * @see MapTile
@@ -83,77 +90,25 @@ class Game
         MapTileMatrix world_map;
 
         /**
-         * A two dimensional vector containing the chunks.
-         * This is the core of how the game doesn't run out of
-         * memory.  It's broken up into chunks, which are then
-         * serialized/deserialized as the player moves about.
-         * @see Chunk
+         * The list of points which correspond to visible tiles.
          */
-        ChunkMatrix chunk_map;
-
-        /**
-         * Holds any tiles that we need to make pointers to.
-         */
-        Tile tile_index[td::TILE_TYPE_COUNT];
+        std::vector<std::vector<IntPoint> > bresenham_lines;
         
+//--------------------------------------BUFFER DATA/PRIVATE METHODS----------------------------------------// 
+//src/controller/buffer_controller.cpp
         /**
-         * Whenever a new animation needs to be performed, it
-         * should be added to this queue.
+         * A 2D vector of pointers to tile objects that represents all of the tiles
+         * in the chunks surrounding the player.  This allows for easy writing to the
+         * screen.
          */
-        std::vector<Animation> anim_queue;
-
-        //BASE model access functions
+        TilePointerMatrix buffer;
+       
         /**
-         * Assertions to ensure that the current point is in the screen.
-         * @param row The row of the point.
-         * @param col The column of the point.
+         * Converts coordinates in the form of (chunk, coords) to coordinates relative to
+         * the top left of the buffer.
          */
-        void point_assertions(int row, int col);
-
+        IntPoint get_buffer_coords(IntPoint chunk, IntPoint coords);
         
-        /**
-         * Sets the point in the canvas at row, col to Tile
-         * @param row The row of the canvas to set the tile.
-         * @param col The column of the canvas to set the tile.
-         * @param tile The tile to set row, col to.
-         */
-        void set_tile(int row, int col, Tile* tile);
-
-        /**
-         * Sets the point in the canvas at IntPoint to tile.
-         * @param point The point of the canvas to set the tile.
-         * @param tile The tile to set the IntPoint of the canvas to.
-         */
-        void set_tile(IntPoint point, Tile* tile);
-
-        /**
-         * Gets the item at the specific coordinates.
-         * @param coords The coordinates in the chunk.
-         * @param chunk The chunk of the item.
-         * @return The item at the coordinates. NULL if none is found.
-         */
-        Item* item_at_coords(IntPoint, IntPoint, int);
-
-        /**
-         * Public accessor for the tile at canvas[row][col].
-         */
-        Tile* get_tile(int row, int col);
-
-        /**
-         * Public accessor for the tile at canvas[point.row][point.col].
-         */
-        Tile* get_tile(IntPoint point);
-
-        /**
-         * Checks if the point at (point.row, point.col) is out of the screen.
-         */
-        bool out_of_bounds(IntPoint point);
-
-        /**
-         * Checks if the point at (row, col) is out of the screen.
-         */
-        bool out_of_bounds(int row, int col);
-
         /**
          * Returns whether or not the chunk is currently in the buffer.
          */
@@ -165,78 +120,204 @@ class Game
          */
         bool coords_in_buffer(int row, int col);
 
-    
-        /**
-         * Checks if one point is within a certain radius of another.
-         * @param chunk The chunk of the point to check.
-         * @param coords The coords of the point to check.
-         * @param range_chunk The chunk of the second point to check.
-         * @param center The coords of the second chunk to check.
-         * @param radius The radius around the first check.
-         * @return Whether or not the point is in range.
-         */
-        bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius);
 
-        /**
-         * What does this do? I have no idea.
-         */
-        void update_main_char_chunk();
-        IntPoint get_canvas_coords(IntPoint, IntPoint);
-        IntPoint get_buffer_coords(IntPoint, IntPoint);
-        Character* enemy_at_loc(IntPoint, IntPoint);
-
-        //RENDERING Data/Models
-        TilePointerMatrix canvas;
-        TilePointerMatrix buffer;
-        std::vector<std::vector<IntPoint> > bresenham_lines;
-
-
-        //ENEMY Data/Models
+//------------------------------CHARACTER DATA/PRIVATE METHODS------------------//
+//src/controller/character_controller.cpp
         /**
          * The list of characters in the game.
          */
         std::vector<Character*> character_list;
         
         /**
-         * Any character in this list will be added to the appropriate
-         * behavior tree on the next pass of the gui.
-         */
-        std::vector<Character*> character_queue;
-        
-        /**
          * A two dimensional matrix to hold characters.
          */
         std::vector<std::vector<Character*> > character_index;
 
-        //ENEMY Functionality
+
+//-------------------------------CANVAS DATA/Private Methods--------------//
+//src/controller/canvas_controller.cpp
+        
+        /**
+         * A 2D vector of pointers of tiles that will get written to the
+         * screen on the next pass.  Point to tiles in chunks.
+         */
+        TilePointerMatrix canvas;
+        
+        
+        /**
+         * Assertions to ensure that the current point is in the screen.
+         * @param row The row of the point.
+         * @param col The column of the point.
+         */
+        void point_assertions(int row, int col);
+
+        
+        
+        /**
+         * Checks if the point at (point.row, point.col) is out of the screen.
+         */
+        bool out_of_bounds(IntPoint point);
+
+        /**
+         * Checks if the point at (row, col) is out of the screen.
+         */
+        bool out_of_bounds(int row, int col);
+        
+
+
+//-----------------------CHUNK MAP DATA/PRIVATE METHODS-------------------//
+//src/controller/chunkmap_controller.cpp
+
+        /**
+         * A two dimensional vector containing the chunks.
+         * This is the core of how the game doesn't run out of
+         * memory.  It's broken up into chunks, which are then
+         * serialized/deserialized as the player moves about.
+         * @see Chunk
+         */
+        ChunkMatrix chunk_map;
+        
+        /**
+         * Gets the item at the specific coordinates.
+         * @param coords The coordinates in the chunk.
+         * @param chunk The chunk of the item.
+         * @return The item at the coordinates. NULL if none is found.
+         */
+        Item* item_at_coords(IntPoint, IntPoint, int);
+
+//-------------------------------SPAWNER DATA----------------------------//
+//src/controller/spawn_controller.cpp
+
+        /**
+         * Any character in this list will be added to the appropriate
+         * behavior tree on the next pass of the gui.
+         */
+        std::vector<Character*> character_queue;
+       
+
+//------------------------------ANIMATION DATA---------------------------//
+//src/controller/animation_controller.cpp
+        /**
+         * Whenever a new animation needs to be performed, it
+         * should be added to this queue.
+         */
+        std::vector<Animation> anim_queue;
+        
 
     public:
+        
+//------------------------------GAME DATA/FUNCTIONS--------------------------//
+//src/controller/game.cpp
+        
+        /**
+         * The default constructor.
+         */
         Game();
-
+        
         /**
          * The destructor, removing all of the enemies in the game.
          */
         ~Game();
+        
+        /**
+         * Creates an initialized game from a set of maptiles and the chunk
+         * that was selected by the user.
+         */
         void init(const MapTileMatrix&, IntPoint);
-
-        //BASE Data/Models
-        Character main_char;
-
-        //BASE Model access
-        Chunk* get_current_chunk();
+        
+        /**
+         * Gets the name of the current world (for saving, eventually).
+         */
         string get_name();
+        
+        /**
+         * Sets the name of the current world.
+         */
         void set_name(string n);
+        
+        /**
+         * Checks to see if the world has been initialized (the init method
+         * has been called.
+         */
         bool is_initialized();
-        void act(long);
+        
+        /**
+         * Steps the world forward by one tick, with the number of milliseconds
+         * which have elapsed since the previous frame.  Performs any
+         * passive actions which need to happen.
+         */
+        void act(long delta_ms);
+        
+        /**
+         * Returns true if the game is paused.
+         */
         bool is_paused();
+        
+        /**
+         * Sets "paused" to true.
+         */
         void pause();
+        
+        /**
+         * Sets "paused" to false.
+         */
         void unpause();
+        
+        /**
+         * Flips the boolean value of puased.
+         */
         void toggle_pause();
+        
+        /**
+         * Determines whether the visibility should be on or off.
+         * For debuggin purposes.
+         */
         bool visibility_on;
-        //RENDERING Functionality
-        const std::vector<std::vector<Tile*> >& get_canvas();
-        IntPoint get_vis_coords(IntPoint, IntPoint);
-        std::vector<Character*> get_vis_characters();
+        
+        /**
+         * Updates the visible portions of the game (dumps parts of the
+         * buffer into the canvas), and redraws visibility lines.
+         * Gets called when the main character moves.
+         */
+        void refresh();
+        
+        /**
+         * Sets tiles that are a part of the "bresenham_lines" to visible.
+         */
+        void draw_visibility_lines();
+        
+        /**
+         * Sets the tiles that are in the bresenham_lines to non-visible
+         * (visible = false).
+         */
+        void undo_visibility();
+        
+        /**
+         * Rewrites the points that should be made visible, based on
+         * the location of the character.
+         */
+        void recalculate_visibility_lines(int radius);
+
+//-----------------------------------BUFFER PUBLIC METHODS----------------//
+//src/controller/buffer_controller.cpp
+        
+        /**
+         * Writes the tiles from the chunks surrounding the passed in
+         * chunk to the buffer.  Also rewrites the enemies positions
+         * in the character_index.
+         */
+        void update_buffer(IntPoint chunk);
+        
+        /**
+         * Adds a tile to the buffer at the given coordinates, after
+         * checking if the tile is in the buffer.
+         */
+        void add_tile_to_buffer(IntPoint chunk, IntPoint coords, Tile* tile);
+        
+        /**
+         * Checks if a point in the form of (chunk, coords) is in the buffer.
+         */
+        bool point_in_buffer(IntPoint chunk, IntPoint coords);
         
         
         /**
@@ -245,16 +326,6 @@ class Game
          */
         void show_chunk_objects(); 
        
-        /**
-         * Adds a tile to the buffer at the given coordinates, after
-         * checking if the tile is in the buffer.
-         */
-        void add_tile_to_buffer(IntPoint chunk, IntPoint coords, Tile* tile);
-        
-        /**
-         * Checks if a point in the form of chunk, coords is in the buffer.
-         */
-        bool point_in_buffer(IntPoint chunk, IntPoint coords);
 
         /**
          * Writes a list of items into the buffer at a given chunk 
@@ -277,16 +348,10 @@ class Game
          * Writes plants to the buffer.
          */
         void plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk);
+
         
-        std::vector<Animation>& get_animations();
-        void tick_animations(long delta_ms); 
-        bool is_vis(IntPoint coords);
-        void refresh();
-        void recalculate_visibility_lines(int radius);
-        void update_buffer(IntPoint);
-        void update_chunk_map(IntPoint);
-        void draw_visibility_lines();
-        void undo_visibility();
+//-------------------------------CHARACTER PUBLIC METHODS----------------//
+        Character main_char;
 
         /**
          * Updates the character index with the current chunk.
@@ -307,20 +372,24 @@ class Game
          * Sets the characters location in the character_index to NULL.
          */
         void remove_index_char(Character* chara);
-
-        //ENEMY Functionality
-        void run_spawners();
-        void clear_character_queue();
-        std::vector<Character*> flush_characters(); 
         
+        /**
+         * Iterates through every character in the game.  If the character
+         * is targetting enem, then the target becomes NULL.
+         */
         void remove_targets(Character* enem);
+        
+        /**
+         * Returns a reference to the 1D vector containing all characters.
+         */
         std::vector<Character*>& get_characters();
+        
         
         /**
          * Returns true if there is an enemy in range of the character.
          * If so, sets the character's target to the enemy found.
          */
-        bool enemy_in_range(Character* chara);
+        bool find_target(Character* chara);
        
         /**
          * Gets the best target for a normal character.  Takes in the
@@ -352,7 +421,7 @@ class Game
         int move_to_point(Character* chara, IntPoint coords, IntPoint chunk);
     
         /**
-         * Causes the enemy to try to run away.
+         * Causes the enemy to try to run away from its current target.
          */
         int run_away(Character* chara, IntPoint coords, IntPoint chunk);
 
@@ -381,9 +450,17 @@ class Game
          */
         bool character_in_range(Character* chara);
         
-        //MAIN CHAR Functionality
-        void change_depth(int, Character*);
-        bool move_char(int, int, Character*);
+        /**
+         * Changes the depth of the character, if it is standing on the
+         * appropriate stair tile.
+         */
+        void change_depth(int direction, Character* chara);
+
+        /**
+         * Causes the character to attempt to move.  If the main character
+         * is adjacent to another character, it will attack it.
+         */
+        bool move_char(int col_change, int row_change, Character* chara);
         
         /**
          * Causes one character to attack another.
@@ -401,23 +478,145 @@ class Game
         void turn_away(Character* chara, Character* target);
        
         /**
-         * Checks to see if a target is valid for a given character.
+         * Checks to see if a target is still within the character's line
+         * of sight.
          */
         bool valid_target(Character* chara, Character* target); 
 
+        /**
+         * If the character is standing above an item, it will pick it up.
+         */
         void get_item(Character*);
+        
+        /**
+         * Removes an item from the characters inventory and places it
+         * in the chunk the character is standing in.
+         */
         void drop_item(Item*, Character*);
+        
+        /**
+         * Checks if there is a character at a given location.  Returns
+         * NULL if there is not.
+         */
+        Character* character_at_loc(IntPoint, IntPoint);
 
-        //DEBUG FUNCTIONS
-        void spawn_enemy(int, int, int, int, int, int);
+//-----------------------------CANVAS PUBLIC METHODS--------------------------//
+//src/controller/canvas_controller.cpp
+        /**
+         * Checks to see if a set of coordinates (starting from the top
+         * left of the canvas) are within the canvas.
+         */
+        bool is_vis(IntPoint coords);
+        
+        /**
+         * Public accessor for the tile at canvas[row][col].
+         */
+        Tile* get_tile(int row, int col);
+
+        /**
+         * Public accessor for the tile at canvas[point.row][point.col].
+         */
+        Tile* get_tile(IntPoint point);
+        
+        /**
+         * Sets the point in the canvas at row, col to Tile
+         * @param row The row of the canvas to set the tile.
+         * @param col The column of the canvas to set the tile.
+         * @param tile The tile to set row, col to.
+         */
+        void set_tile(int row, int col, Tile* tile);
+
+        /**
+         * Sets the point in the canvas at IntPoint to tile.
+         * @param point The point of the canvas to set the tile.
+         * @param tile The tile to set the IntPoint of the canvas to.
+         */
+        void set_tile(IntPoint point, Tile* tile);
+        
+        /**
+         * Converts coords in the form of (chunk, coords) to coords starting
+         * with the top left of the canvas.
+         */
+        IntPoint get_canvas_coords(IntPoint chunk, IntPoint coords);
+       
+        /**
+         * Gets a list of the characters that are currently visible.
+         */
+        std::vector<Character*> get_vis_characters();
+        
+        /**
+         * Returns a const reference to the canvas (read-only).
+         */
+        const std::vector<std::vector<Tile*> >& get_canvas();
+
+//-----------------------------CHUNK_MAP PUBLIC METHODS------------------//
+//src/controller/chunkmap_controller.cpp
+
+        /**
+         * Updates the chunk map given a new chunk coordinates.
+         */
+        void update_chunk_map(IntPoint shift_dir);
+        
+        /**
+         * Returns the chunk that the main character is currently in.
+         */
+        Chunk* get_current_chunk();
+
+//-------------------------------ANIMATION PUBLIC METHODS----------------//
+//src/controller/animation_controller.cpp
+        
+        /**
+         * Returns a reference to the vector of animation list.
+         */
+        std::vector<Animation>& get_animations();
+        
+        /**
+         * Passes each animation the number of milliseconds which have
+         * passed since the last time it ran, which then determines if
+         * it should move to the next frame or not.
+         */
+        void tick_animations(long delta_ms); 
+        
+        /**
+         * Creates an explosion at the given location.
+         */
+        void create_explosion(int x, int y, int chunk_x, int chunk_y);
+
+        
+//-----------------------------SPAWNER PUBLIC METHODS--------------------//
+//src/controller/spawn_controller.cpp
+        
+        /**
+         * Ticks each spawner forward, flushing the queue of enemies it
+         * may have accumulated.
+         */
+        void run_spawners();
+        
+        /**
+         * Clears the queue of characters.
+         */
+        void clear_character_queue();
+        
+        /**
+         * Returns the list of character points in the character_queue.
+         */
+        std::vector<Character*> flush_characters(); 
+ 
+//-------------------------------DEBUG PUBLIC METHODS--------------------//
+//src/controller/debug_controller.cpp
+        /**
+         * Spawns a new enemy.
+         */
+        void spawn_enemy(int x, int y, int chunk_x, int chunk_y, int number, int);
 
         /**
          * Debug function to teleport the character to a new place.
          */
         void teleport(int chunk_x, int chunk_y, int x, int y);
 
-        //ANIMATION FUNCTIONS
-        void create_explosion(int x, int y, int chunk_x, int chunk_y);
+        
+        
+        
 };
 
 #endif

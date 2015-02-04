@@ -49,6 +49,12 @@ roguelike_SOURCES = \
     src/character_classes/den.cpp\
 	src/controller/game.cpp\
     src/controller/character_controller.cpp\
+    src/controller/buffer_controller.cpp\
+    src/controller/canvas_controller.cpp\
+    src/controller/spawn_controller.cpp\
+    src/controller/chunkmap_controller.cpp\
+    src/controller/animation_controller.cpp\
+    src/controller/debug_controller.cpp\
     src/menu/menu.cpp\
 	src/menu/start_menu.cpp\
     src/menu/main_menu.cpp\

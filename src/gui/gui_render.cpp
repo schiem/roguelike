@@ -111,7 +111,7 @@ void GUI::render_characters() {
         IntPoint temp_chunk = IntPoint(tl[i]->get_chunk_y(),tl[i]->get_chunk_x());
         IntPoint temp_coords = IntPoint(tl[i]->get_y(), tl[i]->get_x());
         current_tile = tl[i]->get_char();
-        current_point = game.get_vis_coords(temp_chunk, temp_coords);
+        current_point = game.get_canvas_coords(temp_chunk, temp_coords);
         if(tm[current_point.row][current_point.col]->visible) {
             drawChr(current_point.col, current_point.row,
                     current_tile.char_count, ascii, screen, current_tile.color);
@@ -259,7 +259,7 @@ void GUI::render_target()
         std::vector<IntPoint> sight = chara->sight_tiles();
         for(int i=0;i<sight.size();i++)
         {
-            IntPoint point = game.get_vis_coords(temp_chunk, sight[i]);
+            IntPoint point = game.get_canvas_coords(temp_chunk, sight[i]);
             if(game.is_vis(point) && tm[point.row][point.col]->visible)
             {
                 drawChr(point.col, point.row, tm[point.row][point.col]->char_count, ascii, screen, YELLOW);
@@ -289,7 +289,7 @@ void GUI::render_animations()
         Frame f = anims[i].get_frame();
         IntPoint coords = IntPoint(anims[i].get_y(), anims[i].get_x());
         IntPoint chunk = IntPoint(anims[i].get_chunk_y(), anims[i].get_chunk_x());
-        IntPoint vis = game.get_vis_coords(chunk, coords);
+        IntPoint vis = game.get_canvas_coords(chunk, coords);
         for(int j=0;j<f.get_actors().size();j++)
         {
             Actor a = f.actor(j);

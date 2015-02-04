@@ -89,7 +89,7 @@ void Game::remove_targets(Character* enem)
 }
 
 
-bool Game::enemy_in_range(Character* chara){ 
+bool Game::find_target(Character* chara){ 
     //establish the necessary variables
     //the character is 'passive'
     Character* best = NULL;
@@ -309,9 +309,14 @@ void Game::change_depth(int direction, Character* chara) {
     } else {
         if (chara->get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == td::DOWN_STAIR) {
+                std::cout<<"There's a down stair here!"<<std::endl;
                 chara->set_depth(chara->get_depth() + 1);
                 chara->set_x(current_chunk->get_up_stairs(chara->get_depth())[0].col);
                 chara->set_y(current_chunk->get_up_stairs(chara->get_depth())[0].row);
+            }
+            else
+            {
+                std::cout<<"There's not stair here..."<<std::endl;
             }
         } else {
             //cout<<"DEPTH OF THIS CHUNK: "<<current_chunk->get_depth()<<endl;
@@ -336,7 +341,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     next_row = next_row +  (CHUNK_HEIGHT * (next_row<0)) - (CHUNK_HEIGHT * (next_row>=CHUNK_HEIGHT));
     IntPoint next_coords = IntPoint(next_row, next_col);
     
-    Character* enem = enemy_at_loc(new_chunk, next_coords);
+    Character* enem = character_at_loc(new_chunk, next_coords);
 
     IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));
     bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
@@ -435,4 +440,9 @@ void Game::drop_item(Item* item, Character* chara)
     current_chunk->add_item(item, chara->get_depth());
 
     add_tile_to_buffer(chunk, coords, item->get_sprite());
+}
+
+Character* Game::character_at_loc(IntPoint _chunk, IntPoint _coords) {
+    IntPoint coords = get_buffer_coords(_chunk, _coords);
+    return character_index[coords.row][coords.col];
 }

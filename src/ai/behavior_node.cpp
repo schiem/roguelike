@@ -140,7 +140,7 @@ InverterNode* InverterNode::clone()
 
 int EnemyInRange::tick(BActor actor, Game* game)
 {
-    return game->enemy_in_range(actor.get_character());
+    return game->find_target(actor.get_character());
 }
 
 EnemyInRange* EnemyInRange::clone()

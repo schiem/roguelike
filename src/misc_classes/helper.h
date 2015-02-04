@@ -94,4 +94,10 @@ std::vector<std::string> split_string(std::string input, char character);
  */
 std::vector<int> strings_to_ints(std::vector<std::string> strings);
 
+/**
+ * Checks to see if one point (using the chunk, coords convention) is
+ * within range of another point, given a certain radius.
+ */
+bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius);
+
 #endif
