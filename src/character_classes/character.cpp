@@ -47,6 +47,7 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     timer = 0;
     stats = _stats;
     current_stats = stats;
+    stats[EXPERIENCE] = exp_to_level();
     x = _x;
     y = _y;
     moral = _morality;
@@ -648,4 +649,31 @@ IntPoint Character::get_fov()
 int Character::get_ai_id()
 {
     return ai_id;
+}
+
+int Character::exp_to_level()
+{
+    return (stats[LEVEL] * stats[LEVEL]) * 10;
+}
+
+void Character::gain_experience(int level)
+{
+    int increase = level * 5;
+    int cur_xp = get_current_stat(EXPERIENCE);
+    int new_xp = cur_xp + increase;
+    set_current_stat(EXPERIENCE,  new_xp);
+    while(new_xp >= exp_to_level())
+    {
+        new_xp -= exp_to_level();
+        set_current_stat(EXPERIENCE, new_xp);
+        gain_level();
+        set_stat(EXPERIENCE, exp_to_level());
+    }
+}
+
+void Character::gain_level()
+{
+    int current_level = get_stat(LEVEL);
+    set_stat(LEVEL, current_level + 1);
+    set_current_stat(LEVEL, current_level + 1);
 }

@@ -192,6 +192,18 @@ class Character
          */
         int ai_id;
 
+        /**
+         * Gets the experience required to get to the next level.
+         * Goes up by the square of the level.
+         */
+        int exp_to_level();
+
+
+        /**
+         * The character increases by one level.
+         */
+        void gain_level();
+
     public:
         /**
          * The default constructor.
@@ -646,6 +658,12 @@ class Character
          * Public accessor for the ai id.
          */
         int get_ai_id();
+        
+        /**
+         * Causes experience to increase as a proportion of the level
+         * passed into the function.
+         */
+        void gain_experience(int level);
 };
 
 struct character_info {

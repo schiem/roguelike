@@ -614,9 +614,6 @@ class Game
          */
         void teleport(int chunk_x, int chunk_y, int x, int y);
 
-        
-        
-        
 };
 
 #endif

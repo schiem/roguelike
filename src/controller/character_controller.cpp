@@ -297,7 +297,6 @@ void Game::change_depth(int direction, Character* chara) {
     current_chunk = get_current_chunk();
     Tile* current_tile = current_chunk->get_tile(chara->get_depth(),
             chara->get_y(), chara->get_x());
-
     if(direction == -1) {
         if (chara->get_depth() >= 1) {
             if(*current_tile == td::UP_STAIR) {
@@ -309,17 +308,12 @@ void Game::change_depth(int direction, Character* chara) {
     } else {
         if (chara->get_depth()+1 < current_chunk->get_depth()) {
             if(*current_tile == td::DOWN_STAIR) {
-                std::cout<<"There's a down stair here!"<<std::endl;
                 chara->set_depth(chara->get_depth() + 1);
                 chara->set_x(current_chunk->get_up_stairs(chara->get_depth())[0].col);
                 chara->set_y(current_chunk->get_up_stairs(chara->get_depth())[0].row);
             }
-            else
-            {
-                std::cout<<"There's not stair here..."<<std::endl;
-            }
         } else {
-            //cout<<"DEPTH OF THIS CHUNK: "<<current_chunk->get_depth()<<endl;
+            cout<<"DEPTH OF THIS CHUNK: "<<current_chunk->get_depth()<<endl;
         }
     }
 }
@@ -373,6 +367,10 @@ bool Game::attack_char(Character* chara, Character* target)
     chara->attack(target);
     chara->set_target(target);
     chara->reduce_endurance(2);
+    if(!target->is_alive())
+    {
+        chara->gain_experience(target->get_stat(LEVEL));
+    }
     return true;
 }
 

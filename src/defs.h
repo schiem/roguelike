@@ -46,12 +46,14 @@ enum STATS
     HEALTH,
     ATTACK,
     ENDURANCE,
+    EXPERIENCE,
+    LEVEL,
     STRENGTH,
     DEXTERITY,
     INTELLIGENCE
 };
 
-const int NUM_STATS = 6;
+const int NUM_STATS = 8;
 
 extern std::string STAT_NAMES[NUM_STATS]; 
 
