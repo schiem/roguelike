@@ -28,8 +28,8 @@
 bool Game::chunk_in_buffer(int row, int col) {
     IntPoint center = chunk_map.get_center();
     int offset = (chunk_map.get_diameter() - 1)/2;
-    IntPoint buffer_chunk = IntPoint(center.row - offset - row, center.col - offset - col); 
-    return chunk_map.out_of_bounds(buffer_chunk);
+    IntPoint buffer_chunk = IntPoint(center.row - row + offset, center.col - col + offset); 
+    return !chunk_map.out_of_bounds(buffer_chunk);
 }
 
 

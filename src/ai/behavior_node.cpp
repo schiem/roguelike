@@ -203,13 +203,13 @@ ValidTarget* ValidTarget::clone()
 int InWorld::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
-    if(!game->character_in_range(chara))
+    if(game->character_in_range(chara))
     {
-        return FAILURE;
+        return SUCCESS;
     }
     else
     {
-        return SUCCESS;
+        return FAILURE;
     }
 }
 

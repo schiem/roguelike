@@ -35,11 +35,7 @@ Character::Character(int _x, int _y, int _depth)
     target = NULL;
     equipment = vector<Item*>(7);
     conscious = true;
-    
-    //is the enemy scared? if so, what direction and for how long
-    spooked = false;
-    direction_spooked = IntPoint(0, 0);
-    time_spooked = 0;
+    level_up = 0;
 }
 
 Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id) {
@@ -62,11 +58,6 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     equipment = vector<Item*>(7);
     conscious = true;
     
-    //is the enemy scared? if so, what direction and for how long
-    spooked = false;
-    direction_spooked = IntPoint(0, 0);
-    time_spooked = 0;
-
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
     level_up = 0;
@@ -128,10 +119,6 @@ Character::Character(const Character& chara)
     target = chara.target;
     conscious = chara.conscious;
     
-    //is the enemy scared? if so, what direction and for how long
-    spooked = chara.spooked;
-    direction_spooked = chara.direction_spooked;
-    time_spooked = chara.time_spooked;
 
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
@@ -199,11 +186,6 @@ Character& Character::operator=(const Character& chara)
     target = chara.target;
     conscious = chara.conscious;
     
-    //is the enemy scared? if so, what direction and for how long
-    spooked = chara.spooked;
-    direction_spooked = chara.direction_spooked;
-    time_spooked = chara.time_spooked;
-
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
     direction = chara.direction;

@@ -164,28 +164,6 @@ class Character
          */
         int view;
         
-
-        /**
-         * Determines whether or not the enemy will flee.
-         * If spooked is true, enemies will begin to flee from anything with a
-         * morality that is different from its own.
-         */
-        bool spooked;
-
-        /**
-         * The number of this enemy's actions which have passed since it was spooked.
-         */
-       int time_spooked;
-        
-        /**
-         * The direction that the spooked enemy will run in.
-         * Once the enemy has been spooked, the direction for it to go will be
-         * determined based on what spooked it.  direction_spooked will be an IntPoint
-         * with the possible values of +/- 1 or 0.
-         * @see get_spooked(IntPoint abs_coords, IntPoint target_abs)
-         */
-        IntPoint direction_spooked;
-        
         /**
          * The id of the behavior tree that is responsible for controlling this
          * enemy.

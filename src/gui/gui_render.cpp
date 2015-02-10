@@ -147,7 +147,7 @@ void GUI::render_interface() {
     //Render that you have a level!
     if(game.main_char.get_new_levels() > 0)
     { 
-        drawStr(UI_START, SCREEN_HEIGHT - 1, std::string("Level up!").c_str(), ascii, screen, WHITE);
+        drawStr(UI_START, SCREEN_HEIGHT - 1, std::string("Level up!").c_str(), ascii, screen, RED);
     }
 }
 

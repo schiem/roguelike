@@ -269,6 +269,7 @@ void Game::kill(Character* chara)
 
 void Game::remove_enemy(Character* chara)
 {
+    std::cout<<"Removing character at: "<<chara->get_chunk()<<", "<<chara->get_coords()<<std::endl;
     remove_targets(chara);
     for(int i=0;i<character_list.size();i++)
     {
@@ -442,5 +443,6 @@ void Game::drop_item(Item* item, Character* chara)
 
 Character* Game::character_at_loc(IntPoint _chunk, IntPoint _coords) {
     IntPoint coords = get_buffer_coords(_chunk, _coords);
+    assert(coords_in_buffer(coords.row, coords.col));
     return character_index[coords.row][coords.col];
 }
