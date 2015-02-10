@@ -93,12 +93,10 @@ void BehaviorTree::run_actors(long delta_ms)
             {
                 if(!game->character_in_range(actor.get_character()))
                 {
-                    std::cout<<"I'm removing an enemy for being out of range."<<std::endl;
                     game->remove_enemy(actor.get_character());
                 }
                 else
                 {
-                    std::cout<<"I'm removing an enemy for being dead."<<std::endl;
                     game->kill(actor.get_character());
                 }
                 actors.erase(actors.begin() + i);

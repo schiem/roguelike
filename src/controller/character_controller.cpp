@@ -269,7 +269,6 @@ void Game::kill(Character* chara)
 
 void Game::remove_enemy(Character* chara)
 {
-    std::cout<<"Removing character at: "<<chara->get_chunk()<<", "<<chara->get_coords()<<std::endl;
     remove_targets(chara);
     for(int i=0;i<character_list.size();i++)
     {
