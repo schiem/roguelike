@@ -55,7 +55,8 @@ namespace menu_id {
         MAIN_MENU,
         START_MENU,
         INFO_MENU,
-        LOAD_MENU
+        LOAD_MENU,
+        LEVEL_MENU
     };
 }
 
@@ -445,6 +446,23 @@ class InfoMenu: public Menu
          * @param _item Sets the item for the menu.
          */
         InfoMenu(int _padding, Tile _border, Game* _game, Item* _item);
+        Menu* make_selection();
+};
+
+/**
+ * The menu which becomes accessible when a character levels up.
+ */
+class LevelMenu: public Menu
+{
+    protected:
+    public:
+        /* 
+         * Constructor for the Level Menu.
+         * @param _padding Sets the padding for the menu.
+         * @param _border Sets the border for the menu.
+         * @param _game Sets the game for the menu.
+         */
+        LevelMenu(int _padding, Tile _border, Game* _game);
         Menu* make_selection();
 };
 

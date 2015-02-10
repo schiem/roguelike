@@ -175,7 +175,7 @@ class Character
         /**
          * The number of this enemy's actions which have passed since it was spooked.
          */
-        int time_spooked;
+       int time_spooked;
         
         /**
          * The direction that the spooked enemy will run in.
@@ -192,6 +192,12 @@ class Character
          */
         int ai_id;
 
+        /**
+         * The number of levels that the character has which have points left to
+         * be distributed.
+         */
+        int level_up;
+        
         /**
          * Gets the experience required to get to the next level.
          * Goes up by the square of the level.
@@ -664,6 +670,18 @@ class Character
          * passed into the function.
          */
         void gain_experience(int level);
+
+        /**
+         * Accessor for the number of levels a character has gained
+         * but not distributed points to.
+         */
+        int get_new_levels();
+
+        /**
+         * Levels a stat up, and decreases the number of new levels a
+         * character has.
+         */
+        void level_stat(int stat);
 };
 
 struct character_info {

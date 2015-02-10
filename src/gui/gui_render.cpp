@@ -134,14 +134,20 @@ void GUI::render_interface() {
     
     drawStr(UI_START, height, std::string("Target").c_str(), ascii, screen, WHITE);
      
+    //Render the current target
     if(target != NULL)
-    {   
-        
+    {       
         height = render_stats(target, height + 1);
     }
     else
     {
         drawStr(UI_START, height + 1, std::string("None").c_str(), ascii, screen, WHITE);
+    }
+
+    //Render that you have a level!
+    if(game.main_char.get_new_levels() > 0)
+    { 
+        drawStr(UI_START, SCREEN_HEIGHT - 1, std::string("Level up!").c_str(), ascii, screen, WHITE);
     }
 }
 

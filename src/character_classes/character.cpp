@@ -69,6 +69,7 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
 
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
+    level_up = 0;
     direction = 0;
     sight = 20;
     view = 20;
@@ -137,6 +138,7 @@ Character::Character(const Character& chara)
     direction = chara.direction;
     sight = chara.sight;
     view = chara.view;
+    level_up = chara.level_up;
 }
 
 Character& Character::operator=(const Character& chara)
@@ -207,6 +209,7 @@ Character& Character::operator=(const Character& chara)
     direction = chara.direction;
     sight = chara.sight;
     view = chara.view;
+    level_up = chara.level_up;
 }
 
 bool Character::act(long ms)
@@ -676,4 +679,17 @@ void Character::gain_level()
     int current_level = get_stat(LEVEL);
     set_stat(LEVEL, current_level + 1);
     set_current_stat(LEVEL, current_level + 1);
+    level_up += 1;
+}
+
+int Character::get_new_levels()
+{
+    return level_up;
+}
+
+void Character::level_stat(int stat)
+{
+    stats[stat] += 1;
+    current_stats[stat] += 1;
+    level_up -= 1;
 }

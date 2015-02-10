@@ -34,30 +34,40 @@ MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
     options.push_back("Equipment");
     options.push_back("Inventory");
     options.push_back("Stats");
+    if(game->main_char.get_new_levels() > 0)
+    {
+        options.push_back("Level");
+    }
     options.push_back("Return");
     title = "Main Menu";
 }
 
 Menu* MainMenu::make_selection()
 {
-    switch (selection)
+    if(options[selection] == "Equipment")
     {
-        case 0:
-            return new EquipmentMenu(1, td::BLOCK_WALL, game);
-            break;
-        case 1:
-            return new InventoryMenu(1, td::BLOCK_WALL, game);
-            break;
-        case 2:
-            return this;
-            break;
-        case 3:
-            toggle_exit();
-            return this;
-            break;
-        default:
-            toggle_exit();
-            return this;
-            break;
+        return new EquipmentMenu(1, td::BLOCK_WALL, game);
+    }
+    else if(options[selection] == "Inventory")
+    {
+        return new InventoryMenu(1, td::BLOCK_WALL, game);
+    }
+    else if(options[selection] == "Stats")
+    {
+       return this;
+    }
+    else if(options[selection] == "Level")
+    {
+        return new LevelMenu(1, td::BLOCK_WALL, game);
+    }
+    else if(options[selection] == "Return")
+    {
+        toggle_exit();
+        return this;
+    }
+    else
+    {
+        toggle_exit();
+        return this;
     }
 }

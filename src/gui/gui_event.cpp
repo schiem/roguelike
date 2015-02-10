@@ -192,7 +192,7 @@ void GUI::perform_action_press(SDLKey key) {
                 current_screen = MENU_SCREEN;
                 delete menu;
                 menu = new MainMenu(1, td::BLOCK_WALL, &game);
-                //game.pause();
+                game.pause();
             }
             break;
         case SDLK_g:
