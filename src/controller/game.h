@@ -493,7 +493,9 @@ class Game
          * in the chunk the character is standing in.
          */
         void drop_item(Item*, Character*);
-        
+       
+        void harvest_plant(Plant* plant, Character* chara);
+
         /**
          * Checks if there is a character at a given location.  Returns
          * NULL if there is not.

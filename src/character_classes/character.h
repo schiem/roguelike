@@ -660,6 +660,25 @@ class Character
          * character has.
          */
         void level_stat(int stat);
+       
+        /**
+         * Checks to see if the character has an item in its inventory
+         * or equipment which belongs to the passed in category.
+         */
+        bool has_item_category(int category);
+
+        //------------------DERIVED STATS-------------------//
+        /**
+         * The characters ability to dodge.  This is derived from
+         * the stat "Dexterity."
+         */
+        int dodge_stat();
+       
+        /**
+         * The character's accuracy, representing the percentage
+         * of how often a character hits something.
+         */
+        int accuracy_stat();
 };
 
 struct character_info {

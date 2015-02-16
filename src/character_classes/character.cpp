@@ -675,3 +675,39 @@ void Character::level_stat(int stat)
     current_stats[stat] += 1;
     level_up -= 1;
 }
+
+bool Character::has_item_category(int category)
+{
+    for(int i=0;i<equipment.size();i++)
+    {
+        if(equipment[i]->has_category(category))
+        {
+            return true;
+        }
+    }
+    for(int i=0;i<inventory.size();i++)
+    {
+        if(inventory[i]->has_category(category))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+//------------------Character Stats---------------------//
+
+int Character::dodge_stat()
+{
+    int dex = get_current_stat(DEXTERITY);
+    //yay magic numbers!
+    return ((dex - 0.5)/(dex + 50)) * 100;
+}
+
+int Character::accuracy_stat()
+{
+    int dex = get_current_stat(DEXTERITY);
+    return ((dex - 1)/(dex + 10)) * 100;
+}
+
+

@@ -84,6 +84,13 @@ class Item
          */
         int size;
 
+        /**
+         * The category that the item belongs to.  Eventually,
+         * perhaps, this will be multiple categories.  For now,
+         * it will just be the one.
+         */
+        int category;
+
     public:
         /**
          * Whether or not the item can be equipped by any character.
@@ -126,7 +133,7 @@ class Item
          * @param _name Sets the name of the item.
          * @param _coords Set the coordinates of the item.
          */
-        Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords);
+        Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, std::string _description, int _category, bool _use);
         
         /**
          * Public accessor for the member variable weight.
@@ -168,6 +175,18 @@ class Item
          * Public accessor for the size.
          */
         int get_size();
+
+        /**
+         * Public accessor for the category.
+         */
+        int get_category();
+
+        /**
+         * Returns whether or not the item belongs
+         * to a certain category.
+         */
+        bool has_category(int cat);
+
 };
 
 /**
@@ -208,18 +227,6 @@ class Equipment : public Item
          */
         Equipment();
         
-        /**
-         * The constructor for the equipment.
-         * @param _rarity Sets the rarity of the equipment.
-         * @param _weight Sets the weight of the equipment.
-         * @param _sprite Sets the sprite for the equipment.
-         * @param _name Sets the name of the equipment.
-         * @param _coords Sets the coordinates of the equipments.
-         * @param bp Sets the body_part for the equipment.
-         * @param t Sets the type of the equipment.
-         * @param ac Sets the armor_class of the equipment.
-         */
-        Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t);
         
         /**
          * Constructor for the equipment.
@@ -290,18 +297,6 @@ class Weapon : public Item
         Weapon();
         
         /**
-         * The constructor for the weapon.
-         * @param _rarity Sets the rarity of the weapon.
-         * @param _weight Sets the weight of the weapon.
-         * @param _sprite Sets the sprite for the weapon.
-         * @param _name Sets the name of the weapon.
-         * @param _coords Sets the coordinates of the weapon.
-         * @param t Sets the type of the weapon.
-         * @param _dam Sets the damage of the weapon.
-         */
-        Weapon(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int t, int _dam);
-        
-        /**
          * Constructor for the weapon.
          * This is the normally used constructor, relying on the defined WeaponTypes and 
          * taking a set of coordinates.
@@ -362,19 +357,6 @@ class Consumable : public Item
         Consumable();
         
         /**
-         * The constructor for the consumable.
-         * @param _rarity Sets the rarity of the consumable.
-         * @param _weight Sets the weight of the consumable.
-         * @param _sprite Sets the sprite for the consumable.
-         * @param _name Sets the name of the consumable.
-         * @param _coords Sets the coordinates of the consumable.
-         * @param stat Sets the stat_modified variable of the consumable.
-         * @param val Sets the amount_modified variable of the consumable.
-         * @param _type Sets the type of the consumable.
-         */
-        Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val , int _type);
-        
-        /**
          * Constructor for the consumable.
          * This is the normally used constructor, relying on the defined ConsumableType and 
          * taking a set of coordinates.
@@ -418,16 +400,6 @@ class Misc : public Item
          * Blank constructor.
          */
         Misc();
-        
-        /**
-         * The constructor for misc items.
-         * @param _rarity Sets the rarity of the misc item.
-         * @param _weight Sets the weight of the misc item.
-         * @param _sprite Sets the sprite for the misc item.
-         * @param _name Sets the name of the misc item.
-         * @param _coords Sets the coordinates of the misc item.
-         */
-        Misc(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords);
          
         /**
          * Constructor for the misc item.

@@ -440,6 +440,24 @@ void Game::drop_item(Item* item, Character* chara)
     add_tile_to_buffer(chunk, coords, item->get_sprite());
 }
 
+void Game::harvest_plant(Plant* plant, Character* chara)
+{
+    if(plant != NULL && chara != NULL)
+    {
+        if(chara->has_item_category(plant->get_harvest_tool()))
+        {
+            std::vector<Misc*> drops = plant->pop_drops();
+            for(int i=0;i<drops.size();i++)
+            {
+                chara->add_item(drops[i]);
+            }
+
+            chunk_map.get_chunk_abs(plant->get_chunk_y(), plant->get_chunk_x())->kill_plant(plant, chara->get_depth());
+        }
+    }
+}
+
+
 Character* Game::character_at_loc(IntPoint _chunk, IntPoint _coords) {
     IntPoint coords = get_buffer_coords(_chunk, _coords);
     assert(coords_in_buffer(coords.row, coords.col));

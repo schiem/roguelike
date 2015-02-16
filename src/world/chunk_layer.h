@@ -172,7 +172,12 @@ class ChunkLayer {
          * on the tiles getting set properly.
          */
         std::vector<Plant>* get_plants();
-        
+       
+        /**
+         * Removes a plant from the layer.
+         */
+        void kill_plant(Plant* plant);
+
         /**
          * Adds an item to the item list for this chunk.
          * @param item - a pointer to the item to add.

@@ -53,6 +53,17 @@ enum STATS
     INTELLIGENCE
 };
 
+enum ITEM_CATEGORY
+{
+    AXE,
+    LONG_BLADE,
+    SHORT_BLADE,
+    BOW,
+    ARMOR,
+    INGREDIENT,
+    USELESS
+};
+
 const int NUM_STATS = 8;
 
 extern std::string STAT_NAMES[NUM_STATS]; 
@@ -133,7 +144,7 @@ struct Tile {
 };
 
 namespace tiledef {
-    static const int TILE_TYPE_COUNT = 34;
+    static const int TILE_TYPE_COUNT = 36;
     extern Tile TILE_INDEX[TILE_TYPE_COUNT]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
@@ -171,6 +182,8 @@ namespace tiledef {
     extern Tile DOOR;
     extern Tile BURROW;
     extern Tile HUT_WALL;
+    extern Tile AXE;
+    extern Tile LOG;
 }
 
 /**
@@ -334,6 +347,11 @@ struct EquipType
     int size;
 
     /**
+     * The category the item belongs to.
+     */
+    int category;
+
+    /**
      * Comparitor operator for equipment.
      */
     bool operator==(const EquipType& rhs) const
@@ -411,6 +429,11 @@ struct WeaponType
     int size;
 
     /**
+     * The category the item belongs to.
+     */
+    int category;
+    
+    /**
      * Comparitor operator for weapon.
      */
     bool operator==(const WeaponType& rhs) const
@@ -483,6 +506,11 @@ struct ConsumableType
      * The size of the item.
      */
     int size;
+    
+    /**
+     * The category the item belongs to.
+     */
+    int category;
 
     /**
      * Comparitor for consumables.
@@ -537,6 +565,11 @@ struct MiscType
     int size;
 
     /**
+     * The category the item belongs to.
+     */
+    int category;
+    
+    /**
      * Comparitor for the MiscType.
      */
     bool operator==(const MiscType& rhs) const
@@ -553,6 +586,7 @@ namespace equipment
 
 namespace weapons
 {
+    extern WeaponType wood_axe;
     extern WeaponType dagger;
 }
 
@@ -575,6 +609,7 @@ namespace misc
     extern MiscType kobold_corpse;
     extern MiscType rabbit_corpse;
     extern MiscType player_corpse;
+    extern MiscType wood;
 }
 
 
@@ -729,6 +764,8 @@ struct PlantType
 {
     int id;
     std::vector<std::vector<Tile> > sprites;
+    int harvest_tool;
+    std::vector<MiscType> drops;
 };
 
 namespace plants

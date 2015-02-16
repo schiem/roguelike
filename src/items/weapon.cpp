@@ -27,28 +27,12 @@ using namespace equipment;
 Weapon::Weapon()
 {}
 
-Weapon::Weapon(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int t,  int _dam) : Item(_rarity, _weight, _sprite, _name, _coords)
+Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(wpn.rarity, wpn.weight, wpn.sprite, wpn.name, coords, wpn.description, wpn.category, wpn.use)
 {
-    type = t;
-    damage = _dam;
-    can_equip = false;   
-    can_use = false;
-    can_wield = true;
-    can_consume = false;
-}
-
-Weapon::Weapon(IntPoint _coords, WeaponType wpn) : Item(_coords)
-{
-    rarity = wpn.rarity;
-    weight = wpn.weight;
-    sprite = wpn.sprite;
-    name = wpn.name;
-    description = wpn.description;
     damage = wpn.damage;
     range = wpn.range;
     type = wpn.type;
     size = wpn.size;
-    can_use = wpn.use;
     can_equip = false;
     can_wield = true;
     can_consume = false;

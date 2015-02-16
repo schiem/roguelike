@@ -27,27 +27,11 @@ using namespace equipment;
 Consumable::Consumable()
 {}
 
-Consumable::Consumable(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int stat, int val, int _type) : Item(_rarity, _weight, _sprite, _name, _coords)
+Consumable::Consumable(IntPoint _coords, ConsumableType cons) : Item(cons.rarity, cons.weight, cons.sprite, cons.name, coords, cons.description, cons.category, cons.use)
 {
-    stat_modified = stat;
-    amount_modified = val;
-    type = _type;
-    can_equip = false;   
-    can_use = false;
-    can_wield = false;
-    can_consume = true;
-}
-
-Consumable::Consumable(IntPoint _coords, ConsumableType cons) : Item(_coords)
-{
-    rarity = cons.rarity;
-    weight = cons.weight;
-    sprite = cons.sprite;
-    description = cons.description;
     name = cons.name;
     stat_modified = cons.stat;
     amount_modified = cons.value;
-    can_use = cons.use;
     type = cons.type;
     size = cons.type;
     can_equip = false;

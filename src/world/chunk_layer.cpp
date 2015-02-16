@@ -142,6 +142,22 @@ std::vector<Plant>* ChunkLayer::get_plants()
     return &plants;
 }
 
+void ChunkLayer::kill_plant(Plant* plant)
+{
+    for(int i=0;i<plants.size();i++)
+    {
+        if(plant == &plants[i])
+        {
+            std::vector<Misc*> temp = plant->pop_drops();
+            for(int j=0;j<temp.size();j++)
+            {
+                add_item(temp[i]);
+            }
+            plants.erase(plants.begin() + i);
+        }
+    }
+}
+
 void ChunkLayer::add_item(Item* item) {
     items.push_back(item);
 }

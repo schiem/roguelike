@@ -154,7 +154,7 @@ void Chunk::build_some_dank_trees()
         int y = points[i]->get_y();
         if(can_build(0, x, y))
         {
-            layers[0].add_plant(Plant(x, y, plants::tree));
+            layers[0].add_plant(Plant(x, y, cm.world_col, cm.world_row, plants::tree));
         }
     }
 }
@@ -278,6 +278,11 @@ void Chunk::dungeon_dump(int _depth) {
 
 MapTile Chunk::get_type() {
     return chunk_type;
+}
+
+void Chunk::kill_plant(Plant* plant, int depth)
+{
+    layers[depth].kill_plant(plant);
 }
 
 //===========SERIALIZATION/DESERIALIZATION=========

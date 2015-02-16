@@ -23,6 +23,7 @@
 #define _PLANT_H
 
 #include <defs.h>
+#include <item.h>
 #include <int_point.h>
 
 /**
@@ -46,11 +47,32 @@ class Plant
         int y;
         
         /**
-         * The character representing the plant.
+         * The x coordinate of the chunk of the plant.
+         */
+        int chunk_x;
+
+        /**
+         * The y coordinate of the chunk of the plant.
+         */
+        int chunk_y;
+
+        /**
+        * The character representing the plant.
          * TODO: Make this a 2d vector so that plants
          * can be as biiiiig as we want them to be.
          */
         TileMatrix sprites;
+    
+        /**
+         * The category of tools/equipment that can harvest the plant.
+         */
+        int harvest_tool;
+        
+        /**
+         * The possible items that the plant can drop.
+         */
+        std::vector<Misc*> drops;
+
     public:
         
         /**
@@ -61,12 +83,17 @@ class Plant
         /**
          * Constructor taking in a plant type.
          */
-        Plant(int _x, int _y, PlantType plant);
+        Plant(int _x, int _y, int _chunk_x, int _chunk_y, PlantType plant);
 
         /**
          * Empty constructor.
          */
         Plant();
+        
+        /**
+         * Destructor to delete the drops.
+         */
+        ~Plant();
         
         /**
          * Public accessor for the x coordinate.
@@ -77,7 +104,22 @@ class Plant
          * Public accessor for the y coordinate.
          */
         int get_y();
-        
+       
+        /**
+         * Public accessor for the x coordinate of the chunk.
+         */
+        int get_chunk_x();
+
+        /**
+         * Public accessor for the y coordinate of the chunk.
+         */
+        int get_chunk_y();
+
+        /**
+         * Public accessor for the chunk coordinates.
+         */
+        IntPoint get_chunk();
+
         /**
          *  Public accessor for the sprite.
          */
@@ -97,9 +139,25 @@ class Plant
          * Pass in a tilematrix to use as the sprites for this plant.
          */
         void set_sprites(TileMatrix tm);
+        
+        int get_harvest_tool();
+        
+        /**
+         * Returns the drops without removing them.
+         */
+        std::vector<Misc*> get_drops();
+        
+        /**
+         * Returns  the drops and removes them from 
+         * the plant.
+         */
+        std::vector<Misc*> pop_drops();
 
         void set_x(int _x);
         void set_y(int _y);
+        
+
+
 };
 
 #endif

@@ -63,6 +63,8 @@ namespace tiledef {
     Tile  DOOR            =  {43,   31,  BROWN,         1,  0,  1,  0,  0};
     Tile  BURROW          =  {15,   32,  BROWN,         1,  0,  0,  0,  0};
     Tile  HUT_WALL        =  {35,   33,  BROWN,         0,  0,  1,  0,  0};
+    Tile AXE              =  {213,  34,  GRAY,          1,  0,  0,  0,  0};
+    Tile LOG              =  {220,  35,  BROWN,         1,  0,  0,  0,  0};
 
 
     Tile TILE_INDEX[TILE_TYPE_COUNT] = { //THIS MUST CORRESPOND TO TILE IDS
@@ -99,7 +101,9 @@ namespace tiledef {
         WOOD_FLOOR,
         DOOR,
         BURROW,
-        HUT_WALL
+        HUT_WALL,
+        AXE,
+        LOG
     };
 }
 
@@ -136,25 +140,28 @@ namespace map_tile {
 
 namespace equipment
 {
-    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of leather boots.", 0, 3, 0, {0, 0, 0}, {.1, .1, 0}, false, 2};
+    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of leather boots.", 0, 3, 0, {0, 0, 0}, {.1, .1, 0}, false, 2, ARMOR};
 }
 
 namespace weapons
 {
-    WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false, 1};
+    WeaponType wood_axe = {4.0, tiledef::AXE, "Wood Axe", "A large axe for cutting trees.", 0, 2, 1, 1, false, 1, AXE}; 
+    WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false, 1, SHORT_BLADE};
 }
 
 namespace consumables
 {
-    ConsumableType potato = {0.3, tiledef::PLANT, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, HEALTH, rand() % 2, RESTORE, 1};
+    ConsumableType potato = {0.3, tiledef::PLANT, "Potato", "An uncooked potato. It might heal some health.  Or not, I don't know.", false, 0, HEALTH, rand() % 2, RESTORE, 1, INGREDIENT};
     ConsumableType CONSUMABLE_LIST[NUM_CONSUMABLES] = {potato};  
 }
 
 namespace misc
 {
-    MiscType kobold_corpse = {20, tiledef::KOBOLD_CORPSE, "Kobold Corpse", "A decaying corpse of a kobold. Yum!", false, 0, 10};
-    MiscType rabbit_corpse = {3, tiledef::RABBIT_CORPSE, "Rabbit Corpse", "The corpse of a small woodland creature that met an untimely demise.", false, 0, 2};
-    MiscType player_corpse = {120, tiledef::MAIN_CHAR, "Your Corpse", "You seem to have died.  Interesting...", false, 0, 30};
+    MiscType kobold_corpse = {20, tiledef::KOBOLD_CORPSE, "Kobold Corpse", "A decaying corpse of a kobold. Yum!", false, 0, 10, USELESS};
+    MiscType rabbit_corpse = {3, tiledef::RABBIT_CORPSE, "Rabbit Corpse", "The corpse of a small woodland creature that met an untimely demise.", false, 0, 2, USELESS};
+    MiscType player_corpse = {120, tiledef::MAIN_CHAR, "Your Corpse", "You seem to have died.  Interesting...", false, 0, 30, USELESS};
+    MiscType wood = {5.0, tiledef::LOG, "Logs", "Some logs from a felled tree.", false, 0, 5, USELESS};
+
 }
 
 /****************************
@@ -190,9 +197,13 @@ namespace enemies
     int NUM_ENEMIES = 2; 
 }
 
+
+MiscType tree_drops[] = {misc::wood};
+std::vector<MiscType> tree_drop_vec(&tree_drops[0], &tree_drops[0] + 1);
+
 namespace plants
 {
-    PlantType tree = {0, construct_big_trees()};
+    PlantType tree = {0, construct_big_trees(), AXE, tree_drop_vec};
     PlantType PLANT_LIST[1] = {tree};
 }
 

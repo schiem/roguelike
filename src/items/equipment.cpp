@@ -27,17 +27,7 @@ using namespace equipment;
 Equipment::Equipment()
 {}
 
-Equipment::Equipment(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, int bp, int t) : Item(_rarity, _weight, _sprite, _name, _coords)
-{
-    body_part = bp;
-    type = t;
-    can_equip = true;   
-    can_use = false;
-    can_wield = false;
-    can_consume = false;
-}
-
-Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(_coords)
+Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(eqp.rarity, eqp.weight, eqp.sprite, eqp.name, coords, eqp.description, eqp.category, eqp.use)
 {
     rarity = eqp.rarity;
     weight = eqp.weight;

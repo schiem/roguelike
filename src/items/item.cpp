@@ -30,13 +30,16 @@ Item::Item(IntPoint _coords)
     coords = _coords;
 }
 
-Item::Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords)
+Item::Item(int _rarity, int _weight, Tile _sprite, std::string _name, IntPoint _coords, std::string _description, int _category, bool _use)
 {
     rarity = _rarity;
     weight = _weight;
     sprite = _sprite;
     name = _name;
     coords = _coords;
+    category = _category;
+    description = _description;
+    can_use = _use;
 }
 
 int Item::get_weight()
@@ -77,4 +80,14 @@ int Item::get_size()
 std::string Item::get_description()
 {
     return description;
+}
+
+int Item::get_category()
+{
+    return category;
+}
+
+bool Item::has_category(int cat)
+{
+    return category == cat;
 }

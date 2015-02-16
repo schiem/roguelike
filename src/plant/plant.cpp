@@ -28,15 +28,31 @@ Plant::Plant(int _x, int _y, Tile _sprite)
     sprite = _sprite;
 }
 */
-Plant::Plant(int _x, int _y, PlantType plant)
+Plant::Plant(int _x, int _y, int _chunk_x, int _chunk_y, PlantType plant)
 {
     x = _x;
     y = _y;
+    chunk_x = _chunk_x;
+    chunk_y = _chunk_y;
     sprites = plant.sprites;
+    harvest_tool = plant.harvest_tool;
+    for(int i=0;i<plant.drops.size();i++)
+    {
+        drops.push_back(new Misc(IntPoint(y, x), plant.drops[i]));
+    }
 }
 
 Plant::Plant()
 {
+}
+
+Plant::~Plant()
+{
+    for(int i=0;i<drops.size();i++)
+    {
+        delete drops[i];
+        drops.erase(drops.begin() + i);
+    }
 }
 
 int Plant::get_x()
@@ -47,6 +63,21 @@ int Plant::get_x()
 int Plant::get_y()
 {
     return y;
+}
+
+int Plant::get_chunk_x()
+{
+    return chunk_x;
+}
+
+int Plant::get_chunk_y()
+{
+    return chunk_y;
+}
+
+IntPoint Plant::get_chunk()
+{
+    return IntPoint(chunk_y, chunk_x);
 }
 
 Tile* Plant::get_sprite(int y, int x)
@@ -80,4 +111,25 @@ void Plant::set_y(int _y) {
 IntPoint Plant::get_coords()
 {
     return IntPoint(y, x);
+}
+
+int Plant::get_harvest_tool()
+{
+    return harvest_tool;
+}
+
+std::vector<Misc*> Plant::get_drops()
+{
+    return drops;
+}
+
+std::vector<Misc*> Plant::pop_drops()
+{
+    std::vector<Misc*> temp;
+    for(int i=0;i<drops.size();i++)
+    {
+        temp.push_back(drops.back());
+        drops.pop_back();
+    }
+    return temp;
 }
