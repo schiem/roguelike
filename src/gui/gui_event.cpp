@@ -228,9 +228,6 @@ void GUI::perform_action_press(SDLKey key) {
                 IntPoint n_chunk = normalize_chunk(game.main_char.get_coords() + direction);
                 IntPoint chunk = n_chunk + game.main_char.get_chunk();
                 Plant* plant = game.get_plant(chunk, n_coords, game.main_char.get_depth());
-                std::cout<<"New coords: "<<n_coords<<std::endl;
-                std::cout<<"Current coords: "<<game.main_char.get_coords()<<std::endl;
-                std::cout<<"Direction: "<<direction<<std::endl;
                 if(plant != NULL)
                 {
                     game.harvest_plant(plant, &game.main_char);

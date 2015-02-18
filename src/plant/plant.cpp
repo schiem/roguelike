@@ -171,7 +171,7 @@ std::vector<Misc*> Plant::pop_drops()
 
 bool Plant::in_plant(IntPoint coords)
 {
-    bool is_y = (coords.row >= y && coords.row < y + sprites.size());
-    bool is_x = (coords.col >= x && coords.col < x + sprites[coords.row].size());
-    return is_y && is_x;
+    bool is_y = (coords.row >= y && coords.row < (y + sprites.size()));
+    bool is_xy = is_y && (coords.col >= x && coords.col < (x + sprites[coords.row - y].size()));
+    return is_xy;
 }

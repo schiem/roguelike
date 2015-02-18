@@ -442,7 +442,6 @@ void Game::drop_item(Item* item, Character* chara)
 
 void Game::harvest_plant(Plant *plant, Character* chara)
 {
-    std::cout<<"I'm trying to chop a plant!"<<std::endl;
     if(chara != NULL)
     {
         if(chara->has_item_category(plant->get_harvest_tool()))
