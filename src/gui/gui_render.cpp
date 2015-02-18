@@ -46,6 +46,9 @@ void GUI::OnRender() {
         clear_area(IntPoint(0, UI_START), IntPoint(UI_HEIGHT, UI_WIDTH));
         render_interface();
 
+    } else if(current_screen == DIRECTION_SCREEN)
+    {
+        drawStr(0, 0, std::string("Pick a direction to perform the action.").c_str(), ascii, screen, WHITE);
     } else if (current_screen == DEATH_SCREEN) {
         clear_screen();
         drawStr(GAME_WIDTH/2 - 12, GAME_HEIGHT/2, std::string("You suck, uninstall bro.").c_str(), ascii, screen, WHITE);

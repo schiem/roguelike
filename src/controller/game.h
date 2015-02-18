@@ -564,6 +564,11 @@ class Game
          */
         Chunk* get_current_chunk();
 
+        /**
+         * Returns a plant pointer at a given location (chunk, coordinates, and depth).
+         */
+        Plant* get_plant(IntPoint chunk, IntPoint coords, int depth);
+
 //-------------------------------ANIMATION PUBLIC METHODS----------------//
 //src/controller/animation_controller.cpp
         

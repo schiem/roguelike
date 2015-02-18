@@ -100,4 +100,21 @@ std::vector<int> strings_to_ints(std::vector<std::string> strings);
  */
 bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint center, IntPoint radius);
 
+/**
+ * Takes in a set of coordinates and checks if they're out of
+ * bounds of the chunk boundaries, rolls them over so that they're
+ * within the bounds.  
+ * e.g. height of 51 gets converted to height of 1.
+ */
+IntPoint normalize_coords(IntPoint coords);
+
+
+/**
+ * Takes in a set of coordinates and returns whether or not the
+ * chunk should change in reponse.
+ * e.g. Height of 51 corresponds to chunk of (1, 0) (move 1 in the
+ * positive y direction.
+ */
+IntPoint normalize_chunk(IntPoint chunk);
+
 #endif

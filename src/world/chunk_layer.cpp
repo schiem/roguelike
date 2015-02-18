@@ -230,6 +230,17 @@ void ChunkLayer::add_plant(Plant plant) {
     plants.push_back(plant);
 }
 
+Plant* ChunkLayer::get_plant(IntPoint coords) {
+    for(int i=0;i<plants.size();i++)
+    {
+        if(plants[i].get_x() == coords.col && plants[i].get_y() == coords.row)
+        {
+            return & plants[i];
+        }
+    }
+    return NULL;
+}
+
 bool ChunkLayer::in_layer(int x, int y)
 {
     return y<ground.size() && y>=0 && x<ground[y].size() && x>=0;

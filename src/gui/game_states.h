@@ -25,7 +25,8 @@ enum Screen {
     GAME_SCREEN,
     DEATH_SCREEN,
     MENU_SCREEN,
-    DEBUG_CONSOLE
+    DEBUG_CONSOLE,
+    DIRECTION_SCREEN
 };
 
 enum KeyState {

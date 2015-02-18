@@ -96,6 +96,16 @@ class Plant
         ~Plant();
         
         /**
+         * Copy constructor for the plant.
+         */
+        Plant(const Plant& p);
+        
+       /**
+        * Assignment operator for the plant.
+        */
+        Plant& operator=(const Plant& p);
+        
+        /**
          * Public accessor for the x coordinate.
          */
         int get_x();

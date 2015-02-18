@@ -172,7 +172,13 @@ class ChunkLayer {
          * on the tiles getting set properly.
          */
         std::vector<Plant>* get_plants();
-       
+      
+        /**
+         * Gets a plant at the location. Returns NULL if there
+         * is a plant.
+         */
+        Plant* get_plant(IntPoint coords);
+
         /**
          * Removes a plant from the layer.
          */

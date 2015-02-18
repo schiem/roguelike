@@ -208,12 +208,61 @@ void GUI::perform_action_press(SDLKey key) {
                 game.create_explosion(game.main_char.get_x(), game.main_char.get_y(), game.main_char.get_chunk_x(), game.main_char.get_chunk_y());
             }
             break;
+        case SDLK_c:
+            //We can't just have a get_direction() function
+            //because we want to wait for key polling.  In leueu,
+            //we switch to a direction screen, wait for key input,
+            //then immediately call the perform_action_press(sym)
+            //with this function.
+            if(!game.is_paused() && current_screen == GAME_SCREEN)
+            {
+                last_key = key;
+                current_screen = DIRECTION_SCREEN;
+                chosen_direction = false;
+            }
+            else if(current_screen == DIRECTION_SCREEN && chosen_direction)
+            {
+                current_screen = GAME_SCREEN;
+                IntPoint n_coords = normalize_coords(game.main_char.get_coords() + direction);
+                IntPoint n_chunk = normalize_chunk(game.main_char.get_coords() + direction);
+                IntPoint chunk = n_chunk + game.main_char.get_chunk();
+                Plant* plant = game.get_plant(chunk, n_coords, game.main_char.get_depth());
+                game.harvest_plant(plant, &game.main_char);
+            }
+            break;
+
         case SDLK_SPACE:
             if(current_screen == GAME_SCREEN)
             {
                 game.toggle_pause();
             }
             break;
+        
+        case SDLK_UP:
+            if(current_screen == DIRECTION_SCREEN)
+            {
+                handle_direction(-1, 0);
+            }
+            break;
+        case SDLK_DOWN:
+            if(current_screen == DIRECTION_SCREEN)
+            {
+                handle_direction(1, 0);
+            }
+            break;
+        case SDLK_LEFT:
+            if(current_screen == DIRECTION_SCREEN)
+            {
+                handle_direction(0, -1);
+            }
+            break;
+        case SDLK_RIGHT:
+            if(current_screen == DIRECTION_SCREEN)
+            {
+                handle_direction(0, 1);
+            }
+            break;
+
         case SDLK_q:
             //game_loader::save_game(game, world_map_gui);
             running=false;
@@ -313,4 +362,11 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
             break;
 
     }
+}
+
+void GUI::handle_direction(int row, int col)
+{
+    direction = IntPoint(-1, 0);
+    chosen_direction = true;
+    perform_action_press(last_key);
 }

@@ -46,6 +46,36 @@ Plant::Plant()
 {
 }
 
+Plant::Plant(const Plant& p)
+{
+    x = p.x;
+    y = p.y;
+    chunk_x = p.chunk_x;
+    chunk_y = p.chunk_y;
+    sprites = p.sprites;
+    for(int i=0;i<p.drops.size();i++)
+    {
+        Misc* item = new Misc;
+        *item = *p.drops[i];
+        drops.push_back(item);
+    }
+}
+
+Plant& Plant::operator=(const Plant& p)
+{
+    x = p.x;
+    y = p.y;
+    chunk_x = p.chunk_x;
+    chunk_y = p.chunk_y;
+    sprites = p.sprites;
+    for(int i=0;i<p.drops.size();i++)
+    {
+        Misc* item = new Misc;
+        *item = *p.drops[i];
+        drops.push_back(item);
+    }
+}
+
 Plant::~Plant()
 {
     for(int i=0;i<drops.size();i++)

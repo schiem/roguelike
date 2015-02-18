@@ -484,7 +484,11 @@ class Chunk{
          * 50% chance of becoming the other chunk's base tile.
          */
         void blend_normal(int row, int col, MapTile other);
-        
+
+        /**
+         * Finds a plant at the given coords.  Returns NULL if none is found.
+         */
+        Plant* get_plant(IntPoint coords, int depth);
     
 };
 

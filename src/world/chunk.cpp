@@ -709,3 +709,8 @@ void Chunk::blend_normal(int row, int col, MapTile other)
         }
     }
 }
+
+Plant* Chunk::get_plant(IntPoint coords, int depth)
+{
+    return layers[depth].get_plant(coords);
+}

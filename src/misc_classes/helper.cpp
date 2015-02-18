@@ -142,3 +142,17 @@ bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint ce
     bool is_y = (abs.row>=tl_abs.row && abs.row<br_abs.row);
     return (is_x && is_y);
 }
+
+IntPoint normalize_coords(IntPoint coords)
+{
+    int row = coords.row + (CHUNK_HEIGHT * coords.row < 0) - (CHUNK_HEIGHT * coords.row >= CHUNK_HEIGHT);
+    int col = coords.col + (CHUNK_WIDTH * coords.col < 0) - (CHUNK_WIDTH * coords.col >= CHUNK_WIDTH);
+    return IntPoint(row, col);
+}
+
+IntPoint normalize_chunk(IntPoint coords)
+{
+    int c_row = 0 + (coords.row >= CHUNK_HEIGHT) - (coords.row < 0);
+    int c_col = 0 + (coords.col >= CHUNK_WIDTH) - (coords.col < 0);
+    return IntPoint(c_row, c_col);
+}

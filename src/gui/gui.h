@@ -56,6 +56,10 @@ class GUI : public VirtualEvent {
         pt::ptime game_clock;
 
         bool running;
+        IntPoint direction;
+        bool chosen_direction;
+        SDLKey last_key;
+        
         std::vector<std::string> messages;
         std::string input;
          
@@ -88,6 +92,7 @@ class GUI : public VirtualEvent {
         void render_animations();
         void clear_area(IntPoint start, IntPoint size);
         int render_stats(Character* chara, int height);
+        void handle_direction(int row, int col);
     public:
         GUI();
         ~GUI();

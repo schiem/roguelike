@@ -22,7 +22,7 @@
 
 void GUI::OnLoop() {
     perform_action_cont();
-    if(game.is_initialized() && game.is_paused() == false) {
+    if(game.is_initialized() && game.is_paused() == false && current_screen == GAME_SCREEN) {
         game.act(STD_MS_PER_FRAME);
         for(int i=0;i<trees.size();i++)
         {
