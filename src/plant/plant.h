@@ -166,7 +166,10 @@ class Plant
         void set_x(int _x);
         void set_y(int _y);
         
-
+        /**
+         * Checks if the coords overlap with the plants coords.
+         */
+        bool in_plant(IntPoint coords);
 
 };
 

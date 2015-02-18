@@ -68,6 +68,11 @@ Plant& Plant::operator=(const Plant& p)
     chunk_x = p.chunk_x;
     chunk_y = p.chunk_y;
     sprites = p.sprites;
+    for(int i=0;i<drops.size();i++)
+    {
+        delete drops[i];
+    }
+    drops.resize(0);
     for(int i=0;i<p.drops.size();i++)
     {
         Misc* item = new Misc;
@@ -162,4 +167,11 @@ std::vector<Misc*> Plant::pop_drops()
         drops.pop_back();
     }
     return temp;
+}
+
+bool Plant::in_plant(IntPoint coords)
+{
+    bool is_y = (coords.row >= y && coords.row < y + sprites.size());
+    bool is_x = (coords.col >= x && coords.col < x + sprites[coords.row].size());
+    return is_y && is_x;
 }

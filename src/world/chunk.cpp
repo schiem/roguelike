@@ -280,7 +280,7 @@ MapTile Chunk::get_type() {
     return chunk_type;
 }
 
-void Chunk::kill_plant(Plant* plant, int depth)
+void Chunk::kill_plant(Plant *plant, int depth)
 {
     layers[depth].kill_plant(plant);
 }

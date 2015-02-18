@@ -223,11 +223,19 @@ void GUI::perform_action_press(SDLKey key) {
             else if(current_screen == DIRECTION_SCREEN && chosen_direction)
             {
                 current_screen = GAME_SCREEN;
-                IntPoint n_coords = normalize_coords(game.main_char.get_coords() + direction);
+                //IntPoint n_coords = normalize_coords(game.main_char.get_coords() + direction);
+                IntPoint n_coords = game.main_char.get_coords() + direction;
                 IntPoint n_chunk = normalize_chunk(game.main_char.get_coords() + direction);
                 IntPoint chunk = n_chunk + game.main_char.get_chunk();
                 Plant* plant = game.get_plant(chunk, n_coords, game.main_char.get_depth());
-                game.harvest_plant(plant, &game.main_char);
+                std::cout<<"New coords: "<<n_coords<<std::endl;
+                std::cout<<"Current coords: "<<game.main_char.get_coords()<<std::endl;
+                std::cout<<"Direction: "<<direction<<std::endl;
+                if(plant != NULL)
+                {
+                    game.harvest_plant(plant, &game.main_char);
+                    game.update_buffer(game.main_char.get_chunk());
+                }
             }
             break;
 
@@ -366,7 +374,7 @@ void GUI::add_key_input(SDLKey sym, Uint16 unicode)
 
 void GUI::handle_direction(int row, int col)
 {
-    direction = IntPoint(-1, 0);
+    direction = IntPoint(row, col);
     chosen_direction = true;
     perform_action_press(last_key);
 }

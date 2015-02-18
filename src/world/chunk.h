@@ -310,7 +310,7 @@ class Chunk{
         /**
          * Removes a plant from the chunk.
          */
-        void kill_plant(Plant* plant, int depth);
+        void kill_plant(Plant *plant, int depth);
         
         /**
          * Get the heightmap for this chunk.

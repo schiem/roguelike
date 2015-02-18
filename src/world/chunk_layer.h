@@ -182,7 +182,7 @@ class ChunkLayer {
         /**
          * Removes a plant from the layer.
          */
-        void kill_plant(Plant* plant);
+        void kill_plant(Plant *plant);
 
         /**
          * Adds an item to the item list for this chunk.

@@ -102,6 +102,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
     main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
+    main_char.add_item(new Weapon(main_char.get_chunk(), weapons::wood_axe));
     IntPoint buffer_coords = get_buffer_coords(main_char.get_chunk(), main_char.get_coords());
     character_index[buffer_coords.row][buffer_coords.col] = &main_char;
 

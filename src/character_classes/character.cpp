@@ -680,14 +680,14 @@ bool Character::has_item_category(int category)
 {
     for(int i=0;i<equipment.size();i++)
     {
-        if(equipment[i]->has_category(category))
+        if(equipment[i] != NULL && equipment[i]->has_category(category))
         {
             return true;
         }
     }
     for(int i=0;i<inventory.size();i++)
     {
-        if(inventory[i]->has_category(category))
+        if(inventory[i] != NULL && inventory[i]->has_category(category))
         {
             return true;
         }

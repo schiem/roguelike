@@ -142,7 +142,7 @@ std::vector<Plant>* ChunkLayer::get_plants()
     return &plants;
 }
 
-void ChunkLayer::kill_plant(Plant* plant)
+void ChunkLayer::kill_plant(Plant *plant)
 {
     for(int i=0;i<plants.size();i++)
     {
@@ -233,9 +233,9 @@ void ChunkLayer::add_plant(Plant plant) {
 Plant* ChunkLayer::get_plant(IntPoint coords) {
     for(int i=0;i<plants.size();i++)
     {
-        if(plants[i].get_x() == coords.col && plants[i].get_y() == coords.row)
+        if(plants[i].in_plant(coords))
         {
-            return & plants[i];
+            return &plants[i];
         }
     }
     return NULL;
