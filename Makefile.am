@@ -55,6 +55,7 @@ roguelike_SOURCES = \
     src/controller/chunkmap_controller.cpp\
     src/controller/animation_controller.cpp\
     src/controller/debug_controller.cpp\
+    src/controller/message_controller.cpp\
     src/menu/menu.cpp\
 	src/menu/start_menu.cpp\
     src/menu/main_menu.cpp\

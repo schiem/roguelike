@@ -39,10 +39,6 @@ GUI::GUI() {
     debug = DebugConsole(&game); 
     trees.push_back(ai::GENERIC_AGGRESSIVE(&game)); 
     trees.push_back(ai::GENERIC_PASSIVE(&game));
-    max_messages = 20;
-    message_index = 0;
-    messages.resize(max_messages);
-    messages[message_index] = "Testing.";
 }
 
 int GUI::OnExecute() {
@@ -124,14 +120,4 @@ void GUI::add_characters(std::vector<Character*> characters)
             }
         }
     }
-}
-
-void GUI::add_message(std::string message)
-{
-    message_index += 1;
-    if(message_index >= max_messages)
-    {
-        message_index = 0;
-    }
-    messages[message_index] = message;
 }

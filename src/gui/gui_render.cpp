@@ -319,5 +319,5 @@ void GUI::clear_area(IntPoint start, IntPoint size)
 
 void GUI::render_message()
 {
-    drawStr(0, MESSAGE_HEIGHT, messages[message_index].c_str(), ascii, screen, WHITE);
+    drawStr(0, MESSAGE_HEIGHT, game.get_current_message().c_str(), ascii, screen, WHITE);
 }

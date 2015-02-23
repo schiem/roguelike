@@ -34,6 +34,7 @@
 #include <character.h>
 #include <bresenham.h>
 #include <pathfinding.h>
+#include <string>
 
 //Forward declarations
 struct Tile;
@@ -203,6 +204,26 @@ class Game
          */
         std::vector<Animation> anim_queue;
         
+
+//-----------------------------MESSAGE DATA-------------------------------//
+//src/controller/message_controller.cpp
+        
+        /**
+         * A vector containing the messages that have occcurred
+         * to this point.
+         */
+        std::vector<std::string> messages;
+        
+        /**
+         * The maximum number of messages in the message queue.
+         */
+        int max_messages;
+        
+        /**
+         * The index of the most recent message.
+         */
+        int message_index;
+
 
     public:
         
@@ -620,6 +641,25 @@ class Game
          * Debug function to teleport the character to a new place.
          */
         void teleport(int chunk_x, int chunk_y, int x, int y);
+
+//--------------------------------MESSAGE PUBLIC METODS-----------------//
+//src/controller/message_controller.cpp
+
+    /**
+     * Adds a message to the message queue at the appropriate place.
+     */
+    void add_message(std::string message);
+
+    /**
+     * Gets the most recent message.
+     */
+    std::string get_current_message();
+
+    /**
+     * Gets a message at the given index.
+     */
+    std::string get_message(int index);
+
 
 };
 

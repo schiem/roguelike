@@ -60,9 +60,6 @@ class GUI : public VirtualEvent {
         bool chosen_direction;
         SDLKey last_key;
         
-        std::vector<std::string> messages;
-        int max_messages;
-        int message_index;
         
         std::string input;
          
@@ -97,7 +94,6 @@ class GUI : public VirtualEvent {
         void clear_area(IntPoint start, IntPoint size);
         int render_stats(Character* chara, int height);
         void handle_direction(int row, int col);
-        void add_message(std::string message);
     public:
         GUI();
         ~GUI();
