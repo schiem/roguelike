@@ -45,6 +45,7 @@ void GUI::OnRender() {
         render_animations();
         clear_area(IntPoint(0, UI_START), IntPoint(UI_HEIGHT, UI_WIDTH));
         render_interface();
+        render_message();
 
     } else if(current_screen == DIRECTION_SCREEN)
     {
@@ -314,4 +315,9 @@ void GUI::render_animations()
 void GUI::clear_area(IntPoint start, IntPoint size)
 {
     clearArea(start.col, start.row, size.row, size.col, screen, BLACK);
+}
+
+void GUI::render_message()
+{
+    drawStr(0, MESSAGE_HEIGHT, messages[message_index].c_str(), ascii, screen, WHITE);
 }

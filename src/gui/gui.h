@@ -61,6 +61,9 @@ class GUI : public VirtualEvent {
         SDLKey last_key;
         
         std::vector<std::string> messages;
+        int max_messages;
+        int message_index;
+        
         std::string input;
          
         DebugConsole debug;
@@ -90,9 +93,11 @@ class GUI : public VirtualEvent {
         void render_debug();
         void render_target();
         void render_animations();
+        void render_message();
         void clear_area(IntPoint start, IntPoint size);
         int render_stats(Character* chara, int height);
         void handle_direction(int row, int col);
+        void add_message(std::string message);
     public:
         GUI();
         ~GUI();

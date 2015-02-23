@@ -74,6 +74,7 @@ Character::~Character()
     }
     for(int i=0;i<inventory.size();i++)
     {
+        std::cout<<"I'm getting deleted and i am "<<inventory[i]<<std::endl;
         delete inventory[i];
     }
     delete corpse;
@@ -292,9 +293,10 @@ void Character::equip_item(Item* item)
 {
     if(item->can_equip)
     {
+        int body_part = ((Equipment*)item)->get_body_part();
         drop_item(item);
-        remove_item(((Equipment*)item)->get_body_part());
-        equipment[((Equipment*)item)->get_body_part()] = item;
+        remove_item(body_part);
+        equipment[body_part] = item;
     }
     else if(item->can_wield)
     {

@@ -37,4 +37,6 @@ static const int UI_START = SCREEN_WIDTH - UI_WIDTH + 1;
 static const int WORLD_WIDTH = 100;
 static const int WORLD_HEIGHT = 50;
 
+static const int MESSAGE_HEIGHT = 49;
+
 #endif
