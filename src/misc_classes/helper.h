@@ -117,4 +117,13 @@ IntPoint normalize_coords(IntPoint coords);
  */
 IntPoint normalize_chunk(IntPoint chunk);
 
+/**
+ * Takes two vectors and iterates over them, combining the elements
+ * in alternating order to form a single string.  For instance:
+ * vec1 = {"Hello, ", "are you?"};
+ * vec2 = {"how "};
+ * concatenate vector would return "Hello, how are you?"
+ */
+std::string concatenate_vectors(std::vector<std::string> first, std::vector<std::string> second);
+
 #endif

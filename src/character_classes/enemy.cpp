@@ -88,7 +88,6 @@ std::vector<Equipment*> Enemy::generate_equipment(std::vector<EquipType> equipme
            new_equipment.push_back(new Equipment(IntPoint(y, x), equipment_list[i]));
         }
     }
-    std::cout<<"I have "<<new_equipment.size()<<" pieces of equipment."<<std::endl;
     return new_equipment;
 }
 
@@ -98,7 +97,6 @@ Weapon* Enemy::generate_weapon(std::vector<WeaponType> weapon_list)
     {
         if(rand() % (5 + weapon_list[i].rarity) == 0)
         {
-            std::cout<<"And 1 weapon."<<std::endl;
             return new Weapon(IntPoint(y, x), weapon_list[i]);
         }
     }

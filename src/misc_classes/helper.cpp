@@ -156,3 +156,17 @@ IntPoint normalize_chunk(IntPoint coords)
     int c_col = 0 + (coords.col >= CHUNK_WIDTH) - (coords.col < 0);
     return IntPoint(c_row, c_col);
 }
+
+std::string concatenate_vectors(std::vector<std::string> first, std::vector<std::string> second)
+{
+    std::string temp = "";
+    for(int i=0;i<first.size();i++)
+    {
+        temp = temp + first[i];
+        if(i < second.size())
+        {
+            temp = temp + second[i];
+        }
+    }
+    return temp;
+}

@@ -23,6 +23,7 @@
 
 std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Endurance", "Experience", "Level", "Str", "Dex", "Int"};
 
+std::vector<std::vector<std::string> > MESSAGE_LIST = construct_messages(); 
 
 /****************************
  *   TERRAIN DEFS
@@ -220,3 +221,24 @@ std::vector<std::vector<Tile> > construct_big_trees()
     return tree;
 }
 
+
+std::vector<std::vector<std::string> > construct_messages()
+{
+
+    std::vector<std::vector<std::string> > MESSAGE_LIST;
+    MESSAGE_LIST.resize(NUM_MESSAGES);
+
+    std::string attack_self[] = {"A ", " has attacked you!"};
+    MESSAGE_LIST[ATTACK_SELF] = std::vector<std::string>(&attack_self[0], &attack_self[0] + 2);
+
+    std::string attack_other[] = {"You have attacked a "};
+    MESSAGE_LIST[ATTACK_OTHER] = std::vector<std::string>(&attack_other[0], &attack_other[0] + 1);
+
+    std::string harvest_plant[] = {"You have harvested a "};
+    MESSAGE_LIST[HARVEST_PLANT] = std::vector<std::string>(&harvest_plant[0], &harvest_plant[0] + 1);
+
+    std::string kill_other[] = {"You have killed a "};
+    MESSAGE_LIST[KILL_OTHER] = std::vector<std::string>(&kill_other[0], &kill_other[0] + 1);
+
+    return MESSAGE_LIST;
+}

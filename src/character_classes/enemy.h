@@ -53,12 +53,6 @@ class Enemy : public Character
 
         
         /**
-         * A string of the name of the enemy.
-         * This is a generic string, as in "kobold," or "rabbit."
-         */
-        std::string name;
-
-        /**
          * Generates the equipment from a list of EquipType.
          * Loops through a list of possible equipment that an enemy can have,
          * and the returned list goes into the inventory.
@@ -104,6 +98,5 @@ class Enemy : public Character
         int get_id();
 
 };
-
 
 #endif

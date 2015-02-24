@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <vector>
 #define DEBUG 1
+//Why is this a define?
 #define SAVE_DIR DATADIR "/save"
 
 /**
@@ -53,6 +54,10 @@ enum STATS
     INTELLIGENCE
 };
 
+const int NUM_STATS = 8;
+
+extern std::string STAT_NAMES[NUM_STATS]; 
+
 enum ITEM_CATEGORY
 {
     AXE,
@@ -64,9 +69,17 @@ enum ITEM_CATEGORY
     USELESS
 };
 
-const int NUM_STATS = 8;
+enum MESSAGES
+{
+    ATTACK_SELF,
+    ATTACK_OTHER,
+    HARVEST_PLANT,
+    KILL_OTHER
+};
 
-extern std::string STAT_NAMES[NUM_STATS]; 
+const int NUM_MESSAGES = 4;
+
+extern std::vector<std::vector<std::string> > MESSAGE_LIST;
 
 /*--------------------------
  *   TERRAIN DEFS
@@ -776,5 +789,7 @@ namespace plants
 
 
 std::vector<std::vector<Tile> > construct_big_trees();
+
+std::vector<std::vector<std::string> > construct_messages();
 
 #endif

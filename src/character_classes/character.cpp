@@ -38,7 +38,7 @@ Character::Character(int _x, int _y, int _depth)
     level_up = 0;
 }
 
-Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id) {
+Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name) {
 
     timer = 0;
     stats = _stats;
@@ -57,6 +57,7 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     target = NULL;
     equipment = vector<Item*>(7);
     conscious = true;
+    name = _name;
     
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
@@ -74,7 +75,6 @@ Character::~Character()
     }
     for(int i=0;i<inventory.size();i++)
     {
-        std::cout<<"I'm getting deleted and i am "<<inventory[i]<<std::endl;
         delete inventory[i];
     }
     delete corpse;
@@ -695,6 +695,11 @@ bool Character::has_item_category(int category)
         }
     }
     return false;
+}
+
+std::string Character::get_name()
+{
+    return name;
 }
 
 //------------------Character Stats---------------------//

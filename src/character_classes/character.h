@@ -177,6 +177,12 @@ class Character
         int level_up;
         
         /**
+         * A string of the name of the enemy.
+         * This is a generic string, as in "kobold," or "rabbit."
+         */
+        std::string name;
+        
+        /**
          * Gets the experience required to get to the next level.
          * Goes up by the square of the level.
          */
@@ -223,7 +229,7 @@ class Character
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id);
+        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name);
 
         /**
          * The constructor for the character class.
@@ -667,6 +673,11 @@ class Character
          */
         bool has_item_category(int category);
 
+        /**
+         * Public accessor for the name of the character.
+         */
+        std::string get_name();
+        
         //------------------DERIVED STATS-------------------//
         /**
          * The characters ability to dodge.  This is derived from
@@ -679,6 +690,8 @@ class Character
          * of how often a character hits something.
          */
         int accuracy_stat();
+        
+    
 };
 
 struct character_info {
