@@ -223,10 +223,11 @@ void GUI::perform_action_press(SDLKey key) {
             else if(current_screen == DIRECTION_SCREEN && chosen_direction)
             {
                 current_screen = GAME_SCREEN;
-                //IntPoint n_coords = normalize_coords(game.main_char.get_coords() + direction);
-                IntPoint n_coords = game.main_char.get_coords() + direction;
+                IntPoint n_coords = normalize_coords(game.main_char.get_coords() + direction);
+                //IntPoint n_coords = game.main_char.get_coords() + direction;
                 IntPoint n_chunk = normalize_chunk(game.main_char.get_coords() + direction);
                 IntPoint chunk = n_chunk + game.main_char.get_chunk();
+                std::cout<<"New chunk of: "<<chunk<<std::endl;
                 Plant* plant = game.get_plant(chunk, n_coords, game.main_char.get_depth());
                 if(plant != NULL)
                 {

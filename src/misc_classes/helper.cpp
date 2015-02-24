@@ -145,8 +145,9 @@ bool in_range(IntPoint chunk, IntPoint coords, IntPoint range_chunk, IntPoint ce
 
 IntPoint normalize_coords(IntPoint coords)
 {
-    int row = coords.row + (CHUNK_HEIGHT * coords.row < 0) - (CHUNK_HEIGHT * coords.row >= CHUNK_HEIGHT);
-    int col = coords.col + (CHUNK_WIDTH * coords.col < 0) - (CHUNK_WIDTH * coords.col >= CHUNK_WIDTH);
+    int row = coords.row + (CHUNK_HEIGHT * (coords.row < 0)) - (CHUNK_HEIGHT * (coords.row >= CHUNK_HEIGHT));
+    int col = coords.col + (CHUNK_WIDTH * (coords.col < 0)) - (CHUNK_WIDTH * (coords.col >= CHUNK_WIDTH));
+    std::cout<<"Original coords: "<<coords<<", and new coords"<<IntPoint(row, col)<<std::endl;
     return IntPoint(row, col);
 }
 
@@ -154,6 +155,7 @@ IntPoint normalize_chunk(IntPoint coords)
 {
     int c_row = 0 + (coords.row >= CHUNK_HEIGHT) - (coords.row < 0);
     int c_col = 0 + (coords.col >= CHUNK_WIDTH) - (coords.col < 0);
+    std::cout<<"New chunk: "<<IntPoint(c_row, c_col)<<std::endl; 
     return IntPoint(c_row, c_col);
 }
 
