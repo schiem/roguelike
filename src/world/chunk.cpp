@@ -88,8 +88,11 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
 
 bool Chunk::build_chunk_with_dungeons() {
     cm.depth = rand() % 6 + 1;
+
     layers = std::vector<ChunkLayer>(cm.depth, ChunkLayer(cm.width, cm.height));
     //CorruptiblePBlindDB db(cm.width, cm.height);
+    
+    layers[0].has_layer_below = (cm.depth > 1);
 
     bool has_layer_below;
     //Don't generate the top layer; it will be an overworld.
