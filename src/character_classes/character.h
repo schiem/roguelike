@@ -130,6 +130,19 @@ class Character
         Character* target;
 
         /**
+         * The "master" of the character, which corresponds to a character who is in control
+         * of this one. I should probably also add a list of "slaves" (yikes) so that the 
+         * relationship is two ways, and it would also allow for controlling of the different
+         * characters.
+         */
+        Character* master;
+
+        /**
+         * The last known health of the "master."
+         */
+        int master_health;
+
+        /**
          * Whether or not the character is conscious.
          */
         bool conscious;
@@ -690,7 +703,33 @@ class Character
          * of how often a character hits something.
          */
         int accuracy_stat();
-        
+
+
+        /**
+         * Accessor for the "master."
+         */
+        Character* get_master();
+
+        /**
+         * Setter for the "master."
+         */
+        void set_master(Character* new_m);
+
+        /**
+         * Accessor for the last know masters health.
+         */
+        int master_hp();
+
+        /**
+         * Updates the last known master's health.
+         */
+        void update_master_health();
+
+        /**
+         * Checks to see if the current master's health
+         * is different than the last known master's health.
+         */
+        bool master_health_changed();
     
 };
 

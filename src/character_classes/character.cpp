@@ -36,6 +36,8 @@ Character::Character(int _x, int _y, int _depth)
     equipment = vector<Item*>(7);
     conscious = true;
     level_up = 0;
+    master = NULL;
+    master_health = 0;
 }
 
 Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name) {
@@ -58,6 +60,8 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     equipment = vector<Item*>(7);
     conscious = true;
     name = _name;
+    master = NULL;
+    master_health = 0;
     
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
@@ -119,8 +123,8 @@ Character::Character(const Character& chara)
     ai_id = chara.ai_id;
     target = chara.target;
     conscious = chara.conscious;
-    
-
+    master = chara.master; 
+    master_health = chara.master_health;
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
     direction = chara.direction;
@@ -186,7 +190,8 @@ Character& Character::operator=(const Character& chara)
     ai_id = chara.ai_id;
     target = chara.target;
     conscious = chara.conscious;
-    
+    master = chara.master; 
+    master_health = chara.master_health; 
     //These won't do anything for anyone except the enemy, for now.  But,
     //they're here if we need them.
     direction = chara.direction;
@@ -701,6 +706,37 @@ std::string Character::get_name()
 {
     return name;
 }
+
+Character* Character::get_master()
+{
+    return master;
+}
+
+void Character::set_master(Character* new_m)
+{
+    master = new_m;
+    update_master_health();
+}
+
+int Character::master_hp()
+{
+    return master->get_cur_hp();
+}
+
+void Character::update_master_health()
+{
+    if(master != NULL)
+    {
+        master_health = master->get_cur_hp();
+    }
+}
+
+bool Character::master_health_changed()
+{
+    return master_health != master->get_cur_hp();
+}
+
+
 
 //------------------Character Stats---------------------//
 

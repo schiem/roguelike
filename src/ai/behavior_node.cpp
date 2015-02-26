@@ -148,6 +148,22 @@ EnemyInRange* EnemyInRange::clone()
     return new EnemyInRange(*this);
 }
 
+int GetMTarget::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    if(chara->get_master() != NULL)
+    {
+        chara->set_target(chara->get_master()->get_target());
+        return SUCCESS;
+    }
+    return FAILURE;
+}
+
+GetMTarget* GetMTarget::clone()
+{
+    return new GetMTarget(*this);
+}
+
 int LowHealth::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
@@ -174,6 +190,21 @@ NextTo* NextTo::clone()
     return new NextTo(*this);
 }
 
+int NextToM::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    if(chara->get_master() == NULL)
+    {
+        return FAILURE;
+    }
+    return game->next_to_char(chara, chara->get_master());
+}
+
+NextToM* NextToM::clone()
+{
+    return new NextToM(*this);
+}
+
 int HasHealth::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
@@ -188,6 +219,26 @@ HasHealth* HasHealth::clone()
 {
     return new HasHealth(*this);
 }
+
+int MHealthChange::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    if(chara->master_health_changed())
+    {
+        chara->update_master_health();
+        return SUCCESS;
+    }
+    else
+    {
+        return FAILURE;
+    }
+}
+
+MHealthChange* MHealthChange::clone()
+{
+    return new MHealthChange(*this);
+}
+
 
 int ValidTarget::tick(BActor actor, Game* game)
 {
@@ -237,6 +288,25 @@ MoveTowards* MoveTowards::clone()
     return new MoveTowards(*this);
 }
 
+
+int MoveTowardsM::tick(BActor actor, Game* game)
+{
+    std::cout<<"Making my way down south..."<<std::endl;
+    Character* chara = actor.get_character();
+    if(chara->get_master() == NULL)
+    {
+        return FAILURE;
+    }
+    IntPoint goal_coords = chara->get_master()->get_coords();
+    IntPoint goal_chunk = chara->get_master()->get_chunk();
+    return game->move_to_point(chara, goal_coords, goal_chunk);
+}
+
+MoveTowardsM* MoveTowardsM::clone()
+{
+    return new MoveTowardsM(*this);
+}
+
 int MoveAway::tick(BActor actor, Game* game)
 {
     Character* chara = actor.get_character();
@@ -281,6 +351,19 @@ Wander* Wander::clone()
     return new Wander(*this);
 }
 
+
+int FreakOut::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    game->wander(chara); 
+    return RUNNING;
+}
+
+FreakOut* FreakOut::clone()
+{
+    return new FreakOut(*this);
+}
+
 int Die::tick(BActor actor, Game* game)
 {
     return DEAD;
@@ -301,6 +384,18 @@ int TurnToward::tick(BActor actor, Game* game)
 TurnToward* TurnToward::clone()
 {
     return new TurnToward(*this);
+}
+
+int TurnTowardM::tick(BActor actor, Game* game)
+{
+    Character* chara = actor.get_character();
+    game->turn_character(chara, chara->get_master());
+    return SUCCESS;
+}
+
+TurnTowardM* TurnTowardM::clone()
+{
+    return new TurnTowardM(*this);
 }
 
 int TurnAway::tick(BActor actor, Game* game)

@@ -223,6 +223,10 @@ int Game::run_away(Character* chara, IntPoint coords, IntPoint chunk)
 void Game::wander(Character* chara)
 {
     
+    if(chara->get_name() == "Wolf")
+    {
+        std::cout<<"WTF mate"<<std::endl;
+    }
     int will_move = rand() % 5;
     int x_change = rand() % 3 - 1;
     int y_change = rand() % 3 - 1;

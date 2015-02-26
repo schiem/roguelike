@@ -135,6 +135,14 @@ class MoveTowards : public BNode
         MoveTowards* clone();
 };
 
+
+class MoveTowardsM : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        MoveTowardsM* clone();
+};
+
 class MoveAway : public BNode
 {
     public:
@@ -156,6 +164,12 @@ class Wander : public BNode
         Wander* clone();
 };
 
+class FreakOut : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        FreakOut* clone();
+};
 
 class Die : public BNode
 {
@@ -169,6 +183,13 @@ class TurnToward : public BNode
     public:
         int tick(BActor actor, Game* game);
         TurnToward* clone();
+};
+
+class TurnTowardM : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        TurnTowardM* clone();
 };
 
 class TurnAway : public BNode
@@ -196,6 +217,13 @@ class EnemyInRange : public BNode
         EnemyInRange* clone();
 };
 
+class GetMTarget : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        GetMTarget* clone();
+};
+
 class NextTo : public BNode
 {
     public:
@@ -203,11 +231,25 @@ class NextTo : public BNode
         NextTo* clone();
 };
 
+class NextToM : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        NextToM* clone();
+};
+
 class HasHealth : public BNode
 {
     public:
         int tick(BActor actor, Game* game);
         HasHealth* clone();
+};
+
+class MHealthChange : public BNode
+{
+    public:
+        int tick(BActor actor, Game* game);
+        MHealthChange* clone();
 };
 
 class InWorld : public BNode

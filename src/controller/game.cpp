@@ -103,6 +103,14 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1, "You!");
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     main_char.add_item(new Weapon(main_char.get_chunk(), weapons::wood_axe));
+    Enemy* wolf = new Enemy(49, 25, 0, enemies::wolf_companion);
+    wolf->set_master(&main_char);
+    wolf->set_chunk(main_char.get_chunk());
+
+    character_list.push_back(wolf);
+    character_queue.push_back(wolf);
+    character_to_index(wolf);
+
     IntPoint buffer_coords = get_buffer_coords(main_char.get_chunk(), main_char.get_coords());
     character_index[buffer_coords.row][buffer_coords.col] = &main_char;
 
