@@ -812,6 +812,7 @@ namespace enemies
 struct PlantType
 {
     int id;
+    std::string name;
     std::vector<std::vector<Tile> > sprites;
     int harvest_tool;
     std::vector<MiscType> drops;

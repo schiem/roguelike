@@ -228,7 +228,7 @@ std::vector<MiscType> tree_drop_vec(&tree_drops[0], &tree_drops[0] + 1);
 
 namespace plants
 {
-    PlantType tree = {0, construct_big_trees(), AXE, tree_drop_vec};
+    PlantType tree = {0, "Tree", construct_big_trees(), AXE, tree_drop_vec};
     PlantType PLANT_LIST[1] = {tree};
 }
 

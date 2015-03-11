@@ -35,6 +35,7 @@
 #include <bresenham.h>
 #include <pathfinding.h>
 #include <string>
+#include <message.h>
 
 //Forward declarations
 struct Tile;

@@ -248,7 +248,7 @@ void Character::take_damage(Weapon* weapon, int part_hit, int strength){
     current_stats[HEALTH] -= damage;
     
     stringstream ss;
-    ss<<"You have taken "<<damage<<" points of damage.";
+    ss<<"You were hit in the "<<BODY_PARTS[part_hit]<<" and have taken "<<damage<<" points of damage.";
     MessageBoard::instance().add_message(ss.str(), ai_id);
 }
 
@@ -292,7 +292,7 @@ void Character::attack(Character* _chara)
     }
     else
     {
-        message = "You hit the " + _chara->get_name();
+        message = "You hit the " + _chara->get_name() + " in the " + BODY_PARTS[part_hit];
     }
     MessageBoard::instance().add_message(message, ai_id);
 }

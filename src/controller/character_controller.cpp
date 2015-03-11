@@ -443,6 +443,7 @@ void Game::harvest_plant(Plant *plant, Character* chara)
 {
     if(chara != NULL)
     {
+        std::string message;
         if(chara->has_item_category(plant->get_harvest_tool()))
         {
             std::vector<Misc*> drops = plant->pop_drops();
@@ -450,9 +451,15 @@ void Game::harvest_plant(Plant *plant, Character* chara)
             {
                 chara->add_item(drops[i]);
             }
-
             chunk_map.get_chunk_abs(plant->get_chunk_y(), plant->get_chunk_x())->kill_plant(plant, chara->get_depth());
+            message = "You have harvested a " + plant->get_name();
         }
+        else
+        {
+            message = "You don't have the tool to do that!";
+        }
+        
+        MessageBoard::instance().add_message(message, chara->get_ai_id());
     }
 }
 

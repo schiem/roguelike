@@ -57,6 +57,11 @@ class Plant
         int chunk_y;
 
         /**
+         * The name of the plant.
+         */
+        std::string name;
+        
+        /**
         * The character representing the plant.
          * TODO: Make this a 2d vector so that plants
          * can be as biiiiig as we want them to be.
@@ -162,6 +167,11 @@ class Plant
          * the plant.
          */
         std::vector<Misc*> pop_drops();
+
+        /**
+         * Public accessor for the name.
+         */
+        std::string get_name();
 
         void set_x(int _x);
         void set_y(int _y);

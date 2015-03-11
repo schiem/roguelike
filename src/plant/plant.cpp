@@ -36,6 +36,7 @@ Plant::Plant(int _x, int _y, int _chunk_x, int _chunk_y, PlantType plant)
     chunk_y = _chunk_y;
     sprites = plant.sprites;
     harvest_tool = plant.harvest_tool;
+    name = plant.name;
     for(int i=0;i<plant.drops.size();i++)
     {
         drops.push_back(new Misc(IntPoint(y, x), plant.drops[i]));
@@ -53,6 +54,7 @@ Plant::Plant(const Plant& p)
     chunk_x = p.chunk_x;
     chunk_y = p.chunk_y;
     sprites = p.sprites;
+    name = p.name;
     for(int i=0;i<p.drops.size();i++)
     {
         Misc* item = new Misc;
@@ -68,6 +70,7 @@ Plant& Plant::operator=(const Plant& p)
     chunk_x = p.chunk_x;
     chunk_y = p.chunk_y;
     sprites = p.sprites;
+    name = p.name;
     for(int i=0;i<drops.size();i++)
     {
         delete drops[i];
@@ -151,6 +154,11 @@ IntPoint Plant::get_coords()
 int Plant::get_harvest_tool()
 {
     return harvest_tool;
+}
+
+std::string Plant::get_name()
+{
+    return name;
 }
 
 std::vector<Misc*> Plant::get_drops()
