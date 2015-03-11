@@ -146,7 +146,7 @@ void DebugConsole::killall(std::vector<std::string> command, std::vector<int> ar
     for(int i=0;i<enemy_list->size();i++)
     {
         Character* temp = enemy_list->at(i);
-        temp->take_damage(temp->get_max_hp());
+        temp->kill();
     }
 }
 

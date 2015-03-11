@@ -40,7 +40,7 @@ Character::Character(int _x, int _y, int _depth)
     master_health = 0;
 }
 
-Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name) {
+Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name, WeaponType wep) {
 
     timer = 0;
     stats = _stats;
@@ -69,6 +69,7 @@ Character::Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, Misc
     direction = 0;
     sight = 20;
     view = 20;
+    natural_weapon = Weapon(IntPoint(y, x), wep);
 }
 
 Character::~Character()
@@ -131,6 +132,7 @@ Character::Character(const Character& chara)
     sight = chara.sight;
     view = chara.view;
     level_up = chara.level_up;
+    natural_weapon = chara.natural_weapon;
 }
 
 Character& Character::operator=(const Character& chara)
@@ -198,6 +200,7 @@ Character& Character::operator=(const Character& chara)
     sight = chara.sight;
     view = chara.view;
     level_up = chara.level_up;
+    natural_weapon = chara.natural_weapon;
 }
 
 bool Character::act(long ms)
@@ -227,13 +230,49 @@ bool Character::is_alive() const {
     }
 }
 
-void Character::take_damage(int damage){
+void Character::take_damage(Weapon* weapon, int part_hit, int strength){
+    //damage should change based on where we hit
+    int body_reduction = DAM_REDUCTION[part_hit];
+
+    //start with the base damage of the weapon
+    int base = weapon->get_damage();
+
+    //figure out how much armor will reduce it by
+    int armor_reduction = get_armor_dam(part_hit, weapon->get_type());
+
+    //get the actual damage done
+    int damage = body_reduction * ((base + strength) - (armor_reduction * (base + strength)));
+
+    //deal the damage
     current_stats[HEALTH] -= damage;
 }
 
 void Character::attack(Character* _chara)
 {
-    _chara->take_damage(current_stats[ATTACK]);
+    bool hit = rand() % 100;
+
+    //did we hit?
+    bool did_hit = (hit <= accuracy_stat());
+    
+    //how solidly did we hit?
+    float solid_hit = hit/accuracy_stat();
+
+    //check if it was dodged
+    bool did_dodge = _chara->did_dodge(solid_hit);
+    
+    //get the body part hit
+    int part_hit = get_part_hit(rand() % 100); 
+    
+    //did the other character block it?
+    //we'll leave this out for now
+    //bool blocked = chara->did_block(solid_hit, part_hit, get_weapon()->get_type());
+    
+    //if we somehow managed to meet all of those conditions
+    //then we should do the damage
+    if(did_hit && !did_dodge)
+    {
+        _chara->take_damage(get_weapon(), part_hit, get_current_stat(STRENGTH));
+    }
     _chara->set_target(this);
 }
 
@@ -736,21 +775,51 @@ bool Character::master_health_changed()
     return master_health != master->get_cur_hp();
 }
 
+Weapon* Character::get_weapon()
+{
+    if(equipment[6] == NULL || !equipment[6]->can_wield)
+    {
+        return &natural_weapon;
+    }
+    else
+    {
+        return ((Weapon*)equipment[6]);
+    }
+}
 
+void Character::kill()
+{
+    set_current_stat(HEALTH, 0);
+}
 
 //------------------Character Stats---------------------//
 
-int Character::dodge_stat()
+float Character::dodge_stat()
 {
     int dex = get_current_stat(DEXTERITY);
     //yay magic numbers!
-    return ((dex - 0.5)/(dex + 50)) * 100;
+    return ((dex)/(dex + 50)) * 100;
 }
 
-int Character::accuracy_stat()
+float Character::accuracy_stat()
 {
     int dex = get_current_stat(DEXTERITY);
-    return ((dex - 1)/(dex + 10)) * 100;
+    return ((dex)/(dex + 10)) * 100;
 }
 
+bool Character::did_dodge(float hit)
+{
+    int dodge = rand() % 100;
+    float true_dodge = dodge/100;
+    float dodge_score = (1 - hit) * dodge_stat();
+    return dodge <= dodge_score;
+}
 
+/**
+bool Character::did_block(int hit, int body_part, int type)
+{
+    int block = get_armor_hit(body_part, type);
+    return block > 
+
+}
+**/

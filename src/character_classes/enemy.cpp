@@ -43,7 +43,7 @@ Enemy::Enemy(int _x, int _y, int _depth, EnemyType enemy) : Character(_x, _y, _d
     speed = enemy.speed;
     sprite = enemy.sprite;
     corpse = new Misc(IntPoint(x, y), enemy.corpse); 
-
+    natural_weapon = Weapon(IntPoint(y, x), enemy.natural_weapon);
 
     //generate the enemy's list of equipment and weapons
     vector<Equipment*> equip_list = generate_equipment(enemy.eq);

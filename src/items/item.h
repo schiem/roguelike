@@ -221,6 +221,11 @@ class Equipment : public Item
          * Determines the damage bonus gained from the equipment.
          */
         std::vector<float> to_dam;
+    
+        /**
+         * The material the equipment is made out of.
+         */
+        int material;
     public:
         /**
          * Blank constructor.
@@ -257,6 +262,11 @@ class Equipment : public Item
          * Public accessor for to_dam.
          */
         float get_dam(int type);
+
+        /**
+         * The material the object is made out of, defined in defs.cpp.
+         */
+        int get_material();
 };
 
 /**

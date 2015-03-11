@@ -39,6 +39,7 @@ Equipment::Equipment(IntPoint _coords, EquipType eqp) : Item(eqp.rarity, eqp.wei
     size = eqp.size;
     to_hit.assign(&eqp.hit[0], &eqp.hit[0] + 3);
     to_dam.assign(eqp.dam, eqp.dam + sizeof(eqp.dam)/sizeof(eqp.dam[0]));
+    material = eqp.material;
     can_use = eqp.use;
     can_equip = true;
     can_wield = false;
@@ -66,4 +67,9 @@ int Equipment::get_hit(int type)
 float Equipment::get_dam(int type)
 {
     return to_dam[type];
+}
+
+int Equipment::get_material()
+{
+    return material;
 }

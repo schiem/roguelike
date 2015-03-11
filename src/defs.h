@@ -42,6 +42,30 @@
  * @todo Why on earth is this in the defs and not the character?!
  * @see Character::current_stats, Character::stats
  */
+
+enum BODY
+{
+    HEAD,
+    TORSO,
+    LEGS,
+    BOOTS,
+    ARMS,
+    HANDS,
+    WIELD
+};
+
+//make sure this adds up to 100
+const int HIT_CHANCE[] = {10, 40, 15, 10, 15, 10};
+
+//The multiplier for hitting a specific body part.
+const float DAM_REDUCTION[] = {1.5, 0.5, 1.0, 0.75, 1.0, 0.75};
+
+//total number of body parts
+const int NUM_PARTS = 6; 
+
+//returns the part of the body that was hit.
+int get_part_hit(int chance);
+
 enum STATS
 {
     HEALTH,
@@ -66,7 +90,16 @@ enum ITEM_CATEGORY
     BOW,
     ARMOR,
     INGREDIENT,
+    HAND,
     USELESS
+};
+
+enum MATERIALS
+{
+    LEATHER,
+    BRONZE,
+    IRON,
+    STEEL
 };
 
 enum MESSAGES
@@ -366,6 +399,11 @@ struct EquipType
     int category;
 
     /**
+     * The material the equipment is made out of.
+     */
+    int material;
+
+    /**
      * Comparitor operator for equipment.
      */
     bool operator==(const EquipType& rhs) const
@@ -602,6 +640,8 @@ namespace weapons
 {
     extern WeaponType wood_axe;
     extern WeaponType dagger;
+    extern WeaponType fist;
+    extern WeaponType claws;
 }
 
 namespace consumables
@@ -752,6 +792,11 @@ struct EnemyType
      * The spawner to use for this type of enemy.
      */
     SpawnType spawner;
+
+    /**
+     * The natural weapon.
+     */
+    WeaponType natural_weapon;
 
     /**
      * Comparison operator for EnemyType.

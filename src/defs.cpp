@@ -25,6 +25,21 @@ std::string STAT_NAMES[NUM_STATS] = {"Health", "Attack", "Endurance", "Experienc
 
 std::vector<std::vector<std::string> > MESSAGE_LIST = construct_messages(); 
 
+int get_part_hit(int chance)
+{
+    int accum = 0;
+    for(int i=0;i<NUM_PARTS;i++)
+    {
+        accum += HIT_CHANCE[i];
+        if(chance <= accum)
+        {
+            return i;
+        }
+    }
+    return 0;
+}
+
+
 /****************************
  *   TERRAIN DEFS
  ***************************/
@@ -142,13 +157,16 @@ namespace map_tile {
 
 namespace equipment
 {
-    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of leather boots.", 0, 3, 0, {0, 0, 0}, {.1, .1, 0}, false, 2, ARMOR};
+    EquipType boots = {2.0, tiledef::BOOTS, "Boots", "A simple pair of boots.", 0, 3, 0, {0, 0, 0}, {.1, .1, 0}, false, 2, ARMOR, LEATHER};
 }
 
 namespace weapons
 {
     WeaponType wood_axe = {4.0, tiledef::AXE, "Wood Axe", "A large axe for cutting trees.", 0, 2, 1, 1, false, 1, AXE}; 
     WeaponType dagger = {2.0, tiledef::SWORD,  "Small Dagger", "An unfortunately pathetic dagger.", 0, 3, 2, 1, false, 1, SHORT_BLADE};
+    WeaponType fist = {0.0, tiledef::AXE, "Fists", "Used for bludgeoning.", 0, 1, 3, 1, false, 0, HAND};
+    WeaponType claws = {0.0, tiledef::AXE, "Claws", "Used for slashing.", 0, 1, 3, 1, false, 0, HAND};
+
 }
 
 namespace consumables
@@ -198,9 +216,9 @@ std::vector<int> wolf_stats(&wolf_stats_arr[0], &wolf_stats_arr[0] + NUM_STATS);
 
 namespace enemies
 {
-    EnemyType kobold = {5, kob_stats, 0, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec, spawners::kobold};
-    EnemyType rabbit = {3, rab_stats, 1, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit};
-    EnemyType wolf_companion = {1, wolf_stats, 2, 2, 15, 20, 100, "Wolf", tiledef::WOLF, misc::wolf_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), NULL}; 
+    EnemyType kobold = {5, kob_stats, 0, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec, spawners::kobold, weapons::claws};
+    EnemyType rabbit = {3, rab_stats, 1, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit, weapons::claws};
+    EnemyType wolf_companion = {1, wolf_stats, 2, 2, 15, 20, 100, "Wolf", tiledef::WOLF, misc::wolf_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit, weapons::claws}; 
     EnemyType ENEMY_LIST[3] = {kobold, rabbit};
     int NUM_ENEMIES = 3; 
 }

@@ -98,6 +98,11 @@ class Character
         int inventory_size;
 
         /**
+         * The 'natural' weapon used to attack when no weapon is equipped.
+         */
+        Weapon natural_weapon;
+
+        /**
          * How the character will appear in the game.
          */
         Tile sprite;
@@ -242,7 +247,7 @@ class Character
          * @param _chunk_y The y coordinate of the chunk to place the character.
          * @param _depth The depth in the chunk to place the charcter.
          */
-        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name);
+        Character(std::vector<int> _stats, int _x, int _y, Tile _sprite, MiscType _corpse, int _chunk_x, int _chunk_y, int _depth, int _morality, int _speed, int _ai_id, std::string _name, WeaponType wep);
 
         /**
          * The constructor for the character class.
@@ -271,12 +276,13 @@ class Character
         bool is_alive() const;
 
         /**
-         * Reduces the character's current health by a given amount.
-         * @param damage The amount to reduce the character's health by.
+         * Reduces the character's current health based on the
+         * weapon used to attack, the part of the body being
+         * hit, and the strength of the character hitting them.
          * @see current_stats
          * @see stats
          */
-        void take_damage(int damage);
+        void take_damage(Weapon* weapon, int part_hit, int strength);
 
         /**
          * Reduces a given character's health by a certain amount.
@@ -287,21 +293,11 @@ class Character
          * @see stats
          */
         void attack(Character* _chara);
-
-        /**
-         * Determines whether or not the attack hit the character.
-         * @parameter _chara The character being attacked.
-         * @return -1 If missed, otherwise the index of the body part hit.
-         */
-        int did_hit(Character* _chara);
-
-         /**
-          * Determines the amount of damage done by the attack.
-          * @parameter _chara The character being attacked.
-          * @return The damage done.
-          */
-        int damage_dealt(Character* _chara);
         
+        /**
+         * Checks to see if a character dodged an attack.
+         */
+        bool did_dodge(float hit);
         
         /**
          * Public access function for the character's inventory.
@@ -316,6 +312,12 @@ class Character
           * @see equipment
           */
         std::vector<Item*>* get_equipment();
+
+        /**
+         * Returns the weapon currently equipped.  If no weapon is
+         * equipped, it will return the natural weapon.
+         */
+        Weapon* get_weapon();
 
         /**
          * Public accessor for the sight.
@@ -696,13 +698,13 @@ class Character
          * The characters ability to dodge.  This is derived from
          * the stat "Dexterity."
          */
-        int dodge_stat();
+        float dodge_stat();
        
         /**
          * The character's accuracy, representing the percentage
          * of how often a character hits something.
          */
-        int accuracy_stat();
+        float accuracy_stat();
 
 
         /**
@@ -730,7 +732,12 @@ class Character
          * is different than the last known master's health.
          */
         bool master_health_changed();
-    
+        
+        /**
+         * Kills the character.
+         */
+        void kill();
+
 };
 
 struct character_info {
