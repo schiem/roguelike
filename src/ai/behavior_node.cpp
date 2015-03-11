@@ -291,7 +291,6 @@ MoveTowards* MoveTowards::clone()
 
 int MoveTowardsM::tick(BActor actor, Game* game)
 {
-    std::cout<<"Making my way down south..."<<std::endl;
     Character* chara = actor.get_character();
     if(chara->get_master() == NULL)
     {

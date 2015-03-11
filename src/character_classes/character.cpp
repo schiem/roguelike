@@ -242,6 +242,7 @@ void Character::take_damage(Weapon* weapon, int part_hit, int strength){
 
     //get the actual damage done
     int damage = body_reduction * ((base + strength) - (armor_reduction * (base + strength)));
+    
 
     //deal the damage
     current_stats[HEALTH] -= damage;
@@ -249,7 +250,7 @@ void Character::take_damage(Weapon* weapon, int part_hit, int strength){
 
 void Character::attack(Character* _chara)
 {
-    bool hit = rand() % 100;
+    int hit = rand() % 100 + 1;
 
     //did we hit?
     bool did_hit = (hit <= accuracy_stat());
@@ -262,7 +263,7 @@ void Character::attack(Character* _chara)
     
     //get the body part hit
     int part_hit = get_part_hit(rand() % 100); 
-    
+
     //did the other character block it?
     //we'll leave this out for now
     //bool blocked = chara->did_block(solid_hit, part_hit, get_weapon()->get_type());
@@ -796,15 +797,16 @@ void Character::kill()
 
 float Character::dodge_stat()
 {
-    int dex = get_current_stat(DEXTERITY);
+    float dex = (float)get_current_stat(DEXTERITY);
     //yay magic numbers!
-    return ((dex)/(dex + 50)) * 100;
+    return (((dex)/(dex + 50)) * 100);
 }
 
-float Character::accuracy_stat()
+int Character::accuracy_stat()
 {
-    int dex = get_current_stat(DEXTERITY);
-    return ((dex)/(dex + 10)) * 100;
+    float dex = (float)get_current_stat(DEXTERITY);
+    float dex_perc = (dex/(dex + 20));
+    return (dex_perc * 100);
 }
 
 bool Character::did_dodge(float hit)

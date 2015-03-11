@@ -704,7 +704,7 @@ class Character
          * The character's accuracy, representing the percentage
          * of how often a character hits something.
          */
-        float accuracy_stat();
+        int accuracy_stat();
 
 
         /**
