@@ -246,6 +246,10 @@ void Character::take_damage(Weapon* weapon, int part_hit, int strength){
 
     //deal the damage
     current_stats[HEALTH] -= damage;
+    
+    stringstream ss;
+    ss<<"You have taken "<<damage<<" points of damage.";
+    MessageBoard::instance().add_message(ss.str(), ai_id);
 }
 
 void Character::attack(Character* _chara)
@@ -254,7 +258,7 @@ void Character::attack(Character* _chara)
 
     //did we hit?
     bool did_hit = (hit <= accuracy_stat());
-    
+  
     //how solidly did we hit?
     float solid_hit = hit/accuracy_stat();
 
@@ -275,6 +279,22 @@ void Character::attack(Character* _chara)
         _chara->take_damage(get_weapon(), part_hit, get_current_stat(STRENGTH));
     }
     _chara->set_target(this);
+
+    //deal with the messages
+    std::string message;
+    if(!did_hit)
+    {
+        message = "You missed the " + _chara->get_name();
+    }
+    else if(did_dodge)
+    {
+        message = "Your attack was dodged by the " + _chara->get_name();
+    }
+    else
+    {
+        message = "You hit the " + _chara->get_name();
+    }
+    MessageBoard::instance().add_message(message, ai_id);
 }
 
 int Character::get_sight()

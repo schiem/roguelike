@@ -102,17 +102,6 @@ enum MATERIALS
     STEEL
 };
 
-enum MESSAGES
-{
-    ATTACK_SELF,
-    ATTACK_OTHER,
-    HARVEST_PLANT,
-    KILL_OTHER
-};
-
-const int NUM_MESSAGES = 4;
-
-extern std::vector<std::vector<std::string> > MESSAGE_LIST;
 
 /*--------------------------
  *   TERRAIN DEFS

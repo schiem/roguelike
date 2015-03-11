@@ -43,6 +43,7 @@ roguelike_SOURCES = \
     src/misc_classes/binary_space.cpp\
     src/misc_classes/spring_matrix.cpp\
 	src/misc_classes/pathfinding.cpp\
+    src/misc_classes/message.cpp\
     src/character_classes/character.cpp\
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
@@ -55,7 +56,6 @@ roguelike_SOURCES = \
     src/controller/chunkmap_controller.cpp\
     src/controller/animation_controller.cpp\
     src/controller/debug_controller.cpp\
-    src/controller/message_controller.cpp\
     src/menu/menu.cpp\
 	src/menu/start_menu.cpp\
     src/menu/main_menu.cpp\
@@ -115,6 +115,7 @@ roguelike_SOURCES = \
     src/misc_classes/binary_space.h\
     src/misc_classes/spring_matrix.h\
     src/misc_classes/pathfinding.h\
+    src/misc_classes/message.h\
     src/character_classes/character.h\
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\

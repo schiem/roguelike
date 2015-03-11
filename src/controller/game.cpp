@@ -127,11 +127,6 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     visibility_on = true;
     initialized = true;
     
-    //set up the message queue.
-    max_messages = 20;
-    message_index = 0;
-    messages.resize(max_messages);
-    messages[message_index] = "Testing.";
 }
 
 

@@ -33,6 +33,7 @@
 #include <helper.h>
 #include <math_helper.h>
 #include <bresenham.h>
+#include <message.h>
 
 /**
  * A class which is used to construct all characters in game.

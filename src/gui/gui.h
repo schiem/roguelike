@@ -37,6 +37,7 @@
 #include <debug.h>
 #include <behavior_tree.h>
 #include <ai_defs.h>
+#include <message.h>
 
 //forward declarations
 class Menu;

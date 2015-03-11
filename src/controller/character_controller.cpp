@@ -363,18 +363,6 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
 
 bool Game::attack_char(Character* chara, Character* target)
 {
-    if(target == &main_char)
-    {
-        std::vector<string> vec2;
-        vec2.push_back(chara->get_name());
-        add_message(concatenate_vectors(MESSAGE_LIST[ATTACK_SELF], vec2));
-    }
-    else if(chara == &main_char)
-    {
-        std::vector<string> vec2;
-        vec2.push_back(target->get_name());
-        add_message(concatenate_vectors(MESSAGE_LIST[ATTACK_OTHER], vec2));
-    }
     chara->attack(target);
     chara->set_target(target);
     chara->reduce_endurance(2);

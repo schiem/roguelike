@@ -1,5 +1,5 @@
 /**
- *  MESSAGE_CONTROLLER.CPP
+ *  MESSAGE.H
  *
  *  This file is part of ROGUELIKETHING.
  *
@@ -17,27 +17,45 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <game.h>
+#include <message.h>
 
-void Game::add_message(std::string message)
+MessageBoard& MessageBoard::instance()
 {
-    message_index += 1;
-    if(message_index >= max_messages)
-    {
-        message_index = 0;
-    }
-    messages[message_index] = message;
+    static MessageBoard mb_instance; 
+    return mb_instance;
 }
 
-std::string Game::get_current_message()
+MessageBoard::MessageBoard()
+{
+    max_messages = 20;
+    message_index = 0;
+    messages.resize(max_messages);
+    messages[message_index] = "Testing.";
+}
+
+void MessageBoard::add_message(std::string message, int id)
+{
+    if(id == -1)
+    {
+        message_index += 1;
+        if(message_index >= max_messages)
+        {
+            message_index = 0;
+        }
+        messages[message_index] = message;
+    }
+}
+
+std::string MessageBoard::get_current_message()
 {
     return messages[message_index];
 }
 
-std::string Game::get_message(int index)
+std::string MessageBoard::get_message(int index)
 {
     if(index >= 0 && index < max_messages)
     {
         return messages[index];
     }
 }
+
