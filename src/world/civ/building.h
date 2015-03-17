@@ -27,6 +27,7 @@
 #include <room.h>
 #include <stdlib.h>
 #include <defs.h>
+#include <character.h>
 
 typedef std::vector<std::vector<Tile> > TileMatrix;
 typedef std::vector<std::vector<Tile*> > TilePointerMatrix;
@@ -93,6 +94,11 @@ class Building
          * Holds the tiles of the house.
          */
         TileMatrix floor_plan; 
+        
+        /**
+         * The Character which owns the house.
+         */
+        Character* owner;
         
         /**
          * Generates the rooms and floor plan from a Binary Space Tree
@@ -192,6 +198,16 @@ class Building
          * Gets a tile at a given x and y.
          */
         Tile tile_at(int y, int x);
+
+        /**
+         * Makes a Character an owner of a house.
+         */
+        void add_owner(Character* chara);
+
+        /**
+         * Gets the owner of a house.
+         */
+        Character* get_owner();
 };
 
 #endif

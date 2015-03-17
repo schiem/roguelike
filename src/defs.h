@@ -264,6 +264,23 @@ struct MapTile {
      Tile base_tile;
 
     /**
+     * Tells whether or not a tile should be seeded during world
+     * generation.
+     */
+    bool seeded;
+
+    /**
+     * Tells whether or not a tile should be included in the
+     * smoothing pass during world generation.
+     */
+    bool smoothed;
+
+    /**
+     * Determines the amount of smoothing done.
+     */
+    int smooth_amount;
+
+    /**
      * Comparison operator for MapTiles.
      */
     bool operator==(const MapTile& rhs) const {
@@ -279,12 +296,15 @@ struct MapTile {
 };
 
 namespace map_tile {
-    extern MapTile MAP_TILE_INDEX[5];
+    const static int NUM_MAP_TILE = 6;
+    
+    extern MapTile MAP_TILE_INDEX[NUM_MAP_TILE];
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
     extern MapTile CURSOR;
     extern MapTile MAP_FOREST;
     extern MapTile MAP_BEACH;
+    extern MapTile CITY;
     enum BLENDTYPES
     {
         HARD,

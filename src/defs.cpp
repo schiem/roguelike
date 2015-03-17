@@ -42,7 +42,7 @@ int get_part_hit(int chance)
 /****************************
  *   TERRAIN DEFS
  ***************************/
-//{int char_count, int tile_id, int color, bool can_be_moved_through, bool visible, bool opaque, bool seen, bool can_build_overtop} `
+//{int char_count, int tile_id, int color, bool can_be_moved_through, bool visible, bool opaque, bool seen, bool can_build_overtop} 
 namespace tiledef {
     Tile  EMPTY           =  {0,    0,   0,             1,  0,  0,  0,  0};
     Tile  OVERWORLD_DIRT  =  {250,  1,   BROWN,         1,  0,  0,  0,  1};
@@ -125,17 +125,19 @@ namespace tiledef {
 
 
 namespace map_tile {
-    MapTile MAP_DEFAULT = {240, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT};
-    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER};
-    MapTile MAP_BEACH = {178, TAN, 2, false, NORMAL, tiledef::SAND1};
-    MapTile MAP_FOREST = {116, DARK_GREEN, 3, true, NORMAL, tiledef::DIRT};
-    MapTile CURSOR = {88, WHITE, 4, false, NORMAL, tiledef::EMPTY};
+    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER, true, true, 2};
+    MapTile MAP_FOREST = {116, DARK_GREEN, 3, true, NORMAL, tiledef::DIRT, true, true, 3};
+    MapTile CITY = {9, BROWN, 4, true, NORMAL, tiledef::DIRT, true, true, 3};
+    MapTile MAP_BEACH = {178, TAN, 2, false, NORMAL, tiledef::SAND1, false, false};
+    MapTile MAP_DEFAULT = {240, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT, false, false};
+    MapTile CURSOR = {88, WHITE, 5, false, NORMAL, tiledef::EMPTY, false, false};
 
-    MapTile MAP_TILE_INDEX[5] = { //THIS MUST CORRESPOND TO MAP TILE IDS
-        MAP_DEFAULT, //ID 0
-        MAP_WATER,   //ID 1
+    MapTile MAP_TILE_INDEX[NUM_MAP_TILE] = { //THIS MUST CORRESPOND TO MAP TILE IDS
+        MAP_FOREST,  //ID 0
+        CITY,
+        MAP_WATER, 
         MAP_BEACH,   //ETC
-        MAP_FOREST,
+        MAP_DEFAULT, 
         CURSOR
     };
 }

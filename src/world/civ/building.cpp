@@ -39,6 +39,7 @@ Building::Building(int x, int y, int _height, int _width)
     floor_plan.resize(height);
     floor = tiledef::WOOD_FLOOR;
     wall = tiledef::WOOD_WALL;
+    owner = NULL;
     for(int i=0;i<floor_plan.size();i++)
     {
         floor_plan[i].resize(width);
@@ -219,4 +220,14 @@ int Building::get_height()
 Tile Building::tile_at(int y, int x)
 {
     return floor_plan[y][x];
+}
+
+void Building::add_owner(Character* chara)
+{
+    owner = chara;
+}
+
+Character* Building::get_owner()
+{
+    return owner;
 }

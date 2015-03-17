@@ -74,7 +74,8 @@ void WorldMap::starting_noise(int border) {
             set_land_or_water(i, j, 3, false);
         }
     }
-
+    
+    /**
     for(int i = 1; i < (height - 1); i++) {
         for(int j = 1; j < (width - 1); j++) {
             if(map[i+1][j] == map[i][j+1] &&
@@ -85,6 +86,7 @@ void WorldMap::starting_noise(int border) {
             }
         }
     }
+    */
 }
 
 void WorldMap::smoothing_pass(MapTile tile_type, int threshold) {
@@ -93,6 +95,7 @@ void WorldMap::smoothing_pass(MapTile tile_type, int threshold) {
         for(int j = 0; j < width; j++) {
             num = count_in_surrounding_tiles(i, j, tile_type);
             if(num >= threshold) {
+                //what is this doing?!
                 if(rand() % (8 - (num - 1)) == 0) {
                     map[i][j] = tile_type;
                 }
@@ -106,8 +109,18 @@ void WorldMap::generate_land_mass() {
     ocean_borders(border_size);
     starting_noise(border_size);
     cout<<height<<" "<<width<<endl;
-
+    for(int i=0;i<map_tile::NUM_MAP_TILE - 1;i++)
+    {
+        MapTile tile = map_tile::MAP_TILE_INDEX[i]; 
+        if(tile.smoothed)
+        {
+            for(int j = 0;j < 10; j++) {
+                smoothing_pass(map_tile::MAP_TILE_INDEX[i], tile.smooth_amount);
+            }
+        }
+    }
     //Tweaking any values here can give vastly different results.
+    /**
     for(int i = 0; i < 15; i++) {
         smoothing_pass(map_tile::MAP_WATER, 4);
     }
@@ -121,10 +134,21 @@ void WorldMap::generate_land_mass() {
     for(int i = 0; i < 12; i++) {
         smoothing_pass(map_tile::MAP_FOREST, 3);
     }
+    **/
 }
 
 void WorldMap::set_land_or_water(int row, int col,
                                  int mod, bool more_water) {
+    //Notice that this won't include the last element.
+    //That's the cursor.
+    //The -1 is to avoid having it become default.
+    MapTile tile = map_tile::MAP_DEFAULT;
+    do{
+        int index = rand() % (map_tile::NUM_MAP_TILE); 
+        tile = map_tile::MAP_TILE_INDEX[index];
+        map[row][col] = tile;
+    } while(!tile.seeded);
+    /**
     if(more_water) {
         if(rand() % mod == 0) {
             map[row][col] = map_tile::MAP_FOREST;
@@ -138,28 +162,29 @@ void WorldMap::set_land_or_water(int row, int col,
             map[row][col] = map_tile::MAP_FOREST;
         }
     }
+    **/
 }
 
 void WorldMap::ocean_borders(int border) {
     for(int i = 0; i < border; i++) {
         for(int j = 0; j < width; j++) {
-            set_land_or_water(i, j, 15, true);
+            map[i][j] = map_tile::MAP_WATER;
         }
     }
 
     for(int i = (height - border); i < height; i++) {
         for(int j = 0; j < width; j++) {
-            set_land_or_water(i, j, 15, true);
+            map[i][j] = map_tile::MAP_WATER;
         }
     }
 
     for(int i = border; i < (height - border); i++) {
         for(int j = 0; j < border; j++) {
-            set_land_or_water(i, j, 15, true);
+            map[i][j] = map_tile::MAP_WATER;
         }
 
         for(int j = (width - border); j < width; j++){
-            set_land_or_water(i, j, 15, true);
+            map[i][j] = map_tile::MAP_WATER;
         }
     }
 
