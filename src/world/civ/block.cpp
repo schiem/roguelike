@@ -38,7 +38,6 @@ Block::Block(int tl_x, int tl_y, int _height, int _width)
     tl = IntPoint(tl_y, tl_x);
     height = _height;
     width = _width;
-    std::cout<<"Top Left corner x: "<<tl_x<<", y: "<<tl_y<<", height: "<<height<<", width: "<<width<<std::endl; 
     generate_buildings();
 }
 
@@ -57,7 +56,7 @@ void Block::generate_buildings()
         int new_y = rand_y + house_nodes[i]->tl_y;
         int new_height = house_nodes[i]->height - (rand() % 2 + rand_y + 1);
         int new_width = house_nodes[i]->width - (rand() % 2 + rand_x + 1);
-        buildings.push_back(Building(new_x, new_y, new_height, new_width));
+        buildings.push_back(Building(new_x + tl.col, new_y + tl.row, new_height, new_width));
     }
 }
 

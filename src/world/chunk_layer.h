@@ -1,3 +1,25 @@
+/**
+ *  @file CHUNK_LAYER.H
+ *  @author Michael & Seth Yoder
+ *
+ *  @section LICENSE
+ *
+ *  This file is part of ROGUELIKETHING.
+ *
+ *  ROGUELIKETHING is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  ROGUELIKETHING is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef CHUNK_LAYER
 #define CHUNK_LAYER
 
@@ -6,12 +28,15 @@
 #include <room.h>
 #include <vector>
 #include <plant.h>
+#include <building.h>
 
 typedef std::vector<std::vector<Tile> > TileMatrix;
 class ChunkLayer {
 
     private:
+        //is this really the place for this?  The answer is no. It's not.
         static const int MAX_ROOMS=15;
+        
         /**
          * The central data model for the class: A two-dimensional matrix
          * storing the layer's tiles.
@@ -24,20 +49,15 @@ class ChunkLayer {
         std::vector<Item*> items;
 
         /**
-         * A vector storing all equipment on the chunk.
-         */
-        std::vector<EquipType> equipment;
-
-        /**
-         * All weapons on the chunk.
-         */
-        std::vector<WeaponType> weapons;
-
-        /**
          * The plants present in the given layer.  Shouldn't need to
          * be a pointer.
          */
         std::vector<Plant> plants;
+        
+        /**
+         * The buildings present in the layer.
+         */
+        std::vector<Building> buildings;
         
         /**
          * Copies over all values from the given layer to this layer.
@@ -228,6 +248,17 @@ class ChunkLayer {
          * Checks to see if a point is in the layer.
          */
         bool in_layer(int x, int y);
+
+        /**
+         * Adds a building to the layer.
+         */
+        void add_building(Building building);
+        
+        /**
+         * Returns the buildings in the layer.
+         */
+        std::vector<Building>* get_buildings();
+
 
         /**
          * Prints an ASCII representation of the layer to stdout.

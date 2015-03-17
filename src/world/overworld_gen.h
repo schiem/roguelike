@@ -58,6 +58,13 @@ namespace overworld_gen {
     void build_forest_overworld(ChunkLayer& ground);
 
     /**
+     * Constructs a city object in this chunk.  For now, this will
+     * only add buildings to the chunk, there won't be an actual
+     * city object.
+     */
+    void build_city_overworld(ChunkLayer& ground);
+    
+    /**
      * Build the edges of this chunk's topmost layer based on the edges of the
      * chunks surrounding it.
      */

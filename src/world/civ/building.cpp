@@ -222,6 +222,11 @@ Tile Building::tile_at(int y, int x)
     return floor_plan[y][x];
 }
 
+Tile* Building::tile_pointer_at(int y, int x)
+{
+    return &floor_plan[y][x];
+}
+
 void Building::add_owner(Character* chara)
 {
     owner = chara;

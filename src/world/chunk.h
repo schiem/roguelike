@@ -38,6 +38,9 @@
 #include <defs.h>
 #include <ctime>
 #include <spring_matrix.h>
+#include <building.h>
+#include <settlement.h>
+#include <block.h>
 
 class Plant;
 class Spawner;
@@ -139,6 +142,7 @@ class Chunk{
          */
         std::vector<std::vector<int> > heightmap;
 
+
     public:
         /**
          * Empty constructor. \todo check if this can be empty.
@@ -199,6 +203,15 @@ class Chunk{
          * Builds a chunk with only a sandy overworld.
          */
         void build_beach_chunk();
+        
+        /**
+         * Builds a chunk with a city in it.  As of right now,
+         * there's no continuity between adjacent chunks which
+         * are city chunks, which is too bad, and I need to 
+         * think of a way to apply a single generated city
+         * across multiple chunks.
+         */
+        void build_city_chunk();
 
         /**
          * Adds some dank trees to the current chunk.
@@ -490,6 +503,17 @@ class Chunk{
          */
         Plant* get_plant(IntPoint coords, int depth);
     
+
+        /**
+         * Adds a building to the chunk.
+         */
+        void add_building(Building building, int depth);
+
+        /**
+         * Gets the buildings from the chunk.
+         */
+        std::vector<Building>* get_buildings(int depth);
+
 };
 
 #endif

@@ -99,13 +99,13 @@ namespace overworld_gen {
          * -Bresenham ellipses?
          */
 
-        /*TESTING ITEMS*/
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 ground.set_tile(i,j,td::DIRT);
             }
         }
-
+        
+        //what does this do?
         IntPoint coords = IntPoint(0,0);
         do {
             int newrow = rand() % height;
@@ -215,6 +215,16 @@ namespace overworld_gen {
         }
         */
     }
+
+    void build_city_overworld(ChunkLayer& ground)
+    {
+        for(int i = 0; i < ground.height; i++) {
+            for(int j = 0; j < ground.width; j++) {
+                ground.set_tile(i,j,td::DIRT);
+            }
+        }
+    }
+
     /**
      * Not sure where to put these thoughts. Chunk creation will have to
      * be kicked off by ChunkMatrix.

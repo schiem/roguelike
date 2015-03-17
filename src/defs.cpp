@@ -73,7 +73,7 @@ namespace tiledef {
     Tile  SWORD           =  {47,   26,  GRAY,          1,  0,  0,  0,  0};
     Tile  POTATO          =  {7,    27,  BROWN,         1,  0,  0,  0,  0};
     Tile  PLANT           =  {6,    28,  GREEN,         1,  0,  0,  0,  0};
-    Tile  WOOD_WALL       =  {176,  29,  BROWN,         1,  0,  1,  0,  0};
+    Tile  WOOD_WALL       =  {176,  29,  BROWN,         0,  0,  1,  0,  0};
     Tile  WOOD_FLOOR      =  {47,   30,  BROWN,         1,  0,  0,  0,  0};
     Tile  DOOR            =  {43,   31,  BROWN,         1,  0,  1,  0,  0};
     Tile  BURROW          =  {15,   32,  BROWN,         1,  0,  0,  0,  0};

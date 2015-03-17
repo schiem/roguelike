@@ -352,6 +352,11 @@ class Game
          */
         void plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk);
 
+
+        /**
+         * Writes the buildings in the current chunk to the buffer.
+         */
+        void buildings_to_buffer(std::vector<Building>* building, IntPoint chunk);
         
 //-------------------------------CHARACTER PUBLIC METHODS----------------//
         Character main_char;

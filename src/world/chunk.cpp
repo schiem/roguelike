@@ -78,6 +78,8 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
             build_beach_chunk();
         } else if (tile_type == map_tile::MAP_FOREST) {
             build_forest_chunk();
+        } else if (tile_type == map_tile::CITY) {
+            build_city_chunk();
         }
         blend_chunk(world_map, -1, 0);
         blend_chunk(world_map, 1, 0);
@@ -130,6 +132,27 @@ void Chunk::build_beach_chunk() {
     cm.depth = 1;
     layers = std::vector<ChunkLayer>(1, ChunkLayer(cm.width, cm.height));
     overworld_gen::build_beach_overworld(layers[0]);
+}
+
+void Chunk::build_city_chunk() {
+    //TODO: Make this so that it can take in the dungeon
+    //type to build.  In cities, I want sewers! Because
+    //medieval cities definitely had running water ;)
+    build_chunk_with_dungeons();
+    int height = layers[0].height;
+    int width = layers[0].width;
+    overworld_gen::build_city_overworld(layers[0]);
+    Settlement settlement = Settlement(0, 0, height, width); 
+    std::vector<Block> blocks = settlement.get_blocks();
+
+    for(int i=0;i<blocks.size();i++)
+    {
+        std::vector<Building> builds = blocks[i].get_buildings();
+        for(int j=0;j<builds.size();j++)
+        {
+            add_building(builds[j], 0);
+        }
+    }
 }
 
 
@@ -716,4 +739,14 @@ void Chunk::blend_normal(int row, int col, MapTile other)
 Plant* Chunk::get_plant(IntPoint coords, int depth)
 {
     return layers[depth].get_plant(coords);
+}
+
+void Chunk::add_building(Building building, int depth)
+{
+    layers[depth].add_building(building);
+}
+
+std::vector<Building>* Chunk::get_buildings(int depth)
+{
+    return layers[depth].get_buildings();
 }

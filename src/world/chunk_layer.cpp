@@ -1,3 +1,24 @@
+/**
+ *  @file CHUNK_LAYER.CPP
+ *  @author Michael & Seth Yoder
+ *
+ *  @section LICENSE
+ *
+ *  This file is part of ROGUELIKETHING.
+ *
+ *  ROGUELIKETHING is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  ROGUELIKETHING is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <chunk_layer.h>
 
 namespace td=tiledef;
@@ -16,6 +37,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
+    buildings = std::vector<Building>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -32,6 +54,7 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
+    buildings = std::vector<Building>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -56,6 +79,7 @@ void ChunkLayer::clear() {
     items = std::vector<Item*>();
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
+    buildings = std::vector<Building>();
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -78,6 +102,7 @@ void ChunkLayer::swap(const ChunkLayer& l) {
     items = l.items;
     /// \todo There was a segfault here. This may have fixed it, but maybe not.
     plants = std::vector<Plant>(l.plants.size());
+    buildings = l.buildings;
     for(int i = 0; i < l.plants.size(); i++) {
         plants[i] = l.plants[i];
     }
@@ -123,14 +148,6 @@ TileMatrix& ChunkLayer::get_ground() {
 
 std::vector<Item*>* ChunkLayer::get_items() {
     return &items;
-}
-
-std::vector<EquipType>& ChunkLayer::get_equipment() {
-    return equipment;
-}
-
-std::vector<WeaponType>& ChunkLayer::get_weapons() {
-    return weapons;
 }
 
 std::vector<Spawner>* ChunkLayer::get_spawners() {
@@ -244,6 +261,16 @@ Plant* ChunkLayer::get_plant(IntPoint coords) {
 bool ChunkLayer::in_layer(int x, int y)
 {
     return y<ground.size() && y>=0 && x<ground[y].size() && x>=0;
+}
+
+void ChunkLayer::add_building(Building building)
+{
+    buildings.push_back(building);
+}
+
+std::vector<Building>* ChunkLayer::get_buildings()
+{
+    return &buildings;
 }
 
 void ChunkLayer::layer_dump() {

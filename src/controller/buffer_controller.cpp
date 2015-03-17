@@ -132,7 +132,7 @@ void Game::show_chunk_objects() {
     std::vector<Spawner>* spawners;
     std::vector<Item*>* items;
     std::vector<Plant>* plants;
-    
+    std::vector<Building>* buildings; 
     Chunk* chunk;
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
@@ -145,10 +145,11 @@ void Game::show_chunk_objects() {
                 spawners = chunk->get_spawners(main_char.get_depth());
                 items    = chunk->get_items(main_char.get_depth());
                 plants   = chunk->get_plants(main_char.get_depth()); 
-                
+                buildings = chunk->get_buildings(main_char.get_depth());
                 plants_to_buffer(plants, chunk_coords);
                 items_to_buffer(items, chunk_coords);
                 spawners_to_buffer(spawners, chunk_coords);
+                buildings_to_buffer(buildings, chunk_coords);
             }
         }
     }
@@ -209,3 +210,19 @@ void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
     }
 }
 
+void Game::buildings_to_buffer(std::vector<Building>* buildings, IntPoint chunk)
+{
+    for(int i=0;i<buildings->size();i++)
+    {
+        for(int j=0;j<buildings->at(i).get_height();j++)
+        {
+            for(int k=0;k<buildings->at(i).get_width();k++)
+            {
+                int y = j + buildings->at(i).get_y();
+                int x = k + buildings->at(i).get_x();
+                Tile* chara = buildings->at(i).tile_pointer_at(j, k);
+                add_tile_to_buffer(chunk, IntPoint(y, x), chara);
+            }
+        }
+    }
+}

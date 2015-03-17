@@ -30,7 +30,7 @@ class Block
 {
     public:
         /**
-         * The top left corner of the room relative to its parent dungeon.
+         * The top left corner of the block relative to the settlement.
          */
         IntPoint tl;
 

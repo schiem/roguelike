@@ -39,7 +39,8 @@ class Building
 {
     private:
         /**
-         * The location of the top left corner of the buildling.
+         * The location of the top left corner of the buildling relative
+         * to the SETTLEMENT, not the block.
          */
         IntPoint tl;
 
@@ -199,6 +200,11 @@ class Building
          */
         Tile tile_at(int y, int x);
 
+        /**
+         * Returns a pointer to the tile at x and y.
+         */
+        Tile* tile_pointer_at(int y, int x);
+        
         /**
          * Makes a Character an owner of a house.
          */
