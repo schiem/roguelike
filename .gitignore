@@ -6,8 +6,6 @@
 *.dirstamp
 
 data/chunk/chunk*
-data/save/
-data/save/*
 docs/*
 
 roguelike
