@@ -119,6 +119,9 @@ void WorldMap::generate_land_mass() {
             }
         }
     }
+    for(int i = 0; i < 17; i++) {
+        smoothing_pass(map_tile::MAP_WATER, 2);
+    }
     //Tweaking any values here can give vastly different results.
     /**
     for(int i = 0; i < 15; i++) {
