@@ -162,6 +162,21 @@ class WorldMap {
          * Returns the tile at a given location.
          */
         MapTile tile_at(int row, int col);
+        
+        /**
+         * Gets a list of lists of points that make up
+         * contiguous regions for the given target
+         * tile type.
+         */
+        std::vector<std::vector<IntPoint> > find_contiguous(MapTile target)
 };
+
+        /**
+         * Given a starting tile, it will check every
+         * tile around it, and add any to the a list
+         * of contiguous tiles, recursively calling
+         * this function on every one of those tiles.
+         */
+        void flood(IntPoint start_point, std::vector<IntPoint>& closed, std::vector<IntPoint>& cur_contig, MapTile target)
 
 #endif

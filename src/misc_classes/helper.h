@@ -126,4 +126,11 @@ IntPoint normalize_chunk(IntPoint chunk);
  */
 std::string concatenate_vectors(std::vector<std::string> first, std::vector<std::string> second);
 
+/**
+ * Takes in a vector of some type of object and an
+ * item, returns true if the item is in the vector.
+ */
+template <typename T>
+bool is_in(std::vector<T> vec, T item);
+
 #endif
