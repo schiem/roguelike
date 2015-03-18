@@ -38,6 +38,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
     buildings = std::vector<Building>();
+    characters = std::vector<Character*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -55,6 +56,7 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
     buildings = std::vector<Building>();
+    characters = std::vector<Character*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -80,6 +82,7 @@ void ChunkLayer::clear() {
     spawners = std::vector<Spawner>();
     plants = std::vector<Plant>();
     buildings = std::vector<Building>();
+    characters = std::vector<Character*>();
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             ground[i][j] = td::BLOCK_WALL;
@@ -103,6 +106,7 @@ void ChunkLayer::swap(const ChunkLayer& l) {
     /// \todo There was a segfault here. This may have fixed it, but maybe not.
     plants = std::vector<Plant>(l.plants.size());
     buildings = l.buildings;
+    characters = l.characters;
     for(int i = 0; i < l.plants.size(); i++) {
         plants[i] = l.plants[i];
     }
