@@ -179,7 +179,7 @@ struct Tile {
 };
 
 namespace tiledef {
-    static const int TILE_TYPE_COUNT = 37;
+    static const int TILE_TYPE_COUNT = 38;
     extern Tile TILE_INDEX[TILE_TYPE_COUNT]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
@@ -220,6 +220,7 @@ namespace tiledef {
     extern Tile AXE;
     extern Tile LOG;
     extern Tile WOLF;
+    extern Tile HUMAN;
 }
 
 /**
@@ -821,7 +822,8 @@ namespace enemies
     extern EnemyType kobold;
     extern EnemyType rabbit;
     extern EnemyType wolf_companion;
-    extern EnemyType ENEMY_LIST[3];
+    extern EnemyType human;
+    extern EnemyType ENEMY_LIST[4];
     extern int NUM_ENEMIES;
 }
 

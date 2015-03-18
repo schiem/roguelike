@@ -273,6 +273,40 @@ std::vector<Building>* ChunkLayer::get_buildings()
     return &buildings;
 }
 
+std::vector<Character*> ChunkLayer::get_character_queue()
+{
+    std::vector<Character*> temp = std::vector<Character*>();
+    temp.insert(temp.end(), characters.begin(), characters.end());
+    for(int i=0;i<spawners.size();i++)
+    {
+        temp.insert(temp.end(), spawners[i].flush().begin(), spawners[i].flush().end());
+    }
+    return temp;
+}
+
+void ChunkLayer::clear_character_queue()
+{
+   characters = std::vector<Character*>();
+   for(int i=0;i<spawners.size();i++)
+   {
+       spawners[i].clear_queue();
+   }
+}
+
+
+void ChunkLayer::run_spawners()
+{
+    for(int i=0;i<spawners.size();i++)
+    {
+        spawners[i].run();
+    }
+}
+
+void ChunkLayer::add_character(Character* character)
+{
+    characters.push_back(character);
+}
+
 void ChunkLayer::layer_dump() {
     //dungeon dump
     Tile tile;

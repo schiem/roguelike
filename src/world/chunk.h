@@ -514,6 +514,22 @@ class Chunk{
          */
         std::vector<Building>* get_buildings(int depth);
 
+        /**
+         * Returns the characters which have been created in a parcticular chunk.
+         */
+        std::vector<Character*> get_character_queue(int depth);
+
+        /**
+         * Clears the character queue in a particular layer.
+         */
+        void clear_character_queue(int depth);
+
+        /**
+         * Runs the spawners in a particular layer.
+         */
+        void run_spawners(int depth);
+
+
 };
 
 #endif

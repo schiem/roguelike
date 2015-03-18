@@ -58,7 +58,12 @@ class ChunkLayer {
          * The buildings present in the layer.
          */
         std::vector<Building> buildings;
-        
+
+        /**
+         * A list of characters which have just been generated.
+         */
+        std::vector<Character*> characters;
+
         /**
          * Copies over all values from the given layer to this layer.
          * @param l - The layer from which to swap ownership.
@@ -72,6 +77,7 @@ class ChunkLayer {
          * to ensure that it is valid.
          */
         void tile_assertions(int row, int col) const;
+
 
     public:
         ChunkLayer();
@@ -260,6 +266,29 @@ class ChunkLayer {
         std::vector<Building>* get_buildings();
 
 
+        /**
+         * Returns the characters created by this chunk, or by
+         * spawners.
+         */
+        std::vector<Character*> get_character_queue();
+
+        /**
+         * Clears the characters from this chunk and from the
+         * spawners. NOTE: Not memory safe.
+         */
+        void clear_character_queue();
+
+        /**
+         * Adds a character to the queue.
+         */
+        void add_character(Character* character);
+        
+        /**
+         * Runs all of the spawners (has them spawn things)
+         * in the layer.
+         */
+        void run_spawners();
+        
         /**
          * Prints an ASCII representation of the layer to stdout.
          */

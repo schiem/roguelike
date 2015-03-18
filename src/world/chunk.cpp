@@ -151,6 +151,9 @@ void Chunk::build_city_chunk() {
         for(int j=0;j<builds.size();j++)
         {
             add_building(builds[j], 0);
+            Enemy* chara = new Enemy(builds[j].get_x() + 1, builds[j].get_y() + 1, 0, enemies::human);
+            layers[0].add_character(chara);
+            builds[j].add_owner(chara);
         }
     }
 }
@@ -749,4 +752,19 @@ void Chunk::add_building(Building building, int depth)
 std::vector<Building>* Chunk::get_buildings(int depth)
 {
     return layers[depth].get_buildings();
+}
+
+std::vector<Character*> Chunk::get_character_queue(int depth)
+{
+    return layers[depth].get_character_queue();
+}
+
+void Chunk::clear_character_queue(int depth)
+{
+   layers[depth].clear_character_queue();
+}
+
+void Chunk::run_spawners(int depth)
+{
+    layers[depth].run_spawners();
 }

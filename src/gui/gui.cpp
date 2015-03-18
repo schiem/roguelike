@@ -40,6 +40,7 @@ GUI::GUI() {
     trees.push_back(ai::GENERIC_AGGRESSIVE(&game)); 
     trees.push_back(ai::GENERIC_PASSIVE(&game));
     trees.push_back(ai::FOLLOW(&game));
+    trees.push_back(ai::NPC(&game));
 }
 
 int GUI::OnExecute() {

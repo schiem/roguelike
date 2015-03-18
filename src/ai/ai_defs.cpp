@@ -252,3 +252,42 @@ BehaviorTree ai::FOLLOW(Game* game)
     BehaviorTree tree = BehaviorTree(root_node, game, 2);
     return tree;
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////////////            
+//                               Root*
+//                                |
+//  -------------------------------------------------------------------
+//  |                              |
+//  v                              v
+// Death                        Wander
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        
+////////////////////////////////////////////////////////////////////////////////////////////
+    
+BehaviorTree ai::NPC(Game* game)
+{
+    std::vector<BNode*> root;
+    BNode* death = DeathNode(); 
+    root.push_back(death);
+    root.push_back(new Wander);
+    PriorityNode* root_node = new PriorityNode(root);   
+    
+    BehaviorTree tree = BehaviorTree(root_node, game, 3);
+    return tree;
+}

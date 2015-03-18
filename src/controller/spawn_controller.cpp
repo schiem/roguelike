@@ -29,21 +29,13 @@ void Game::run_spawners() {
             chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
 
             if(chunk->get_depth()>main_char.get_depth() && chunk->get_type().does_spawn) {
-                spawners = chunk->get_spawners(main_char.get_depth());
-                for(int k=0;k<spawners->size();k++)
+                chunk->run_spawners(main_char.get_depth());
+                std::vector<Character*> charas = chunk->get_character_queue(main_char.get_depth());
+                for(int index=0;index<charas.size();index++)
                 {
-                    Spawner* spawner = &spawners->at(k);
-                    spawner->run();
-                    std::vector<Character*> charas = spawner->flush();
-                    for(int index=0;index<charas.size();index++)
-                    {
-                        charas[index]->set_chunk(IntPoint(i, j));
-                        character_list.push_back(charas[index]);
-                        character_queue.push_back(charas[index]);
-                        character_to_index(charas[index]);
-                    }
-                    spawner->clear_queue();
+                    add_character(charas[index], IntPoint(i, j));
                 }
+                chunk->clear_character_queue(main_char.get_depth());
             }
         }
     }
@@ -58,4 +50,12 @@ void Game::clear_character_queue()
 std::vector<Character*> Game::flush_characters()
 {
     return character_queue;
+}
+
+void Game::add_character(Character* character, IntPoint chunk)
+{
+    character->set_chunk(chunk);
+    character_list.push_back(character);
+    character_queue.push_back(character);
+    character_to_index(character);
 }

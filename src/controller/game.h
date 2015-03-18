@@ -615,7 +615,12 @@ class Game
         /**
          * Returns the list of character points in the character_queue.
          */
-        std::vector<Character*> flush_characters(); 
+        std::vector<Character*> flush_characters();
+
+        /**
+         * Takes care of everything needed to add a character to the game.
+         */
+        void add_character(Character* character, IntPoint chunk);
  
 //-------------------------------DEBUG PUBLIC METHODS--------------------//
 //src/controller/debug_controller.cpp

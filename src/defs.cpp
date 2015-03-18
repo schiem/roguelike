@@ -80,7 +80,8 @@ namespace tiledef {
     Tile  HUT_WALL        =  {35,   33,  BROWN,         0,  0,  1,  0,  0};
     Tile AXE              =  {213,  34,  GRAY,          1,  0,  0,  0,  0};
     Tile LOG              =  {220,  35,  BROWN,         1,  0,  0,  0,  0};
-    Tile WOLF             =  {119, 36,   BROWN,         1,  0,  0,  0,  0};   
+    Tile WOLF             =  {119,  36,  BROWN,         1,  0,  0,  0,  0};   
+    Tile HUMAN            =  {104,  37,  TAN,           1,  0,  0,  0,  0};
 
     Tile TILE_INDEX[TILE_TYPE_COUNT] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
@@ -119,7 +120,8 @@ namespace tiledef {
         HUT_WALL,
         AXE,
         LOG,
-        WOLF
+        WOLF,
+        HUMAN
     };
 }
 
@@ -182,6 +184,7 @@ namespace misc
     MiscType rabbit_corpse = {3, tiledef::RABBIT_CORPSE, "Rabbit Corpse", "The corpse of a small woodland creature that met an untimely demise.", false, 0, 2, USELESS};
     MiscType player_corpse = {120, tiledef::MAIN_CHAR, "Your Corpse", "You seem to have died.  Interesting...", false, 0, 30, USELESS};
     MiscType wolf_corpse = {20, tiledef::WOLF, "Wolf Corpse", "The corpse of a brown wolf.", false, 0, 10, USELESS};
+    MiscType human_corpse = {120, tiledef::HUMAN, "Human Corpse", "The corpse of a human.", false, 0, 10, USELESS};
     MiscType wood = {5.0, tiledef::LOG, "Logs", "Some logs from a felled tree.", false, 0, 5, USELESS};
 
 }
@@ -214,14 +217,17 @@ std::vector<int> rab_stats(&rab_stats_arr[0], &rab_stats_arr[0] + NUM_STATS);
 int wolf_stats_arr[] = {10, 1, 10, 0, 1, 3, 3, 3};
 std::vector<int> wolf_stats(&wolf_stats_arr[0], &wolf_stats_arr[0] + NUM_STATS);
 
+int hum_stats_arr[] = {10, 2, 10, 0, 1, 5, 5, 5};
+std::vector<int> hum_stats(&hum_stats_arr[0], &hum_stats_arr[0] + NUM_STATS);
 
 namespace enemies
 {
     EnemyType kobold = {5, kob_stats, 0, 0, 20, 5, 100, "Kobold", tiledef::KOBOLD, misc::kobold_corpse, kob_eq_vec, kob_wep_vec, spawners::kobold, weapons::claws};
     EnemyType rabbit = {3, rab_stats, 1, 1, 15, 25, (rand() % (20 + 50)), "Rabbit",  tiledef::RABBIT, misc::rabbit_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit, weapons::claws};
     EnemyType wolf_companion = {1, wolf_stats, 2, 2, 15, 20, 100, "Wolf", tiledef::WOLF, misc::wolf_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit, weapons::claws}; 
-    EnemyType ENEMY_LIST[3] = {kobold, rabbit};
-    int NUM_ENEMIES = 3; 
+    EnemyType human = {1, hum_stats, 3, 3, 15, 20, 10, "Human", tiledef::HUMAN, misc::human_corpse, std::vector<EquipType>(), std::vector<WeaponType>(), spawners::rabbit, weapons::fist};  
+    EnemyType ENEMY_LIST[4] = {kobold, rabbit};
+    int NUM_ENEMIES = 4; 
 }
 
 
