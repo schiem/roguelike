@@ -21,6 +21,7 @@
  */
 
 #include <world_map.h>
+#include <sstream>
 
 using namespace std;
 
@@ -174,7 +175,6 @@ void WorldMap::ocean_borders(int border) {
 void WorldMap::generate_beaches() {
     for(int i=1;i<height - 2;i++) {
         for(int j=1;j<width - 2;j++) {
-            std::cout<<count_not_surrounding_tiles(i, j, map_tile::MAP_WATER)<<std::endl;
             //get the number of beaches
             int num_beaches = count_in_surrounding_tiles(i, j, map_tile::MAP_BEACH);
             //get the non water tiles
