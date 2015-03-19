@@ -127,7 +127,7 @@ namespace tiledef {
 
 
 namespace map_tile {
-    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER, true, true, 2, 2};
+    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER, true, true, 2, 3};
     MapTile MAP_FOREST = {116, DARK_GREEN, 3, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
     MapTile CITY = {9, BROWN, 4, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
     MapTile MAP_BEACH = {178, TAN, 2, false, NORMAL, tiledef::SAND1, false, false, 1};
