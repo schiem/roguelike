@@ -28,9 +28,12 @@
 #include <time.h>
 #include <iostream>
 
+#include <int_point.h>
 #include <color_def.h>
 #include <defs.h>
 #include <constants.h>
+#include <helper.h>
+
 
 /**
  * A representation of the game's world map.
@@ -79,6 +82,17 @@ class WorldMap {
         int count_in_surrounding_tiles(int row, int col, MapTile tile_type);
 
         /**
+         * Counts the number of tiles in the 8 adjacent squares
+         * which are not of type tile_type.
+         *
+         * @param row
+         * @param col
+         * @param tile_type - the type of MapTile to query for
+         * @return an integer result of the query.
+         */
+        int count_not_surrounding_tiles(int row, int col, MapTile tile_type);
+
+        /**
          * Fills the world map (minus the ocean border) with randomly-placed
          * tiles, then performs the following transformation to all tiles on the
          * map:
@@ -112,19 +126,6 @@ class WorldMap {
          * in sequence with different parameters on both land and water tiles.
          */
         void generate_land_mass();
-
-        /**
-         * Has a chance of setting a given tile to either a land or water tile.
-         * This is for preliminary continent generation in the world.
-         * @param row
-         * @param col
-         * @param mod - the inverse of the chance that the given tile will be
-         * turned to water/land (for more_water=true/false respectively) @param
-         * more_water - Should be set to 'true' if the given tile should be more
-         * likely to be set to water, and 'false' if the given tile should be
-         * more likely to be set to land.
-         */
-        void set_land_or_water(int row, int col, int mod, bool more_water);
 
         /**
          * Will generate an ocean border with the given width around the map.
@@ -168,8 +169,7 @@ class WorldMap {
          * contiguous regions for the given target
          * tile type.
          */
-        std::vector<std::vector<IntPoint> > find_contiguous(MapTile target)
-};
+        std::vector<std::vector<IntPoint> > find_contiguous(MapTile target);
 
         /**
          * Given a starting tile, it will check every
@@ -177,6 +177,13 @@ class WorldMap {
          * of contiguous tiles, recursively calling
          * this function on every one of those tiles.
          */
-        void flood(IntPoint start_point, std::vector<IntPoint>& closed, std::vector<IntPoint>& cur_contig, MapTile target)
+        void flood(IntPoint start_point, std::vector<IntPoint>& closed, std::vector<IntPoint>& cur_contig, MapTile target);
+
+        /**
+         * Gets a random tile based on the weights that
+         * they  have been assigned in the defs.cpp.
+         */
+        MapTile random_weighted_tile();
+};
 
 #endif

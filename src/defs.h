@@ -282,6 +282,12 @@ struct MapTile {
     int smooth_amount;
 
     /**
+     * The weight assigned to the tile when seeding the world
+     * (higher weight means it will show up more often).
+     */
+    int weight;
+    
+    /**
      * Comparison operator for MapTiles.
      */
     bool operator==(const MapTile& rhs) const {

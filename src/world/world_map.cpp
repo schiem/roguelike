@@ -68,10 +68,15 @@ int WorldMap::count_in_surrounding_tiles(int row, int col,
     return num;
 }
 
+int WorldMap::count_not_surrounding_tiles(int row, int col, MapTile tile_type)
+{
+    return (8 - count_in_surrounding_tiles(row, col, tile_type));
+}
+
 void WorldMap::starting_noise(int border) {
     for(int i = border; i < (height - border); i++) {
         for(int j = border; j < (width - border); j++) {
-            set_land_or_water(i, j, 3, false);
+            map[i][j] = random_weighted_tile(); 
         }
     }
     
@@ -120,7 +125,7 @@ void WorldMap::generate_land_mass() {
         }
     }
     for(int i = 0; i < 17; i++) {
-        smoothing_pass(map_tile::MAP_WATER, 2);
+        smoothing_pass(map_tile::MAP_WATER, 3);
     }
     //Tweaking any values here can give vastly different results.
     /**
@@ -140,33 +145,6 @@ void WorldMap::generate_land_mass() {
     **/
 }
 
-void WorldMap::set_land_or_water(int row, int col,
-                                 int mod, bool more_water) {
-    //Notice that this won't include the last element.
-    //That's the cursor.
-    //The -1 is to avoid having it become default.
-    MapTile tile = map_tile::MAP_DEFAULT;
-    do{
-        int index = rand() % (map_tile::NUM_MAP_TILE); 
-        tile = map_tile::MAP_TILE_INDEX[index];
-        map[row][col] = tile;
-    } while(!tile.seeded);
-    /**
-    if(more_water) {
-        if(rand() % mod == 0) {
-            map[row][col] = map_tile::MAP_FOREST;
-        } else {
-            map[row][col] = map_tile::MAP_WATER;
-        }
-    } else {
-        if(rand() % mod == 0) {
-            map[row][col] = map_tile::MAP_WATER;
-        } else {
-            map[row][col] = map_tile::MAP_FOREST;
-        }
-    }
-    **/
-}
 
 void WorldMap::ocean_borders(int border) {
     for(int i = 0; i < border; i++) {
@@ -194,9 +172,19 @@ void WorldMap::ocean_borders(int border) {
 }
 
 void WorldMap::generate_beaches() {
-    for(int i=0;i<height;i++) {
-        for(int j=0;j<width;j++) {
-            if((map[i][j] != map_tile::MAP_WATER) && (count_in_surrounding_tiles(i, j, map_tile::MAP_WATER) > 0)) {
+    for(int i=1;i<height - 2;i++) {
+        for(int j=1;j<width - 2;j++) {
+            std::cout<<count_not_surrounding_tiles(i, j, map_tile::MAP_WATER)<<std::endl;
+            //get the number of beaches
+            int num_beaches = count_in_surrounding_tiles(i, j, map_tile::MAP_BEACH);
+            //get the non water tiles
+            int num_land = count_not_surrounding_tiles(i, j, map_tile::MAP_WATER);
+            
+            //we don't want beaches to count towards making another beach, there's already
+            //one there.
+            int countable_land = num_land - num_beaches;
+           
+            if((map[i][j] == map_tile::MAP_WATER) && countable_land > 0 && countable_land < 6) {
                 map[i][j] = map_tile::MAP_BEACH;
             }
         }
@@ -208,8 +196,7 @@ MapTile WorldMap::tile_at(int row, int col)
     return map[row][col];
 }
 
-
-std::vector<IntPoint> WorldMap::find_contiguous(MapTile target)
+std::vector<std::vector<IntPoint> > WorldMap::find_contiguous(MapTile target)
 {
     std::vector<IntPoint> closed_list;
     std::vector<std::vector<IntPoint> > contiguous;
@@ -220,7 +207,7 @@ std::vector<IntPoint> WorldMap::find_contiguous(MapTile target)
             if(map[i][j] == target && !is_in(closed_list, IntPoint(i, j)))
             {
                 std::vector<IntPoint> cur_contig;
-                flood(IntPoint(i, j), closed_list, cur_contig);
+                flood(IntPoint(i, j), closed_list, cur_contig, target);
                 contiguous.push_back(cur_contig);
             }
         }
@@ -234,13 +221,31 @@ void WorldMap::flood(IntPoint start_point, std::vector<IntPoint>& closed, std::v
     closed.push_back(start_point);
     for(int i=(start_point.row - 1);i<(start_point.row + 2);i++)
     {
-        for(j=(start_point.col - 1);j<(start_point.col + 2); j++)
+        for(int j=(start_point.col - 1);j<(start_point.col + 2); j++)
         {
-            if(map[i][j] == target && !is_in(closed_list, IntPoint(i, j)))
+            if(map[i][j] == target && !is_in(closed, IntPoint(i, j)))
             {
                 flood(IntPoint(i, j), closed, cur_contig, target);
             }
         }
     }
 }
-       
+
+MapTile WorldMap::random_weighted_tile()
+{
+    //it seems ridiculous that I'm constructing this
+    //so many times when I'll be relying on it...should
+    //I just pass these in?
+    std::vector<MapTile> tile_list;
+    int total_tiles = 0;
+    for(int i=0;i<map_tile::NUM_MAP_TILE;i++)
+    {
+        for(int j=0;j<map_tile::MAP_TILE_INDEX[i].weight;i++)
+        {
+            tile_list.push_back(map_tile::MAP_TILE_INDEX[i]);
+            total_tiles += 1;
+        }
+    }
+    return tile_list[rand() % total_tiles];
+}
+

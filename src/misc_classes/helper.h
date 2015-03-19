@@ -131,6 +131,16 @@ std::string concatenate_vectors(std::vector<std::string> first, std::vector<std:
  * item, returns true if the item is in the vector.
  */
 template <typename T>
-bool is_in(std::vector<T> vec, T item);
+bool is_in(std::vector<T> vec, T item)
+{
+    for(int i=0;i<vec.size();i++)
+    {
+        if(item == vec[i])
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 #endif
