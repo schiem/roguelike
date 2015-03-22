@@ -21,6 +21,7 @@
  */
 
 #include <world_map.h>
+#include <sstream>
 
 using namespace std;
 
