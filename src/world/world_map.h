@@ -147,7 +147,7 @@ class WorldMap {
          * Returns a reference to the world map.
          * @return a reference to the world map.
          */
-        const std::vector<std::vector<MapTile> >& get_map();
+        std::vector<std::vector<MapTile> >& get_map();
 
         /**
          * Determines whether a given row-column pair is out of bounds on the

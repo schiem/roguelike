@@ -38,7 +38,7 @@ void Game::teleport(int chunk_x, int chunk_y, int x, int y)
     if(delta_x > 1 || delta_y > 1)
     {
         chunk_map.serialize_all();
-        chunk_map.populate_initial(main_char.get_chunk(), world_map);
+        chunk_map.populate_initial(main_char.get_chunk(), world_map.get_map());
     }
     else
     {

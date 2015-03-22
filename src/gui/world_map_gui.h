@@ -46,6 +46,7 @@ class WorldMapGUI {
         IntPoint get_selected_chunk();
         void move_cursor(int, int);
         void refresh();
+        const WorldMap& get_world_map();
 
     private:
         std::vector<TopLayerData> top_layer;

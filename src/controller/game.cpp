@@ -84,7 +84,7 @@ Game::~Game()
 }
 
 
-void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
+void Game::init(const WorldMap& _world_map, IntPoint selected_chunk) {
     world_map = _world_map;
 
     //Give me a buffer size of 150x300 (tiles, which are 8x16 pixels)
@@ -119,7 +119,7 @@ void Game::init(const MapTileMatrix& _world_map, IntPoint selected_chunk) {
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
 
     //Eventually, this should be based on screen size.
-    chunk_map = ChunkMatrix(3, selected_chunk, world_map, name);
+    chunk_map = ChunkMatrix(3, selected_chunk, world_map.get_map(), name);
     update_buffer(main_char.get_chunk());
     recalculate_visibility_lines(15);
     refresh();

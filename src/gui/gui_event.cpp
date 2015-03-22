@@ -142,7 +142,7 @@ void GUI::perform_action_press(SDLKey key) {
                 //the beginnig of the game
                 current_screen = GAME_SCREEN;
                 if(!game.is_initialized()) {
-                    game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
+                    game.init(world_map_gui.get_world_map(), world_map_gui.get_selected_chunk());
                 }
             }
 

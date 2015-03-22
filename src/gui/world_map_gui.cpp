@@ -75,3 +75,8 @@ const MapTileMatrix& WorldMapGUI::get_canvas() {
 IntPoint WorldMapGUI::get_selected_chunk() {
     return IntPoint(top_layer[0].row, top_layer[0].col);
 }
+
+const WorldMap& WorldMapGUI::get_world_map()
+{
+    return world_map;
+}

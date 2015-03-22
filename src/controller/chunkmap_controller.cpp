@@ -38,7 +38,7 @@ Chunk* Game::get_current_chunk() {
 }
 
 void Game::update_chunk_map(IntPoint shift_dir) {
-    chunk_map.shift_matrix(shift_dir, world_map);
+    chunk_map.shift_matrix(shift_dir, world_map.get_map());
 }
 
 Plant* Game::get_plant(IntPoint chunk, IntPoint coords, int depth)

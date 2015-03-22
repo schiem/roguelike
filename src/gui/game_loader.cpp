@@ -21,6 +21,6 @@
 
 namespace game_loader {
     void init_loaded_game(Game &game, WorldMapGUI &world_map_gui, string filename) {
-        game.init(world_map_gui.get_map(), world_map_gui.get_selected_chunk());
+        game.init(world_map_gui.get_world_map(), world_map_gui.get_selected_chunk());
     }
 }

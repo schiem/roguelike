@@ -35,7 +35,7 @@ WorldMap::WorldMap() {
     generate_beaches();
 }
 
-const std::vector<std::vector<MapTile> >& WorldMap::get_map() {
+std::vector<std::vector<MapTile> >& WorldMap::get_map() {
     return map;
 }
 
@@ -113,7 +113,6 @@ void WorldMap::generate_land_mass() {
     int border_size = 5;
     ocean_borders(border_size);
     starting_noise(border_size);
-    cout<<height<<" "<<width<<endl;
     for(int i=0;i<map_tile::NUM_MAP_TILE - 1;i++)
     {
         MapTile tile = map_tile::MAP_TILE_INDEX[i]; 
@@ -174,7 +173,6 @@ void WorldMap::ocean_borders(int border) {
 void WorldMap::generate_beaches() {
     for(int i=1;i<height - 2;i++) {
         for(int j=1;j<width - 2;j++) {
-            std::cout<<count_not_surrounding_tiles(i, j, map_tile::MAP_WATER)<<std::endl;
             //get the number of beaches
             int num_beaches = count_in_surrounding_tiles(i, j, map_tile::MAP_BEACH);
             //get the non water tiles

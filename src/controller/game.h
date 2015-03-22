@@ -89,7 +89,7 @@ class Game
          * The map of the world.
          * @see MapTile
          */
-        MapTileMatrix world_map;
+        WorldMap world_map;
 
         /**
          * The list of points which correspond to visible tiles.
@@ -226,7 +226,7 @@ class Game
          * Creates an initialized game from a set of maptiles and the chunk
          * that was selected by the user.
          */
-        void init(const MapTileMatrix&, IntPoint);
+        void init(const WorldMap&, IntPoint);
         
         /**
          * Gets the name of the current world (for saving, eventually).
