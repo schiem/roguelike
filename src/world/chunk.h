@@ -39,7 +39,7 @@
 #include <ctime>
 #include <spring_matrix.h>
 #include <building.h>
-#include <settlement.h>
+#include <city_district.h>
 #include <block.h>
 
 class Plant;

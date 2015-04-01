@@ -23,7 +23,7 @@
 #include <overworld_gen.h>
 #include <chunk_layer.h>
 #include <building.h>
-#include <settlement.h>
+#include <city_district.h>
 #include <chunk.h>
 #include <block.h>
 #include <bresenham.h>
@@ -193,7 +193,7 @@ namespace overworld_gen {
         
         /**************** TEST BUILDINGS, REMOVE FROM HERE TO END OF FUNC*********/
         /**
-        Settlement settlement = Settlement(0, 0, 400, 700); 
+        CityDistrict settlement = CityDistrict(0, 0, 400, 700); 
         std::vector<Block> blocks = settlement.get_blocks();
         
         for(int i=0;i<blocks.size();i++)

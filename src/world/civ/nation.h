@@ -62,7 +62,7 @@ class Nation
          * and as individual cities are destroyed or created.  This will not
          * be implemented for some time though.
          */
-        std::vector<Settlement*> settlements;
+        std::vector<CityDistrict*> settlements;
 
     public:
 

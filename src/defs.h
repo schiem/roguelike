@@ -304,14 +304,19 @@ struct MapTile {
 
 namespace map_tile {
     const static int NUM_MAP_TILE = 6;
+    const static int NUM_CITY_TILES = 3;
     
     extern MapTile MAP_TILE_INDEX[NUM_MAP_TILE];
+    extern MapTile CITIES[NUM_CITY_TILES];
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
     extern MapTile CURSOR;
     extern MapTile MAP_FOREST;
     extern MapTile MAP_BEACH;
     extern MapTile CITY;
+    extern MapTile CITY_MARKET;
+    extern MapTile CITY_RESIDENTIAL;
+    extern MapTile CITY_NOBILITY;
     enum BLENDTYPES
     {
         HARD,

@@ -33,7 +33,7 @@
 #include <defs.h>
 #include <constants.h>
 #include <helper.h>
-
+#include <city_district.h>
 
 /**
  * A representation of the game's world map.
@@ -70,6 +70,12 @@ class WorldMap {
          */
         int width;
 
+        /**
+         * A list of settlements in the world.  This is being stored in the world_map
+         * because it's part of the world generation.
+         */
+        std::vector<CityDistrict> settlements;
+        
         /**
          * Counts the number of occurences of the given MapTile type in the 8
          * tiles surrounding the given point.
@@ -137,6 +143,9 @@ class WorldMap {
          * Generates beaches at the borders of all land and water tiles.
          */
         void generate_beaches();
+    
+        
+    
     public:
         /**
          * The main constructor, which also generates the world's continents.

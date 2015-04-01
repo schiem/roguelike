@@ -142,7 +142,7 @@ void Chunk::build_city_chunk() {
     int height = layers[0].height;
     int width = layers[0].width;
     overworld_gen::build_city_overworld(layers[0]);
-    Settlement settlement = Settlement(0, 0, height, width); 
+    CityDistrict settlement = CityDistrict(0, 0, height, width, map_tile::CITY); 
     std::vector<Block> blocks = settlement.get_blocks();
 
     for(int i=0;i<blocks.size();i++)

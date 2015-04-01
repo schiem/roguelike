@@ -159,6 +159,109 @@ IntPoint normalize_chunk(IntPoint coords)
     return IntPoint(c_row, c_col);
 }
 
+std::vector<IntPoint> sort_ip_by_row(std::vector<IntPoint> points)
+{
+    int lowest;
+    for(int i=0;i<points.size();i++)
+    {
+        lowest = points[i].row;
+        for(int j=i;j<points.size();j++)
+        {
+            if(points[j].row < lowest)
+            {
+                IntPoint temp = points[i];
+                points[i] = points[j];
+                points[j] = temp;
+            }
+        }
+    }
+    return points;
+}
+
+std::vector<IntPoint> sort_ip_by_col(std::vector<IntPoint> points)
+{
+    int lowest;
+    for(int i=0;i<points.size();i++)
+    {
+        lowest = points[i].col;
+        for(int j=i;j<points.size();j++)
+        {
+            if(points[j].col < lowest)
+            {
+                IntPoint temp = points[i];
+                points[i] = points[j];
+                points[j] = temp;
+            }
+        }
+    }
+    return points;
+}
+
+std::vector<std::vector<IntPoint> > sort_intpoints(std::vector<IntPoint> points)
+{
+    points = sort_ip_by_row(points);
+    std::vector<std::vector<IntPoint> > sorted_points;
+    
+    //split it into lists based on y-values
+    //assumes list is not empty
+    int y_val = points[0].row;
+    std::vector<IntPoint> temp;
+    for(int i=0;i<points.size();i++)
+    {
+        if(points[i].row != y_val)
+        {
+            sorted_points.push_back(temp);
+            temp = std::vector<IntPoint>();
+            y_val = points[i].row;
+        }
+        else
+        {
+            temp.push_back(points[i]);
+        }
+    }
+    
+    //now sort them all by x
+    for(int i=0;i<sorted_points.size();i++)
+    {
+        sorted_points[i] = sort_ip_by_col(sorted_points[i]);
+    }
+    
+    //get the largest list in the vector.
+    int largest_vector = find_largest(sorted_points);
+    int smallest_y = sorted_points[0][0].row;
+    
+    //find the smallest x coordinate
+    int smallest_x = sorted_points[0][0].col;
+    for(int i=0;i<sorted_points.size();i++)
+    {
+        if(sorted_points[i][0].col < smallest_x)
+        {
+            smallest_x = sorted_points[i][0].col;
+        }
+    }
+
+    //and finally, actually pad them out
+    for(int i=0;i<sorted_points.size();i++)
+    {
+        //pad the beginning
+        for(int j=0;j<(sorted_points[i][0].row - smallest_y);j++)
+        {
+            sorted_points[i].insert(sorted_points[i].begin(), IntPoint(-1, -1));
+        }
+        //pad the end
+        for(int j=0;j<(largest_vector - sorted_points[i][sorted_points[i].size() - 1].row);j++)
+        {
+            sorted_points[i].push_back(IntPoint(-1, -1));
+        }
+    }
+    return sorted_points;
+}
+
+
+
+
+
+
 std::string concatenate_vectors(std::vector<std::string> first, std::vector<std::string> second)
 {
     std::string temp = "";

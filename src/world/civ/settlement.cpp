@@ -1,5 +1,5 @@
 /**
- *  @file SETTLEMENT.CPP
+ *  @file SETTLEMENT.H
  *  @author Michael and Seth Yoder
  *
  *  @section LICENSE
@@ -22,40 +22,66 @@
 
 #include <settlement.h>
 
-Settlement::Settlement(int chunk_x, int chunk_y, int _height, int _width)
+Settlement::Settlement(std::vector<<IntPoint> points)
 {
-    chunk = IntPoint(chunk_y, chunk_x);
-    height = _height;
-    width = _width;
-    //first thing we need to do it divide it into city blocks
-    //so we can have roads running through it.
-    BSpaceTree div = BSpaceTree(width, height, 30, 70);
-    settlement_from_bst(div);
+    districts_from_intpoints(points);
 }
 
-void Settlement::settlement_from_bst(BSpaceTree& bst)
+void Settlement::districts_from_intpoints(std::vector<IntPoint> points)
 {
-    blocks_from_bst(bst);
-}
+    //sort the intpoints.  Note: this is padded!
+    std::vector<std::vector<IntPoint> > sorted = sort_intpoints(points);
+    
+    //make a place to hold our maptiles
+    std::vector<std::vector<MapTile> > tiles;
+    tiles.resize(sorted.size());
+    for(int i=0;i<sorted.size();i++)
+    {
+        tiles[i].resize(sorted[i].size());
+    }
+    
+    int total = points.size();
+    
+    //set everything to the first tile
+    for(int i=0;i<sorted.size();i++)
+    {
+        for(int j=0;j<sorted[i].size();j++)
+        {
+            //A little weird...because the area of the city
+            //is not necessarily rectangular, but our vectors
+            //should be, we have padding on either side.
+            //Wherever there is not supposed to be a tile, the
+            //sorted vector will insert an IntPoint(-1, -1).
+            if(sorted[i].row != -1)
+            {
+                tiles[i][j] = map_tile::CITIES[0];
+            }
+            else
+            {
+                //Pad any junk areas of the tiles with generic
+                //CITY tiles.
+                tiles[i][j] = map_tile::CITY;
+            }
+        }
+    }
+    for(int i=1;i<map_tile::NUM_CITY_TILES;i++)
+    {
+        //replace areas on the map with tiles from the city
+        seed_map(tiles, map_tile::CITIES[i], total/map_tile::NUM_CITY_TILES);
+    }
 
-void Settlement::blocks_from_bst(BSpaceTree& tree)
-{
-    std::vector<BSpaceNode*> leaves = tree.get_leaves();
-    for(int i=0;i<leaves.size();i++)
-    {        
-        int rand_x = rand() % 3 + 1;
-        int rand_y = rand() % 3 + 1;
-        int new_x = rand_x + leaves[i]->tl_x;
-        int new_y = rand_y + leaves[i]->tl_y;
-        int new_height = leaves[i]->height - (rand() % 3 + rand_y + 1);
-        int new_width = leaves[i]->width - (rand() % 3 + rand_x + 1);
-        blocks.push_back(Block(new_x, new_y, new_height, new_width));
-        //blocks.push_back(Block(leaves[i]->tl_x, leaves[i]->tl_y, leaves[i]->height, leaves[i]->width));
+    for(int i=0;i<tiles.size();i++)
+    {
+        for(int j=0;j<tiles.size();j++)
+        {
+            if(tiles[i][j] != map_tile::CITY)
+            {
+                districts.push_back(CityDistrict(CHUNK_WIDTH, CHUNK_HEIGHT, sorted[i][j].row, sorted[i][j].col, tiles[i][j])
+            }
+        }
     }
 }
 
-std::vector<Block>& Settlement::get_blocks()
+void Settlement::seed_map(std::vector<std::vector<MapTile> >& tiles, MapTile seeder, int num_tiles)
 {
-    return blocks;
-}
 
