@@ -126,42 +126,6 @@ IntPoint normalize_chunk(IntPoint chunk);
  */
 std::string concatenate_vectors(std::vector<std::string> first, std::vector<std::string> second);
 
-/**
- * Takes in an array of intpoints and sorts it (lowest to highest)
- * based on the row.
- */
-std::vector<IntPoint> sort_ip_by_row(std::vector<IntPoint> points);
-
-/**
- * Takes in an array of intpoints and sorts it (lowest to highest)
- * based on the col.
- */
-std::vector<IntPoint> sort_ip_by_col(std::vector<IntPoint> points);
-
-/**
- * Takes an array of unordered IntPoints and creates a 2D array of
- * ordered intpoints, with padding on either side (so that the array
- * is now a rectangle, even if it shouldn't be).  The padding takes
- * the form of IntPoint(-1, -1).
- */
-std::vector<std::vector<IntPoint> > sort_intpoints(std::vector<IntPoint> points);
-
-/**
- * Finds the size of the largest vector in a 2D vector.
- */
-template <typename V>
-int find_largest(std::vector<std::vector<V> > vec)
-{
-    int largest = 0;
-    for(int i=0;i<vec.size();i++)
-    {
-        if(vec[i].size() > largest)
-        {
-            largest = vec[i].size();
-        }
-    }
-    return largest;
-}
 
 /**
  * Takes in a vector of some type of object and an
