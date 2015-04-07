@@ -81,19 +81,6 @@ void WorldMap::starting_noise(int border) {
             map[i][j] = random_weighted_tile(); 
         }
     }
-    
-    /**
-    for(int i = 1; i < (height - 1); i++) {
-        for(int j = 1; j < (width - 1); j++) {
-            if(map[i+1][j] == map[i][j+1] &&
-                map[i-1][j] == map[i][j-1] &&
-                map[i][j+1] == map[i-1][j]) {
-
-                map[i][j] = map[i][j+1];
-            }
-        }
-    }
-    */
 }
 
 void WorldMap::smoothing_pass(MapTile tile_type, int threshold) {
@@ -255,9 +242,10 @@ std::vector<std::vector<IntPoint> > WorldMap::sort_city(std::vector<IntPoint> ci
 void WorldMap::generate_city(std::vector<std::vector<IntPoint> > city, int city_size)
 {
     IntPoint seed = get_seed(city);
-    for(int i=0;i<map_tile::NUM_CITY_TILES;i++)
+    random_flood(city, map_tile::CITIES[0], city_size, seed);
+    for(int i=1;i<map_tile::NUM_CITY_TILES;i++)
     {
-        random_flood(city, map_tile::CITIES[i], city_size * (0.5/i), seed);
+        random_flood(city, map_tile::CITIES[i], (city_size/(i * 2)), seed);
     }
 }
 

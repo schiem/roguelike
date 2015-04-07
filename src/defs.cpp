@@ -135,7 +135,7 @@ namespace map_tile {
     MapTile CURSOR = {88, WHITE, 5, false, NORMAL, tiledef::EMPTY, false, false, 1};
     MapTile CITY_MARKET = {9, RED, 6, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
     MapTile CITY_RESIDENTIAL = {9, GREEN, 7, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile CITY_NOBILITY = {9, TAN, 8, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
+    MapTile CITY_NOBILITY = {9, YELLOW, 8, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
 
     MapTile CITIES[NUM_CITY_TILES] = {
         CITY_NOBILITY,
