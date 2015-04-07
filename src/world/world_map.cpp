@@ -34,6 +34,7 @@ WorldMap::WorldMap() {
 
     generate_land_mass();
     generate_beaches();
+    seed_cities();
 }
 
 std::vector<std::vector<MapTile> >& WorldMap::get_map() {
@@ -190,6 +191,102 @@ void WorldMap::generate_beaches() {
     }
 }
 
+void WorldMap::seed_cities()
+{
+    std::vector<std::vector<IntPoint> > cities = find_contiguous(map_tile::CITY);
+    for(int i=0;i<cities.size();i++)
+    {
+        std::vector<std::vector<IntPoint> > city = sort_city(cities[i]);
+        generate_city(city, cities[i].size());
+    }
+}
+
+std::vector<std::vector<IntPoint> > WorldMap::sort_city(std::vector<IntPoint> city)
+{
+    //get the minimum/maximum x and y for the city
+    //this is for the rectangular bounding box around the city
+    int min_x = city[0].col;
+    int min_y = city[0].row;
+    int max_x = city[0].col;
+    int max_y = city[0].row;
+    for(int i=0;i<city.size();i++)
+    {
+        if(city[i].row < min_y)
+        {
+            min_y = city[i].row;
+        }
+        if(city[i].col < min_x)
+        {
+            min_x = city[i].col;
+        }
+        if(city[i].row > max_y)
+        {
+            max_y = city[i].row;
+        }
+        if(city[i].col > max_x)
+        {
+            max_x = city[i].col;
+        }
+    }
+
+    //Turn it into a two dimensional vector of IntPoints where
+    //-1, -1 is a non-city tile
+    int accum = 0;
+    std::vector<std::vector<IntPoint> > sorted_city;
+    for(int i=min_y;i<=max_y;i++)
+    {
+        sorted_city.push_back(std::vector<IntPoint>());
+        for(int j=min_x;j<=max_x;j++)
+        {
+            if(tile_at(i, j) != map_tile::CITY)
+            {
+                sorted_city[accum].push_back(IntPoint(-1, -1));
+            }
+            else
+            {
+                sorted_city[accum].push_back(IntPoint(i, j));
+            }
+        }
+        accum++;
+    }
+    return sorted_city;
+}
+
+void WorldMap::generate_city(std::vector<std::vector<IntPoint> > city, int city_size)
+{
+    IntPoint seed = get_seed(city);
+    for(int i=0;i<map_tile::NUM_CITY_TILES;i++)
+    {
+        random_flood(city, map_tile::CITIES[i], city_size * (0.5/i), seed);
+    }
+}
+
+IntPoint WorldMap::get_seed(std::vector<std::vector<IntPoint> > city)
+{
+    int y_coord = rand() % city.size();
+    if(y_coord == 0 || y_coord == (city.size() - 1))
+    {
+       int x_coord;
+       do {
+           x_coord = rand() % city[y_coord].size();
+       } while(city[y_coord][x_coord] == IntPoint(-1, -1));
+       
+       return IntPoint(y_coord, x_coord);
+    }
+    int x_direction = rand() % 2 ? -1 : 1;
+    int start_x = (city[y_coord].size() - 1) * (x_direction == -1);
+    int end_x = city[y_coord].size() * (x_direction == 1);
+    for(int i=start_x;i!=end_x;i+=x_direction)
+    {
+        if(city[y_coord][i] != IntPoint(-1, -1))
+        {
+            return IntPoint(y_coord, i);
+        }
+    }
+}
+
+
+
 MapTile WorldMap::tile_at(int row, int col)
 {
     return map[row][col];
@@ -229,6 +326,38 @@ void WorldMap::flood(IntPoint start_point, std::vector<IntPoint>& closed, std::v
         }
     }
 }
+
+//We're effectively working with two coordinate systems here:
+//the map coords, and the coordinates within the city grid.
+//The cur_tile starts as the coordinates within the city grid
+void WorldMap::random_flood(std::vector<std::vector<IntPoint> >& flood_map, MapTile tile, int remaining, IntPoint cur_tile)
+{
+    if(remaining >= 0)
+    {
+        //change it to the map coordinates
+        IntPoint mrmeseekstile = flood_map[cur_tile.row][cur_tile.col];
+        //set the map tile to the tile that we want to use
+        map[mrmeseekstile.row][mrmeseekstile.col] = tile;
+        
+        for(int i=(cur_tile.row - 1);i<(cur_tile.row + 2);i++)
+        {
+            for(int j=(cur_tile.col - 1);j<(cur_tile.col + 2); j++)
+            {
+                //do it for the rest
+                if(i >= 0 && i < flood_map.size() && j >= 0 && j < flood_map[i].size())
+                {
+                    IntPoint tile_coords = flood_map[i][j];
+                    if(tile_coords != IntPoint(-1, -1) && map[tile_coords.row][tile_coords.col] != tile)
+                    {
+                        remaining -= 1;
+                        random_flood(flood_map, tile, remaining, IntPoint(i, j));
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 MapTile WorldMap::random_weighted_tile()
 {
