@@ -139,7 +139,7 @@ void Building::add_random_door(BSpaceNode* node)
     {
         if(rand_x)
         {
-            x = rand() % (width - 1) + 1;
+            x = rand() % (width - 2) + 1;
             y = rand() % 2;
             if(y != 0)
             {
@@ -148,7 +148,7 @@ void Building::add_random_door(BSpaceNode* node)
         }
         else
         {
-            y = rand() % (height - 1) + 1;
+            y = rand() % (height - 2) + 1;
             x = rand() % 2;
             if(x != 0)
             {
