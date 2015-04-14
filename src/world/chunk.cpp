@@ -162,9 +162,13 @@ void Chunk::build_city_chunk() {
             Enemy* chara = new Enemy(builds[j].get_x() + 1, builds[j].get_y() + 1, 0, enemies::human);
             layers[0].add_character(chara);
             builds[j].add_owner(chara);
-            for(int row=builds[j].get_y() - 2;row<builds[j].get_height() + builds[j].get_y() + 2;row++)
+            
+            int cob_x = rand() % 2 + 1;
+            int cob_y = rand() % 2 + 1;
+
+            for(int row=builds[j].get_y() - cob_y;row<builds[j].get_height() + builds[j].get_y() + cob_y;row++)
             {
-                for(int col=builds[j].get_x() - 2;col<builds[j].get_width() + builds[j].get_x() + 2;col++)
+                for(int col=builds[j].get_x() - cob_x;col<builds[j].get_width() + builds[j].get_x() + cob_x;col++)
                 {
                     layers[0].set_tile(row, col, td::DIRT);//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
                 }

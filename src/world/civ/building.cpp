@@ -97,6 +97,7 @@ bool Building::add_doors(BSpaceTree& bst)
 {
     connect_nodes(bst.get_root());
     add_random_door(bst.get_root());
+    add_random_door(bst.get_root());
     return true;
 }
 
