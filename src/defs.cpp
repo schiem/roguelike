@@ -130,14 +130,14 @@ namespace tiledef {
 
 namespace map_tile {
     MapTile MAP_FOREST = {116, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile CITY = {9, BROWN, 2, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
+    MapTile CITY = {9, BROWN, 2, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
     MapTile MAP_WATER = {247, DARK_BLUE, 3, false, HARD, tiledef::WATER, true, true, 2, 3};
     MapTile MAP_BEACH = {178, TAN, 4, false, NORMAL, tiledef::SAND1, false, false, 1};
     MapTile MAP_DEFAULT = {240, DARK_GREEN, 5, true, NORMAL, tiledef::DIRT, false, false, 1};
     MapTile CURSOR = {88, WHITE, 6, false, NORMAL, tiledef::EMPTY, false, false, 1};
-    MapTile CITY_MARKET = {9, RED, 7, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
-    MapTile CITY_RESIDENTIAL = {9, GREEN, 8, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
-    MapTile CITY_NOBILITY = {9, YELLOW, 9, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
+    MapTile CITY_MARKET = {9, RED, 7, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
+    MapTile CITY_RESIDENTIAL = {9, GREEN, 8, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
+    MapTile CITY_NOBILITY = {9, YELLOW, 9, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
 
     MapTile CITIES[NUM_CITY_TILES] = {
         CITY_NOBILITY,

@@ -683,7 +683,7 @@ void Chunk::blend_chunk(MapTileMatrix& map, int row_change, int col_change)
         return;
     }
     
-    if(other != chunk_type)
+    if(other.base_tile != chunk_type.base_tile)
     {
         //Keep in mind that if you have two map tiles, one with NORMAL and one
         //with HARD, both of these if-statements are technically valid. So
