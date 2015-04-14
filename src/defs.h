@@ -179,7 +179,7 @@ struct Tile {
 };
 
 namespace tiledef {
-    static const int TILE_TYPE_COUNT = 38;
+    static const int TILE_TYPE_COUNT = 39;
     extern Tile TILE_INDEX[TILE_TYPE_COUNT]; //CHANGE THIS WHEN YOU ADD TILES!
     extern Tile OVERWORLD_DIRT; //YOU'RE NOT MY MOM!
     extern Tile DIRT;
@@ -221,6 +221,7 @@ namespace tiledef {
     extern Tile LOG;
     extern Tile WOLF;
     extern Tile HUMAN;
+    extern Tile COBBLE;
 }
 
 /**
@@ -303,11 +304,13 @@ struct MapTile {
 };
 
 namespace map_tile {
-    const static int NUM_MAP_TILE = 6;
+    const static int NUM_MAP_TILE = 9;
     const static int NUM_CITY_TILES = 3;
-    
+    const static int NUM_WORLD_TILES = 3;
+
     extern MapTile MAP_TILE_INDEX[NUM_MAP_TILE];
     extern MapTile CITIES[NUM_CITY_TILES];
+    extern MapTile WORLD_CONSTRUCTION_INDEX[NUM_WORLD_TILES];
     extern MapTile MAP_DEFAULT;
     extern MapTile MAP_WATER;
     extern MapTile CURSOR;

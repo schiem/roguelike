@@ -78,10 +78,11 @@ namespace tiledef {
     Tile  DOOR            =  {43,   31,  BROWN,         1,  0,  1,  0,  0};
     Tile  BURROW          =  {15,   32,  BROWN,         1,  0,  0,  0,  0};
     Tile  HUT_WALL        =  {35,   33,  BROWN,         0,  0,  1,  0,  0};
-    Tile AXE              =  {213,  34,  GRAY,          1,  0,  0,  0,  0};
-    Tile LOG              =  {220,  35,  BROWN,         1,  0,  0,  0,  0};
-    Tile WOLF             =  {119,  36,  BROWN,         1,  0,  0,  0,  0};   
-    Tile HUMAN            =  {104,  37,  TAN,           1,  0,  0,  0,  0};
+    Tile  AXE             =  {213,  34,  GRAY,          1,  0,  0,  0,  0};
+    Tile  LOG             =  {220,  35,  BROWN,         1,  0,  0,  0,  0};
+    Tile  WOLF            =  {119,  36,  BROWN,         1,  0,  0,  0,  0};   
+    Tile  HUMAN           =  {104,  37,  TAN,           1,  0,  0,  0,  0};
+    Tile  COBBLE          =  {42,   38,  GRAY,          1,  0,  0,  0,  0};
 
     Tile TILE_INDEX[TILE_TYPE_COUNT] = { //THIS MUST CORRESPOND TO TILE IDS
         EMPTY,          //ID 0
@@ -121,21 +122,22 @@ namespace tiledef {
         AXE,
         LOG,
         WOLF,
-        HUMAN
+        HUMAN,
+        COBBLE
     };
 }
 
 
 namespace map_tile {
-    MapTile MAP_WATER = {247, DARK_BLUE, 1, false, HARD, tiledef::WATER, true, true, 2, 3};
-    MapTile MAP_FOREST = {116, DARK_GREEN, 3, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile CITY = {9, BROWN, 4, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile MAP_BEACH = {178, TAN, 2, false, NORMAL, tiledef::SAND1, false, false, 1};
-    MapTile MAP_DEFAULT = {240, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT, false, false, 1};
-    MapTile CURSOR = {88, WHITE, 5, false, NORMAL, tiledef::EMPTY, false, false, 1};
-    MapTile CITY_MARKET = {9, RED, 6, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile CITY_RESIDENTIAL = {9, GREEN, 7, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
-    MapTile CITY_NOBILITY = {9, YELLOW, 8, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
+    MapTile MAP_FOREST = {116, DARK_GREEN, 0, true, NORMAL, tiledef::DIRT, true, true, 3, 1};
+    MapTile CITY = {9, BROWN, 2, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
+    MapTile MAP_WATER = {247, DARK_BLUE, 3, false, HARD, tiledef::WATER, true, true, 2, 3};
+    MapTile MAP_BEACH = {178, TAN, 4, false, NORMAL, tiledef::SAND1, false, false, 1};
+    MapTile MAP_DEFAULT = {240, DARK_GREEN, 5, true, NORMAL, tiledef::DIRT, false, false, 1};
+    MapTile CURSOR = {88, WHITE, 6, false, NORMAL, tiledef::EMPTY, false, false, 1};
+    MapTile CITY_MARKET = {9, RED, 7, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
+    MapTile CITY_RESIDENTIAL = {9, GREEN, 8, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
+    MapTile CITY_NOBILITY = {9, YELLOW, 9, true, NORMAL, tiledef::COBBLE, true, true, 3, 1};
 
     MapTile CITIES[NUM_CITY_TILES] = {
         CITY_NOBILITY,
@@ -143,11 +145,20 @@ namespace map_tile {
         CITY_RESIDENTIAL
     };
 
+    MapTile WORLD_CONSTRUCTION_INDEX[NUM_WORLD_TILES] = {
+        MAP_FOREST,  //ID 0
+        CITY,
+        MAP_WATER, 
+    };
+
     MapTile MAP_TILE_INDEX[NUM_MAP_TILE] = { //THIS MUST CORRESPOND TO MAP TILE IDS
         MAP_FOREST,  //ID 0
         CITY,
         MAP_WATER, 
         MAP_BEACH,   //ETC
+        CITY_MARKET,
+        CITY_RESIDENTIAL,
+        CITY_NOBILITY,
         MAP_DEFAULT, 
         CURSOR
     };

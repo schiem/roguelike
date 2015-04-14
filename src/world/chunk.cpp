@@ -39,6 +39,7 @@ Chunk::Chunk() {
 Chunk::Chunk(MapTile tile_type, int world_row, int world_col, string _save_folder, MapTileMatrix& map) {
     cm.height = CHUNK_HEIGHT;
     cm.width = CHUNK_WIDTH;
+    cm.chunk_type_id = tile_type.id;
     init(tile_type, world_row, world_col, _save_folder, map);
 }
 
@@ -67,6 +68,7 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
     chunk_type = tile_type;
     cm.world_row = world_row;
     cm.world_col = world_col;
+    cm.chunk_type_id = tile_type.id;
 
     bool found_chunk = find_serialized_chunk();
     if(!found_chunk) {
@@ -79,6 +81,12 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
         } else if (tile_type == map_tile::MAP_FOREST) {
             build_forest_chunk();
         } else if (tile_type == map_tile::CITY) {
+            build_city_chunk();
+        } else if (tile_type == map_tile::CITY_NOBILITY) {
+            build_city_chunk();
+        } else if (tile_type == map_tile::CITY_MARKET) {
+            build_city_chunk();
+        } else if (tile_type == map_tile::CITY_RESIDENTIAL) {
             build_city_chunk();
         }
         blend_chunk(world_map, -1, 0);
@@ -154,7 +162,16 @@ void Chunk::build_city_chunk() {
             Enemy* chara = new Enemy(builds[j].get_x() + 1, builds[j].get_y() + 1, 0, enemies::human);
             layers[0].add_character(chara);
             builds[j].add_owner(chara);
+            for(int row=builds[j].get_y() - 2;row<builds[j].get_height() + builds[j].get_y() + 2;row++)
+            {
+                for(int col=builds[j].get_x() - 2;col<builds[j].get_width() + builds[j].get_x() + 2;col++)
+                {
+                    std::cout<<"COORDS: "<<row<<", "<<col<<std::endl;
+                    layers[0].set_tile(row, col, td::DIRT);//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
+                }
+            }
         }
+
     }
 }
 

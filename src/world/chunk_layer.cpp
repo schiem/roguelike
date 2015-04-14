@@ -139,11 +139,14 @@ Tile ChunkLayer::get_tile(IntPoint point) const {
 }
 
 void ChunkLayer::set_tile(int row, int col, Tile tile_type) {
-    ground[row][col] = tile_type;
+    if(row >= 0 && col >= 0 && row < ground.size() && col < ground[row].size())
+    {
+        ground[row][col] = tile_type;
+    }
 }
 
 void ChunkLayer::set_tile(IntPoint point, Tile tile_type) {
-    ground[point.row][point.col] = tile_type;
+    set_tile(point.row, point.col, tile_type);
 }
 
 TileMatrix& ChunkLayer::get_ground() {

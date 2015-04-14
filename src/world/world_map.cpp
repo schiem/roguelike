@@ -102,13 +102,13 @@ void WorldMap::generate_land_mass() {
     int border_size = 5;
     ocean_borders(border_size);
     starting_noise(border_size);
-    for(int i=0;i<map_tile::NUM_MAP_TILE - 1;i++)
+    for(int i=0;i<map_tile::NUM_WORLD_TILES;i++)
     {
-        MapTile tile = map_tile::MAP_TILE_INDEX[i]; 
+        MapTile tile = map_tile::WORLD_CONSTRUCTION_INDEX[i]; 
         if(tile.smoothed)
         {
             for(int j = 0;j < 10; j++) {
-                smoothing_pass(map_tile::MAP_TILE_INDEX[i], tile.smooth_amount);
+                smoothing_pass(map_tile::WORLD_CONSTRUCTION_INDEX[i], tile.smooth_amount);
             }
         }
     }

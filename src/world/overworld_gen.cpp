@@ -220,7 +220,7 @@ namespace overworld_gen {
     {
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
-                ground.set_tile(i,j,td::DIRT);
+                ground.set_tile(i,j,td::COBBLE);
             }
         }
     }
