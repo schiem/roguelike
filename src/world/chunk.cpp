@@ -166,7 +166,6 @@ void Chunk::build_city_chunk() {
             {
                 for(int col=builds[j].get_x() - 2;col<builds[j].get_width() + builds[j].get_x() + 2;col++)
                 {
-                    std::cout<<"COORDS: "<<row<<", "<<col<<std::endl;
                     layers[0].set_tile(row, col, td::DIRT);//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
                 }
             }
