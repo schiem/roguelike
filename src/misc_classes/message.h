@@ -55,7 +55,10 @@ class MessageBoard
         std::string get_current_message();
 
         /**
-         * Gets a message at the given index.
+         * Gets a message at the given index. 
+         * Indexing starts at 0 for the most recent
+         * message (most recent is 0, next previous is
+         * 1, etc.)
          */
         std::string get_message(int index);
     

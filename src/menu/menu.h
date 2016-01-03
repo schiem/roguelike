@@ -468,7 +468,7 @@ class LevelMenu: public Menu
 };
 
 /**
- * The menu which becomes accessible when a character levels up.
+ * The menu which displays the characters previous messages.
  */
 class MessageMenu: public Menu
 {
