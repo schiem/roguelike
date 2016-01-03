@@ -56,7 +56,8 @@ namespace menu_id {
         START_MENU,
         INFO_MENU,
         LOAD_MENU,
-        LEVEL_MENU
+        LEVEL_MENU,
+        MESSAGE_MENU
     };
 }
 
@@ -130,7 +131,7 @@ class Menu {
          * @param _padding Sets the padding for the menu.
          * @param _border Sets the border for the menu.
          */
-        Menu(int _padding, Tile _border);
+        Menu(int _padding, Tile _border, int _selection = 0);
         
         /**
          * Changes the currently selected menu option.
@@ -463,6 +464,31 @@ class LevelMenu: public Menu
          * @param _game Sets the game for the menu.
          */
         LevelMenu(int _padding, Tile _border, Game* _game);
+        Menu* make_selection();
+};
+
+/**
+ * The menu which becomes accessible when a character levels up.
+ */
+class MessageMenu: public Menu
+{
+    protected:
+        /*
+         * The page of messages to display.
+         */
+        int page;
+        /*
+         * The  number of entries per page.  Is a constant.
+         */
+        int per_page;
+    public:
+        /* 
+         * Constructor for the Level Menu.
+         * @param _padding Sets the padding for the menu.
+         * @param _border Sets the border for the menu.
+         * @param _game Sets the game for the menu.
+         */
+        MessageMenu(int _padding, Tile _border, Game* _game, int _page, int _selection);
         Menu* make_selection();
 };
 

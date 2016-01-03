@@ -22,10 +22,10 @@
 
 
 
-Menu::Menu(int _padding, Tile _border) {
+Menu::Menu(int _padding, Tile _border, int _selection) {
     padding = _padding;
     border = _border;
-    selection = 0;
+    selection = _selection;
     exit=false;
 }
 

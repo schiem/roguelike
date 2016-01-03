@@ -27,23 +27,29 @@ MessageBoard& MessageBoard::instance()
 
 MessageBoard::MessageBoard()
 {
-    max_messages = 20;
+    max_messages = 200;
     message_index = 0;
-    messages.resize(max_messages);
-    messages[message_index] = "Testing.";
+    messages.push_back("Testing.");
 }
 
 void MessageBoard::add_message(std::string message, int id)
 {
+    //only add messages that pertain to the main character (id -1)
     if(id == -1)
     {
         message_index += 1;
         if(message_index >= max_messages)
         {
             message_index = 0;
+            messages[message_index] = message;
+        } else {
+            messages.push_back(message);
         }
-        messages[message_index] = message;
     }
+}
+
+int MessageBoard::num_messages() {
+    return messages.size();
 }
 
 std::string MessageBoard::get_current_message()
@@ -55,7 +61,11 @@ std::string MessageBoard::get_message(int index)
 {
     if(index >= 0 && index < max_messages)
     {
-        return messages[index];
+        int mess_num = message_index - index;
+        if(mess_num < 0) {
+            mess_num = num_messages() + mess_num;
+        }
+        return messages[mess_num];
     }
 }
 

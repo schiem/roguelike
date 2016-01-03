@@ -45,6 +45,11 @@ class MessageBoard
         void add_message(std::string message, int id);
 
         /**
+         * Returns the number of messages currently in the message board.
+         */
+        int num_messages();
+
+        /**
          * Gets the most recent message.
          */
         std::string get_current_message();

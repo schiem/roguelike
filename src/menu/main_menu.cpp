@@ -34,6 +34,7 @@ MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
     options.push_back("Equipment");
     options.push_back("Inventory");
     options.push_back("Stats");
+    options.push_back("Messages");
     if(game->main_char.get_new_levels() > 0)
     {
         options.push_back("Level");
@@ -55,6 +56,10 @@ Menu* MainMenu::make_selection()
     else if(options[selection] == "Stats")
     {
        return this;
+    }
+    else if(options[selection] == "Messages") 
+    {
+        return new MessageMenu(1, td::BLOCK_WALL, game, 1, 0);
     }
     else if(options[selection] == "Level")
     {
