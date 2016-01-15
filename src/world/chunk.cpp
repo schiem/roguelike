@@ -495,7 +495,7 @@ int Chunk::serialize_layers(char file[], int cb) {
 
 void Chunk::save_file(char file[], string filename, int file_size) {
     string full_path = save_folder + std::string("/") + filename;
-    ofstream chunk_data_file;
+    std::ofstream chunk_data_file;
 
     //TODO Valgrind complains about the following line.
     chunk_data_file.open(full_path.c_str(), std::ofstream::out | std::ofstream::binary);
@@ -643,7 +643,7 @@ int Chunk::deserialize_layers(char file_data[], int cb) {
 
 void Chunk::deserialize(string file_name) {
     //Open the data file.
-    ifstream chunk_data_file(file_name.c_str(),
+    std::ifstream chunk_data_file(file_name.c_str(),
             std::ifstream::in | std::ifstream::binary);
     //Stat the file to get the file size easily.
     int file_size = fs::file_size(file_name);

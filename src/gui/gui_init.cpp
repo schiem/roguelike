@@ -24,7 +24,7 @@ namespace gregorian = boost::gregorian;
 
 bool GUI::OnInit() {
     string font_pref = "default";
-    ifstream pref_file;
+    std::ifstream pref_file;
     pref_file.open(DATADIR "/settings.conf");
     if(pref_file.good())
     {
@@ -55,7 +55,7 @@ bool GUI::OnInit() {
 
     //Load ascii characters
     load_font(font_pref);
-    
+
     if(asciiBase == 0)
     {
         cout<<"No font file found.  Please place default.bmp in the data directory \
