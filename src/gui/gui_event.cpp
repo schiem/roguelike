@@ -273,6 +273,11 @@ void GUI::perform_action_press(SDLKey key) {
             //game_loader::save_game(game, world_map_gui);
             running=false;
             break;
+        case SDLK_r:
+            if(current_screen == MAP_SCREEN) {
+                world_map_gui.new_world(); 
+            }
+            break;
         default:
             break;
     }

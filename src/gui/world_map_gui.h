@@ -45,6 +45,7 @@ class WorldMapGUI {
         const MapTileMatrix& get_map();
         IntPoint get_selected_chunk();
         void move_cursor(int, int);
+        void new_world();
         void refresh();
         const WorldMap& get_world_map();
 

@@ -242,16 +242,22 @@ std::vector<std::vector<IntPoint> > WorldMap::sort_city(std::vector<IntPoint> ci
 void WorldMap::generate_city(std::vector<std::vector<IntPoint> > city, int city_size)
 {
     IntPoint seed = get_seed(city);
-    random_flood(city, map_tile::CITIES[0], city_size, seed);
-    for(int i=1;i<map_tile::NUM_CITY_TILES;i++)
-    {
-        random_flood(city, map_tile::CITIES[i], (city_size/(i * 2)), seed);
+    if(seed != IntPoint(-1, -1)) {
+        random_flood(city, map_tile::CITIES[0], city_size, seed);
+        for(int i=1;i<map_tile::NUM_CITY_TILES;i++)
+        {
+            random_flood(city, map_tile::CITIES[i], (city_size/(i * 2)), seed);
+        }
     }
 }
 
 IntPoint WorldMap::get_seed(std::vector<std::vector<IntPoint> > city)
 {
+    //get our y coordinate
     int y_coord = rand() % city.size();
+
+    //if our y coordinate is on an edge, get any x on 
+    //those edges
     if(y_coord == 0 || y_coord == (city.size() - 1))
     {
        int x_coord;
@@ -261,6 +267,9 @@ IntPoint WorldMap::get_seed(std::vector<std::vector<IntPoint> > city)
        
        return IntPoint(y_coord, x_coord);
     }
+    
+    //if the y coordinate isn't on an edge
+    //get an x that's on an edge
     int x_direction = rand() % 2 ? -1 : 1;
     int start_x = (city[y_coord].size() - 1) * (x_direction == -1);
     int end_x = city[y_coord].size() * (x_direction == 1);
@@ -271,6 +280,17 @@ IntPoint WorldMap::get_seed(std::vector<std::vector<IntPoint> > city)
             return IntPoint(y_coord, i);
         }
     }
+
+    //if we failed at that for some reason, return the first coordinate
+    for(int i=0;i<city.size();i++) {
+        for(int j=0;j<city[i].size();j++) {
+            if(city[i][j] != IntPoint(-1, -1)) {
+                return IntPoint(i, j);
+            }
+        }
+    }
+    //if we're still failing, return an unusable cordinate
+    return IntPoint(-1, -1);
 }
 
 

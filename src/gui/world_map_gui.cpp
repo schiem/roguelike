@@ -33,6 +33,11 @@ WorldMapGUI::WorldMapGUI() {
     refresh();
 }
 
+void WorldMapGUI::new_world() {
+    world_map = WorldMap(); 
+    refresh();
+}
+
 void WorldMapGUI::refresh() {
     MapTileMatrix raw_map = world_map.get_map();
     for(int i = 0; i < height; i++) {

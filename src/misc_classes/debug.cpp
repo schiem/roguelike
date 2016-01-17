@@ -1,5 +1,5 @@
 /**
- *  @file DEBUG;.CPP
+ *  @file DEBUG.CPP
  *  @author Michael Yoder
  *
  *  @section LICENSE
