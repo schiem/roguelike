@@ -6,7 +6,6 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/conf_load\
 			  -Isrc/controller\
               -Isrc/world\
-			  -Ilib/SDL-ASCII-Template\
 			  -Isrc/gui\
 			  -Isrc/items\
               -Isrc/menu\
@@ -14,7 +13,10 @@ AM_CPPFLAGS = -I.\
               -Isrc/plant\
               -Isrc/ai\
               -Isrc/\
+			  -Ilib/SDL-ASCII-Template\
+			  -Ilib/inih\
               -pg\
+			  -std=c++11\
               $(BOOST_CPPFLAGS)
 
 AM_LDFLAGS = $(BOOST_LDFLAGS)\
@@ -110,6 +112,7 @@ roguelike_SOURCES = \
     src/ai/behavior_node.cpp\
     src/ai/behavior_actor.cpp\
     lib/SDL-ASCII-Template/ASCII_Lib.cpp\
+	lib/inih/ini.c\
     \
 	src/defs.h\
     src/misc_classes/bresenham.h\
@@ -157,6 +160,7 @@ roguelike_SOURCES = \
     src/ai/behavior_actor.h\
     lib/SDL-ASCII-Template/color_def.h\
 	lib/SDL-ASCII-Template/ASCII_Lib.h
+	lib/inih/ini.h
 
 dist_localdata_DATA = data/ data/save
 localdata_DATA = data/ data/save

@@ -27,7 +27,21 @@
 
 namespace tile_load {
 
+    typedef struct {
+        string tilename;
+        int char_count;
+        int tile_id;
+        string color;
+        bool corporeal;
+        bool visible;
+        bool opaque;
+        bool seen;
+        bool can_build_overtop;
+    } tile;
+
     bool conf_exists();
+    static int handle_ini_entry();
+    void print_tile(tile&);
     void print_conf();
     void load_conf();
 

@@ -30,7 +30,7 @@
 
 class DebugConsole;
 
-typedef void (DebugConsole::*function)(std::vector<string>, std::vector<int>);
+typedef void (DebugConsole::*callbackFunction)(std::vector<string>, std::vector<int>);
 
 
 /**
@@ -101,7 +101,7 @@ class DebugConsole
          * This allows the functions to be called directly by name
          * instead of needing to use an if else or switch case.
          */
-        std::map<std::string, function> func_map;
+        std::map<std::string, callbackFunction> func_map;
 
     public:
         /**
