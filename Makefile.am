@@ -3,6 +3,7 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/world/civ\
               -Isrc/misc_classes\
 			  -Isrc/character_classes\
+			  -Isrc/conf_load\
 			  -Isrc/controller\
               -Isrc/world\
 			  -Ilib/SDL-ASCII-Template\
@@ -24,8 +25,10 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)\
              -pg
 
 localdatadir=data
+defdir=$(localdatadir)/defs
+tileconf=$(defdir)/tile.conf
 
-DEFS = -DDATADIR=\"$(localdatadir)\"
+DEFS = -DDATADIR=\"$(localdatadir)\" -DTILECONF=\"$(tileconf)\"
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -48,6 +51,7 @@ roguelike_SOURCES = \
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
     src/character_classes/den.cpp\
+	src/conf_load/tile_load.cpp\
 	src/controller/game.cpp\
     src/controller/character_controller.cpp\
     src/controller/buffer_controller.cpp\
@@ -121,6 +125,7 @@ roguelike_SOURCES = \
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\
     src/character_classes/den.h\
+	src/conf_load/tile_load.h\
 	src/controller/game.h\
     src/gui/virtual_event.h\
 	src/gui/gui.h\

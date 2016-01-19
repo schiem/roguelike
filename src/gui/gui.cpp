@@ -19,6 +19,7 @@
 
 #include <gui.h>
 #include <menu.h>
+#include <tile_load.h>
 
 //this is for backward compatibility with c98 standard
 //gross...
@@ -44,6 +45,8 @@ GUI::GUI() {
 }
 
 int GUI::OnExecute() {
+
+    tile_load::load_conf();
 
     if(OnInit() == false) {
         return -1;
