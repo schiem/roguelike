@@ -27,7 +27,7 @@ Building::Building(){
 };
 
 
-/* 
+/*
  * For now, the buildings will just be wood.  Mostly because I'm making
  * no progress sitting here thinking about how to do this, and so I should
  * just sit down and actually do it.  I can always add more later.

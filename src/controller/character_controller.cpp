@@ -337,7 +337,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     Character* enem = character_at_loc(new_chunk, next_coords);
 
     IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));
-    bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->corporeal;
+    bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
 
     if(can_move && (enem == NULL)) {
         remove_index_char(chara);

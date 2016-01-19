@@ -56,8 +56,8 @@ namespace tile_load {
                 cout<<"ERROR: Could not find color "<<value<<" for tile "<<section<<"."<<endl;
             }
             (*tilemap)[section].color=color_code;
-        } else if (MATCH(name, "corporeal")) {
-            (*tilemap)[section].corporeal=stoi(value);
+        } else if (MATCH(name, "can_be_moved_through")) {
+            (*tilemap)[section].can_be_moved_through=stoi(value);
         } else if (MATCH(name, "visible")) {
             (*tilemap)[section].visible=stoi(value);
         } else if (MATCH(name, "opaque")) {
@@ -79,7 +79,7 @@ namespace tile_load {
         cout<<"Font character (char_count): "<<theTile.char_count<<endl;
         cout<<"Tile ID: "<<theTile.tile_id<<endl;
         cout<<"Color: "<<theTile.color<<endl;
-        cout<<"Corporeal: "<<theTile.corporeal<<endl;
+        cout<<"Corporeal: "<<theTile.can_be_moved_through<<endl;
         cout<<"Visible: "<<theTile.visible<<endl;
         cout<<"Opaque: "<<theTile.opaque<<endl;
         cout<<"Seen: "<<theTile.seen<<endl;
@@ -100,12 +100,12 @@ namespace tile_load {
                 printf("Can't load test.ini\n");
                 exit(EXIT_FAILURE);
             }
-            print_tile(tilemap["KOBOLD_CORPSE"]);
+            print_tile(tc.tiledefs["KOBOLD_CORPSE"]);
         } else {
             exit(EXIT_FAILURE);
         }
 
-        return tilemap;
+        return tc.tiledefs;
     }
 
 }

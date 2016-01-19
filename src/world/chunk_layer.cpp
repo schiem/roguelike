@@ -27,10 +27,11 @@ ChunkLayer::ChunkLayer() {
 }
 
 ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
+    tileset = &Tileset::instance()->get_tileset();
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
-    ground = TileMatrix(height, std::vector<Tile>(width, Tileset::get("EMPTY")));
+    ground = TileMatrix(height, std::vector<Tile>(width, (*tileset)["EMPTY"]));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     items = std::vector<Item*>();
@@ -40,15 +41,16 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     characters = std::vector<Character*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
-            ground[i][j] = Tileset::get("BLOCK_WALL");
+            ground[i][j] = (*tileset)["BLOCK_WALL"];
         }
     }
 }
 
 ChunkLayer::ChunkLayer(int _width, int _height) {
+    tileset = &Tileset::instance()->get_tileset();
     width = _width;
     height = _height;
-    ground = TileMatrix(height, std::vector<Tile>(width, Tileset::get("EMPTY")));
+    ground = TileMatrix(height, std::vector<Tile>(width, (*tileset)["EMPTY"]));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     items = std::vector<Item*>();
@@ -56,9 +58,10 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     plants = std::vector<Plant>();
     buildings = std::vector<Building>();
     characters = std::vector<Character*>();
+
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
-            ground[i][j] = Tileset::get("BLOCK_WALL");
+            ground[i][j] = (*tileset)["BLOCK_WALL"];
         }
     }
 }
@@ -82,9 +85,12 @@ void ChunkLayer::clear() {
     plants = std::vector<Plant>();
     buildings = std::vector<Building>();
     characters = std::vector<Character*>();
+
+    tileset = &Tileset::instance()->get_tileset();
+
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            ground[i][j] = Tileset::get("BLOCK_WALL");
+            ground[i][j] = (*tileset)["BLOCK_WALL"];
         }
     }
 }
@@ -188,6 +194,8 @@ void ChunkLayer::add_item(Item* item) {
 void ChunkLayer::make_stairs(bool has_layer_below) {
     assert(num_rooms > 0);
 
+    tileset = &Tileset::instance()->get_tileset();
+
     Room up_room = rooms[rand() % num_rooms];
     Room down_room = rooms[rand() % num_rooms];
 
@@ -205,18 +213,18 @@ void ChunkLayer::make_stairs(bool has_layer_below) {
                 (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
         }
         while(down_stair == up_stair);
-        ground[down_stair.row][down_stair.col] = Tileset::get("DOWN_STAIR");
+        ground[down_stair.row][down_stair.col] = (*tileset)["DOWN_STAIR"];
     }
-    ground[up_stair.row][up_stair.col] = Tileset::get("UP_STAIR");
+    ground[up_stair.row][up_stair.col] = (*tileset)["UP_STAIR"];
 
     down_stairs.push_back(down_stair);
     up_stairs.push_back(up_stair);
 }
 
 void ChunkLayer::make_stairs_at_coords(int row, int col, Tile stair_type) {
-    if (stair_type == Tileset::get("DOWN_STAIR")) {
+    if (stair_type == (*tileset)["DOWN_STAIR"]) {
         down_stairs.push_back(IntPoint(row, col));
-    } else if (stair_type == Tileset::get("UP_STAIR")) {
+    } else if (stair_type == (*tileset)["UP_STAIR"]) {
         up_stairs.push_back(IntPoint(row, col));
     } else {
         true;
@@ -314,22 +322,23 @@ void ChunkLayer::add_character(Character* character)
 void ChunkLayer::layer_dump() {
     //dungeon dump
     Tile tile;
+    tileset = &Tileset::instance()->get_tileset();
     for(int row=0;row<height;row++)
     {
         for(int col=0;col<width;col++)
         {
             tile = ground[row][col];
-            if(tile == Tileset::get("DIRT")) {
+            if(tile == (*tileset)["DIRT"]) {
                 cout<<".";
-            } else if (tile == Tileset::get("PATH")) {
+            } else if (tile == (*tileset)["PATH"]) {
                 cout<<":";
-            } else if (tile == Tileset::get("ROOM_WALL")) {
+            } else if (tile == (*tileset)["ROOM_WALL"]) {
                 cout<<"#";
-            } else if (tile == Tileset::get("DOWN_STAIR")) {
+            } else if (tile == (*tileset)["DOWN_STAIR"]) {
                 cout<<"d";
-            } else if (tile == Tileset::get("UP_STAIR")) {
+            } else if (tile == (*tileset)["UP_STAIR"]) {
                 cout<<"u";
-            } else if (tile == Tileset::get("KOBOLD_SPAWNER")) {
+            } else if (tile == (*tileset)["KOBOLD_SPAWNER"]) {
                 cout<<"S";
             } else {
                 cout<<" ";

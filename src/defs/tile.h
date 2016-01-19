@@ -47,7 +47,7 @@ struct Tile {
         /**
          * Whether or not a character can move through the tile.
          */
-        bool corporeal;
+        bool can_be_moved_through;
 
         /**
          * If the tile is currently visible.

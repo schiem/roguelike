@@ -121,9 +121,11 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     if(directions.row == 1) {
         assert((offset.row + (diameter - 1)) < WORLD_HEIGHT);
         //For the topmost row, we will first have to serialize and clear.
+        /*
         for(int col = 0; col < diameter; col++) {
             model[0][col].serialize();
         }
+        */
 
         //For everything but the last row, we will just copy the next row into the
         //current row.
@@ -146,9 +148,11 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         assert(offset.row > 0);
         //For the last row, serialize.
         int row = diameter - 1;
+        /*
         for(int col = 0; col < diameter; col++) {
             model[row][col].serialize();
         }
+        */
 
         //For everything but the first row, copy the previous row into the
         //current row.
@@ -171,9 +175,11 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
         assert((offset.col + (diameter - 1)) < WORLD_WIDTH);
 
         //For the leftmost column, serialize and clear.
+        /*
         for(int row = 0; row < diameter; row++) {
             model[row][0].serialize();
         }
+        */
 
         //For everything but the rightmost column, copy the right neighbor into
         //the current column.
@@ -196,9 +202,11 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
 
         int col = diameter - 1;
         //For the rightmost column, serialize and clear.
+        /*
         for(int row = 0; row < diameter; row++) {
             model[row][col].serialize();
         }
+        */
 
         //For everything but the leftmost column, copy the left neighbor into
         //the current column.
@@ -222,6 +230,7 @@ void ChunkMatrix::shift_matrix(IntPoint directions, MapTileMatrix &world_map) {
     cout<<"New offset: "<<offset.row<<", "<<offset.col<<endl;
 }
 
+/*
 void ChunkMatrix::serialize_all()
 {
     for(int i=0;i<diameter;i++)
@@ -232,6 +241,7 @@ void ChunkMatrix::serialize_all()
         }
     }
 }
+*/
 
 
 int ChunkMatrix::get_diameter()

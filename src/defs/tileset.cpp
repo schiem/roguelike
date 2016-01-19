@@ -28,10 +28,10 @@ std::unordered_map<std::string, Tile> Tileset::tileset = tile_load::load_conf();
 Tileset* Tileset::s_instance = 0;
 
 Tileset::Tileset() {
-    std::cout<<"Tileset constructor called!"<<std::endl;
+
 }
 
-const std::unordered_map<std::string, Tile>& Tileset::get_tileset() const {
+std::unordered_map<std::string, Tile>& Tileset::get_tileset() {
     return tileset;
 }
 

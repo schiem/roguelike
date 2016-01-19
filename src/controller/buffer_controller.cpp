@@ -197,11 +197,12 @@ void Game::plants_to_buffer(std::vector<Plant>* plants, IntPoint chunk)
 
 void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
 {
+    std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
     for(int i=0;i<den->get_height();i++)
     {
         for(int j=0;j<den->get_width();j++)
         {
-            if(den->tile_at(i, j) != Tileset::get("EMPTY"))
+            if(den->tile_at(i, j) != (*tileset)["EMPTY"])
             {
                 IntPoint p_coords = coords + IntPoint(i - den->get_height()/2, j - den->get_width()/2);
                 add_tile_to_buffer(chunk, p_coords, den->tile_pointer_at(i, j));

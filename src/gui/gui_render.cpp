@@ -278,12 +278,13 @@ void GUI::render_target()
 
 void GUI::render_debug()
 {
+    std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
     for(int i=0;i<GAME_WIDTH;i++)
     {
-        drawChr(i, GAME_HEIGHT-3, Tileset::get("BLOCK_WALL").char_count, ascii, screen, BLACK);
-        drawChr(i, GAME_HEIGHT-2, Tileset::get("BLOCK_WALL").char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-3, (*tileset)["BLOCK_WALL"].char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-2, (*tileset)["BLOCK_WALL"].char_count, ascii, screen, BLACK);
     }
-    drawChr(input.size(), GAME_HEIGHT-2, Tileset::get("BLOCK_WALL").char_count, ascii, screen, WHITE);
+    drawChr(input.size(), GAME_HEIGHT-2, (*tileset)["BLOCK_WALL"].char_count, ascii, screen, WHITE);
     drawStr(0, GAME_HEIGHT-3, debug.get_message().c_str(), ascii, screen, WHITE);
     drawStr(0, GAME_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }

@@ -37,7 +37,7 @@ class Tileset
         Tileset();
 
     public:
-        const std::unordered_map<std::string, Tile>& get_tileset() const;
+        std::unordered_map<std::string, Tile>& get_tileset();
         static Tile get(std::string tilename);
 
         static Tileset* instance();

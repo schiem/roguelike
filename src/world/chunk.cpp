@@ -42,6 +42,7 @@ Chunk::Chunk(MapTile tile_type, int world_row, int world_col, string _save_folde
     init(tile_type, world_row, world_col, _save_folder, map);
 }
 
+/*
 bool Chunk::find_serialized_chunk() {
     fs::path chunk_dir(save_folder);
 
@@ -61,6 +62,7 @@ bool Chunk::find_serialized_chunk() {
 
     return false;
 }
+*/
 
 void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_folder, MapTileMatrix& world_map) {
     save_folder = _save_folder;
@@ -69,8 +71,8 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
     cm.world_col = world_col;
     cm.chunk_type_id = tile_type.id;
 
-    bool found_chunk = find_serialized_chunk();
-    if(!found_chunk) {
+    //bool found_chunk = find_serialized_chunk();
+    //if(!found_chunk) {
         if(tile_type == map_tile::MAP_DEFAULT) {
             build_land_chunk();
         } else if (tile_type == map_tile::MAP_WATER) {
@@ -92,7 +94,7 @@ void Chunk::init(MapTile tile_type, int world_row, int world_col, string _save_f
         blend_chunk(world_map, 1, 0);
         blend_chunk(world_map, 0, 1);
         blend_chunk(world_map, 0, -1);
-    }
+    //}
 }
 
 bool Chunk::build_chunk_with_dungeons() {
@@ -157,6 +159,7 @@ void Chunk::build_city_chunk() {
         std::vector<Building> builds = blocks[i].get_buildings();
         for(int j=0;j<builds.size();j++)
         {
+
             add_building(builds[j], 0);
             Enemy* chara = new Enemy(builds[j].get_x() + 1, builds[j].get_y() + 1, 0, enemies::human);
             layers[0].add_character(chara);
@@ -165,11 +168,12 @@ void Chunk::build_city_chunk() {
             int cob_x = rand() % 2 + 1;
             int cob_y = rand() % 2 + 1;
 
+            std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
             for(int row=builds[j].get_y() - cob_y;row<builds[j].get_height() + builds[j].get_y() + cob_y;row++)
             {
                 for(int col=builds[j].get_x() - cob_x;col<builds[j].get_width() + builds[j].get_x() + cob_x;col++)
                 {
-                    layers[0].set_tile(row, col, Tileset::get("DIRT"));//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
+                    layers[0].set_tile(row, col, (*tileset)["DIRT"]);//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
                 }
             }
         }
@@ -336,6 +340,7 @@ void Chunk::kill_plant(Plant *plant, int depth)
 //===========SERIALIZATION/DESERIALIZATION=========
 
 
+/*
 int Chunk::pack_int_into_char_array(int num, char* file, int index) {
     unsigned int n = (unsigned int) num;
     file[index] = (unsigned char)   ((n & 0xff000000) >> 24);
@@ -532,9 +537,7 @@ void Chunk::deserialize_metadata(char file_data[]) {
     cm.world_row = file_data[4];
     cm.world_col = file_data[5];
 
-    /*
-     * The map tile ID was stored, now we just reverse it to get the chunk type.
-     */
+     //The map tile ID was stored, now we just reverse it to get the chunk type.
     chunk_type = map_tile::MAP_TILE_INDEX[file_data[3]];
     //TODO return 6
 }
@@ -650,9 +653,6 @@ void Chunk::deserialize(string file_name) {
     int file_size = fs::file_size(file_name);
 
     //Initialize an array for the file data.
-    /** \todo does this have to be dynamically allocated? 
-     *   Yeah; we don't know its size at compile time.
-     */
     char * file_data = new char[file_size];
 
     //Read the entire file into the file_data array.
@@ -672,6 +672,7 @@ void Chunk::deserialize(string file_name) {
     delete [] file_data;
     chunk_data_file.close();
 }
+*/
 
 void Chunk::blend_chunk(MapTileMatrix& map, int row_change, int col_change)
 {

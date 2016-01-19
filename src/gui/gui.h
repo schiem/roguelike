@@ -71,7 +71,6 @@ class GUI : public VirtualEvent {
         Screen last_screen;
         WorldMapGUI world_map_gui;
         Menu* menu;
-        Tileset* tileset;
         Game game;
         std::vector<BehaviorTree> trees;
 

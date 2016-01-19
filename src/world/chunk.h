@@ -135,7 +135,7 @@ class Chunk{
          * @return whether or not a serialized chunk was found.
          * @see deserialize
          */
-        bool find_serialized_chunk();
+        //bool find_serialized_chunk();
 
         /**
          * The heightmap of this chunk.
@@ -383,7 +383,7 @@ class Chunk{
          * @param file the file byte array
          * @return x the next index of the file array to write to.
          */
-        int serialize_metadata(char* file);
+        //int serialize_metadata(char* file);
 
         /**
          * Serialize all the plants in a layer.
@@ -391,7 +391,7 @@ class Chunk{
          * @param layer the layer to work on
          * @current_byte the current byte in the file array.
          */
-        int serialize_plants(char* file, int layer, int current_byte);
+        //int serialize_plants(char* file, int layer, int current_byte);
 
         /**
          * Save metadata for each layer of this chunk.
@@ -399,7 +399,7 @@ class Chunk{
          * @param cb the index at which to begin writing.
          * @return the index after the last piece of layer metadata.
          */
-        int serialize_layer_metadata(char* file, int cb);
+        //int serialize_layer_metadata(char* file, int cb);
 
         /**
          * Save the chunk layers.
@@ -407,14 +407,14 @@ class Chunk{
          * @param cb the index at which to begin writing.
          * @return the index after the last piece of layer metadata.
          */
-        int serialize_layers(char* file, int cb);
+        //int serialize_layers(char* file, int cb);
 
         /**
          * Write to the save file in the CHUNK_DIR directory.
          * @param file the file data to write.
          * @param filename the name of this chunk file.
          */
-        void save_file(char* file, string filename, int file_size);
+        //void save_file(char* file, string filename, int file_size);
 
         /**
          * Saves all of the important information for this chunk in a file. The
@@ -426,13 +426,13 @@ class Chunk{
          * single byte. As we get over 128 tile IDs, we will have to change this
          * functionality.
          */
-        void serialize();
+        //void serialize();
 
         /**
          * Set Chunk attributes to those found in the file data array.
          * @param file the data file
          */
-        void deserialize_metadata(char* file);
+        //void deserialize_metadata(char* file);
 
         /**
          * For each layer, set layer attributes to those found in the
@@ -441,7 +441,7 @@ class Chunk{
          * @param cb the byte at which to begin reading
          * @return index of the byte after the last metadata byte
          */
-        int deserialize_layer_metadata(char* file, int cb);
+        //int deserialize_layer_metadata(char* file, int cb);
 
         /**
          * Deserialize all the plants in a layer.
@@ -451,7 +451,7 @@ class Chunk{
          * @param cb the current byte in the file array
          * @param num_plants the number of plants in this layer.
          */
-        int deserialize_plants(char* file, int layer, int cb, int num_plants);
+        //int deserialize_plants(char* file, int layer, int cb, int num_plants);
 
         /**
          * Populate this chunk's layer array with data from the file array.
@@ -459,7 +459,7 @@ class Chunk{
          * @param cb the byte at which to begin reading
          * @return index of the byte after the last metadata byte
          */
-        int deserialize_layers(char* file, int cb);
+        //int deserialize_layers(char* file, int cb);
 
         /**
          * Loads this chunk's information from a file. Essentially does a simple
@@ -475,7 +475,7 @@ class Chunk{
          * @param world_row - This chunk's row on the world map.
          * @param world_col - This chunk's column on the world map.
          */
-        void deserialize(string file_name);
+        //void deserialize(string file_name);
 
 
         /**

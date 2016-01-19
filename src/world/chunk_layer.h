@@ -23,6 +23,8 @@
 #ifndef CHUNK_LAYER
 #define CHUNK_LAYER
 
+#include <unordered_map>
+
 #include <defs.h>
 #include <spawner.h>
 #include <room.h>
@@ -37,6 +39,11 @@ class ChunkLayer {
         //is this really the place for this?  The answer is no. It's not.
         static const int MAX_ROOMS=15;
         
+        /**
+         * Store a pointer to the global tileset.
+         */
+        std::unordered_map<std::string, Tile>* tileset;
+
         /**
          * The central data model for the class: A two-dimensional matrix
          * storing the layer's tiles.

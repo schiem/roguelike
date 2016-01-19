@@ -21,7 +21,6 @@
 #include <menu.h>
 
 GUI::GUI() {
-    tileset = Tileset::instance();
     world_map_gui = WorldMapGUI();
     game = Game();
     menu = new StartMenu(1, Tileset::get("BLOCK_WALL"), game, world_map_gui);

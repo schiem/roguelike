@@ -42,46 +42,50 @@ namespace overworld_gen {
     }
 
     void build_land_overworld(ChunkLayer& ground) {
+        std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
+
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
                 if (rand() % 8 == 0){
-                    ground.set_tile(i,j,Tileset::get("TREE"));
+                    ground.set_tile(i,j,(*tileset)["TREE"]);
                 } else {
-                    ground.set_tile(i,j,Tileset::get("OVERWORLD_DIRT"));
+                    ground.set_tile(i,j,(*tileset)["OVERWORLD_DIRT"]);
                 }
             }
         }
         ground.down_stairs[0].col = rand() % ground.width;
         ground.down_stairs[0].row = rand() % ground.height;
         if(ground.has_layer_below) {
-            ground.set_tile(ground.down_stairs[0], Tileset::get("DOWN_STAIR"));
+            ground.set_tile(ground.down_stairs[0], (*tileset)["DOWN_STAIR"]);
         }
         IntPoint spawn = IntPoint(rand() % ground.height, rand() % ground.width);
         ground.spawners.push_back(Spawner(spawn.col, spawn.row, 0, rabbit));
-        ground.set_tile(spawn, Tileset::get("KOBOLD_SPAWNER"));
+        ground.set_tile(spawn, (*tileset)["KOBOLD_SPAWNER"]);
     }
 
     void build_water_overworld(ChunkLayer& ground) {
+        std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
                 if (rand() % 4 == 0) {
-                    ground.set_tile(i,j,Tileset::get("LIGHT_WATER"));
+                    ground.set_tile(i,j,(*tileset)["LIGHT_WATER"]);
                 } else {
-                    ground.set_tile(i,j,Tileset::get("WATER"));
+                    ground.set_tile(i,j,(*tileset)["WATER"]);
                 }
             }
         }
     }
 
     void build_beach_overworld(ChunkLayer& ground) {
+        std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++)
             {
                 if( rand() % 2 == 0) {
-                    ground.set_tile(i,j,Tileset::get("SAND1"));
+                    ground.set_tile(i,j,(*tileset)["SAND1"]);
                 }
                 else{
-                    ground.set_tile(i,j,Tileset::get("SAND2"));
+                    ground.set_tile(i,j,(*tileset)["SAND2"]);
                 }
             }
         }
@@ -98,9 +102,10 @@ namespace overworld_gen {
          * -Bresenham ellipses?
          */
 
+        std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                ground.set_tile(i,j,Tileset::get("DIRT"));
+                ground.set_tile(i,j,(*tileset)["DIRT"]);
             }
         }
         
@@ -111,7 +116,7 @@ namespace overworld_gen {
             cout<<newrow<<endl;
             coords.row = newrow;
             coords.col = rand() % width;
-        } while (ground.get_tile(coords).corporeal == false);
+        } while (ground.get_tile(coords).can_be_moved_through == false);
 
 
         if(rand() % 10 == 0) {
@@ -123,7 +128,7 @@ namespace overworld_gen {
 
            for(int i=start_y-radius;i<start_y+radius;i++) {
                for(int j=start_x-radius;j<start_x+radius;j++) {
-                   ground.set_tile(i,j,Tileset::get("DIRT"));
+                   ground.set_tile(i,j,(*tileset)["DIRT"]);
                }
            }
 
@@ -134,7 +139,7 @@ namespace overworld_gen {
                 std::vector<IntPoint> line = bresenham_line(start, in_circle[i]);
 
                 for(int j=0;j<line.size();j++) {
-                    ground.set_tile(line[j], Tileset::get("WATER"));
+                    ground.set_tile(line[j], (*tileset)["WATER"]);
                 }
             }
 
@@ -171,7 +176,7 @@ namespace overworld_gen {
         ground.down_stairs.push_back(down_stair);
 
         if(ground.has_layer_below) {
-            ground.set_tile(down_stair, Tileset::get("DOWN_STAIR"));
+            ground.set_tile(down_stair, (*tileset)["DOWN_STAIR"]);
         }
         
         for(int i=0;i<1;i++)

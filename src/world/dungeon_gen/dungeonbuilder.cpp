@@ -141,9 +141,10 @@ namespace dungeon_builder {
             set_wall_if_not_path(i, br.col, dm);
         }
 
+        std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
         for(int i = tl.row + 1; i <= br.row - 1; i++) {
             for(int j = tl.col + 1; j <= br.col - 1; j++) {
-                dm.main_dungeon->set_tile(i, j, Tileset::get("DIRT"));
+                dm.main_dungeon->set_tile(i, j, (*tileset)["DIRT"]);
             }
         }
         dm.main_dungeon->rooms[dm.num_rooms] = Room(tl, br);

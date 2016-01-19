@@ -23,6 +23,7 @@
 #include <item.h>
 #include <game.h>
 #include <defs.h>
+#include <unordered_map>
 
 
 

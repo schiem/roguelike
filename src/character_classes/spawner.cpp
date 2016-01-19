@@ -21,6 +21,10 @@
 
 #include <spawner.h>
 #include <tileset.h>
+#include <tile.h>
+
+#include <unordered_map>
+
 using namespace std;
 Spawner::Spawner()
 {
@@ -69,13 +73,16 @@ void Spawner::construct_huts()
 {
     //let's have statically size huts for now.  just shove
     //enemies in there.
+
+    std::unordered_map<std::string, Tile>* tileset = &Tileset::instance()->get_tileset();
+
     int num_huts = num_enemy/spawn_type.enemies_per_spawn;
-    TileMatrix hut = TileMatrix(5, std::vector<Tile>(5, Tileset::get("EMPTY")));
+    TileMatrix hut = TileMatrix(5, std::vector<Tile>(5, (*tileset)["EMPTY"]));
     IntPoint start = IntPoint(2, 2);
     std::vector<IntPoint> points = bresenham_circle(start, 2);
     for(int i=0;i<points.size();i++)
     {
-        hut[points[i].row][points[i].col] = Tileset::get("HUT_WALL");
+        hut[points[i].row][points[i].col] = (*tileset)["HUT_WALL"];
     }
 
     int hut_x;
@@ -83,7 +90,7 @@ void Spawner::construct_huts()
     for(int i=0;i<num_huts;i++)
     {
         int door = rand() % points.size();
-        hut[points[door].row][points[door].col] = Tileset::get("EMPTY");
+        hut[points[door].row][points[door].col] = (*tileset)["EMPTY"];
         do
         {
             hut_x = rand() % (num_huts * 6) - (num_huts*6)/2;

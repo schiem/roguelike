@@ -51,15 +51,15 @@ IntPoint pathfinding::dumb_path(IntPoint goal, TilePointerMatrix& surroundings, 
     first_fail.col = first_fail.col - (next.col == 0) + (next.col == -1) - (next.col == 1);
     second_fail.row = second_fail.row + (next.row == 0) - (next.row == 1) + (next.row == -1);
     second_fail.col = second_fail.col + (next.col == 0);
-    if(surroundings[next.row + cur_coords.row][next.col + cur_coords.col]->corporeal)
+    if(surroundings[next.row + cur_coords.row][next.col + cur_coords.col]->can_be_moved_through)
     {
         return next;
     }
-    else if(surroundings[first_fail.row + cur_coords.row][first_fail.col + cur_coords.col]->corporeal)
+    else if(surroundings[first_fail.row + cur_coords.row][first_fail.col + cur_coords.col]->can_be_moved_through)
     {
         return first_fail;
     }
-    else if(surroundings[second_fail.row + cur_coords.row][second_fail.col + cur_coords.col]->corporeal)
+    else if(surroundings[second_fail.row + cur_coords.row][second_fail.col + cur_coords.col]->can_be_moved_through)
     {
         return second_fail;
     }
@@ -118,7 +118,7 @@ std::vector<IntPoint> pathfinding::a_star(IntPoint start, IntPoint goal, TilePoi
                     bool in_range = y_move <= sight && x_move <= sight;
                     bool is_good = i>=0 && j>=0 && i < surroundings.size() && j < surroundings[i].size();
                     //check if this point can be moved through, isn't on the open list, and isn't on the closed list and isn't out of range
-                    if(in_range && is_good && surroundings[i][j]->corporeal && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
+                    if(in_range && is_good && surroundings[i][j]->can_be_moved_through && open_index == -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         ATile temp = ATile(cur_index, IntPoint(i, j));
                         temp.g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
@@ -131,7 +131,7 @@ std::vector<IntPoint> pathfinding::a_star(IntPoint start, IntPoint goal, TilePoi
                         
                     }
                     //check if it can be moved through, is on the open list, and isn't on the closed list
-                    else if(surroundings[i][j]->corporeal && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
+                    else if(surroundings[i][j]->can_be_moved_through && open_index != -1 && is_in(IntPoint(i, j), closed) == -1)
                     {
                         //recalculate g to give a new f
                         int new_g = current_list[cur_index].g + (14 * ((i - current_list[cur_index].coords.row != 0) && 
