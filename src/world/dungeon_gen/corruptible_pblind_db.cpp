@@ -22,9 +22,9 @@
 
 #include <corruptible_pblind_db.h>
 #include <chunk_layer.h>
+#include <tileset.h>
 
 using namespace std;
-namespace td=tiledef;
 namespace db=dungeon_builder;
 
 namespace corruptible_pblind_db {
@@ -36,7 +36,7 @@ namespace corruptible_pblind_db {
         //std::vector.size() returns an unsigned long...
         for(size_t j = 0; j < corners.size(); j++) {
             if (db::rolled_over(20)) {
-                dm.main_dungeon->set_tile(corners[j], td::EMPTY);
+                dm.main_dungeon->set_tile(corners[j], Tileset::get("EMPTY"));
                 return;
             }
 
@@ -49,25 +49,25 @@ namespace corruptible_pblind_db {
                 //If the block below this point is a ROOM_WALL block...
                 if((corners[j].row + 1 < dm.main_dungeon->height) &&
                         (dm.main_dungeon->get_tile(corners[j].row + 1, corners[j].col)
-                         == td::ROOM_WALL)) {
+                         == Tileset::get("ROOM_WALL"))) {
                     vert = 1;
                     wall_blocks_found++;
                 }
                 if ((corners[j].row - 1 >= 0) &&
                         (dm.main_dungeon->get_tile(corners[j].row - 1, corners[j].col)
-                         == td::ROOM_WALL)) {
+                         == Tileset::get("ROOM_WALL"))) {
                     vert = -1;
                     wall_blocks_found++;
                 }
                 if ((corners[j].col + 1 < dm.main_dungeon->width) &&
                         (dm.main_dungeon->get_tile(corners[j].row, corners[j].col + 1)
-                         == td::ROOM_WALL)) {
+                         == Tileset::get("ROOM_WALL"))) {
                     horiz = 1;
                     wall_blocks_found++;
                 }
                 if ((corners[j].col + 1 < dm.main_dungeon->width) &&
                         (dm.main_dungeon->get_tile(corners[j].row, corners[j].col - 1)
-                         == td::ROOM_WALL)) {
+                         == Tileset::get("ROOM_WALL"))) {
                     horiz = -1;
                     wall_blocks_found++;
                 }
@@ -75,10 +75,10 @@ namespace corruptible_pblind_db {
                 if (wall_blocks_found != 2) {
                     return;
                 } else {
-                    dm.main_dungeon->set_tile(corners[j], td::EMPTY);
+                    dm.main_dungeon->set_tile(corners[j], Tileset::get("EMPTY"));
                     dm.main_dungeon->set_tile(corners[j].row + vert,
                             corners[j].col + horiz,
-                            td::ROOM_WALL);
+                            Tileset::get("ROOM_WALL"));
                 }
             }
         }

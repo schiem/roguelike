@@ -19,18 +19,12 @@
 
 #include <gui.h>
 #include <menu.h>
-#include <tile_load.h>
-
-//this is for backward compatibility with c98 standard
-//gross...
-
-
-namespace td=tiledef;
 
 GUI::GUI() {
+    tileset = Tileset::instance();
     world_map_gui = WorldMapGUI();
     game = Game();
-    menu = new StartMenu(1, td::BLOCK_WALL, game, world_map_gui);
+    menu = new StartMenu(1, Tileset::get("BLOCK_WALL"), game, world_map_gui);
     current_screen = MENU_SCREEN;
     screen = NULL;
     asciiBase = NULL;
@@ -45,8 +39,6 @@ GUI::GUI() {
 }
 
 int GUI::OnExecute() {
-
-    tile_load::load_conf();
 
     if(OnInit() == false) {
         return -1;

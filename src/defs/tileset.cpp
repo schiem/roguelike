@@ -1,6 +1,7 @@
-/**
- *  @file AUDIO_MENU.CPP
- *  @author Michael Yoder
+/*
+ *  @file TILESET.CPP
+ *  @author Michael Yoder, Seth Yoder
+ *
  *
  *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
@@ -19,21 +20,31 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "menu.h"
-#include <game.h>
-#include <defs.h>
+#include <tile_load.h>
+#include <tileset.h>
+#include <iostream>
 
-AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
-{
-    id = menu_id::AUDIO_MENU;
-    game = _game;
-    next_screen = GAME_SCREEN;
-    title = "Silly, there's no audio yet.  Maybe Seth can compose something later...";
-    options.push_back("Back");
+std::unordered_map<std::string, Tile> Tileset::tileset = tile_load::load_conf();
+Tileset* Tileset::s_instance = 0;
+
+Tileset::Tileset() {
+    std::cout<<"Tileset constructor called!"<<std::endl;
 }
 
-Menu* AudioMenu::make_selection()
-{
+const std::unordered_map<std::string, Tile>& Tileset::get_tileset() const {
+    return tileset;
+}
 
-    return new EscapeMenu(1, Tileset::get("BLOCK_WALL"), game);
+Tile Tileset::get(std::string tilename) {
+    if (!s_instance) {
+        s_instance = new Tileset;
+    }
+    return tileset[tilename];
+}
+
+Tileset* Tileset::instance() {
+    if (!s_instance) {
+        s_instance = new Tileset;
+    }
+    return s_instance;
 }

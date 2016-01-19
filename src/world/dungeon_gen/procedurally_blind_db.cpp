@@ -22,8 +22,8 @@
 
 #include <procedurally_blind_db.h>
 #include <chunk_layer.h>
+#include <tileset.h>
 
-namespace td=tiledef;
 namespace db=dungeon_builder;
 
 namespace pblind_db {
@@ -181,7 +181,7 @@ namespace pblind_db {
         bool bad_direction;
         IntPoint potential_point;
         for(int i = 0; i < path_length; i++) {
-            dm.main_dungeon->set_tile(current_point, td::PATH);
+            dm.main_dungeon->set_tile(current_point, Tileset::get("PATH"));
             //For at least 2 or 3 blocks, just go straight. otherwise,
             //we may change direction.
             if (i > 3) {

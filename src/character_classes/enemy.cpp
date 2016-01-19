@@ -21,7 +21,6 @@
 
 #include <enemy.h>
 
-using namespace tiledef;
 using namespace std;
 Enemy::Enemy()
 {

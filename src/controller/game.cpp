@@ -23,7 +23,6 @@
 #include <game.h>
 
 using namespace std;
-namespace td=tiledef;
 
 /*
 Explanation of how the screen works: There is a chunk map, which holds all of
@@ -69,10 +68,6 @@ taken from the buffer with the character at the center.
 Game::Game() {
     initialized = false;
     paused = false;
-
-    for(int i = 0; i < td::TILE_TYPE_COUNT; i++) {
-        tile_index[i] = td::TILE_INDEX[i];
-    }
 }
 
 Game::~Game()
@@ -96,11 +91,11 @@ void Game::init(const WorldMap& _world_map, IntPoint selected_chunk) {
     //Each chunk holds an overworld and several
     //dungeons, which are generated upon chunk creation.
     //This is the "starting" chunk (arbitrary).
-    
-    //TODO get this clutter somewhere else
+
+    //TODO put this clutter somewhere else
     int main_stat_array[NUM_STATS] = {100, 2, 100, 0, 1, 10, 10, 10}; 
     std::vector<int> main_stats(&main_stat_array[0], &main_stat_array[0] + NUM_STATS);
-    main_char = Character(main_stats, 50, 25, td::MAIN_CHAR, misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1, "You!", weapons::fist);
+    main_char = Character(main_stats, 50, 25, Tileset::get("MAIN_CHAR"), misc::player_corpse, selected_chunk.col, selected_chunk.row, 0, 0, 70, -1, "You!", weapons::fist);
     main_char.add_item(new Consumable(main_char.get_chunk(), consumables::potato));
     main_char.add_item(new Weapon(main_char.get_chunk(), weapons::wood_axe));
     Enemy* wolf = new Enemy(49, 25, 0, enemies::wolf_companion);
@@ -114,6 +109,9 @@ void Game::init(const WorldMap& _world_map, IntPoint selected_chunk) {
     IntPoint buffer_coords = get_buffer_coords(main_char.get_chunk(), main_char.get_coords());
     character_index[buffer_coords.row][buffer_coords.col] = &main_char;
 
+    // Out of bounds tiles look like a generic BLOCK_WALL.
+    buffer_tile_placeholder=Tileset::get("BLOCK_WALL");
+
 
     //What gets drawn to the screen
     canvas = TilePointerMatrix(GAME_HEIGHT, vector<Tile*>(GAME_WIDTH));
@@ -126,7 +124,7 @@ void Game::init(const WorldMap& _world_map, IntPoint selected_chunk) {
 
     visibility_on = true;
     initialized = true;
-    
+
 }
 
 

@@ -23,9 +23,6 @@
 #include <game.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 EscapeMenu::EscapeMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     id = menu_id::ESCAPE_MENU;
@@ -47,11 +44,11 @@ Menu* EscapeMenu::make_selection()
     }
     else if(options[selection] == "Audio")
     {
-        return new AudioMenu(1, td::BLOCK_WALL, game);
+        return new AudioMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else if(options[selection] == "Font")
     {
-        return new FontMenu(1, td::BLOCK_WALL, game);
+        return new FontMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else if(options[selection] == "Quit")
     {

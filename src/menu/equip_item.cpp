@@ -23,9 +23,6 @@
 #include <game.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 EquipMenu::EquipMenu(int padding, Tile _border, Game* _game, int _item) : Menu(padding, _border)
 {
     id = menu_id::EQUIP_ITEM;
@@ -43,5 +40,5 @@ Menu* EquipMenu::make_selection()
     {
         game->main_char.remove_item(item);
     }
-    return new EquipmentMenu(1, td::BLOCK_WALL, game);
+    return new EquipmentMenu(1, Tileset::get("BLOCK_WALL"), game);
 }

@@ -25,7 +25,6 @@
 #include <defs.h>
 
 
-namespace td=tiledef;
 
 EquipmentMenu::EquipmentMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
@@ -53,13 +52,13 @@ Menu* EquipmentMenu::make_selection()
     vector<Item*>* items = game->main_char.get_equipment();
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, td::BLOCK_WALL, game);
+        return new MainMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else
     {
         if(items->at(selection) != NULL)
         {
-            return new EquipMenu(1, td::BLOCK_WALL, game, selection);
+            return new EquipMenu(1, Tileset::get("BLOCK_WALL"), game, selection);
         }
         else
         {

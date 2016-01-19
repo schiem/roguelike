@@ -20,6 +20,7 @@
  */
 
 #include <spawner.h>
+#include <tileset.h>
 using namespace std;
 Spawner::Spawner()
 {
@@ -61,7 +62,7 @@ void Spawner::construct_den()
 
 void Spawner::construct_burrow()
 {
-    spawn_points.push_back(Den(0, 0, tiledef::BURROW));
+    spawn_points.push_back(Den(0, 0, Tileset::get("BURROW")));
 }
 
 void Spawner::construct_huts()
@@ -69,12 +70,12 @@ void Spawner::construct_huts()
     //let's have statically size huts for now.  just shove
     //enemies in there.
     int num_huts = num_enemy/spawn_type.enemies_per_spawn;
-    TileMatrix hut = TileMatrix(5, std::vector<Tile>(5, tiledef::EMPTY));
+    TileMatrix hut = TileMatrix(5, std::vector<Tile>(5, Tileset::get("EMPTY")));
     IntPoint start = IntPoint(2, 2);
     std::vector<IntPoint> points = bresenham_circle(start, 2);
     for(int i=0;i<points.size();i++)
     {
-        hut[points[i].row][points[i].col] = tiledef::HUT_WALL;
+        hut[points[i].row][points[i].col] = Tileset::get("HUT_WALL");
     }
 
     int hut_x;
@@ -82,7 +83,7 @@ void Spawner::construct_huts()
     for(int i=0;i<num_huts;i++)
     {
         int door = rand() % points.size();
-        hut[points[door].row][points[door].col] = tiledef::EMPTY;
+        hut[points[door].row][points[door].col] = Tileset::get("EMPTY");
         do
         {
             hut_x = rand() % (num_huts * 6) - (num_huts*6)/2;

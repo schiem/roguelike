@@ -1,6 +1,7 @@
-/**
- *  @file AUDIO_MENU.CPP
- *  @author Michael Yoder
+/*
+ *  @file TILESET.H
+ *  @author Michael Yoder, Seth Yoder
+ *
  *
  *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
@@ -19,21 +20,27 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "menu.h"
-#include <game.h>
-#include <defs.h>
+#ifndef TILESET_H
+#define TILESET_H
+#include <tile.h>
 
-AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
+#include <unordered_map>
+
+/**
+ * A read-only singleton class, responsible for the tileset that is loaded.
+ */
+class Tileset
 {
-    id = menu_id::AUDIO_MENU;
-    game = _game;
-    next_screen = GAME_SCREEN;
-    title = "Silly, there's no audio yet.  Maybe Seth can compose something later...";
-    options.push_back("Back");
-}
+    private:
+        static std::unordered_map<std::string, Tile> tileset;
+        static Tileset* s_instance;
+        Tileset();
 
-Menu* AudioMenu::make_selection()
-{
+    public:
+        const std::unordered_map<std::string, Tile>& get_tileset() const;
+        static Tile get(std::string tilename);
 
-    return new EscapeMenu(1, Tileset::get("BLOCK_WALL"), game);
-}
+        static Tileset* instance();
+};
+
+#endif

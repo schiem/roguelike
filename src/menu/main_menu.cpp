@@ -23,9 +23,6 @@
 #include <game.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 MainMenu::MainMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     id = menu_id::MAIN_MENU;
@@ -47,11 +44,11 @@ Menu* MainMenu::make_selection()
 {
     if(options[selection] == "Equipment")
     {
-        return new EquipmentMenu(1, td::BLOCK_WALL, game);
+        return new EquipmentMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else if(options[selection] == "Inventory")
     {
-        return new InventoryMenu(1, td::BLOCK_WALL, game);
+        return new InventoryMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else if(options[selection] == "Stats")
     {
@@ -59,11 +56,11 @@ Menu* MainMenu::make_selection()
     }
     else if(options[selection] == "Messages") 
     {
-        return new MessageMenu(1, td::BLOCK_WALL, game, 1, 0);
+        return new MessageMenu(1, Tileset::get("BLOCK_WALL"), game, 1, 0);
     }
     else if(options[selection] == "Level")
     {
-        return new LevelMenu(1, td::BLOCK_WALL, game);
+        return new LevelMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else if(options[selection] == "Return")
     {

@@ -21,8 +21,6 @@
 #include <animation.h>
 #include <menu.h>
 
-namespace td=tiledef;
-
 void GUI::OnRender() {
     if(current_screen == MENU_SCREEN) {
         render_menu(menu);
@@ -282,10 +280,10 @@ void GUI::render_debug()
 {
     for(int i=0;i<GAME_WIDTH;i++)
     {
-        drawChr(i, GAME_HEIGHT-3, td::BLOCK_WALL.char_count, ascii, screen, BLACK);
-        drawChr(i, GAME_HEIGHT-2, td::BLOCK_WALL.char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-3, Tileset::get("BLOCK_WALL").char_count, ascii, screen, BLACK);
+        drawChr(i, GAME_HEIGHT-2, Tileset::get("BLOCK_WALL").char_count, ascii, screen, BLACK);
     }
-    drawChr(input.size(), GAME_HEIGHT-2, td::BLOCK_WALL.char_count, ascii, screen, WHITE);
+    drawChr(input.size(), GAME_HEIGHT-2, Tileset::get("BLOCK_WALL").char_count, ascii, screen, WHITE);
     drawStr(0, GAME_HEIGHT-3, debug.get_message().c_str(), ascii, screen, WHITE);
     drawStr(0, GAME_HEIGHT-2, input.c_str(), ascii, screen, WHITE);
 }

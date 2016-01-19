@@ -29,8 +29,7 @@
 #include <bresenham.h>
 #include <spawner.h>
 #include <int_point.h>
-
-namespace td=tiledef;
+#include <tileset.h>
 
 namespace overworld_gen {
     bool smoothing_pass(int threshold, Tile tile_type, int num) {
@@ -46,29 +45,29 @@ namespace overworld_gen {
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
                 if (rand() % 8 == 0){
-                    ground.set_tile(i,j,td::TREE);
+                    ground.set_tile(i,j,Tileset::get("TREE"));
                 } else {
-                    ground.set_tile(i,j,td::OVERWORLD_DIRT);
+                    ground.set_tile(i,j,Tileset::get("OVERWORLD_DIRT"));
                 }
             }
         }
         ground.down_stairs[0].col = rand() % ground.width;
         ground.down_stairs[0].row = rand() % ground.height;
         if(ground.has_layer_below) {
-            ground.set_tile(ground.down_stairs[0], td::DOWN_STAIR);
+            ground.set_tile(ground.down_stairs[0], Tileset::get("DOWN_STAIR"));
         }
         IntPoint spawn = IntPoint(rand() % ground.height, rand() % ground.width);
         ground.spawners.push_back(Spawner(spawn.col, spawn.row, 0, rabbit));
-        ground.set_tile(spawn, td::KOBOLD_SPAWNER);
+        ground.set_tile(spawn, Tileset::get("KOBOLD_SPAWNER"));
     }
 
     void build_water_overworld(ChunkLayer& ground) {
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
                 if (rand() % 4 == 0) {
-                    ground.set_tile(i,j,td::LIGHT_WATER);
+                    ground.set_tile(i,j,Tileset::get("LIGHT_WATER"));
                 } else {
-                    ground.set_tile(i,j,td::WATER);
+                    ground.set_tile(i,j,Tileset::get("WATER"));
                 }
             }
         }
@@ -79,10 +78,10 @@ namespace overworld_gen {
             for(int j = 0; j < ground.width; j++)
             {
                 if( rand() % 2 == 0) {
-                    ground.set_tile(i,j,td::SAND1);
+                    ground.set_tile(i,j,Tileset::get("SAND1"));
                 }
                 else{
-                    ground.set_tile(i,j,td::SAND2);
+                    ground.set_tile(i,j,Tileset::get("SAND2"));
                 }
             }
         }
@@ -101,7 +100,7 @@ namespace overworld_gen {
 
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                ground.set_tile(i,j,td::DIRT);
+                ground.set_tile(i,j,Tileset::get("DIRT"));
             }
         }
         
@@ -112,7 +111,7 @@ namespace overworld_gen {
             cout<<newrow<<endl;
             coords.row = newrow;
             coords.col = rand() % width;
-        } while (ground.get_tile(coords).can_be_moved_through == false);
+        } while (ground.get_tile(coords).corporeal == false);
 
 
         if(rand() % 10 == 0) {
@@ -124,7 +123,7 @@ namespace overworld_gen {
 
            for(int i=start_y-radius;i<start_y+radius;i++) {
                for(int j=start_x-radius;j<start_x+radius;j++) {
-                   ground.set_tile(i,j,td::DIRT);
+                   ground.set_tile(i,j,Tileset::get("DIRT"));
                }
            }
 
@@ -135,7 +134,7 @@ namespace overworld_gen {
                 std::vector<IntPoint> line = bresenham_line(start, in_circle[i]);
 
                 for(int j=0;j<line.size();j++) {
-                    ground.set_tile(line[j], td::WATER);
+                    ground.set_tile(line[j], Tileset::get("WATER"));
                 }
             }
 
@@ -147,19 +146,20 @@ namespace overworld_gen {
                      * world_map::count_in_surrounding_tiles in the helper
                      * methods... or just include it here.
                      */
-                    num += (ground.get_tile(i-1, j-1) == td::WATER) +
-                           (ground.get_tile(i-1, j) == td::WATER) +
-                           (ground.get_tile(i-1, j+1) == td::WATER) +
-                           (ground.get_tile(i, j-1) == td::WATER) +
-                           (ground.get_tile(i, j+1) == td::WATER) +
-                           (ground.get_tile(i+1, j-1) == td::WATER) +
-                           (ground.get_tile(i+1, j) == td::WATER) +
-                           (ground.get_tile(i+1, j+1) == td::WATER);
+                    Tile water = Tileset::get("WATER");
+                    num += (ground.get_tile(i-1, j-1) == water) +
+                           (ground.get_tile(i-1, j) == water) +
+                           (ground.get_tile(i-1, j+1) == water) +
+                           (ground.get_tile(i, j-1) == water) +
+                           (ground.get_tile(i, j+1) == water) +
+                           (ground.get_tile(i+1, j-1) == water) +
+                           (ground.get_tile(i+1, j) == water) +
+                           (ground.get_tile(i+1, j+1) == water);
                     //a threshold of 4 or above gives normal circular pools
                     //a threshold of 2 gives slightly odd pools
                     //a threshold of 1 gives very oddly shaped pools
-                    if(smoothing_pass(0, td::WATER, num)) {
-                        ground.set_tile(i,j,td::WATER);
+                    if(smoothing_pass(0, water, num)) {
+                        ground.set_tile(i,j,water);
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace overworld_gen {
         ground.down_stairs.push_back(down_stair);
 
         if(ground.has_layer_below) {
-            ground.set_tile(down_stair, td::DOWN_STAIR);
+            ground.set_tile(down_stair, Tileset::get("DOWN_STAIR"));
         }
         
         for(int i=0;i<1;i++)
@@ -220,7 +220,7 @@ namespace overworld_gen {
     {
         for(int i = 0; i < ground.height; i++) {
             for(int j = 0; j < ground.width; j++) {
-                ground.set_tile(i,j,td::COBBLE);
+                ground.set_tile(i,j,Tileset::get("COBBLE"));
             }
         }
     }

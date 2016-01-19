@@ -24,9 +24,6 @@
 #include <game.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(padding, _border)
 {
     id = menu_id::INFO_MENU;
@@ -40,6 +37,6 @@ InfoMenu::InfoMenu(int padding, Tile _border, Game* _game, Item* _item) : Menu(p
 
 Menu* InfoMenu::make_selection()
 {
-    return new ItemMenu(1, td::BLOCK_WALL,  game, item);
+    return new ItemMenu(1, Tileset::get("BLOCK_WALL"),  game, item);
 }
 

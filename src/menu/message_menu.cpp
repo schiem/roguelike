@@ -25,8 +25,6 @@
 #include <defs.h>
 
 
-namespace td=tiledef;
-
 MessageMenu::MessageMenu(int padding, Tile _border, Game* _game, int _page, int _selection) : Menu(padding, _border, _selection)
 {
     id = menu_id::MESSAGE_MENU;
@@ -54,17 +52,17 @@ MessageMenu::MessageMenu(int padding, Tile _border, Game* _game, int _page, int 
     ss << "Page: " << page;
     extra_lines.push_back("");
     extra_lines.push_back(ss.str());
-    
+
 }
 
 Menu* MessageMenu::make_selection()
 {
     if(options[selection] == "Older Messages") {
-        return new MessageMenu(1, td::BLOCK_WALL, game, page + 1, 0);
+        return new MessageMenu(1, Tileset::get("BLOCK_WALL"), game, page + 1, 0);
     } else if(options[selection] == "New Messages") {
-        return new MessageMenu(1, td::BLOCK_WALL, game, page - 1, 1);
+        return new MessageMenu(1, Tileset::get("BLOCK_WALL"), game, page - 1, 1);
     } else { 
-        return new MainMenu(1, td::BLOCK_WALL,  game);
+        return new MainMenu(1, Tileset::get("BLOCK_WALL"),  game);
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- *  @file CONF_LOAD.CPP
+ *  @file TILE_LOAD.CPP
  *  @author Michael Yoder, Seth Yoder
  *
  *
@@ -20,7 +20,6 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <fstream>
 #include <iostream>
 #include <boost/filesystem.hpp>
 
@@ -28,36 +27,35 @@
 #include <tile_load.h>
 #include <string.h>
 #include <ini.h>
+#include <conf_util.h>
+#include <color_load.h>
 
-#include <unordered_map>
 
 namespace fs=boost::filesystem;
 
 namespace tile_load {
 
-    bool conf_exists() {
-        if (utility::file_exists(TILECONF)) {
-            cout<<"Found conf file!"<<std::endl;
-            return true;
-        } else {
-            cout<<"Could not find conf file. It should be located at "<<TILECONF<<" ..."<<std::endl;
-            return false;
-        }
-    }
-
-    static int handle_ini_entry(void* tiledefs, const char* section, const char* name, const char* value) {
+    static int handle_ini_entry(void* tilecolordefs, const char* section, const char* name, const char* value) {
         #define MATCH(s, n) strcmp(s, n)==0
+        int color_code;
 
-        std::unordered_map<string, tile>* tilemap = 
-                (std::unordered_map<string, tile>*) tiledefs;
+        tileset_colorset_t* tcd = (tileset_colorset_t*) tilecolordefs;
 
-        (*tilemap)[section].tilename=section;
+        std::unordered_map<std::string, Tile>* tilemap = &tcd->tiledefs;
+        std::unordered_map<std::string, int>* colormap = &tcd->colordefs;
+
+        //(*tilemap)[section].tilename=section;
         if(MATCH(name,"char_count")) {
             (*tilemap)[section].char_count=stoi(value);
         } else if (MATCH(name, "tile_id")) {
             (*tilemap)[section].tile_id=stoi(value);
         } else if (MATCH(name, "color")) {
-            (*tilemap)[section].color=value;
+            try {
+                color_code = (*colormap)[value];
+            } catch (...) {
+                cout<<"ERROR: Could not find color "<<value<<" for tile "<<section<<"."<<endl;
+            }
+            (*tilemap)[section].color=color_code;
         } else if (MATCH(name, "corporeal")) {
             (*tilemap)[section].corporeal=stoi(value);
         } else if (MATCH(name, "visible")) {
@@ -70,13 +68,14 @@ namespace tile_load {
             (*tilemap)[section].can_build_overtop=stoi(value);
         } else {
             cout<<"Could not load configuration: name="<<name<<"; value="<<value<<"."<<endl;
+            return -1;
         }
 
         return 0;
     }
 
-    void print_tile(tile& theTile) {
-        cout<<"Tile name: "<<theTile.tilename<<endl;
+    void print_tile(Tile& theTile) {
+        //cout<<"Tile name: "<<theTile.tilename<<endl;
         cout<<"Font character (char_count): "<<theTile.char_count<<endl;
         cout<<"Tile ID: "<<theTile.tile_id<<endl;
         cout<<"Color: "<<theTile.color<<endl;
@@ -87,33 +86,26 @@ namespace tile_load {
         cout<<"Can build overtop: "<<theTile.can_build_overtop<<endl;
     }
 
-    void print_conf() {
-        fs::path tileconf(TILECONF);
-        /*
-        std::ifstream input(tileconf.string().c_str());
-        std::string current;
-        while(!input.eof()) {
-            std::getline(input, current);
-            std::cout<<current<<std::endl;
-        }
-        */
+    std::unordered_map<std::string, Tile> load_conf() {
+        std::unordered_map<std::string, Tile> tilemap;
+        tileset_colorset_t tc = {tilemap, color_load::load_conf()};
 
-        std::unordered_map<string, tile> tilemap;
+        if (conf_util::conf_exists(TILEINI)) {
+            fs::path tileconf(TILEINI);
 
-        if (ini_parse(tileconf.string().c_str(), handle_ini_entry, &tilemap) < 0) {
-            printf("Can't load test.ini\n");
-            exit(EXIT_FAILURE);
-        }
-        
-        print_tile(tilemap["KOBOLD_CORPSE"]);
-    }
-
-    void load_conf() {
-        if (conf_exists()) {
-            print_conf();
+            //handle_ini_entry is passed as a callback to ini_parse. It will keep
+            //a pointer to tilemap for us, which will be populated after the .ini
+            //file is parsed.
+            if (ini_parse(tileconf.string().c_str(), handle_ini_entry, &tc) < 0) {
+                printf("Can't load test.ini\n");
+                exit(EXIT_FAILURE);
+            }
+            print_tile(tilemap["KOBOLD_CORPSE"]);
         } else {
             exit(EXIT_FAILURE);
         }
+
+        return tilemap;
     }
 
 }

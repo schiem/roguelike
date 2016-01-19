@@ -24,9 +24,6 @@
 #include <world_map_gui.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 LoadMenu::LoadMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
     id = menu_id::LOAD_MENU;

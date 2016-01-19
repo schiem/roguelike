@@ -24,9 +24,6 @@
 #include <game.h>
 #include <defs.h>
 
-
-namespace td=tiledef;
-
 InventoryMenu::InventoryMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     id = menu_id::INVENTORY_MENU;
@@ -45,11 +42,11 @@ Menu* InventoryMenu::make_selection()
 {
     if(selection == options.size() - 1)
     {
-        return new MainMenu(1, td::BLOCK_WALL, game);
+        return new MainMenu(1, Tileset::get("BLOCK_WALL"), game);
     }
     else
     {
-        return new ItemMenu(1, td::BLOCK_WALL, game, items->at(selection)); 
+        return new ItemMenu(1, Tileset::get("BLOCK_WALL"), game, items->at(selection)); 
     }
     return this;
 }

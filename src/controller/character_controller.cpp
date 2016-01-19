@@ -298,7 +298,7 @@ void Game::change_depth(int direction, Character* chara) {
             chara->get_y(), chara->get_x());
     if(direction == -1) {
         if (chara->get_depth() >= 1) {
-            if(*current_tile == td::UP_STAIR) {
+            if(*current_tile == Tileset::get("UP_STAIR")) {
                 chara->set_depth(chara->get_depth() - 1);
                 chara->set_x(current_chunk->get_down_stairs(chara->get_depth())[0].col);
                 chara->set_y(current_chunk->get_down_stairs(chara->get_depth())[0].row);
@@ -306,7 +306,7 @@ void Game::change_depth(int direction, Character* chara) {
         }
     } else {
         if (chara->get_depth()+1 < current_chunk->get_depth()) {
-            if(*current_tile == td::DOWN_STAIR) {
+            if(*current_tile == Tileset::get("DOWN_STAIR")) {
                 chara->set_depth(chara->get_depth() + 1);
                 chara->set_x(current_chunk->get_up_stairs(chara->get_depth())[0].col);
                 chara->set_y(current_chunk->get_up_stairs(chara->get_depth())[0].row);
@@ -337,7 +337,7 @@ bool Game::move_char(int col_change, int row_change, Character* chara) {
     Character* enem = character_at_loc(new_chunk, next_coords);
 
     IntPoint buffer_coords = get_buffer_coords(new_chunk, IntPoint(next_row, next_col));
-    bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->can_be_moved_through;
+    bool can_move = coords_in_buffer(buffer_coords.row, buffer_coords.col) && buffer[buffer_coords.row][buffer_coords.col]->corporeal;
 
     if(can_move && (enem == NULL)) {
         remove_index_char(chara);

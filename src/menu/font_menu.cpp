@@ -25,8 +25,6 @@
 
 
 #define FONTDIR DATADIR "/font/"
-namespace td=tiledef;
-
 FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     font = "";
@@ -46,7 +44,7 @@ Menu* FontMenu::make_selection()
         cout<<typeid(font).name()<<endl;
         return this;
     }
-    return new EscapeMenu(1, td::BLOCK_WALL, game);
+    return new EscapeMenu(1, Tileset::get("BLOCK_WALL"), game);
 }
 
 

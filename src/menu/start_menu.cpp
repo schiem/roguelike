@@ -33,7 +33,6 @@
 
 using namespace boost::posix_time;
 namespace fs=boost::filesystem;
-namespace td=tiledef;
 
 StartMenu::StartMenu(int padding, Tile _border, Game &g, WorldMapGUI &wmg) : Menu(padding, _border)
 {
@@ -56,7 +55,7 @@ Menu* StartMenu::make_selection() {
             break;
         case 1:
             next_screen = GAME_SCREEN;
-            return new LoadMenu(1, td::BLOCK_WALL, *game, *world_map_gui);
+            return new LoadMenu(1, Tileset::get("BLOCK_WALL"), *game, *world_map_gui);
             break;
         default:
             toggle_exit();

@@ -38,6 +38,7 @@
 #include <behavior_tree.h>
 #include <ai_defs.h>
 #include <message.h>
+#include <tileset.h>
 
 //forward declarations
 class Menu;
@@ -70,6 +71,7 @@ class GUI : public VirtualEvent {
         Screen last_screen;
         WorldMapGUI world_map_gui;
         Menu* menu;
+        Tileset* tileset;
         Game game;
         std::vector<BehaviorTree> trees;
 

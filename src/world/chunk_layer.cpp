@@ -20,8 +20,7 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <chunk_layer.h>
-
-namespace td=tiledef;
+#include <tileset.h>
 
 ChunkLayer::ChunkLayer() {
 
@@ -31,7 +30,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     width = _width;
     height = _height;
     has_layer_below = _has_layer_below;
-    ground = TileMatrix(height, std::vector<Tile>(width, td::EMPTY));
+    ground = TileMatrix(height, std::vector<Tile>(width, Tileset::get("EMPTY")));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     items = std::vector<Item*>();
@@ -41,7 +40,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
     characters = std::vector<Character*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
-            ground[i][j] = td::BLOCK_WALL;
+            ground[i][j] = Tileset::get("BLOCK_WALL");
         }
     }
 }
@@ -49,7 +48,7 @@ ChunkLayer::ChunkLayer(int _width, int _height, bool _has_layer_below) {
 ChunkLayer::ChunkLayer(int _width, int _height) {
     width = _width;
     height = _height;
-    ground = TileMatrix(height, std::vector<Tile>(width, td::EMPTY));
+    ground = TileMatrix(height, std::vector<Tile>(width, Tileset::get("EMPTY")));
     rooms = std::vector<Room>(MAX_ROOMS, Room(IntPoint(-6, -6), IntPoint(-6, -6)));
     num_rooms = 0;
     items = std::vector<Item*>();
@@ -59,7 +58,7 @@ ChunkLayer::ChunkLayer(int _width, int _height) {
     characters = std::vector<Character*>();
     for(int i = 0; i < _height; i++) {
         for(int j = 0; j < _width; j++) {
-            ground[i][j] = td::BLOCK_WALL;
+            ground[i][j] = Tileset::get("BLOCK_WALL");
         }
     }
 }
@@ -85,7 +84,7 @@ void ChunkLayer::clear() {
     characters = std::vector<Character*>();
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
-            ground[i][j] = td::BLOCK_WALL;
+            ground[i][j] = Tileset::get("BLOCK_WALL");
         }
     }
 }
@@ -206,23 +205,21 @@ void ChunkLayer::make_stairs(bool has_layer_below) {
                 (rand() % ((down_room.br.row - 1) - (down_room.tl.row + 1)));
         }
         while(down_stair == up_stair);
-        ground[down_stair.row][down_stair.col] = td::DOWN_STAIR;
+        ground[down_stair.row][down_stair.col] = Tileset::get("DOWN_STAIR");
     }
-    ground[up_stair.row][up_stair.col] = td::UP_STAIR;
+    ground[up_stair.row][up_stair.col] = Tileset::get("UP_STAIR");
 
     down_stairs.push_back(down_stair);
     up_stairs.push_back(up_stair);
 }
 
 void ChunkLayer::make_stairs_at_coords(int row, int col, Tile stair_type) {
-    bool youre_a_dumbass;
-    if (stair_type == td::DOWN_STAIR) {
+    if (stair_type == Tileset::get("DOWN_STAIR")) {
         down_stairs.push_back(IntPoint(row, col));
-    } else if (stair_type == td::UP_STAIR) {
+    } else if (stair_type == Tileset::get("UP_STAIR")) {
         up_stairs.push_back(IntPoint(row, col));
     } else {
-        youre_a_dumbass = true;
-        assert(youre_a_dumbass);
+        true;
     }
 }
 
@@ -239,7 +236,7 @@ void ChunkLayer::make_spawner(int depth) {
     } while(!ground[spawn.row][spawn.col].can_build_overtop);
 
     spawners.push_back(Spawner(spawn.col, spawn.row, depth, enemies::kobold));
-    ground[spawn.row][spawn.col] = td::KOBOLD_SPAWNER;
+    ground[spawn.row][spawn.col] = Tileset::get("KOBOLD_SPAWNER");
 }
 
 void ChunkLayer::make_spawner(int depth, IntPoint point) {
@@ -322,17 +319,17 @@ void ChunkLayer::layer_dump() {
         for(int col=0;col<width;col++)
         {
             tile = ground[row][col];
-            if(tile == td::DIRT) {
+            if(tile == Tileset::get("DIRT")) {
                 cout<<".";
-            } else if (tile == td::PATH) {
+            } else if (tile == Tileset::get("PATH")) {
                 cout<<":";
-            } else if (tile == td::ROOM_WALL) {
+            } else if (tile == Tileset::get("ROOM_WALL")) {
                 cout<<"#";
-            } else if (tile == td::DOWN_STAIR) {
+            } else if (tile == Tileset::get("DOWN_STAIR")) {
                 cout<<"d";
-            } else if (tile == td::UP_STAIR) {
+            } else if (tile == Tileset::get("UP_STAIR")) {
                 cout<<"u";
-            } else if (tile == td::KOBOLD_SPAWNER) {
+            } else if (tile == Tileset::get("KOBOLD_SPAWNER")) {
                 cout<<"S";
             } else {
                 cout<<" ";

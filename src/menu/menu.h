@@ -75,7 +75,7 @@ class Menu {
          * of...well...nothing.
          */
         Game* game;
-        
+
         /**
          * The game state to switch to after closing the menu system.
          * This usually becomes GAME_SCREEN, but not always.  This refers to when you close

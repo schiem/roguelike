@@ -24,8 +24,6 @@
 #include <defs.h>
 #include <sstream>
 
-namespace td=tiledef;
-
 LevelMenu::LevelMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
 {
     id = menu_id::LEVEL_MENU;

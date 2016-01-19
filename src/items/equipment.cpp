@@ -21,7 +21,6 @@
 
 #include <item.h>
 #include <character.h>
-using namespace tiledef;
 using namespace equipment;
 
 Equipment::Equipment()

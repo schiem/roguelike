@@ -1,5 +1,5 @@
 /**
- *  @file CONF_LOAD.H
+ *  @file TILE_LOAD.H
  *  @author Michael Yoder, Seth Yoder
  *
  *
@@ -24,26 +24,19 @@
 #define TILE_LOAD_H
 
 #include <string.h>
+#include <tile.h>
+#include <unordered_map>
 
 namespace tile_load {
 
     typedef struct {
-        string tilename;
-        int char_count;
-        int tile_id;
-        string color;
-        bool corporeal;
-        bool visible;
-        bool opaque;
-        bool seen;
-        bool can_build_overtop;
-    } tile;
+        std::unordered_map<std::string, Tile> tiledefs;
+        std::unordered_map<std::string, int> colordefs;
+    } tileset_colorset_t;
 
-    bool conf_exists();
     static int handle_ini_entry();
-    void print_tile(tile&);
-    void print_conf();
-    void load_conf();
+    void print_tile(Tile&);
+    std::unordered_map<std::string, Tile> load_conf();
 
 }
 

@@ -109,7 +109,7 @@ void Game::update_buffer(IntPoint central_chunk) {
                     if(!current_chunk->out_of_bounds(main_char.get_depth(), a, b)) {
                         buffer_tile = current_chunk->get_tile(main_char.get_depth(), a, b);
                     } else {
-                        buffer_tile = &tile_index[11];
+                        buffer_tile = &buffer_tile_placeholder;
                     }
                     buffer[buffer_row][buffer_col] = buffer_tile;
                 }
@@ -132,15 +132,15 @@ void Game::show_chunk_objects() {
     std::vector<Spawner>* spawners;
     std::vector<Item*>* items;
     std::vector<Plant>* plants;
-    std::vector<Building>* buildings; 
+    std::vector<Building>* buildings;
     Chunk* chunk;
     IntPoint chunk_coords;
     for(int i=main_char.get_chunk().row-1;i<=main_char.get_chunk().row+1;i++) {
         for(int j=main_char.get_chunk().col-1;j<=main_char.get_chunk().col+1;j++) {
-            
+
            chunk = chunk_map.get_chunk_abs(IntPoint(i, j));
             IntPoint chunk_coords = IntPoint(i, j);
-            
+
             if(chunk->get_depth()>main_char.get_depth()) {
                 spawners = chunk->get_spawners(main_char.get_depth());
                 items    = chunk->get_items(main_char.get_depth());
@@ -201,7 +201,7 @@ void Game::den_to_buffer(Den* den, IntPoint chunk, IntPoint coords)
     {
         for(int j=0;j<den->get_width();j++)
         {
-            if(den->tile_at(i, j) != tiledef::EMPTY)
+            if(den->tile_at(i, j) != Tileset::get("EMPTY"))
             {
                 IntPoint p_coords = coords + IntPoint(i - den->get_height()/2, j - den->get_width()/2);
                 add_tile_to_buffer(chunk, p_coords, den->tile_pointer_at(i, j));

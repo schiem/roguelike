@@ -1,6 +1,7 @@
 /**
- *  @file AUDIO_MENU.CPP
- *  @author Michael Yoder
+ *  @file CONF_UTIL.CPP
+ *  @author Michael Yoder, Seth Yoder
+ *
  *
  *  @section LICENSE
  *  This file is part of ROGUELIKETHING.
@@ -19,21 +20,17 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "menu.h"
-#include <game.h>
-#include <defs.h>
+#include <iostream>
 
-AudioMenu::AudioMenu(int padding, Tile _border, Game* _game) : Menu(padding, _border)
-{
-    id = menu_id::AUDIO_MENU;
-    game = _game;
-    next_screen = GAME_SCREEN;
-    title = "Silly, there's no audio yet.  Maybe Seth can compose something later...";
-    options.push_back("Back");
-}
+#include <utility.h>
 
-Menu* AudioMenu::make_selection()
-{
-
-    return new EscapeMenu(1, Tileset::get("BLOCK_WALL"), game);
+namespace conf_util {
+    bool conf_exists(const char* conf_path) {
+        if (utility::file_exists(conf_path)) {
+            return true;
+        } else {
+            std::cout<<"Could not find conf file. It should be located at "<<conf_path<<" ..."<<std::endl;
+            return false;
+        }
+    }
 }

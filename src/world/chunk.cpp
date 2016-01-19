@@ -26,10 +26,9 @@
 #include <overworld_gen.h>
 #include <spawner.h>
 #include <plant.h>
+#include <tileset.h>
 
 #include <chunk.h>
-
-namespace td=tiledef;
 
 Chunk::Chunk() {
     cm.height = CHUNK_HEIGHT;
@@ -170,7 +169,7 @@ void Chunk::build_city_chunk() {
             {
                 for(int col=builds[j].get_x() - cob_x;col<builds[j].get_width() + builds[j].get_x() + cob_x;col++)
                 {
-                    layers[0].set_tile(row, col, td::DIRT);//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
+                    layers[0].set_tile(row, col, Tileset::get("DIRT"));//map_tile::MAP_TILE_INDEX[cm.chunk_type_id].base_tile);
                 }
             }
         }
@@ -557,7 +556,9 @@ int Chunk::deserialize_plants(char file[], int layer, int current_byte, int num_
 
         for(int j = 0; j < tiles_rows; j++) {
             for(int k = 0; k < tiles_cols; k++) {
-                plant_tiles[j][k] = td::TILE_INDEX[file[cb]];
+                //TODO plants won't load in correctly. We'll have to find a way
+                //to also hash tiles by id. For now, they'll be rabbit corpses.
+                plant_tiles[j][k] = Tileset::get("RABBIT_CORPSE");
                 plant_tiles[j][k].seen = file[cb + 1];
                 cb += 2;
             }
@@ -602,12 +603,12 @@ int Chunk::deserialize_layer_metadata(char file_data[], int cb) {
         }
 
         for(int j = 0; j < num_down_stairs; j++) {
-            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], td::DOWN_STAIR);
+            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], Tileset::get("DOWN_STAIR"));
             current_byte += 2;
         }
 
         for(int j = 0; j < num_up_stairs; j++) {
-            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], td::UP_STAIR);
+            layers[i].make_stairs_at_coords(file_data[current_byte], file_data[current_byte + 1], Tileset::get("UP_STAIR"));
             current_byte += 2;
         }
 

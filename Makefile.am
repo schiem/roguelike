@@ -5,6 +5,7 @@ AM_CPPFLAGS = -I.\
 			  -Isrc/character_classes\
 			  -Isrc/conf_load\
 			  -Isrc/controller\
+			  -Isrc/defs\
               -Isrc/world\
 			  -Isrc/gui\
 			  -Isrc/items\
@@ -28,9 +29,10 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)\
 
 localdatadir=data
 defdir=$(localdatadir)/defs
-tileconf=$(defdir)/tile.conf
+tileini=$(defdir)/tile.ini
+colorini=$(defdir)/color.ini
 
-DEFS = -DDATADIR=\"$(localdatadir)\" -DTILECONF=\"$(tileconf)\"
+DEFS = -DDATADIR=\"$(localdatadir)\" -DTILEINI=\"$(tileini)\" -DCOLORINI=\"$(colorini)\"
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -39,6 +41,7 @@ roguelikedir = .
 
 roguelike_SOURCES = \
 	src/defs.cpp\
+	src/defs/tileset.cpp\
     src/main.cpp\
 	src/misc_classes/int_point.cpp\
 	src/misc_classes/bresenham.cpp\
@@ -53,6 +56,8 @@ roguelike_SOURCES = \
 	src/character_classes/enemy.cpp\
     src/character_classes/spawner.cpp\
     src/character_classes/den.cpp\
+	src/conf_load/color_load.cpp\
+	src/conf_load/conf_util.cpp\
 	src/conf_load/tile_load.cpp\
 	src/controller/game.cpp\
     src/controller/character_controller.cpp\
@@ -115,6 +120,8 @@ roguelike_SOURCES = \
 	lib/inih/ini.c\
     \
 	src/defs.h\
+	src/defs/tile.h\
+	src/defs/tileset.h\
     src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
 	src/misc_classes/utility.h\
@@ -128,6 +135,8 @@ roguelike_SOURCES = \
     src/character_classes/enemy.h\
     src/character_classes/spawner.h\
     src/character_classes/den.h\
+	src/conf_load/color_load.h\
+	src/conf_load/conf_util.h\
 	src/conf_load/tile_load.h\
 	src/controller/game.h\
     src/gui/virtual_event.h\

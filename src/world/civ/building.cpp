@@ -21,6 +21,7 @@
  */
 
 #include <building.h>
+#include <tileset.h>
 
 Building::Building(){
 };
@@ -37,8 +38,8 @@ Building::Building(int x, int y, int _height, int _width)
     height = _height;
     width = _width;
     floor_plan.resize(height);
-    floor = tiledef::WOOD_FLOOR;
-    wall = tiledef::WOOD_WALL;
+    floor = Tileset::get("WOOD_FLOOR");
+    wall = Tileset::get("WOOD_WALL");
     owner = NULL;
     for(int i=0;i<floor_plan.size();i++)
     {
@@ -124,7 +125,7 @@ void Building::connect_nodes(BSpaceNode* node)
                 x_coord = node->right->tl_x;
             } while(surrounding_walls(y_coord, x_coord) != 2);
         }
-        floor_plan[y_coord][x_coord] = tiledef::DOOR;
+        floor_plan[y_coord][x_coord] = Tileset::get("DOOR");
         connect_nodes(node->left);
         connect_nodes(node->right);
     }
@@ -157,7 +158,7 @@ void Building::add_random_door(BSpaceNode* node)
             }
         }
     } while(surrounding_walls(y, x) != 2);
-    floor_plan[y][x] = tiledef::DOOR;
+    floor_plan[y][x] = Tileset::get("DOOR");
 }
 
 

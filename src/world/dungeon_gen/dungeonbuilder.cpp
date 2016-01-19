@@ -29,8 +29,7 @@
 #include <room.h>
 #include <defs.h>
 #include <chunk_layer.h>
-
-namespace td=tiledef;
+#include <tileset.h>
 
 namespace dungeon_builder {
 
@@ -44,7 +43,7 @@ namespace dungeon_builder {
     }
 
     bool is_empty_space(IntPoint point, const dungeon_meta& dm) {
-        return ((dm.main_dungeon->get_tile(point) == td::BLOCK_WALL) || (dm.main_dungeon->get_tile(point) == td::PATH));
+        return ((dm.main_dungeon->get_tile(point) == Tileset::get("BLOCK_WALL")) || (dm.main_dungeon->get_tile(point) == Tileset::get("PATH")));
     }
 
     bool point_is_beyond_bounds(IntPoint point, const dungeon_meta& dm) {
@@ -62,13 +61,13 @@ namespace dungeon_builder {
         for(int row = r.tl.row; row <= r.br.row; row++) {
             if (point_is_beyond_bounds(IntPoint(row, r.tl.col),dm)) {
                 bin_string[3] = 1;
-            } else if (dm.main_dungeon->get_tile(row, r.tl.col) == td::ROOM_WALL) {
+            } else if (dm.main_dungeon->get_tile(row, r.tl.col) == Tileset::get("ROOM_WALL")) {
                 bin_string[3] = 1;
             }
 
             if (point_is_beyond_bounds(IntPoint(row, r.br.col),dm)) {
                 bin_string[1] = 1;
-            } else if (dm.main_dungeon->get_tile(row, r.br.col) == td::ROOM_WALL) {
+            } else if (dm.main_dungeon->get_tile(row, r.br.col) == Tileset::get("ROOM_WALL")) {
                 bin_string[1] = 1;
             }
         }
@@ -76,13 +75,13 @@ namespace dungeon_builder {
         for(int col = r.tl.col; col <= r.br.col; col++) {
             if (point_is_beyond_bounds(IntPoint(r.tl.row, col),dm)) {
                 bin_string[0] = 1;
-            } else if (dm.main_dungeon->get_tile(r.tl.row, col) == td::ROOM_WALL) {
+            } else if (dm.main_dungeon->get_tile(r.tl.row, col) == Tileset::get("ROOM_WALL")) {
                 bin_string[0] = 1;
             }
 
             if (point_is_beyond_bounds(IntPoint(r.br.row, col),dm)) {
                 bin_string[2] = 1;
-            } else if (dm.main_dungeon->get_tile(r.br.row, col) == td::ROOM_WALL) {
+            } else if (dm.main_dungeon->get_tile(r.br.row, col) == Tileset::get("ROOM_WALL")) {
                 bin_string[2] = 1;
             }
         }
@@ -100,24 +99,24 @@ namespace dungeon_builder {
             return 1;
         } else if (point.row == dm.main_dungeon->height - 1) {
             return 2;
-        } else if((dm.main_dungeon->get_tile(point.row, point.col - 1) == td::ROOM_WALL) or
-           (dm.main_dungeon->get_tile(point.row, point.col + 1) == td::ROOM_WALL)) {
+        } else if((dm.main_dungeon->get_tile(point.row, point.col - 1) == Tileset::get("ROOM_WALL")) or
+           (dm.main_dungeon->get_tile(point.row, point.col + 1) == Tileset::get("ROOM_WALL"))) {
 
-            if (dm.main_dungeon->get_tile(point.row - 1, point.col) == td::DIRT) {
+            if (dm.main_dungeon->get_tile(point.row - 1, point.col) == Tileset::get("DIRT")) {
                 direction = 2;
             }
 
-            else if (dm.main_dungeon->get_tile(point.row + 1, point.col) == td::DIRT) {
+            else if (dm.main_dungeon->get_tile(point.row + 1, point.col) == Tileset::get("DIRT")) {
                 direction = 0;
             }
-        } else if ((dm.main_dungeon->get_tile(point.row - 1, point.col) == td::ROOM_WALL) or
-            (dm.main_dungeon->get_tile(point.row + 1, point.col) == td::ROOM_WALL)) {
+        } else if ((dm.main_dungeon->get_tile(point.row - 1, point.col) == Tileset::get("ROOM_WALL")) or
+            (dm.main_dungeon->get_tile(point.row + 1, point.col) == Tileset::get("ROOM_WALL"))) {
 
-            if (dm.main_dungeon->get_tile(point.row, point.col - 1) == td::DIRT) {
+            if (dm.main_dungeon->get_tile(point.row, point.col - 1) == Tileset::get("DIRT")) {
                 direction = 1;
             }
 
-            else if (dm.main_dungeon->get_tile(point.row, point.col + 1) == td::DIRT) {
+            else if (dm.main_dungeon->get_tile(point.row, point.col + 1) == Tileset::get("DIRT")) {
                 direction = 3;
             }
         }
@@ -144,7 +143,7 @@ namespace dungeon_builder {
 
         for(int i = tl.row + 1; i <= br.row - 1; i++) {
             for(int j = tl.col + 1; j <= br.col - 1; j++) {
-                dm.main_dungeon->set_tile(i, j, td::DIRT);
+                dm.main_dungeon->set_tile(i, j, Tileset::get("DIRT"));
             }
         }
         dm.main_dungeon->rooms[dm.num_rooms] = Room(tl, br);
@@ -201,8 +200,8 @@ namespace dungeon_builder {
     }
 
     void set_wall_if_not_path(int row, int col, dungeon_meta &dm)  {
-        if(!(dm.main_dungeon->get_tile(row, col) == td::PATH)) {
-            dm.main_dungeon->set_tile(row, col, td::ROOM_WALL);
+        if(!(dm.main_dungeon->get_tile(row, col) == Tileset::get("PATH"))) {
+            dm.main_dungeon->set_tile(row, col, Tileset::get("ROOM_WALL"));
         }
     }
 
