@@ -33,7 +33,7 @@ FontMenu::FontMenu(int padding, Tile _border, Game* _game) : Menu(padding, _bord
     id = menu_id::FONT_MENU;
     game = _game;
     next_screen = GAME_SCREEN;
-    options = all_files_of_type(FONTDIR, ".bmp");
+    options = utility::all_files_of_type(FONTDIR, ".bmp");
     options.push_back("Back");
     title = "Font Menu";
 }

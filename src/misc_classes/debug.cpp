@@ -63,7 +63,7 @@ void DebugConsole::run_command(std::string input)
     current_place = buffer_place;
 
     //split the command into arguments
-    std::vector<std::string> command = split_string(input, ' ');
+    std::vector<std::string> command = utility::split_string(input, ' ');
 
     //The function we should call
     std::string func = command[0];
@@ -72,7 +72,7 @@ void DebugConsole::run_command(std::string input)
     command = std::vector<std::string>(command.begin() + 1, command.begin() + command.size());
 
     //convert our string arguments into ints!
-    std::vector<int> args = strings_to_ints(command);
+    std::vector<int> args = utility::strings_to_ints(command);
 
 
     //call the appropriate function

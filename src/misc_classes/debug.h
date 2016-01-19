@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 #include <game.h>
-#include <helper.h>
+#include <utility.h>
 #include <map>
 
 class DebugConsole;

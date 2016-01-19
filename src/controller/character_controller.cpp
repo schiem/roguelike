@@ -102,7 +102,7 @@ bool Game::find_target(Character* chara){
     {
         best = normal_target(chara, characters);
     }
-    
+
     if(best != NULL)
     {
         chara->set_target(best);
@@ -120,7 +120,7 @@ Character* Game::normal_target(Character* chara, std::vector<Character*> charact
     Character* new_character = NULL;
     int target_id = 5 - chara->get_moral();
     int selectability = 2;
-    
+
     for(int i=0;i<characters.size();i++)
     {
         new_character = characters[i];
@@ -214,8 +214,8 @@ int Game::move_to_point(Character* chara, IntPoint coords, IntPoint chunk)
 
 int Game::run_away(Character* chara, IntPoint coords, IntPoint chunk)
 {
-    IntPoint current_coords = get_abs(chara->get_chunk(), chara->get_coords());
-    IntPoint other_coords = get_abs(chunk, coords);
+    IntPoint current_coords = utility::get_abs(chara->get_chunk(), chara->get_coords());
+    IntPoint other_coords = utility::get_abs(chunk, coords);
     IntPoint movement = pathfinding::get_opposite(current_coords, other_coords);
     return move_char(movement.col, movement.row, chara);
 }
@@ -241,8 +241,8 @@ void Game::wander(Character* chara)
 
 bool Game::next_to_char(Character* chara, Character* target)
 {
-    IntPoint chara_abs = get_abs(chara->get_chunk(), chara->get_coords());
-    IntPoint target_abs = get_abs(target->get_chunk(), target->get_coords());
+    IntPoint chara_abs = utility::get_abs(chara->get_chunk(), chara->get_coords());
+    IntPoint target_abs = utility::get_abs(target->get_chunk(), target->get_coords());
     IntPoint difference = chara_abs - target_abs;
     bool x = difference.col <= 1 && difference.col >= -1;
     bool y = difference.row <= 1 && difference.row >= -1;
@@ -378,8 +378,8 @@ void Game::turn_character(Character* chara, Character* target)
 {
     if(target != NULL)
     {
-        IntPoint chara_coords = get_abs(chara->get_chunk(), chara->get_coords());
-        IntPoint target_coords = get_abs(target->get_chunk(), target->get_coords());
+        IntPoint chara_coords = utility::get_abs(chara->get_chunk(), chara->get_coords());
+        IntPoint target_coords = utility::get_abs(target->get_chunk(), target->get_coords());
         chara->turn(target_coords - chara_coords);
     }
 }

@@ -30,7 +30,7 @@
 #include <item.h>
 #include <vector>
 #include <cstring>
-#include <helper.h>
+#include <utility.h>
 #include <math_helper.h>
 #include <bresenham.h>
 #include <message.h>

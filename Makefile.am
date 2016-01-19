@@ -40,7 +40,7 @@ roguelike_SOURCES = \
     src/main.cpp\
 	src/misc_classes/int_point.cpp\
 	src/misc_classes/bresenham.cpp\
-	src/misc_classes/helper.cpp\
+	src/misc_classes/utility.cpp\
     src/misc_classes/debug.cpp\
     src/misc_classes/math_helper.cpp\
     src/misc_classes/binary_space.cpp\
@@ -114,7 +114,7 @@ roguelike_SOURCES = \
 	src/defs.h\
     src/misc_classes/bresenham.h\
 	src/misc_classes/int_point.h\
-	src/misc_classes/helper.h\
+	src/misc_classes/utility.h\
     src/misc_classes/debug.h\
     src/misc_classes/math_helper.h\
     src/misc_classes/binary_space.h\

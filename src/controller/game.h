@@ -25,7 +25,7 @@
 #include <constants.h>
 #include <enemy.h>
 #include <world_map.h>
-#include <helper.h>
+#include <utility.h>
 #include <item.h>
 #include <animation.h>
 #include <animation_defs.h>

@@ -308,7 +308,7 @@ std::vector<std::vector<IntPoint> > WorldMap::find_contiguous(MapTile target)
     {
         for(int j=0;j<map[i].size();j++)
         {
-            if(map[i][j] == target && !is_in(closed_list, IntPoint(i, j)))
+            if(map[i][j] == target && !utility::is_in(closed_list, IntPoint(i, j)))
             {
                 std::vector<IntPoint> cur_contig;
                 flood(IntPoint(i, j), closed_list, cur_contig, target);
@@ -327,7 +327,7 @@ void WorldMap::flood(IntPoint start_point, std::vector<IntPoint>& closed, std::v
     {
         for(int j=(start_point.col - 1);j<(start_point.col + 2); j++)
         {
-            if(map[i][j] == target && !is_in(closed, IntPoint(i, j)))
+            if(map[i][j] == target && !utility::is_in(closed, IntPoint(i, j)))
             {
                 flood(IntPoint(i, j), closed, cur_contig, target);
             }

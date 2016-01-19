@@ -176,7 +176,7 @@ void GUI::render_menu(Menu* menu)
     //clear the background in the specified height/width
     //width is automatically 20
     int height = menu->options.size() + menu->padding;
-    int width = get_max_width(menu->options) + menu->padding;
+    int width = utility::get_max_width(menu->options) + menu->padding;
     int start_row = (GAME_HEIGHT - height) / 2;
     int start_col = (GAME_WIDTH - width) / 2;
     int end_row = (GAME_HEIGHT + height) / 2;
@@ -184,7 +184,7 @@ void GUI::render_menu(Menu* menu)
  
     int extra_row = start_row - menu->padding;
     int extra_end_row = start_row + menu->num_extra_lines() + menu->padding;
-    int extra_width = get_max_width(menu->get_extra_lines()) + menu->padding; 
+    int extra_width = utility::get_max_width(menu->get_extra_lines()) + menu->padding; 
     int extra_col = (GAME_WIDTH - extra_width)/2;
     int extra_end_col = (GAME_WIDTH + extra_width)/2;
     

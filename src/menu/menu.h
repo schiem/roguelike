@@ -33,7 +33,7 @@
 //#include <world_map_gui.h>
 #include <game_loader.h>
 //#include <character.h>
-#include <helper.h>
+#include <utility.h>
 
 //forward declarations
 class Item;

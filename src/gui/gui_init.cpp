@@ -32,7 +32,7 @@ bool GUI::OnInit() {
         string value;
         while(getline(pref_file, pref))
         {
-            value = parse_settings(pref);
+            value = utility::parse_settings(pref);
             if(pref == "font")
             {
                 font_pref = value;

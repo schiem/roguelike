@@ -24,13 +24,14 @@
 #include <iostream>
 #include <boost/filesystem.hpp>
 
+#include <utility.h>
+
 namespace fs=boost::filesystem;
 
 namespace tile_load {
 
     bool conf_exists() {
-        fs::path tileconf(TILECONF);
-        if (fs::exists(tileconf)) {
+        if (utility::file_exists(TILECONF)) {
             std::cout<<"Found conf file!"<<std::endl;
             return true;
         } else {

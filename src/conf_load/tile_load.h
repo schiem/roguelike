@@ -20,6 +20,9 @@
  *  along with ROGUELIKETHING.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef TILE_LOAD_H
+#define TILE_LOAD_H
+
 #include <string.h>
 
 namespace tile_load {
@@ -29,3 +32,5 @@ namespace tile_load {
     void load_conf();
 
 }
+
+#endif

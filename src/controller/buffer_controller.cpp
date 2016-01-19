@@ -47,8 +47,8 @@ bool Game::point_in_buffer(IntPoint chunk, IntPoint coords)
 
 
 IntPoint Game::get_buffer_coords(IntPoint chunk, IntPoint coords) {
-    IntPoint tl_buffer = get_abs(IntPoint(main_char.get_chunk().row-1, main_char.get_chunk().col-1), IntPoint(0, 0));
-    IntPoint abs = get_abs(chunk, coords);
+    IntPoint tl_buffer = utility::get_abs(IntPoint(main_char.get_chunk().row-1, main_char.get_chunk().col-1), IntPoint(0, 0));
+    IntPoint abs = utility::get_abs(chunk, coords);
     return IntPoint(abs.row - tl_buffer.row, abs.col - tl_buffer.col);
 }
 

@@ -67,7 +67,7 @@ std::vector<Character*> Game::get_vis_characters() {
         IntPoint coords = IntPoint(character_list[i]->get_y(), character_list[i]->get_x());
         IntPoint main_char_coords = IntPoint(main_char.get_y(), main_char.get_x());
         IntPoint radius  = IntPoint(GAME_HEIGHT/2, GAME_WIDTH/2);
-        if(in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
+        if(utility::in_range(chunk, coords, main_char.get_chunk(), main_char_coords, radius) &&
                 character_list[i]->get_depth() == main_char.get_depth()) {
             temp.push_back(character_list[i]);
         }
@@ -84,8 +84,8 @@ bool Game::is_vis(IntPoint coords)
 }
 
 IntPoint Game::get_canvas_coords(IntPoint chunk, IntPoint coords){
-    IntPoint tl_abs = get_abs(main_char.get_chunk(),
+    IntPoint tl_abs = utility::get_abs(main_char.get_chunk(),
                IntPoint(main_char.get_y() - CHUNK_HEIGHT/2, main_char.get_x() - CHUNK_WIDTH/2));
-    IntPoint abs = get_abs(chunk, coords);
+    IntPoint abs = utility::get_abs(chunk, coords);
     return IntPoint(abs.row - tl_abs.row, abs.col - tl_abs.col);
 }

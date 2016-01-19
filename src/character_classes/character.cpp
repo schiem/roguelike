@@ -602,8 +602,8 @@ void Character::gain_endurance(int factor)
 
 bool Character::in_sight_range(IntPoint _coords, IntPoint _chunk)
 {
-    IntPoint point = get_abs(_chunk, _coords);
-    IntPoint center = get_abs(chunk, get_coords());
+    IntPoint point = utility::get_abs(_chunk, _coords);
+    IntPoint center = utility::get_abs(chunk, get_coords());
 
     //get the distance.  sign matters
     IntPoint distance = point - center;
@@ -614,8 +614,8 @@ bool Character::in_sight_range(IntPoint _coords, IntPoint _chunk)
 
 bool Character::in_sight(IntPoint _coords, IntPoint _chunk)
 {
-    IntPoint point = get_abs(_chunk, _coords);
-    IntPoint center = get_abs(chunk, get_coords());
+    IntPoint point = utility::get_abs(_chunk, _coords);
+    IntPoint center = utility::get_abs(chunk, get_coords());
 
     //get the distance.  sign matters
     IntPoint distance = point - center;
