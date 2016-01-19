@@ -100,7 +100,6 @@ namespace tile_load {
                 printf("Can't load test.ini\n");
                 exit(EXIT_FAILURE);
             }
-            print_tile(tc.tiledefs["KOBOLD_CORPSE"]);
         } else {
             exit(EXIT_FAILURE);
         }

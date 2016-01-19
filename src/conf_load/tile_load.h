@@ -29,13 +29,33 @@
 
 namespace tile_load {
 
+    /**
+     * tileset_colorset_t is a convenience struct to be passed into the
+     * handle_ini_entry function. It contains two data structures; one mapping
+     * color names to SDL integers (loaded from color_load.cpp), and one mapping
+     * tile names to Tile objects.
+     */
     typedef struct {
         std::unordered_map<std::string, Tile> tiledefs;
         std::unordered_map<std::string, int> colordefs;
     } tileset_colorset_t;
 
-    static int handle_ini_entry();
+    /**
+     * A callback function for the color.ini file parser.
+     * @param tilecolordefs A pointer to our tileset_colorset_t struct
+     * @param name The key that is currently being parsed
+     * @param value The value of the key that is being parsed
+     * @return 0 for success, -1 for failure.
+     */
+    static int handle_ini_entry(void* tilecolordefs, const char* section, 
+                                const char* name, const char* value);
+
     void print_tile(Tile&);
+    
+    /**
+     * Load the tile.ini file using the inih library.
+     * @return the definitive tileset for the game.
+     */
     std::unordered_map<std::string, Tile> load_conf();
 
 }
