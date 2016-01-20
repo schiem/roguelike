@@ -29,6 +29,7 @@
 #include <ini.h>
 #include <conf_util.h>
 #include <color_load.h>
+#include <stdexcept>
 
 
 namespace fs=boost::filesystem;
@@ -51,9 +52,10 @@ namespace tile_load {
             (*tilemap)[section].tile_id=stoi(value);
         } else if (MATCH(name, "color")) {
             try {
-                color_code = (*colormap)[value];
-            } catch (...) {
-                cout<<"ERROR: Could not find color "<<value<<" for tile "<<section<<"."<<endl;
+                color_code = (*colormap).at(value);
+            } catch (const std::out_of_range& oor) {
+                cout<<"ERROR: Could not find color "<<value<<" for tile "<<section<<". Exiting."<<endl;
+                exit(EXIT_FAILURE);
             }
             (*tilemap)[section].color=color_code;
         } else if (MATCH(name, "can_be_moved_through")) {
@@ -68,10 +70,10 @@ namespace tile_load {
             (*tilemap)[section].can_build_overtop=stoi(value);
         } else {
             cout<<"Could not load configuration: name="<<name<<"; value="<<value<<"."<<endl;
-            return -1;
+            return 0;
         }
 
-        return 0;
+        return 1;
     }
 
     void print_tile(Tile& theTile) {
@@ -89,6 +91,7 @@ namespace tile_load {
     std::unordered_map<std::string, Tile> load_conf() {
         std::unordered_map<std::string, Tile> tilemap;
         tileset_colorset_t tc = {tilemap, color_load::load_conf()};
+
 
         if (conf_util::conf_exists(TILEINI)) {
             fs::path tileconf(TILEINI);

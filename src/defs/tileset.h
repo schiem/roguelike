@@ -48,6 +48,11 @@
  *    Remember, this is a pointer to the global tileset. With great power comes
  *    great responsibility. Never, ever use it as an lvalue.
  *
+ *
+ * IMPORTANT: Accessing the map with the [] operator is dangerous. It will not
+ * throw an error. If you want to be safe, you must use tileset.at(), which will
+ * throw an error.
+ *
  */
 class Tileset
 {
